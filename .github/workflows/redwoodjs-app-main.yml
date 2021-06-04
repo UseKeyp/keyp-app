@@ -17,7 +17,7 @@ env:
   # Container Registry
   CONTAINER_REGISTRY_HOSTNAME: ghcr.io
   CONTAINER_REGISTRY_USERNAME: pi0neerpat
-  CONTAINER_REGISTRY_PASSWORD: ${{ secrets.__GITHUB_ACCESS_TOKEN }}
+  CONTAINER_REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
   CONTAINER_REGISTRY_REPOSITORY: pi0neerpat
   CONTAINER_REGISTRY_IMAGE_PREFIX: redwoodjs-app
 
@@ -26,7 +26,7 @@ env:
   GIT_DEPLOY_REPOSITORY_BRANCH: main
   GIT_DEPLOY_REPOSITORY_AUTHOR_NAME: pi0neerpat
   GIT_DEPLOY_REPOSITORY_AUTHOR_EMAIL: pi0neerpat@users.noreply.github.com
-  GIT_DEPLOY_REPOSITORY_AUTHOR_TOKEN: ${{ secrets.__GITHUB_ACCESS_TOKEN }}
+  GIT_DEPLOY_REPOSITORY_AUTHOR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   #
@@ -42,7 +42,8 @@ jobs:
         platform: [api, web]
         include:
           - platform: api
-            DATABASE_URL: __MAIN_DATABASE_URL
+          # TODO: Change this to the production database
+            DATABASE_URL: ${{ secrets.__DEVELOPMENT_DATABASE_URL }}
           - platform: web
 
     steps:
