@@ -43,7 +43,7 @@ jobs:
         include:
           - platform: api
           # TODO: Change this to the production database
-            DATABASE_URL: ${{ secrets.__DEVELOPMENT_DATABASE_URL }}
+            DATABASE_URL: __DEVELOPMENT_DATABASE_URL
           - platform: web
 
     steps:
