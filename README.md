@@ -29,6 +29,18 @@ See docs for [Local Postgres Setup](https://redwoodjs.com/docs/local-postgres-se
 
 ### Docker
 
+Images are built via Github Action. Build the images locally:
+
+```bash
+# web
+docker build . -t pi0neerpat/treasure-chess -f web/Dockerfile
+
+# api
+docker build . -t pi0neerpat/treasure-chess -f api/Dockerfile
+```
+
+Run an image locally:
+
 ```bash
 docker run -it --rm \
        -p 8910:8910 \
