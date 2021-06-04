@@ -23,6 +23,14 @@ yarn redwood dev
 
 Your browser should open automatically to `http://localhost:8910` to see the web app. Lambda functions run on `http://localhost:8911` and are also proxied to `http://localhost:8910/.redwood/functions/*`.
 
-### Set up the database
+### Local Postgres Setup
 
 See docs for [Local Postgres Setup](https://redwoodjs.com/docs/local-postgres-setup)
+
+### Docker
+
+```bash
+docker run -it --rm \
+       -p 8910:8910 \
+       ghcr.io/pi0neerpat/treasure-chess:3a567f545902d35472b6c8d334439cb7b8a47c01
+```
