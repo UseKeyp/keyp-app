@@ -19,6 +19,7 @@ WORKDIR /app
 
 # Copy files
 COPY api api
+COPY web web
 COPY .nvmrc .
 COPY babel.config.js .
 COPY graphql.config.js .
