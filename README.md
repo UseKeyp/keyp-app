@@ -33,10 +33,16 @@ Images are built via Github Action. Build the images locally:
 
 ```bash
 # web
-docker build . -t pi0neerpat/treasure-chess -f web/Dockerfile
+docker build . -t pi0neerpat/treasure-chess -f web/Dockerfile \
+--build-arg NODE_ENV=development \
+--build-arg RUNTIME_ENV=local
+
 
 # api
-docker build . -t pi0neerpat/treasure-chess -f api/Dockerfile
+docker build . -t pi0neerpat/treasure-chess -f api/Dockerfile \
+--build-arg NODE_ENV=development \
+--build-arg RUNTIME_ENV=local \
+--build-arg DATABASE_URL=<MY_DATABASE_URL>
 ```
 
 Run an image locally:

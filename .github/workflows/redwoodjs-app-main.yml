@@ -11,6 +11,7 @@ on:
 
 env:
   # Build
+  # TODO: change to "production"?
   NODE_ENV: "development"
   RUNTIME_ENV: "main"
 
@@ -43,6 +44,7 @@ jobs:
         include:
           - platform: api
           # TODO: Change this to the production database
+          # Name of Github secret
             DATABASE_URL: __DEVELOPMENT_DATABASE_URL
           - platform: web
 
