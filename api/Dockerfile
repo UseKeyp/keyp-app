@@ -34,6 +34,9 @@ RUN yarn install --frozen-lockfile
 # Build api
 RUN yarn rw build api
 
+# Cleanup web TODO: May be unnecessary eventually
+RUN rm -rf /web
+
 # Set database baseline
 # We only need to do this once per database
 # RUN yarn rw prisma migrate resolve --applied 20210311161829_baseline0

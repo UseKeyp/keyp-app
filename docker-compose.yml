@@ -1,7 +1,7 @@
 version: "3"
 services:
   api:
-    image: pi0neerpat/redwoodjs-app-api-main:latest
+    image: ghcr.io/pi0neerpat/treasure-chess-redwood-api-main
     restart: always
     ports:
       - "8911:8911" # http
@@ -11,7 +11,7 @@ services:
         max-size: "200k"
         max-file: "10"
   web:
-    image: pi0neerpat/redwoodjs-app-web-main:latest
+    image: ghcr.io/pi0neerpat/treasure-chess-redwood-web-main
     restart: always
     ports:
       - "8910:8910" # http

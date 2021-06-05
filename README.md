@@ -33,13 +33,13 @@ Images are built via Github Action. To build the images locally:
 
 ```bash
 # web
-docker build . -t pi0neerpat/redwoodjs-app-web-main -f web/Dockerfile \
+docker build . -t pi0neerpat/treasure-chess-redwood-web-main -f web/Dockerfile \
 --build-arg NODE_ENV=development \
 --build-arg RUNTIME_ENV=local
 
 
 # api
-docker build . -t pi0neerpat/redwoodjs-app-web-main -f api/Dockerfile \
+docker build . -t pi0neerpat/treasure-chess-redwood-web-main -f api/Dockerfile \
 --build-arg NODE_ENV=development \
 --build-arg RUNTIME_ENV=local \
 --build-arg DATABASE_URL=<MY_DATABASE_URL>
@@ -52,11 +52,14 @@ Run an image locally:
 docker login https://ghcr.io -u USERNAME -p GITHUB_PAT
 
 # Pull the images (web and api)
-docker pull ghcr.io/pi0neerpat/redwoodjs-app-web-main:latest
-docker pull ghcr.io/pi0neerpat/redwoodjs-app-api-main:latest
+docker pull ghcr.io/pi0neerpat/treasure-chess-redwood-web-main:latest
+docker pull ghcr.io/pi0neerpat/treasure-chess-redwood-api-main:latest
 
-# Run it
+# Run
+docker-compose up
+
+# Alternatively, run a single image
 docker run -it --rm \
        -p 8910:8910 \
-       ghcr.io/pi0neerpat/redwoodjs-app-api-main:latest
+       ghcr.io/pi0neerpat/treasure-chess-redwood-api-main:latest
 ```
