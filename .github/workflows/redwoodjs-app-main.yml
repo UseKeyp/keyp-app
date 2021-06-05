@@ -20,7 +20,7 @@ env:
   CONTAINER_REGISTRY_USERNAME: pi0neerpat
   CONTAINER_REGISTRY_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
   CONTAINER_REGISTRY_REPOSITORY: pi0neerpat
-  CONTAINER_REGISTRY_IMAGE_PREFIX: redwoodjs-app
+  CONTAINER_REGISTRY_IMAGE_PREFIX: treasure-chess-redwood
 
   # Repository
   GIT_DEPLOY_REPOSITORY_NAME: pi0neerpat/treasure-chess
