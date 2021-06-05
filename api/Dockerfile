@@ -30,7 +30,7 @@ COPY yarn.lock .
 RUN yarn install --frozen-lockfile
 
 # Fix missing react dependency issue
-RUN yarn install react
+RUN yarn add react
 
 # Build api
 RUN yarn rw build api
