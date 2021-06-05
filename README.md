@@ -29,17 +29,17 @@ See docs for [Local Postgres Setup](https://redwoodjs.com/docs/local-postgres-se
 
 ### Docker
 
-Images are built via Github Action. Build the images locally:
+Images are built via Github Action. To build the images locally:
 
 ```bash
 # web
-docker build . -t pi0neerpat/treasure-chess -f web/Dockerfile \
+docker build . -t pi0neerpat/redwoodjs-app-web-main -f web/Dockerfile \
 --build-arg NODE_ENV=development \
 --build-arg RUNTIME_ENV=local
 
 
 # api
-docker build . -t pi0neerpat/treasure-chess -f api/Dockerfile \
+docker build . -t pi0neerpat/redwoodjs-app-web-main -f api/Dockerfile \
 --build-arg NODE_ENV=development \
 --build-arg RUNTIME_ENV=local \
 --build-arg DATABASE_URL=<MY_DATABASE_URL>
@@ -48,7 +48,15 @@ docker build . -t pi0neerpat/treasure-chess -f api/Dockerfile \
 Run an image locally:
 
 ```bash
+# Authenticate
+docker login https://ghcr.io -u USERNAME -p GITHUB_PAT
+
+# Pull the images (web and api)
+docker pull ghcr.io/pi0neerpat/redwoodjs-app-web-main:latest
+docker pull ghcr.io/pi0neerpat/redwoodjs-app-api-main:latest
+
+# Run it
 docker run -it --rm \
        -p 8910:8910 \
-       ghcr.io/pi0neerpat/treasure-chess:3a567f545902d35472b6c8d334439cb7b8a47c01
+       ghcr.io/pi0neerpat/redwoodjs-app-api-main:latest
 ```
