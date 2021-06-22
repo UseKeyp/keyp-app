@@ -27,7 +27,13 @@ jobs:
         run: gcloud auth configure-docker us-east4-docker.pkg.dev
       - name: Build and push image
         run: |
-          [ $GITHUB_BRANCH == "refs/heads/master" ] && PREFIX=prod || PREFIX=${{ github.event.inputs.image_tag_prefix }}
+          PREFIX=${{ github.event.inputs.image_tag_prefix }}
+          DATABASE_URL=${{ secrets.__DEVELOPMENT_DATABASE_URL }}
+          if [ $GITHUB_BRANCH == "refs/heads/master" ]
+          then
+             PREFIX=prod
+             DATABASE_URL=${{ secrets.__PRODUCTION_DATABASE_URL }}
+          fi
           IMAGE_TAG=$PREFIX-$(echo $GITHUB_SHA | cut -c 1-7)
           IMAGE_NAME=$(echo $GITHUB_REPOSIOTORY | cut -c 10-)
           COMPONENT= "api web"
@@ -37,11 +43,11 @@ jobs:
 
               echo "branch: $GITHUB_BRANCH, building image... $PROJECT_NAME/$IMAGE_NAME-$COMPONENT:$IMAGE_TAG"
               cho "$GCP_SA_KEY" | base64 -d > ./credentials.json
-              docker build -t $PROJECT_NAME/$IMAGE_NAME-$COMPONENT:$IMAGE_TAG .
-    
+              docker build --build-arg DATABASE_URL=$DATABASE_URL -t $PROJECT_NAME/$IMAGE_NAME-$COMPONENT:$IMAGE_TAG .
+
               echo "pushing image... $PROJECT_NAME/$IMAGE_NAME:$IMAGE_TAG"
               docker push $PROJECT_NAME/$IMAGE_NAME-$COMPONENT:$IMAGE_TAG
-    
+
               if [ $PREFIX == "prod" ] ; then
                  echo "pushing image... $PROJECT_NAME/$IMAGE_NAME-$COMPONENT:latest"
                  docker tag $PROJECT_NAME/$IMAGE_NAME-$COMPONENT:$IMAGE_TAG $PROJECT_NAME/$IMAGE_NAME-$COMPONENT:latest
