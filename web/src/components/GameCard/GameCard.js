@@ -4,7 +4,7 @@ import blackChest from './black-chest.png'
 const RarityFlag = ({ color }) => {
   return (
     <svg
-      className="game-card-rarity-flag"
+      className="game-card-rarity-flag absolute w-full right-0"
       width="75"
       height="119"
       viewBox="0 0 75 119"
@@ -42,23 +42,27 @@ const GameCard = ({
   }
 
   return (
-    <div className="game-card-container">
-      <div className="game-card-num-moves">{numMoves}</div>
-      <h2 className="game-card-title">{title}</h2>
+    <div className="game-card-container bg-white text-black relative box-content">
+      <div className="game-card-num-moves absolute bg-white text-4xl flex items-center justify-center font-black">
+        {numMoves}
+      </div>
+      <h2 className="game-card-title text-2xl absolute font-black">{title}</h2>
       <img
         alt="GIF of chess match"
         className="game-card-match-gif"
         src={gifUrl}
       />
-      <div className="game-card-mid-section">
-        <div className="game-card-winner-text">{winnerText}</div>
-        <div className="game-card-users-text">
+      <div className="relative w-full h-24 bg-black">
+        <div className="z-index-3 h-12 text-4xl font-black flex items-center justify-center absolute left-0 right-0 uppercase">
+          {winnerText}
+        </div>
+        <div className="z-index-3 h-12 text-sm font-black flex items-center justify-around absolute bottom-0 left-0 right-0">
           {whitePlayer}
           <span className="text-white">{blackPlayer}</span>
         </div>
-        <BannerWhiteWon className="game-card-winning-banner" />
+        <BannerWhiteWon className="game-card-winning-banner absolute" />
       </div>
-      <div className="game-card-details">
+      <div className="game-card-details text-sm font-bold h-32 w-full flex flex-col justify-between">
         <div>
           Won by: <span className="font-black">{wonByText}</span>
         </div>
@@ -67,15 +71,15 @@ const GameCard = ({
         </div>
         <div className="font-black">{openingText}</div>
       </div>
-      <div className="game-card-bottom-bar font-black">
+      <div className="absolute bottom-0 w-full flex text-xs font-black">
         <div className="game-card-edition">
           <span className="capitalize">{edition}</span> Edition
         </div>
         <div>Match #{matchId}</div>
-        <div className="game-card-rarity-container">
+        <div className="game-card-rarity-container absolute w-12 h-20">
           <RarityFlag color={rarityFlagColor} />
           <img
-            className="game-card-treasure-chest"
+            className="game-card-treasure-chest z-index-3 absolute w-10 m-auto"
             src={blackChest}
             alt="white treasure chest"
           />
