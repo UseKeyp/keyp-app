@@ -37,7 +37,7 @@ jobs:
           IMAGE_NAME=$(echo $GITHUB_REPOSIOTORY | cut -c 10-)
           COMPONENT="api web"
           PROJECT_NAME=us-east4-docker.pkg.dev/chess-gcr1/treasure-chess
-          for component in $COMPONET
+          for component in $COMPONENT
           do
 
               echo "branch: $GITHUB_BRANCH, building image... $PROJECT_NAME/$IMAGE_NAME-$COMPONENT:$IMAGE_TAG"
