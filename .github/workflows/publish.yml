@@ -42,7 +42,7 @@ jobs:
 
               echo "branch: $GITHUB_BRANCH, building image... $PROJECT_NAME/$IMAGE_NAME-$COMPONENT:$IMAGE_TAG"
               echo "$GCP_SA_KEY" | base64 -d > ./credentials.json
-              docker build -t $PROJECT_NAME/$IMAGE_NAME-$COMPONENT:$IMAGE_TAG --build-arg DATABASE_URL=$DATABASE_URL -f ./$COMPONENT/Dockerfile ./$COMPONENT/
+              docker build -t $PROJECT_NAME/$IMAGE_NAME-$COMPONENT:$IMAGE_TAG --build-arg DATABASE_URL=$DATABASE_URL -f ./$COMPONENT/Dockerfile .
 
               echo "pushing image... $PROJECT_NAME/$IMAGE_NAME:$IMAGE_TAG"
               docker push $PROJECT_NAME/$IMAGE_NAME-$COMPONENT:$IMAGE_TAG
