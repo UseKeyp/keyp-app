@@ -34,7 +34,7 @@ jobs:
              DATABASE_URL=${{ secrets.__PRODUCTION_DATABASE_URL }}
           fi
           IMAGE_TAG=$PREFIX-$(echo $GITHUB_SHA | cut -c 1-7)
-          IMAGE_NAME=$(echo $GITHUB_REPOSIOTORY | cut -c 11-)
+          IMAGE_NAME=$(echo $GITHUB_REPOSIOTORY | cut -c 12-)
           COMPONENTS="api web"
           PROJECT_NAME=us-east4-docker.pkg.dev/chess-gcr1/treasure-chess
           for COMPONENT in $COMPONENTS
