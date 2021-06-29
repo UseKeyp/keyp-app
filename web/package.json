@@ -18,11 +18,14 @@
     "@redwoodjs/web": "^0.33.0",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "react-feather": "^2.0.9"
   },
   "devDependencies": {
     "autoprefixer": "9.8.6",
     "postcss-loader": "4.0.2",
+    "sass": "^1.35.1",
+    "sass-loader": "^10",
     "tailwindcss": "npm:@tailwindcss/postcss7-compat"
   }
 }

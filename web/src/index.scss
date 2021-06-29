@@ -12,9 +12,38 @@
  * END --- TAILWIND GENERATOR EDIT
  */
 
+ @import url('https://fonts.googleapis.com/css2?family=Overpass:wght@100;200;300;400;600;700;800;900&display=swap');
+
+
+$background-color: '#312e2b';
+
+body {
+  font-family: 'Overpass', serif;
+  font-size: 32px;
+  line-height: 1.2;
+  color: white;
+}
+
+a {
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.rect-button {
+  background: linear-gradient(180deg, #EEEDED 0%, #C4C4C4 100%);
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 28px;
+  color: black;
+  padding: 8px 16px;
+}
+
 .z-index-3 {
   z-index: 3;
 }
+
+// COMPONENT-SPECIFIC STYLES
 
 .game-card-container {
   border: 4px solid #000000;
@@ -69,4 +98,43 @@
 .game-card-treasure-chest {
   bottom: 24px;
   right: 5px;
+}
+
+.mobile-nav-outer-container {
+  transition: max-height 200ms ease;
+  background-color: #312e2b;
+
+  .expandable-header-section {
+    transition: opacity 200ms ease;
+  }
+
+  .header-title {
+    text-transform: uppercase;
+    font-size: 28px;
+  }
+
+  .mobile-nav-link {
+    font-size: 32px;
+    line-height: 1.5;
+    display: block;
+  }
+}
+
+.faq-container {
+  .faq-header {
+    line-height: 56px;
+  }
+
+  .question-heading {
+    line-height: 48px;
+  }
+
+  .section-expand-button {
+    outline: none;
+  }
+
+  .answer-container {
+    transition: opacity 250ms ease, max-height 250ms ease;
+    line-height: 30px;
+  }
 }
