@@ -7,15 +7,25 @@
 // 'src/pages/HomePage/HomePage.js'         -> HomePage
 // 'src/pages/Admin/BooksPage/BooksPage.js' -> AdminBooksPage
 
-import { Router, Route } from '@redwoodjs/router'
+import { Set, Router, Route } from '@redwoodjs/router'
+import MembersLayout from 'src/layouts/MembersLayout'
+import TreasuresLayout from 'src/layouts/TreasuresLayout'
 
 const Routes = () => {
   return (
     <Router>
-      <Route path="/treasures/{treasureId}" page={TreasurePage} name="treasure" />
-      <Route path="/treasures" page={TreasuresPage} name="treasures" />
+      <Set wrap={MembersLayout}>
+        <Route path="/members/{id:Int}/edit" page={MemberEditMemberPage} name="editMember" />
+        <Route path="/members/{id:Int}" page={MemberMemberPage} name="member" />
+        <Route path="/members" page={MemberMembersPage} name="members" />
+      </Set>
+      <Set wrap={TreasuresLayout}>
+        <Route path="/treasures/new" page={TreasureNewTreasurePage} name="newTreasure" />
+        <Route path="/treasures/{id:Int}/edit" page={TreasureEditTreasurePage} name="editTreasure" />
+        <Route path="/treasures/{id:Int}" page={TreasureTreasurePage} name="treasure" />
+        <Route path="/treasures" page={TreasureTreasuresPage} name="treasures" />
+      </Set>
       <Route path="/" page={HomePage} name="home" />
-      <Route path="/member/{memberHandle}" page={MemberPage} name="member" />
       <Route notfound page={NotFoundPage} />
     </Router>
   )
