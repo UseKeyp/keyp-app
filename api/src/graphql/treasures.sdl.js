@@ -3,6 +3,7 @@ export const schema = gql`
     id: Int!
     createdAt: DateTime!
     updatedAt: DateTime!
+    name: String!
   }
 
   type Query {
@@ -11,11 +12,11 @@ export const schema = gql`
   }
 
   input CreateTreasureInput {
-    
+    name: String!
   }
 
   input UpdateTreasureInput {
-    
+    name: String
   }
 
   type Mutation {

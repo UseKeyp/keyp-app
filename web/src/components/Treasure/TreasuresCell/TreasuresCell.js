@@ -8,6 +8,7 @@ export const QUERY = gql`
       id
       createdAt
       updatedAt
+      name
     }
   }
 `

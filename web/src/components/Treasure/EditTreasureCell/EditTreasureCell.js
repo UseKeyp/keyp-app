@@ -9,6 +9,7 @@ export const QUERY = gql`
       id
       createdAt
       updatedAt
+      name
     }
   }
 `
@@ -18,6 +19,7 @@ const UPDATE_TREASURE_MUTATION = gql`
       id
       createdAt
       updatedAt
+      name
     }
   }
 `

@@ -64,6 +64,7 @@ const TreasuresList = ({ treasures }) => {
             <th>Id</th>
             <th>Created at</th>
             <th>Updated at</th>
+            <th>Name</th>
             <th>&nbsp;</th>
           </tr>
         </thead>
@@ -73,6 +74,7 @@ const TreasuresList = ({ treasures }) => {
               <td>{truncate(treasure.id)}</td>
               <td>{timeTag(treasure.createdAt)}</td>
               <td>{timeTag(treasure.updatedAt)}</td>
+              <td>{truncate(treasure.name)}</td>
               <td>
                 <nav className="rw-table-actions">
                   <Link

@@ -21,20 +21,21 @@ describe('treasures', () => {
 
   scenario('creates a treasure', async () => {
     const result = await createTreasure({
-      input: { updatedAt: '2021-06-30T07:43:04Z' },
+      input: { updatedAt: '2021-06-30T23:45:43Z', name: 'String' },
     })
 
-    expect(result.updatedAt).toEqual('2021-06-30T07:43:04Z')
+    expect(result.updatedAt).toEqual('2021-06-30T23:45:43Z')
+    expect(result.name).toEqual('String')
   })
 
   scenario('updates a treasure', async (scenario) => {
     const original = await treasure({ id: scenario.treasure.one.id })
     const result = await updateTreasure({
       id: original.id,
-      input: { updatedAt: '2021-07-01T07:43:04Z' },
+      input: { updatedAt: '2021-07-01T23:45:43Z' },
     })
 
-    expect(result.updatedAt).toEqual('2021-07-01T07:43:04Z')
+    expect(result.updatedAt).toEqual('2021-07-01T23:45:43Z')
   })
 
   scenario('deletes a treasure', async (scenario) => {

@@ -66,6 +66,10 @@ const Treasure = ({ treasure }) => {
               <th>Updated at</th>
               <td>{timeTag(treasure.updatedAt)}</td>
             </tr>
+            <tr>
+              <th>Name</th>
+              <td>{treasure.name}</td>
+            </tr>
           </tbody>
         </table>
       </div>
