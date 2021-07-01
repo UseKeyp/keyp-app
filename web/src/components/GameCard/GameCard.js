@@ -64,7 +64,7 @@ const GameCard = ({
       </div>
       <div className="game-card-details text-sm font-bold h-32 w-full flex flex-col justify-between">
         <div>
-          TODOD DELETETHIS TEXT Won by:{' '}
+          Won by:{' '}
           <span className="font-black">{wonByText}</span>
         </div>
         <div>
