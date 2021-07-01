@@ -8,9 +8,14 @@ on:
 
 jobs:
   runCI:
+    name: Run CI
     runs-on: ubuntu-latest
     steps:
+      # check out this repo (so that this workflow can use it)
+      # https://github.com/actions/checkout
       - uses: actions/checkout@v2
+      # set up a node environment
+      # https://github.com/actions/setup-node
       - name: Setup Node.js v14
       - uses: actions/setup-node@v2
         with:
