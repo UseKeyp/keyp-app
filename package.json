@@ -8,6 +8,7 @@
     ]
   },
   "scripts": {
+    "build-storybook": "yarn rw storybook --build",
     "chromatic": "chromatic --project-token=cafed242b299 --storybook-build-dir web/public/storybook"
   },
   "devDependencies": {

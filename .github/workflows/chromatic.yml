@@ -1,27 +1,13 @@
-name: Publish to Chromatic
+name: Chromatic
 
 on:
   push:
-    branches: [main]
-  pull_request:
-    types: [opened, synchronize]
 
 jobs:
-  chromatic:
-    name: Publish
+  chromatic-deployment:
     runs-on: ubuntu-latest
     steps:
-      # check out this repo (so that this workflow can use it)
-      # https://github.com/actions/checkout
-      - uses: actions/checkout@v2
-      # set up a node environment
-      # https://github.com/actions/setup-node
-      - name: Setup Node.js v14
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-      # cache dependencies and build outputs to improve workflow execution time
-      # https://github.com/actions/cache
+      - uses: actions/checkout@v1
       - name: Cache "node_modules"
         uses: actions/cache@v2
         with:
@@ -30,9 +16,12 @@ jobs:
       # install dependencies
       - name: Install dependencies
         run: yarn install --frozen-lockfile
-      - name: Build Storybook
-        run: yarn rw storybook --build
-        shell: bash
-      - name: Publish
-        run: yarn chromatic
-        shell: bash
+
+      - name: Publish to Chromatic
+        uses: chromaui/action@v1
+        # Chromatic GitHub Action options
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # 👇 Chromatic projectToken, refer to the manage page to obtain it.
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          storybookBuildDir: web/public/storybook
