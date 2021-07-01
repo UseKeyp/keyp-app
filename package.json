@@ -8,8 +8,7 @@
     ]
   },
   "scripts": {
-    "build-storybook": "yarn rw storybook --build",
-    "chromatic": "npx chromatic --project-token=cafed242b299 --storybook-build-dir web/public/storybook"
+    "chromatic": "chromatic --project-token=cafed242b299 --storybook-build-dir web/public/storybook"
   },
   "devDependencies": {
     "@redwoodjs/core": "^0.34.1",
