@@ -1,25 +1,30 @@
 name: CI
+
 on:
+  push:
+    branches: [main]
   pull_request:
     types: [opened, synchronize]
+
 jobs:
-  lint:
+  runCI:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - name: Setup Node.js v14
+      - uses: actions/setup-node@v2
         with:
-          node-version: '14.x'
-      - run: yarn install
-      - name: yarn redwood lint
-        run: yarn rw lint
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+          node-version: '14'
+      # cache dependencies and build outputs to improve workflow execution time
+      # https://github.com/actions/cache
+      - name: Cache "node_modules"
+        uses: actions/cache@v2
         with:
-          node-version: '14.x'
-      - run: yarn install
-      - name: yarn redwood build
-        run: yarn rw build
+          path: '**/node_modules'
+          key: node_modules_${{ hashFiles('**/yarn.lock') }}
+      # install dependencies
+      - name: Install dependencies
+      - run: yarn install --frozen-lockfile
+      # lint, check, run tests, and build
+      - name: Run CI
+        uses: redwoodjs/project-action-ci@v1
