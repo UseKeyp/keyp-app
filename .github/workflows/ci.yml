@@ -31,5 +31,17 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
       # lint, check, run tests, and build
-      - name: Run CI
-        uses: redwoodjs/project-action-ci@v1
+      # - name: Run CI
+      #   uses: jtoar/redwoodjs-ci@v0.2.0
+      - name: Lint
+        run: yarn rw lint
+        shell: bash
+      - name: Check
+        run: yarn rw check
+        shell: bash
+      - name: Run tests
+        run: yarn rw test
+        shell: bash
+      - name: Build
+        run: yarn rw build
+        shell: bash
