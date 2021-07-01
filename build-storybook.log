@@ -1,0 +1,20 @@
+yarn run v1.22.5
+$ /home/dev/repos/treasure-chess/node_modules/.bin/rw storybook --build --output-dir web/public/storybook
+rw storybook
+
+Launch Storybook: An isolated component development environment
+
+Options:
+  --help             Show help                                         [boolean]
+  --version          Show version number                               [boolean]
+  --cwd              Working directory to use (where `redwood.toml` is located.)
+  --open             Open storybooks in your browser on start
+                                                       [boolean] [default: true]
+  --build            Build Storybook                  [boolean] [default: false]
+  --port             Which port to run storybooks on             [default: 7910]
+  --build-directory  Directory in web/ to store static files
+                                          [string] [default: "public/storybook"]
+
+Unknown arguments: output-dir, outputDir
+error Command failed with exit code 1.
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.
