@@ -1,7 +1,7 @@
 import MobileNav from 'src/components/MobileNav'
 
 import { Toaster } from '@redwoodjs/web/toast'
-import { useAuth } from 'src/providers/auth'
+import { useAuth } from '@redwoodjs/auth'
 
 const DefaultLayout = ({ children }) => {
   const { logIn } = useAuth()

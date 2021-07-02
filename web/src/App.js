@@ -1,8 +1,10 @@
 import { FatalErrorBoundary } from '@redwoodjs/web'
 import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
+import { AuthProvider } from '@redwoodjs/auth'
 
-import { AuthProvider } from 'src/providers/auth'
 import { ContextProvider } from 'src/providers/context'
+
+import TreasureChessAuthClient from 'src/auth/client'
 
 import FatalErrorPage from 'src/pages/FatalErrorPage'
 import Routes from 'src/Routes'
@@ -10,15 +12,17 @@ import Routes from 'src/Routes'
 import './scaffold.css'
 import './index.scss'
 
+const authClient = new TreasureChessAuthClient()
+
 const App = () => (
   <FatalErrorBoundary page={FatalErrorPage}>
-    <RedwoodApolloProvider>
-      <ContextProvider>
-        <AuthProvider>
+    <AuthProvider client={authClient} type="ethereum">
+      <RedwoodApolloProvider>
+        <ContextProvider>
           <Routes />
-        </AuthProvider>
-      </ContextProvider>
-    </RedwoodApolloProvider>
+        </ContextProvider>
+      </RedwoodApolloProvider>
+    </AuthProvider>
   </FatalErrorBoundary>
 )
 
