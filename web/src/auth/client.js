@@ -1,45 +1,31 @@
-/////////////////////////////////
-//
 // Adapted from https://github.com/oneclickdapp/ethereum-auth
-//
-/////////////////////////////////
 
-import { getErrorResponse } from 'src/auth/utils'
-
+import { getErrorResponse } from 'src/auth/helpers'
 import { LOCAL_TOKEN_KEY, WALLET_TYPES } from 'src/auth/constants'
 
-class EthereumAuthClient {
-  constructor({ rpc, infuraId, debug, onNetworkChange, onDisconnect }) {
+import { torus, loginWithTorus } from 'src/auth/torus'
+import { isProduction } from 'src/utils/helpers'
+
+class TreasureChessAuthClient {
+  constructor({ debug, onNetworkChange, onDisconnect }) {
     this.debug = debug
-    this.rpc = rpc
-    this.infuraId = infuraId
     this.onNetworkChange = onNetworkChange
     this.onDisconnect = onDisconnect
 
-    const torus = new TorusSdk({
-      baseUrl: `${window.location.origin}/auth`,
-      enableLogging: true,
-      network: 'testnet', // details for test net
-    })
     torus.init()
     this.torus = torus
   }
 
   async login(type = WALLET_TYPES.torus) {
     try {
-      let torusUserData
+      let walletUserData
       try {
-        torusUserData = await state.torus.triggerLogin({
-          typeOfLogin: 'google',
-          verifier: 'googletest',
-          clientId:
-            '611240558687-r7lns3f17bovvmpufm5f4ha20i6sd1e9.apps.googleusercontent.com',
-        })
+        walletUserData = await loginWithTorus()
       } catch (e) {
         console.log(e)
         throw Error('Error logging in with Torus')
       }
-
+      if (!isProduction) console.log(walletUserData)
       let token
       // Get token from torus
       localStorage.setItem(LOCAL_TOKEN_KEY, token)
@@ -52,7 +38,6 @@ class EthereumAuthClient {
   }
 
   logout() {
-    if (this.type === WALLET_TYPES.walletConnect) disconnectWalletConnect()
     return localStorage.removeItem(LOCAL_TOKEN_KEY)
   }
 
@@ -65,4 +50,4 @@ class EthereumAuthClient {
   }
 }
 
-export default EthereumAuthClient
+export default TreasureChessAuthClient

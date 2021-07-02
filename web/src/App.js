@@ -12,7 +12,7 @@ import Routes from 'src/Routes'
 import './scaffold.css'
 import './index.scss'
 
-const authClient = new TreasureChessAuthClient()
+const authClient = new TreasureChessAuthClient({})
 
 const App = () => (
   <FatalErrorBoundary page={FatalErrorPage}>
