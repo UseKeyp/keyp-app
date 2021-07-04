@@ -16,11 +16,13 @@ const DefaultLayout = ({ children }) => {
         position="bottom-right"
         toastOptions={{ success: { duration: 3000 } }}
       />
-      <header className="relative">
+      <header className="relative mb-8">
         <MobileNav onClick={onClick} />
       </header>
       <div className="flex-grow">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6">{children}</div>
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 sm:max-w-screen">
+          {children}
+        </div>
       </div>
       <>{/*Footer*/}</>
     </div>
