@@ -3,7 +3,7 @@ import treasureChessLogoSrc from './treasure-chess-logo.png'
 
 import { Menu, X } from 'react-feather'
 
-const MobileNav = () => {
+const MobileNav = ({ onClick }) => {
   const [isExpanded, setExpanded] = useState(false)
 
   return (
@@ -46,7 +46,12 @@ const MobileNav = () => {
         <a className="mobile-nav-link" href="/faq">
           FAQ
         </a>
-        <button className="rect-button mt-5" role="link">
+        <button
+          onClick={onClick}
+          id="login"
+          className="rect-button mt-5"
+          role="link"
+        >
           Chess.com Login
         </button>
       </div>

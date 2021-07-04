@@ -1,13 +1,19 @@
-/**
- * Once you are ready to add authentication to your application
- * you'll build out requireAuth() with real functionality. For
- * now we just return `true` so that the beforeResolver() calls
- * in services have something to check against, simulating a logged
- * in user that is allowed to access that service.
- *
- * See https://redwoodjs.com/docs/authentication for more info.
- */
+import { AuthenticationError } from '@redwoodjs/api'
+
+import { db } from './db'
+
+// See https://redwoodjs.com/cookbook/role-based-access-control-rbac
+// for how to add Role-based Access Control (RBAC) here.
+
+export const getCurrentUser = async (decoded) => {
+  return db.user.findUnique({ where: { address: decoded.address } })
+}
+
+// Use this function in your services to check that a user is logged in, and
+// optionally raise an error if they're not.
 
 export const requireAuth = () => {
-  return true
+  if (!context.currentUser) {
+    throw new AuthenticationError("You don't have permission to do that.")
+  }
 }
