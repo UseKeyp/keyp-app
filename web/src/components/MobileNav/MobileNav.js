@@ -8,7 +8,7 @@ const MobileNav = ({ onClick }) => {
 
   return (
     <div
-      className="mobile-nav-outer-container h-screen overflow-y-hidden absolute w-full"
+      className="mobile-nav-outer-container h-screen overflow-y-hidden w-full px-4 sm:px-6"
       style={{
         maxHeight: isExpanded ? 1000 : 100,
       }}
@@ -21,7 +21,8 @@ const MobileNav = ({ onClick }) => {
             alt="Treasure chess logo"
           />
           <h2 className="header-title flex-grow-0 font-black leading-none pl-6 pr-10 header-title">
-            Treasure Chess
+            Treasure
+            <br /> Chess
           </h2>
         </div>
         <button onClick={() => setExpanded(!isExpanded)}>
