@@ -57,7 +57,7 @@ const MobileNav = ({ onClick }) => {
                 Home
               </NavLink>
               <NavLink
-                to={routes.members()}
+                to={routes.member({ id: 1 })}
                 activeClassName="underline"
                 className="ml-2"
               >
