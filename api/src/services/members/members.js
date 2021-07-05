@@ -34,3 +34,8 @@ export const deleteMember = ({ id }) => {
     where: { id },
   })
 }
+
+export const Member = {
+  treasuresOwned: (_obj, { root }) =>
+    db.member.findUnique({ where: { id: root.id } }).treasuresOwned(),
+}

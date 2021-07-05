@@ -1,4 +1,13 @@
-import { Form, FormError, FieldError, Label, Submit } from '@redwoodjs/forms'
+import {
+  Form,
+  FormError,
+  FieldError,
+  Label,
+  TextField,
+  DatetimeLocalField,
+  NumberField,
+  Submit,
+} from '@redwoodjs/forms'
 
 const formatDatetime = (value) => {
   if (value) {
@@ -36,6 +45,38 @@ const MemberForm = (props) => {
           validation={{ required: true }}
         />
         <FieldError name="handle" className="rw-field-error" />
+
+        <Label
+          name="dateJoined"
+          className="rw-label"
+          errorClassName="rw-label rw-label-error"
+        >
+          Date joined
+        </Label>
+        <DatetimeLocalField
+          name="dateJoined"
+          defaultValue={formatDatetime(props.member?.dateJoined)}
+          className="rw-input"
+          errorClassName="rw-input rw-input-error"
+          validation={{ required: true }}
+        />
+        <FieldError name="dateJoined" className="rw-field-error" />
+
+        <Label
+          name="rating"
+          className="rw-label"
+          errorClassName="rw-label rw-label-error"
+        >
+          Rating
+        </Label>
+        <NumberField
+          name="rating"
+          defaultValue={props.member?.rating}
+          className="rw-input"
+          errorClassName="rw-input rw-input-error"
+          validation={{ required: true }}
+        />
+        <FieldError name="rating" className="rw-field-error" />
 
         <div className="rw-button-group">
           <Submit disabled={props.loading} className="rw-button rw-button-blue">

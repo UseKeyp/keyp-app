@@ -5,6 +5,8 @@ export const QUERY = gql`
     member: member(id: $id) {
       id
       handle
+      dateJoined
+      rating
     }
   }
 `

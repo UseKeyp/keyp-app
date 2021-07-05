@@ -7,6 +7,8 @@ export const QUERY = gql`
     members {
       id
       handle
+      dateJoined
+      rating
     }
   }
 `

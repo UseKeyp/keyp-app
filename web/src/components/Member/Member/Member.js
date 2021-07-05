@@ -62,6 +62,14 @@ const Member = ({ member }) => {
               <th>Handle</th>
               <td>{member.handle}</td>
             </tr>
+            <tr>
+              <th>Date joined</th>
+              <td>{timeTag(member.dateJoined)}</td>
+            </tr>
+            <tr>
+              <th>Rating</th>
+              <td>{member.rating}</td>
+            </tr>
           </tbody>
         </table>
       </div>

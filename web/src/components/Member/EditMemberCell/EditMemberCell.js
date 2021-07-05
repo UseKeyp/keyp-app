@@ -8,6 +8,8 @@ export const QUERY = gql`
     member: member(id: $id) {
       id
       handle
+      dateJoined
+      rating
     }
   }
 `
@@ -16,6 +18,8 @@ const UPDATE_MEMBER_MUTATION = gql`
     updateMember(id: $id, input: $input) {
       id
       handle
+      dateJoined
+      rating
     }
   }
 `

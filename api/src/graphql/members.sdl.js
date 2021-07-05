@@ -2,6 +2,9 @@ export const schema = gql`
   type Member {
     id: Int!
     handle: String!
+    dateJoined: DateTime!
+    rating: Int!
+    treasuresOwned: [Treasure]!
   }
 
   type Query {
@@ -11,10 +14,14 @@ export const schema = gql`
 
   input CreateMemberInput {
     handle: String!
+    dateJoined: DateTime!
+    rating: Int!
   }
 
   input UpdateMemberInput {
     handle: String
+    dateJoined: DateTime
+    rating: Int
   }
 
   type Mutation {
