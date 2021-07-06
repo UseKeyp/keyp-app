@@ -26,9 +26,7 @@ class TreasureChessAuthClient {
         throw Error('Error logging in with Torus')
       }
       if (!isProduction) console.log(walletUserData)
-      let token
-      // Get token from torus
-      localStorage.setItem(LOCAL_TOKEN_KEY, token)
+      localStorage.setItem(LOCAL_TOKEN_KEY, JSON.stringify(walletUserData))
     } catch (e) {
       console.log(
         getErrorResponse(`${e}. See above error for more details.`, 'login')
@@ -45,8 +43,10 @@ class TreasureChessAuthClient {
     return localStorage.getItem(LOCAL_TOKEN_KEY)
   }
 
-  getUserMetadata() {
-    return localStorage.getItem(LOCAL_TOKEN_KEY)
+  userMetadata() {
+    console.log('getting user metadata')
+    console.log(localStorage.getItem(LOCAL_TOKEN_KEY))
+    return JSON.parse(localStorage.getItem(LOCAL_TOKEN_KEY))
   }
 }
 

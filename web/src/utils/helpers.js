@@ -7,3 +7,8 @@ export const getBlockExplorerUrl = (address) => {
   const POLYGONSCAN_URL = 'https://polygonscan.com/address/'
   return POLYGONSCAN_URL + address
 }
+
+export const trimAddress = (address) => {
+  if (typeof address !== 'string') return ''
+  return address.substring(0, 5) + '...' + address.substring(38, 42)
+}

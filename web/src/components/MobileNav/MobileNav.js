@@ -4,9 +4,54 @@ import { isMobile } from 'react-device-detect'
 import { Menu, X } from 'react-feather'
 import treasureProfile from './treasure-profile.png'
 import { NavLink, routes } from '@redwoodjs/router'
+import { useAuth } from '@redwoodjs/auth'
+import { trimAddress } from 'src/utils/helpers'
 
 const MobileNav = ({ onClick }) => {
+  // const { isLoggedIn, userMetadata } = useAuth()
   const [isExpanded, setExpanded] = useState(false)
+
+  // TODO Pull this from useAuth
+  let userMetadata = {}
+  try {
+    userMetadata = JSON.parse(localStorage.getItem('chess_com_auth_token'))
+  } catch (e) {
+    console.log('User is not logged in')
+  }
+  console.log(userMetadata)
+  const isLoggedIn = !!userMetadata
+
+  const userDetails = isLoggedIn ? (
+    <>
+      <img
+        src={userMetadata.userInfo.profileImage}
+        alt="profile"
+        className="w-12"
+      />
+      <div className="ml-4">
+        <div className="text-sm font-bold">{userMetadata.userInfo.name}</div>
+        <button
+          onClick={onClick}
+          id="logout"
+          className="text-sm rounded font-bold px-5 py-1"
+          style={{
+            background: 'linear-gradient(180deg, #B9CC36 0%, #7FA650 100%)',
+          }}
+        >
+          {trimAddress(userMetadata.publicAddress)}
+        </button>
+      </div>
+    </>
+  ) : (
+    <button
+      onClick={onClick}
+      id="login"
+      className="rect-button w-full mt-5"
+      role="link"
+    >
+      Chess.com Login
+    </button>
+  )
 
   return (
     <div
@@ -33,21 +78,7 @@ const MobileNav = ({ onClick }) => {
           </button>
         ) : (
           <div className="mt-2">
-            <div className="flex items-center">
-              <img src={treasureProfile} alt="profile" className="w-12" />
-              <div className="ml-4">
-                <div className="text-sm font-bold mb-1">Username</div>
-                <div
-                  className="text-sm rounded font-bold px-5 py-1"
-                  style={{
-                    background:
-                      'linear-gradient(180deg, #B9CC36 0%, #7FA650 100%)',
-                  }}
-                >
-                  0x7063.....fd08
-                </div>
-              </div>
-            </div>
+            <div className="flex items-center">{userDetails}</div>
             <div className="flex items-center text-sm mt-2">
               <NavLink
                 to={routes.home()}
