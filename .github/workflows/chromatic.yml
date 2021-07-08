@@ -19,7 +19,8 @@ jobs:
         run: yarn install --frozen-lockfile
       - name: Build Storybook
         run: yarn rw storybook --build
-
+      - name: Move MSW to public/storybook
+        run: mv web/public/mockServiceWorker.js web/public/storybook
       - name: Publish to Chromatic
         uses: chromaui/action@v1
         # Chromatic GitHub Action options
@@ -27,4 +28,4 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           # 👇 Chromatic projectToken, refer to the manage page to obtain it.
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-          storybookBuildDir: web/public
+          storybookBuildDir: web/public/storybook
