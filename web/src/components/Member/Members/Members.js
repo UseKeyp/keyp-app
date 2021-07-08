@@ -63,6 +63,8 @@ const MembersList = ({ members }) => {
           <tr>
             <th>Id</th>
             <th>Handle</th>
+            <th>Date joined</th>
+            <th>Rating</th>
             <th>&nbsp;</th>
           </tr>
         </thead>
@@ -71,6 +73,8 @@ const MembersList = ({ members }) => {
             <tr key={member.id}>
               <td>{truncate(member.id)}</td>
               <td>{truncate(member.handle)}</td>
+              <td>{timeTag(member.dateJoined)}</td>
+              <td>{truncate(member.rating)}</td>
               <td>
                 <nav className="rw-table-actions">
                   <Link

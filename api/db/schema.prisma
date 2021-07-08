@@ -13,12 +13,21 @@ generator client {
 // to create migrations for them and apply to your dev DB.
 model Member {
   id    Int     @id @default(autoincrement())
-  handle String  @unique
+  // --------------- STATE --------------
+  handle String @unique
+  dateJoined DateTime
+  rating Int
+  // --------------- LINKS --------------
+  treasuresOwned Treasure[] @relation(name: "treasuresOwned" )
 }
 
 model Treasure {
   id    Int     @id @default(autoincrement())
   createdAt DateTime @default(now())
+  // --------------- STATE --------------
   updatedAt DateTime @updatedAt
   name String
+  // --------------- LINKS --------------
+  owner Member @relation(name: "treasuresOwned", fields: [ownerId], references: [id])
+  ownerId Int
 }
