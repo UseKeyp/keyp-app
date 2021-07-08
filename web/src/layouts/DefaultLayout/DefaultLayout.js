@@ -4,10 +4,11 @@ import { Toaster } from '@redwoodjs/web/toast'
 import { useAuth } from '@redwoodjs/auth'
 
 const DefaultLayout = ({ children }) => {
-  const { logIn } = useAuth()
+  const { logIn, logOut } = useAuth()
 
   const onClick = (e) => {
     if (e.target.id === 'login') logIn()
+    if (e.target.id === 'logout') logOut()
   }
 
   return (
