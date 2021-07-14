@@ -92,11 +92,19 @@ a {
 }
 
 .game-card-details {
-  padding: 24px 40px;
+  padding: 16px 24px;
+
+  &.left-details {
+    padding-right: 4px;
+  }
+  &.right-details {
+    padding-left: 0px;
+  }
 }
 
 .game-card-edition {
-  margin: 0 16px;
+  margin-left: 16px;
+  margin-right: 24px;
 }
 
 .game-card-rarity-container {
