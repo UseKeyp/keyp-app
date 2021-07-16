@@ -29,8 +29,8 @@ const Table = ({ maxHeight, onRowClick, data, showId }) => {
   })
 
   return (
-    <div className="table-wrapper">
-      <div className="table-component-wrapper" style={{ maxHeight }}>
+    <div className="table-wrapper" style={{ maxHeight }}>
+      <div className="table-component-wrapper">
         <Row className="table-component-head">
           {headRow.map((item) => (
             <Cell style={colStyles} key={item}>
