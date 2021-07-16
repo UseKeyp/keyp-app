@@ -173,8 +173,8 @@ a {
 .table-wrapper {
   overflow-y: scroll;
   font-size: 20px;
-  // max-width: 100%;
-  width: auto;
+  width: fit-content;
+  max-width: 100%;
   @media (max-width: 896px) {
     font-size: 12px;
   }
