@@ -22,6 +22,22 @@ body {
   line-height: 1.2;
   color: white;
   background-color: #312e2b;
+
+  /* Works on Chrome, Edge, and Safari */
+  .table-wrapper::-webkit-scrollbar {
+    width: 14px;
+  }
+
+  .table-wrapper::-webkit-scrollbar-track {
+    background: #3d3b38;
+    border-radius: 20px;
+  }
+
+  .table-wrapper::-webkit-scrollbar-thumb {
+    background-color: #f2994a;
+    border-radius: 20px;
+    border: none;
+  }
 }
 
 a {
@@ -146,10 +162,70 @@ a {
   transform: translateX(-50%);
   border-radius: 10px;
   z-index: 5;
-  color: #312E2B;
+  color: #312e2b;
 
   .modal-close-button {
     right: -36px;
     top: -4px;
   }
+}
+
+.table-wrapper {
+  overflow-y: scroll;
+  font-size: 20px;
+  // max-width: 100%;
+  width: auto;
+  @media (max-width: 896px) {
+    font-size: 12px;
+  }
+}
+
+.table-component {
+  border: 1px solid #c4c4c4;
+  border-radius: 20px;
+  > :not(:last-child) {
+    border-bottom: 1px solid #c4c4c4;
+  }
+}
+
+.table-component-row {
+  width: auto;
+  border-radius: 0px;
+  &:hover:not(.table-component-head) {
+    .table-component-row-inner {
+      border: 2px solid #fff;
+    }
+  }
+  cursor: pointer;
+}
+
+.table-component-row-inner {
+  width: 100%;
+  border-radius: 20px;
+  border: 2px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.table-component,
+.table-component-head {
+  width: 820px;
+  max-width: 100%;
+  margin-right: 33px;
+}
+
+.table-component-wrapper {
+  max-width: max-content;
+
+  /* Works on Firefox */
+  scrollbar-width: auto;
+  scrollbar-color: #f2994a #3d3b38;
+}
+
+.button {
+  border-radius: 5px;
+  color: #fff;
+}
+
+.button-orange {
+  background: linear-gradient(180deg, #f2c94c 0%, #f2994a 100%);
 }
