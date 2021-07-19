@@ -22,7 +22,7 @@ const Table = ({ maxHeight, onRowClick, data, showId }) => {
       </Cell>
     ))
     return (
-      <Row key={i} onClick={() => onRowClick(id)}>
+      <Row key={i} index={i + 1} onClick={() => onRowClick(id)}>
         {cells}
       </Row>
     )
@@ -30,15 +30,17 @@ const Table = ({ maxHeight, onRowClick, data, showId }) => {
 
   return (
     <div className="table-wrapper" style={{ maxHeight }}>
-      <div className="table-component-wrapper">
-        <Row className="table-component-head">
-          {headRow.map((item) => (
-            <Cell style={colStyles} key={item}>
-              {item}
-            </Cell>
-          ))}
-        </Row>
-        <div className="table-component flex-col">{rows}</div>
+      <div className="table-component-wrapper" role="table">
+        <div className="table-component flex-col">
+          <Row className="table-component-head">
+            {headRow.map((item) => (
+              <Cell style={colStyles} key={item}>
+                {item}
+              </Cell>
+            ))}
+          </Row>
+          {rows}
+        </div>
       </div>
     </div>
   )

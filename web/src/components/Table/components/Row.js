@@ -1,12 +1,24 @@
 import React from 'react'
 
-const Row = ({ children, onClick, className }) => {
+const Row = ({ children, onClick, className, index }) => {
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') onClick()
+  }
   return (
     <div
-      className={`${className} table-component-row flex p-2`}
-      onClick={onClick}
+      className={`table-component-row flex p-2 ${className ? className : ''}`}
+      role={'row'}
+      aria-rowindex={index ? index : undefined}
     >
-      <div className="flex table-component-row-inner">{children}</div>
+      <div
+        className="flex table-component-row-inner"
+        role={'presentation'}
+        tabIndex={0}
+        onClick={onClick}
+        onKeyDown={handleKeyDown}
+      >
+        {children}
+      </div>
     </div>
   )
 }
