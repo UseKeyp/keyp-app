@@ -1,0 +1,37 @@
+.profileBox {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 5px solid #ffffff;
+  padding: 12px;
+  border-radius: 20px;
+  width: 816px;
+  height: 255px;
+  padding: 20px;
+}
+
+.profileBox__avatarWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 165px;
+  height: 165px;
+}
+
+.profileBox__addressWrapper {
+  word-wrap: anywhere;
+  font-size: 16px;
+  margin-top: 40px;
+}
+
+.profileBox__contentWrapper {
+  height: 100%;
+}
+
+.profileBox__contentWrapper__inner {
+  height: 100%;
+}
+
+.profileBox__content {
+  height: 100%;
+}
