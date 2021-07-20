@@ -20,7 +20,9 @@ const RarityFlag = ({ color }) => {
 }
 
 const GameCard = ({
+  achievements,
   blackPlayer,
+  blackPlayerRating,
   edition,
   gifUrl,
   matchId,
@@ -30,15 +32,16 @@ const GameCard = ({
   title,
   variantText,
   whitePlayer,
+  whitePlayerRating,
   winner,
   wonByText,
 }) => {
   let winnerText = 'Draw!'
 
   if (winner === 'BLACK') {
-    winnerText = 'Black Won!'
+    winnerText = `${blackPlayer} Won!`
   } else if (winner === 'WHITE') {
-    winnerText = 'White Won!'
+    winnerText = `${whitePlayer} Won!`
   }
 
   return (
@@ -53,24 +56,41 @@ const GameCard = ({
         src={gifUrl}
       />
       <div className="relative w-full h-24 bg-black">
-        <div className="z-index-3 h-12 text-4xl font-black flex items-center justify-center absolute left-0 right-0 uppercase">
+        <div className="z-index-3 h-12 text-xl font-black flex items-center justify-center absolute left-0 right-0 uppercase">
           {winnerText}
         </div>
         <div className="z-index-3 h-12 text-sm font-black flex items-center justify-around absolute bottom-0 left-0 right-0">
-          {whitePlayer}
-          <span className="text-white">{blackPlayer}</span>
+          <span>
+            {whitePlayer}{' '}
+            <span className="font-medium">({whitePlayerRating})</span>
+          </span>
+          <span className="text-white">
+            {blackPlayer}{' '}
+            <span className="font-medium">({blackPlayerRating})</span>
+          </span>
         </div>
         <BannerWhiteWon className="game-card-winning-banner absolute" />
       </div>
-      <div className="game-card-details text-sm font-bold h-32 w-full flex flex-col justify-between">
-        <div>
-          Won by:{' '}
-          <span className="font-black">{wonByText}</span>
+      <div className="flex">
+        <div className="game-card-details left-details text-sm font-bold h-32 w-full">
+          <div>
+            Won by: <span className="font-black">{wonByText}</span>
+          </div>
+          <div className="mt-2">
+            Variant: <span className="font-black">{variantText}</span>
+          </div>
+          <div className="font-black mt-2">{openingText}</div>
         </div>
-        <div>
-          Variant: <span className="font-black">{variantText}</span>
-        </div>
-        <div className="font-black">{openingText}</div>
+        {achievements && (
+          <div className="game-card-details right-details text-sm font-bold w-full">
+            <div className="font-black">Achievements:</div>
+            {achievements.map((achievement) => (
+              <div className="mt-2" key={achievement}>
+                {achievement}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
       <div className="absolute bottom-0 w-full flex text-xs font-black">
         <div className="game-card-edition">

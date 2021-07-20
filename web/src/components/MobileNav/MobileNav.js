@@ -1,13 +1,12 @@
 import { useState } from 'react'
 import treasureChessLogoSrc from './treasure-chess-logo.png'
-import { isMobile } from 'react-device-detect'
 import { Menu, X } from 'react-feather'
-import treasureProfile from './treasure-profile.png'
+// import treasureProfile from './treasure-profile.png'
 import { NavLink, routes } from '@redwoodjs/router'
-import { useAuth } from '@redwoodjs/auth'
-import { trimAddress } from 'src/utils/helpers'
+// import { useAuth } from '@redwoodjs/auth'
+import { isMobile, trimAddress } from 'src/utils/helpers'
 
-const MobileNav = ({ onClick }) => {
+const MobileNav = ({ onClick, forceSmallNav = false }) => {
   // const { isLoggedIn, userMetadata } = useAuth()
   const [isExpanded, setExpanded] = useState(false)
 
@@ -53,6 +52,8 @@ const MobileNav = ({ onClick }) => {
     </button>
   )
 
+  const showMobileNav = forceSmallNav || isMobile
+
   return (
     <div
       className="mobile-nav-outer-container h-screen overflow-y-hidden w-full px-4 sm:px-6 sm:max-w-screen"
@@ -72,7 +73,7 @@ const MobileNav = ({ onClick }) => {
             <br /> Chess
           </h2>
         </div>
-        {isMobile ? (
+        {showMobileNav ? (
           <button onClick={() => setExpanded(!isExpanded)}>
             {isExpanded ? <X size={40} /> : <Menu size={40} />}
           </button>
