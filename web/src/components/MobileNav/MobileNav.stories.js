@@ -1,6 +1,6 @@
 import MobileNav from './MobileNav'
 
-export const generated = () => {
+export const mobile = () => {
   return (
     <div
       // Simulating a mobile device
@@ -13,6 +13,23 @@ export const generated = () => {
         position: 'relative',
       }}
     >
+      <MobileNav forceSmallNav />
+      <div style={{ paddingTop: 100 }}>
+        <div>blah blah blah home content</div>
+        <div>blah blah blah home content</div>
+        <div>blah blah blah home content</div>
+        <div>blah blah blah home content</div>
+        <div>blah blah blah home content</div>
+        <div>blah blah blah home content</div>
+        <div>blah blah blah home content</div>
+      </div>
+    </div>
+  )
+}
+
+export const desktop = () => {
+  return (
+    <div>
       <MobileNav />
       <div style={{ paddingTop: 100 }}>
         <div>blah blah blah home content</div>

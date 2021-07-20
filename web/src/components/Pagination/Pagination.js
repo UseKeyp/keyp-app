@@ -6,7 +6,8 @@ const Pagination = ({ count, page, perPage }) => {
     items.push(
       <Link
         key={page}
-        to={routes.games({ page })}
+        // commented out since it was breaking storybook
+        // to={routes.games({ page })}
         className="text-center inline-block m-2 w-14 py-1 px-1 border-4 border-purple rounded-full"
       >
         {text}

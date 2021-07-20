@@ -16,8 +16,12 @@ export const generated = () => {
       <ModalContainer
         title="Mint Game"
         onClose={() => console.log('CLOSED MODAL')}
+        stepNum={1}
+        totalNumSteps={2}
+        statusText="Processing"
       >
         ModalContainer content
+        <button className="rect-button green">Modal content button</button>
       </ModalContainer>
       <div style={{ paddingTop: 100 }}>
         <div>blah blah blah home content</div>
