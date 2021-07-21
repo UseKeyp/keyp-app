@@ -58,3 +58,19 @@
 .profileBox__coloredText {
   color: #c4c4c4;
 }
+
+.profileBox__logo {
+  padding: 0 4px 0 8px;
+  @media (max-width: 896px) {
+    padding-right: 4px;
+  }
+}
+
+.profileBox__logoWrapper {
+  align-items: flex-start;
+  font-size: 24px;
+  @media (max-width: 896px) {
+    align-items: flex-end;
+    font-size: 18px;
+  }
+}

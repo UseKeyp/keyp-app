@@ -1,6 +1,7 @@
 import Avatar from 'src/components/Avatar'
 import { isMobile } from 'src/utils/helpers'
 import config from 'src/global.config'
+import treasureLogo from './treasure_chess_logo.png'
 
 const ProfileBox = (props) => {
   const { address, name, date, treasuresAmount, balance, score, avatar } = props
@@ -28,11 +29,21 @@ const ProfileBox = (props) => {
               </p>
             </div>
           </div>
-          <div className="profileBox__content flex flex-col justify-between items-end text-right">
-            <p className="profileBox__text profileBox__text--small">
-              <span className="profileBox__coloredText">Treasures:</span>{' '}
-              {treasuresAmount}
-            </p>
+          <div className="profileBox__content flex flex-col justify-between text-right">
+            <div className="flex items-end flex-wrap justify-end">
+              <p className="profileBox__text profileBox__text--small">
+                <span className="profileBox__coloredText">Treasures:</span>{' '}
+              </p>
+              <div className="profileBox__logoWrapper profileBox__text flex items-start">
+                <img
+                  className="profileBox__logo"
+                  src={treasureLogo}
+                  aria-hidden
+                  alt=""
+                />{' '}
+                <span>{treasuresAmount}</span>
+              </div>
+            </div>
             <p className="profileBox__text profileBox__coloredText">
               $
               {balance.toLocaleString(undefined, {
