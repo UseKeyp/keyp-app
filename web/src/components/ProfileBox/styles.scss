@@ -24,12 +24,17 @@
 }
 
 .profileBox__addressWrapper {
+  color: #7FA650;
   word-wrap: anywhere;
   font-size: 16px;
   margin-top: 40px;
+  max-width: max-content;
   @media (max-width: 896px) {
     margin-top: 20px;
     font-size: 12px;
+  }
+  svg {
+    margin-left: 6px;
   }
 }
 

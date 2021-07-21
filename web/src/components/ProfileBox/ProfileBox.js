@@ -1,7 +1,9 @@
 import Avatar from 'src/components/Avatar'
 import { isMobile } from 'src/utils/helpers'
 import config from 'src/global.config'
+
 import treasureLogo from './treasure_chess_logo.png'
+import ExtUrl from './external_url.svg' //TODO Replace it when <Icon> component is done
 
 const ProfileBox = (props) => {
   const { address, name, date, treasuresAmount, balance, score, avatar } = props
@@ -54,8 +56,13 @@ const ProfileBox = (props) => {
           </div>
         </div>
         <div className="profileBox__addressWrapper">
-          <a href={url} target="_blank" rel="noopener noreferrer">
-            {address}
+          <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex"
+          >
+            {address} <ExtUrl />
           </a>
         </div>
       </div>
