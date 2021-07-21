@@ -1,37 +1,60 @@
 .profileBox {
   display: flex;
   justify-content: space-between;
-  align-items: center;
   border: 5px solid #ffffff;
   padding: 12px;
   border-radius: 20px;
   width: 816px;
-  height: 255px;
+  max-width: 100%;
   padding: 20px;
+  @media (max-width: 896px) {
+    padding: 10px;
+  }
 }
 
 .profileBox__avatarWrapper {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 165px;
-  height: 165px;
+  align-self: center;
+  margin-right: 40px;
+  @media (max-width: 896px) {
+    margin-right: 20px;
+  }
 }
 
 .profileBox__addressWrapper {
   word-wrap: anywhere;
   font-size: 16px;
   margin-top: 40px;
-}
-
-.profileBox__contentWrapper {
-  height: 100%;
+  @media (max-width: 896px) {
+    margin-top: 20px;
+    font-size: 12px;
+  }
 }
 
 .profileBox__contentWrapper__inner {
   height: 100%;
 }
 
-.profileBox__content {
-  height: 100%;
+.profileBox__content__inner {
+  padding-top: 10px;
+}
+
+.profileBox__text {
+  font-size: 48px;
+  @media (max-width: 896px) {
+    font-size: 20px;
+  }
+}
+
+.profileBox__text--small {
+  font-size: 20px;
+  @media (max-width: 896px) {
+    font-size: 12px;
+  }
+}
+
+.profileBox__coloredText {
+  color: #c4c4c4;
 }
