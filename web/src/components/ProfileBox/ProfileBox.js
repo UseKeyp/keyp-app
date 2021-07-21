@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import Avatar from 'src/components/Avatar'
 import { isMobile } from 'src/utils/helpers'
 import config from 'src/global.config'
@@ -14,7 +15,6 @@ const ProfileBox = (props) => {
     <div className="profileBox">
       <div className="profileBox__avatarWrapper flex justify-between items-center">
         <Avatar size={isMobile ? 64 : 165} image={avatar} />
-        {/* Avatar */}
       </div>
       <div className="profileBox__contentWrapper flex flex-col flex-1 justify-between">
         <div className="profileBox__contentWrapper__inner flex justify-between">
@@ -74,6 +74,15 @@ ProfileBox.defaultProps = {
   score: 0,
   balance: 0,
   treasuresAmount: 0,
+}
+ProfileBox.propTypes = {
+  address: PropTypes.string.isRequired,
+  avatar: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  date: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
+  balance: PropTypes.number,
+  score: PropTypes.number,
+  treasuresAmount: PropTypes.number,
 }
 
 export default ProfileBox
