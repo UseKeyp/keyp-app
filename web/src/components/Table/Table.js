@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import { Row, Cell } from './components'
 
 const Table = ({
@@ -79,6 +80,15 @@ const Table = ({
 Table.defaultProps = {
   maxHeight: 600,
   showId: false,
+  onRowClick: () => {},
+}
+Table.propTypes = {
+  maxHeight: PropTypes.number,
+  onRowClick: PropTypes.func,
+  data: PropTypes.object.isRequired,
+  showId: PropTypes.bool,
+  colProportions: PropTypes.arrayOf(PropTypes.number),
+  selectedRowId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 }
 
 export default Table
