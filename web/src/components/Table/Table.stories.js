@@ -17,7 +17,22 @@ const match = {
   date: 'April, 20 2020',
   mint,
 }
+
+const cutMatch = {
+  result: 'White won',
+  moves: 46,
+  date: 'April, 20 2020',
+}
+
 const data = [match, match, match, match]
+
+const smallerData = [
+  { ...cutMatch, id: 1 },
+  { ...cutMatch, id: 2 },
+  { ...cutMatch, id: 3 },
+]
+
+const proportions = [4, 1, 1]
 
 const handleRowClick = (id) => {
   console.log(`Row with id "${id}" has been clicked`)
@@ -25,6 +40,22 @@ const handleRowClick = (id) => {
 
 export const generated = () => {
   return <Table onRowClick={handleRowClick} data={data} />
+}
+
+export const withCustomProportions = () => {
+  return (
+    <Table
+      onRowClick={handleRowClick}
+      data={smallerData}
+      colProportions={proportions}
+    />
+  )
+}
+
+export const selectedRowId = () => {
+  return (
+    <Table onRowClick={handleRowClick} data={smallerData} selectedRowId={2} />
+  )
 }
 
 export default { title: 'Components/Table' }

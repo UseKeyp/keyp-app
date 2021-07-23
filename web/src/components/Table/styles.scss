@@ -70,6 +70,10 @@ body {
   transition: border-color 0.2s ease;
 }
 
+.row-active {
+  border: 2px solid #fff;
+}
+
 .table-component-wrapper {
   max-width: max-content;
   /* Works on Firefox */
