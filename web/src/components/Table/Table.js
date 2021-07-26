@@ -53,6 +53,7 @@ const Table = ({
         index={i + 1}
         onClick={() => onRowClick(id)}
         isSelected={isSelected}
+        length={data.length}
       >
         {cells}
       </Row>
@@ -60,7 +61,7 @@ const Table = ({
   })
 
   return (
-    <div className="table-wrapper" style={{ maxHeight }}>
+    <div className="table-wrapper">
       <div className="table-component-wrapper" role="table">
         <div className="table-component flex-col">
           <Row className="table-component-head">
@@ -70,7 +71,11 @@ const Table = ({
               </Cell>
             ))}
           </Row>
-          {rows}
+          <div className="table-rows-wrapper">
+            <div className="table-rows-inner-wrapper" style={{ maxHeight }}>
+              {rows}
+            </div>
+          </div>
         </div>
       </div>
     </div>

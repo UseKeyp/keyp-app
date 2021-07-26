@@ -24,7 +24,7 @@ const cutMatch = {
   date: 'April, 20 2020',
 }
 
-const data = [match, match, match, match]
+const data = [match, match, match, match, match, match]
 
 const smallerData = [
   { ...cutMatch, id: 1 },
@@ -39,7 +39,7 @@ const handleRowClick = (id) => {
 }
 
 export const generated = () => {
-  return <Table onRowClick={handleRowClick} data={data} />
+  return <Table onRowClick={handleRowClick} data={data} maxHeight={300} />
 }
 
 export const withCustomProportions = () => {

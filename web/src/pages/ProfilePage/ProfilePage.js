@@ -25,26 +25,39 @@ const ProfilePage = ({
   }
 
   return (
-    <div>
-      <h1>Personal Profile</h1>
+    <div className="max-width-container">
+      <div className="grid grid-cols-2 gap-10">
+        <div>
+          <h1>Personal Profile</h1>
+          <br />
+          <ProfileBox {...userData} />
+        </div>
+        <div>
+          <Table
+            data={activitiesData}
+            colProportions={[4, 1, 1]}
+            maxHeight={250}
+          />
+        </div>
+      </div>
       <br />
-      <ProfileBox {...userData} />
-      <br />
-      <h1>Chess.com Matches</h1>
-      <br />
-      <Table
-        data={matchesTableData}
-        onRowClick={handleRowClick}
-        selectedRowId={activeMatchId}
-      />
-      <br />
-      <h1>Selected match</h1>
-      {getActiveMatch()}
-      <br />
-      <h1>Activities</h1>
-      <br />
-      <Table data={activitiesData} colProportions={[4, 1, 1]} maxHeight={300} />
-      <br />
+      <div className="grid grid-cols-2 gap-10">
+        <div>
+          <h1>Chess.com Matches</h1>
+          <br />
+          <Table
+            data={matchesTableData}
+            onRowClick={handleRowClick}
+            selectedRowId={activeMatchId}
+          />
+        </div>
+        <div>
+          <br />
+          <div className="flex justify-center items-center">
+            {getActiveMatch()}
+          </div>
+        </div>
+      </div>
     </div>
   )
 }

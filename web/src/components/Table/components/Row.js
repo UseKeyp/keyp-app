@@ -1,12 +1,17 @@
 import React from 'react'
 
-const Row = ({ children, onClick, className, index, isSelected }) => {
+const Row = ({ children, onClick, className, index, isSelected, length }) => {
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') onClick()
   }
+
+  const showLine = index && length !== index && length !== 1
+
   return (
     <div
-      className={`table-component-row flex p-2 ${className ? className : ''}`}
+      className={`table-component-row flex-col p-2 ${
+        className ? className : ''
+      }`}
       role={'row'}
       aria-rowindex={index ? index : undefined}
     >
@@ -21,6 +26,7 @@ const Row = ({ children, onClick, className, index, isSelected }) => {
       >
         {children}
       </div>
+      {showLine && <hr className="table-line" />}
     </div>
   )
 }
