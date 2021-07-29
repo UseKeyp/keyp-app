@@ -72,7 +72,7 @@ body {
 }
 
 .table-component-row-inner {
-  width: 100%;
+  width: calc(100% - 13px);
   border-radius: 20px;
   border: 2px solid transparent;
   transition: border-color 0.2s ease;
