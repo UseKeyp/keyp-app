@@ -4,12 +4,20 @@
   max-width: 100%;
   text-align: center;
   &__heading {
-    border-bottom: 1px solid #c4c4c4;
-    font-weight: bold;
-    padding: 0.5rem;
+    &-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0.5rem;
+      border-bottom: 1px solid #c4c4c4;
+    }
+    &-text {
+      font-weight: bold;
+    }
   }
   &__items-wrapper {
     padding: 0.5rem;
+    padding-top: 1rem;
   }
   &__item {
     font-size: 1.5rem;
