@@ -9,7 +9,9 @@ const generateIconComponentStory = (icons, { dir }) => {
     '',
     'export const generated = props => {',
     'return <Wrapper>',
-    icons.map((icon) => `<Icon {...props} name="${icon}" />`).join('\n'),
+    icons
+      .map((icon) => `<Icon {...props} name="${icon}" size={100} />`)
+      .join('\n'),
     '</Wrapper> }',
     '',
     "export default { title: 'Components/Icon' }",

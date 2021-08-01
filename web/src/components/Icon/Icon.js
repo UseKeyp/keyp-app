@@ -9,7 +9,7 @@ const Icon = ({ name, size, color, ...rest }) => {
 }
 
 Icon.defaultProps = {
-  size: '32',
+  size: '32px',
   color: 'black',
 }
 
