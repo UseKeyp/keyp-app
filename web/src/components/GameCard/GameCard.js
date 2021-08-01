@@ -1,109 +1,151 @@
-import BannerWhiteWon from './banner-white-won.svg'
-import blackChest from './black-chest.png'
+import winIndicatorWhite from './win-indicator-white.png'
+import winIndicatorBlack from './win-indicator-black.png'
+import winIndicatorDraw from './win-indicator-draw.png'
+import chessBoardIcon from './chess-board-icon.png'
+import winIndicatorBlackWhiteEd from './win-indicator-black__white-ed.png'
+import winIndicatorWhiteWhiteEd from './win-indicator-white__white-ed.png'
+import winIndicatorDrawWhiteEd from './win-indicator-draw__white-ed.png'
+import clockIcon from './clock-icon.png'
+import ColoredBanner from './ColoredBanner'
 
-const RarityFlag = ({ color }) => {
-  return (
-    <svg
-      className="game-card-rarity-flag absolute w-full right-0"
-      width="75"
-      height="119"
-      viewBox="0 0 75 119"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M75.0001 27L38 0L0 27L-5.1798e-06 118.5L38 86.5L75.0001 118.5L75.0001 27Z"
-        fill={color}
-      />
-    </svg>
-  )
-}
+import './styles.scss'
 
 const GameCard = ({
-  achievements,
-  blackPlayer,
-  blackPlayerRating,
+  bannerColors, // Type: array - [lightColorHexString, darkColorHexString]
   edition,
+  gameTypeString,
   gifUrl,
+  lengthOfGameString,
+  matchDate, // Type: JS Date object
   matchId,
-  numMoves,
-  openingText,
-  rarityFlagColor,
+  notableFeatures,
+  players,
   title,
-  variantText,
-  whitePlayer,
-  whitePlayerRating,
   winner,
   wonByText,
 }) => {
-  let winnerText = 'Draw!'
+  const isWhiteEdition = edition === 'WHITE'
+  const isDraw = winner === 'DRAW'
 
+  let winnerText = 'Draw!'
+  let winIndicatorBanner = isWhiteEdition
+    ? winIndicatorDrawWhiteEd
+    : winIndicatorDraw
   if (winner === 'BLACK') {
-    winnerText = `${blackPlayer} Won!`
+    winIndicatorBanner = isWhiteEdition
+      ? winIndicatorBlackWhiteEd
+      : winIndicatorBlack
+    winnerText = 'Black Wins!'
   } else if (winner === 'WHITE') {
-    winnerText = `${whitePlayer} Won!`
+    winIndicatorBanner = isWhiteEdition
+      ? winIndicatorWhiteWhiteEd
+      : winIndicatorWhite
+    winnerText = 'White Wins!'
   }
 
+  const [player1, player2] = players
+
+  console.log('isWhiteEdition', isWhiteEdition)
+
   return (
-    <div className="game-card-container bg-white text-black relative box-content">
-      <div className="game-card-num-moves absolute bg-white text-4xl flex items-center justify-center font-black">
-        {numMoves}
-      </div>
-      <h2 className="game-card-title text-2xl absolute font-black">{title}</h2>
-      <img
-        alt="GIF of chess match"
-        className="game-card-match-gif"
-        src={gifUrl}
-      />
-      <div className="relative w-full h-24 bg-black">
-        <div className="z-index-3 h-12 text-xl font-black flex items-center justify-center absolute left-0 right-0 uppercase">
-          {winnerText}
-        </div>
-        <div className="z-index-3 h-12 text-sm font-black flex items-center justify-around absolute bottom-0 left-0 right-0">
-          <span>
-            {whitePlayer}{' '}
-            <span className="font-medium">({whitePlayerRating})</span>
-          </span>
-          <span className="text-white">
-            {blackPlayer}{' '}
-            <span className="font-medium">({blackPlayerRating})</span>
-          </span>
-        </div>
-        <BannerWhiteWon className="game-card-winning-banner absolute" />
-      </div>
-      <div className="flex">
-        <div className="game-card-details left-details text-sm font-bold h-32 w-full">
-          <div>
-            Won by: <span className="font-black">{wonByText}</span>
+    <div
+      className={`game-card-container bg-white text-black relative box-content ${
+        isWhiteEdition ? 'is-white-edition' : ''
+      }`}
+      style={{
+        borderColor: isWhiteEdition ? '#BEBDB9' : '#000000',
+        color: isWhiteEdition ? '#4B4847' : '#ffffff',
+      }}
+    >
+      <h2 className="game-card-title-cont">{title}</h2>
+      <div className="inner-container">
+        <div className="top-row-container">
+          <div className="profile-container">
+            <div
+              alt="player 1"
+              className="player-pic"
+              style={{ backgroundImage: `url(${player1.profilePicSrc})` }}
+            />
+            <div className="username-text">{player1.username}</div>
+            <div className="user-number-text">{player1.userNumber}</div>
           </div>
-          <div className="mt-2">
-            Variant: <span className="font-black">{variantText}</span>
+          <div className="center-info">
+            <img
+              className="win-indicator-background"
+              style={{
+                marginLeft: winner !== 'WHITE' ? 'auto' : undefined,
+                marginRight: isDraw ? 'auto' : undefined,
+              }}
+              src={winIndicatorBanner}
+              alt=""
+            />
+            <div
+              style={{ textShadow: isWhiteEdition ? 'none' : undefined }}
+              className="winner-text"
+            >
+              {winnerText}
+              <div className="winner-subtext">by {wonByText}</div>
+            </div>
           </div>
-          <div className="font-black mt-2">{openingText}</div>
+          <div className="profile-container profile-container_right">
+            <div
+              alt="player 2"
+              className="player-pic"
+              style={{ backgroundImage: `url(${player2.profilePicSrc})` }}
+            />
+            <div className="username-text">{player2.username}</div>
+            <div className="user-number-text">{player2.userNumber}</div>
+          </div>
         </div>
-        {achievements && (
-          <div className="game-card-details right-details text-sm font-bold w-full">
-            <div className="font-black">Achievements:</div>
-            {achievements.map((achievement) => (
-              <div className="mt-2" key={achievement}>
-                {achievement}
-              </div>
+        <img
+          alt="GIF of chess match"
+          className="game-card-match-gif"
+          src={gifUrl}
+        />
+        <div className="feature-list-container">
+          <ul className="list-disc feature-list">
+            {notableFeatures.map((feature) => (
+              <li key={feature}>{feature}</li>
             ))}
-          </div>
-        )}
-      </div>
-      <div className="absolute bottom-0 w-full flex text-xs font-black">
-        <div className="game-card-edition">
-          <span className="capitalize">{edition}</span> Edition
+          </ul>
         </div>
-        <div>Match #{matchId}</div>
-        <div className="game-card-rarity-container absolute w-12 h-20">
-          <RarityFlag color={rarityFlagColor} />
-          <img
-            className="game-card-treasure-chest z-index-3 absolute w-10 m-auto"
-            src={blackChest}
-            alt="white treasure chest"
-          />
+        <div
+          className="bottom-info-bar"
+          style={{ backgroundColor: isWhiteEdition ? '#B6B5B2' : '#292929' }}
+        >
+          <div className="flex bottom-bar-info-datum">
+            <img alt="" src={chessBoardIcon} className="bottom-bar-icon" />
+            {gameTypeString}
+          </div>
+          <div className="flex bottom-bar-info-datum">
+            <img alt="" src={clockIcon} className="bottom-bar-icon" />
+            {lengthOfGameString}
+          </div>
+          <div className="colored-banner-container">
+            <ColoredBanner
+              lightColor={bannerColors[0]}
+              darkColor={bannerColors[1]}
+              height={26}
+            />
+          </div>
+        </div>
+        <div className="footer-bar">
+          <div>
+            <span className="green-text">
+              <span className="capitalize">{edition.toLowerCase()}</span>{' '}
+              Edition
+            </span>{' '}
+            {/* Does this need to be configurable - I thought there's always only one edition of each type */}
+            1/1
+          </div>
+          <div className="middle-item">
+            <span className="green-text">Match</span> #{matchId}
+          </div>
+          <div className="right-item">
+            {matchDate.toLocaleString('default', { month: 'long' })}{' '}
+            <span className="green-text">{matchDate.getDate()}</span>{' '}
+            {matchDate.getFullYear()}
+          </div>
         </div>
       </div>
     </div>
