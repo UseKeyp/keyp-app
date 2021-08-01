@@ -10,7 +10,7 @@ module.exports = (config, { mode }) => {
   )
 
   // Override exising scss rule
-  const scssRule = config.module.rules[0].oneOf[scssRuleIndex]
+  const scssRule = rules[scssRuleIndex]
   const customScssRule = {
     ...scssRule,
     loader: [
