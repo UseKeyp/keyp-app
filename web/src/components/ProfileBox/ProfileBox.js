@@ -32,7 +32,7 @@ const ProfileBox = (props) => {
             </div>
           </div>
           <div className="profileBox__content flex flex-col justify-between text-right">
-            <div className="flex items-end flex-wrap justify-end">
+            <div className="flex items-center flex-wrap justify-end">
               <p className="profileBox__text profileBox__text--small">
                 <span className="profileBox__coloredText">Treasures:</span>{' '}
               </p>
