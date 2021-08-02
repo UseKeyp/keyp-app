@@ -12,6 +12,9 @@
       "not IE_Mob 11"
     ]
   },
+  "scripts": {
+    "generate-icons": "node src/scripts/generate-icon-system"
+  },
   "dependencies": {
     "@redwoodjs/auth": "^0.34.1",
     "@redwoodjs/forms": "^0.34.1",
@@ -26,6 +29,7 @@
   },
   "devDependencies": {
     "autoprefixer": "9.8.6",
+    "node-sass-glob-importer": "^5.3.2",
     "postcss-loader": "4.0.2",
     "sass": "^1.35.1",
     "sass-loader": "^10",
