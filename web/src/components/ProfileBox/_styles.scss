@@ -74,6 +74,9 @@
 .profileBox__logoWrapper {
   align-items: flex-start;
   font-size: 24px;
+  img {
+    max-height: 22px
+  }
   @media (max-width: 896px) {
     align-items: flex-end;
     font-size: 18px;
