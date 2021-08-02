@@ -4,14 +4,16 @@ const TEST_PLAYER_DATA = [
   {
     username: 'Pi0neerPat',
     userNumber: 1977,
-    countryCode: 'USA',
+    countryCode: 'ar',
+    isGrandMaster: true,
     profilePicSrc:
       'https://static.photocdn.pt/images/articles/2019/08/07/images/articles/2019/07/31/linkedin_profile_picture_tips-1.jpg',
   },
   {
     username: 'Josephs',
     userNumber: 2103,
-    countryCode: 'CAN',
+    countryCode: 'us',
+    isGrandMaster: true,
     profilePicSrc:
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTP15FZfst0-N18LQ-T8PoeLOp4b2aJ2J07hA&usqp=CAU',
   },

@@ -9,6 +9,7 @@ import clockIcon from './clock-icon.png'
 import ColoredBanner from './ColoredBanner'
 
 import './styles.scss'
+import 'flag-icon-css/css/flag-icon.css'
 
 const GameCard = ({
   bannerColors, // Type: array - [lightColorHexString, darkColorHexString]
@@ -45,8 +46,6 @@ const GameCard = ({
 
   const [player1, player2] = players
 
-  console.log('isWhiteEdition', isWhiteEdition)
-
   return (
     <div
       className={`game-card-container bg-white text-black relative box-content ${
@@ -66,8 +65,18 @@ const GameCard = ({
               className="player-pic"
               style={{ backgroundImage: `url(${player1.profilePicSrc})` }}
             />
-            <div className="username-text">{player1.username}</div>
-            <div className="user-number-text">{player1.userNumber}</div>
+            <div className="username-text">
+              {player1.username}
+              {player1.isGrandMaster && <span className="gm-tag">GM</span>}
+            </div>
+            <div className="user-details-container">
+              {/* `countryCode` should be the ISO 3166-1-alpha-2 code */}
+              {/* https://www.iso.org/obp/ui/#search */}
+              <span
+                className={`flag-icon flag-icon-left flag-icon-${player1.countryCode}`}
+              />
+              <span className="user-number-text">{player1.userNumber}</span>
+            </div>
           </div>
           <div className="center-info">
             <img
@@ -80,7 +89,11 @@ const GameCard = ({
               alt=""
             />
             <div
-              style={{ textShadow: isWhiteEdition ? 'none' : undefined }}
+              style={{
+                textShadow: isWhiteEdition
+                  ? '0px 1px 0px rgba(255, 255, 255, 0.5)'
+                  : '0px 1px 0px rgba(0, 0, 0, 0.25)',
+              }}
               className="winner-text"
             >
               {winnerText}
@@ -93,8 +106,16 @@ const GameCard = ({
               className="player-pic"
               style={{ backgroundImage: `url(${player2.profilePicSrc})` }}
             />
-            <div className="username-text">{player2.username}</div>
-            <div className="user-number-text">{player2.userNumber}</div>
+            <div className="username-text">
+              {player2.isGrandMaster && <span className="gm-tag">GM</span>}
+              {player2.username}
+            </div>
+            <div className="user-details-container">
+              <span className="user-number-text">{player2.userNumber}</span>
+              <span
+                className={`flag-icon flag-icon-right flag-icon-${player2.countryCode}`}
+              />
+            </div>
           </div>
         </div>
         <img

@@ -27,10 +27,11 @@ $brand-dark-green: #85A94E;
     background-color: $brand-green;
     text-shadow: 0px 1px 0px rgba(0, 0, 0, 0.25);
     z-index: 2;
+    color: white;
   }
 
   .inner-container {
-    padding: 8px;
+    padding: 8px 8px 12px;
     position: relative;
   }
 
@@ -48,6 +49,19 @@ $brand-dark-green: #85A94E;
     justify-content: space-between;
   }
 
+  .gm-tag {
+    background: #B23330;
+    border-radius: 2px;
+    font-weight: bold;
+    font-size: 8px;
+    line-height: 8px;
+    padding: 0 2px;
+    color: white;
+    margin: 0 4px;
+    position: relative;
+    bottom: 3px;
+  }
+
   .username-text {
     padding-top: 8px;
     font-weight: 800;
@@ -62,9 +76,8 @@ $brand-dark-green: #85A94E;
   .winner-text {
     font-weight: 800;
     font-size: 14px;
-    text-shadow: 0px 1px 0px rgba(0, 0, 0, 0.25);
     position: absolute;
-    top: 12px;
+    top: 11px;
     text-align: center;
     width: 100%;
   }
@@ -91,23 +104,37 @@ $brand-dark-green: #85A94E;
     }
   }
 
-  .user-number-text {
+  .user-details-container {
     margin-top: 4px;
+    display: flex;
+    align-items: center;
+  }
+
+  .user-number-text {
     opacity: 0.6;
     font-weight: bold;
     font-size: 10px;
+    line-height: 10px;
+  }
+
+  .flag-icon {
+    line-height: 12px;
+    height: 12px;
+    width: 16px;
+
+    &.flag-icon-left {
+      margin-right: 4px;
+    }
+
+    &.flag-icon-right {
+      margin-left: 4px;
+    }
   }
 
   .game-card-match-gif {
     margin-top: 12px;
     width: 100%;
     height: auto;
-  }
-
-  .game-card-winning-banner {
-    left: -32px;
-    top: -30px;
-    z-index: 2;
   }
 
   .feature-list-container {

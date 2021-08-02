@@ -1,6 +1,5 @@
 const ColoredBanner = ({ lightColor, darkColor, height }) => (
   <svg
-    width="auto"
     height={height}
     viewBox="0 0 54 60"
     fill="none"
