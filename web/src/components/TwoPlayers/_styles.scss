@@ -1,0 +1,28 @@
+.twoPlayers__box {
+  width: 16px;
+  height: 16px;
+  margin-right: 15px;
+}
+
+.twoPlayers__box--white {
+  background-color: #fff;
+  border: 1px solid #000;
+}
+
+.twoPlayers__box--black {
+  background-color: #000;
+  border: 1px solid #fff;
+}
+
+.twoPlayers__text {
+  font-size: 20px;
+  @media (max-width: 896px) {
+    font-size: 12px;
+  }
+}
+
+.twoPlayers__player-wrapper {
+  &:first-child {
+    margin-bottom: 6px;
+  }
+}

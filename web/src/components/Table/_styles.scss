@@ -1,15 +1,15 @@
 body {
   /* Works on Chrome, Edge, and Safari */
-  .table-wrapper::-webkit-scrollbar {
+  *::-webkit-scrollbar {
     width: 14px;
   }
 
-  .table-wrapper::-webkit-scrollbar-track {
+  *::-webkit-scrollbar-track {
     background: #3d3b38;
     border-radius: 20px;
   }
 
-  .table-wrapper::-webkit-scrollbar-thumb {
+  *::-webkit-scrollbar-thumb {
     background-color: #f2994a;
     border-radius: 20px;
     border: none;
@@ -17,11 +17,14 @@ body {
 }
 
 .table-wrapper {
-  overflow-y: scroll;
   font-size: 20px;
   width: fit-content;
   max-width: 100%;
   padding-bottom: 1rem;
+  overflow-x: auto;
+  /* Works on Firefox */
+  scrollbar-width: auto;
+  scrollbar-color: #f2994a #3d3b38;
   @media (max-width: 896px) {
     font-size: 12px;
   }
@@ -29,7 +32,6 @@ body {
 
 .table-component {
   width: 820px;
-  padding-right: 33px;
   min-width: min-content;
   max-width: 100%;
   > :not(:first-child) {
@@ -45,13 +47,19 @@ body {
     border-bottom-left-radius: 20px;
     border-bottom-right-radius: 20px;
   }
-  @media (max-width: 896px) {
-    padding-right: 18px;
-  }
+}
+
+.table-rows-wrapper {
+  width: calc(100% - 26px);
+}
+
+.table-rows-inner-wrapper {
+  overflow-y: auto;
+  margin-right: -26px;
 }
 
 .table-component-row {
-  width: auto;
+  width: calc(100% - 13px);
   border-radius: 0px;
   &:hover:not(.table-component-head) {
     .table-component-row-inner {
@@ -64,10 +72,14 @@ body {
 }
 
 .table-component-row-inner {
-  width: 100%;
+  width: calc(100% - 13px);
   border-radius: 20px;
   border: 2px solid transparent;
   transition: border-color 0.2s ease;
+}
+
+.row-active {
+  border: 2px solid #fff;
 }
 
 .table-component-wrapper {
@@ -75,4 +87,17 @@ body {
   /* Works on Firefox */
   scrollbar-width: auto;
   scrollbar-color: #f2994a #3d3b38;
+}
+
+.table-component-row.table-component-head {
+  padding-right: calc(0.5rem + 26px);
+  width: 100%;
+  border: none;
+}
+
+.table-line {
+  border-top-width: 2px;
+  width: 98%;
+  margin: 0 auto;
+  margin-top: 16px;
 }

@@ -31,6 +31,10 @@ a {
   }
 }
 
+.max-width-container {
+  max-width: 1600px;
+}
+
 .rect-button {
   background: linear-gradient(180deg, #eeeded 0%, #c4c4c4 100%);
   border-radius: 5px;
@@ -44,11 +48,11 @@ a {
   }
 
   &.green {
-    background: linear-gradient(180deg, #B9CC36 0%, #7FA650 100%);
+    background: linear-gradient(180deg, #b9cc36 0%, #7fa650 100%);
     color: white;
 
     &:hover {
-      background: linear-gradient(180deg, #A9BC26 0%, #7FA650 60%);
+      background: linear-gradient(180deg, #a9bc26 0%, #7fa650 60%);
     }
   }
 }
@@ -168,7 +172,7 @@ a {
   transform: translateX(-50%);
   border-radius: 10px;
   z-index: 5;
-  color: #312E2B;
+  color: #312e2b;
   padding: 32px;
 
   .modal-close-button {
