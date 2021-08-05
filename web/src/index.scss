@@ -9,6 +9,7 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 @import './components/**/_styles.scss';
+@import './pages/**/_styles.scss';
 /**
  * END --- TAILWIND GENERATOR EDIT
  */
@@ -120,5 +121,11 @@ a {
   @media (min-width: 1024px) {
     width: 500px !important;
     min-height: 500px;
+  }
+}
+
+.text {
+  &--green {
+    color: #7fa650;
   }
 }

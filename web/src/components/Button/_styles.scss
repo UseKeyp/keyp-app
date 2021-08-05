@@ -1,0 +1,22 @@
+.button {
+  min-height: 48px;
+  width: 200px;
+  max-width: 100%;
+  font-size: 20px;
+  font-weight: bold;
+  border-radius: 5px;
+  padding: 0.5rem;
+  color: black;
+  @media (max-width: 896px) {
+    font-size: 12px;
+  }
+  &--gold {
+    background: linear-gradient(180deg, #f2c94c 0%, #f2994a 100%);
+  }
+  &--grey {
+    background: linear-gradient(180deg, #eeeded 0%, #c4c4c4 100%);
+  }
+  &--green {
+    background: linear-gradient(180deg, #B9CC36 0%, #7FA650 100%);
+  }
+}

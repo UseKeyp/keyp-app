@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types'
 
-const MovesDetails = ({ title, movesList }) => {
+const MovesDetails = ({ heading, movesList }) => {
   return (
     <div className="moves-details">
-      <h3 className="moves-details__title">{title}</h3>
+      <h3 className="moves-details__heading">{heading}</h3>
       <ul className="moves-details__list">
         {movesList.map(({ move, from, to }) => (
           <li key={move} className="moves-details__item">
@@ -20,7 +20,7 @@ const MovesDetails = ({ title, movesList }) => {
 }
 
 MovesDetails.propTypes = {
-  title: PropTypes.string.isRequired,
+  heading: PropTypes.string.isRequired,
   movesList: PropTypes.array.isRequired,
 }
 

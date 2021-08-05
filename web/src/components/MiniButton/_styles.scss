@@ -7,17 +7,14 @@
   @media (max-width: 896px) {
     font-size: 12px;
   }
-}
-
-.miniButton--gold {
-  background: linear-gradient(180deg, #f2c94c 0%, #f2994a 100%);
-}
-
-.miniButton--grey {
-  background: linear-gradient(180deg, #eeeded 0%, #c4c4c4 100%);
-  color: black;
-}
-
-.miniButton--green {
-  background: linear-gradient(180deg, #B9CC36 0%, #7FA650 100%);
+  &--gold {
+    background: linear-gradient(180deg, #f2c94c 0%, #f2994a 100%);
+  }
+  &--grey {
+    background: linear-gradient(180deg, #eeeded 0%, #c4c4c4 100%);
+    color: black;
+  }
+  &--green {
+    background: linear-gradient(180deg, #B9CC36 0%, #7FA650 100%);
+  }
 }
