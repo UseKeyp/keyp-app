@@ -5,7 +5,7 @@ const BLACK = 'black'
 
 const TwoPlayers = ({ username, oponent, color }) => {
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col twoPlayers">
       <div className="flex items-center twoPlayers__player-wrapper">
         <div className="twoPlayers__box twoPlayers__box--white"></div>
         <p className="twoPlayers__text">

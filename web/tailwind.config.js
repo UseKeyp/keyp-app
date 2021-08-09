@@ -8,7 +8,16 @@ module.exports = {
       lg: '976px',
       xl: '1440px',
     },
-    extend: {},
+    extend: {
+      colors: {
+        grey: {
+          100: '#C4C4C4',
+          200: '#8D8C8A',
+          300: '#575757',
+        },
+        green: '#7FA650',
+      },
+    },
   },
   variants: {
     extend: {},

@@ -1,23 +1,20 @@
 .miniButton {
   width: 74px;
   height: 38px;
-  font-size: 20px;
-  font-weight: bold;
-  border-radius: 5px;
-  @media (max-width: 896px) {
-    font-size: 12px;
+  font-size: theme('fontSize.xs');
+  font-weight: theme('fontWeight.bold');
+  border-radius: theme('borderRadius.md');
+  @screen md {
+    font-size: theme('fontSize.xl');
   }
-}
-
-.miniButton--gold {
-  background: linear-gradient(180deg, #f2c94c 0%, #f2994a 100%);
-}
-
-.miniButton--grey {
-  background: linear-gradient(180deg, #eeeded 0%, #c4c4c4 100%);
-  color: black;
-}
-
-.miniButton--green {
-  background: linear-gradient(180deg, #B9CC36 0%, #7FA650 100%);
+  &--gold {
+    background: linear-gradient(180deg, #f2c94c 0%, #f2994a 100%);
+  }
+  &--grey {
+    background: linear-gradient(180deg, #eeeded 0%, #c4c4c4 100%);
+    color: black;
+  }
+  &--green {
+    background: linear-gradient(180deg, #b9cc36 0%, #7fa650 100%);
+  }
 }

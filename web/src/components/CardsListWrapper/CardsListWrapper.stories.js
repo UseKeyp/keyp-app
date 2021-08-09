@@ -1,8 +1,8 @@
 import CardsListWrapper from './CardsListWrapper'
-import GameCard from 'src/components/GameCard'
+import OldGameCard from 'src/components/OldGameCard'
 
 const card = (
-  <GameCard
+  <OldGameCard
     achievements={["Intro: Queen's Gambit", 'Won While Down']}
     title="User-Made Title"
     numMoves="42"
