@@ -63,7 +63,7 @@ contract NiftyCheckers is ERC721URIStorageUpgradeable, OwnableUpgradeable{
         _mint(player, newItemId);
         _setTokenURI(newItemId, tokenURI);
 
-        emit GameMinted(player, newItemId, tokenURI, _moveHash)
+        emit GameMinted(player, newItemId, tokenURI, _moveHash);
         return newItemId;
     }
 
@@ -93,8 +93,8 @@ contract NiftyCheckers is ERC721URIStorageUpgradeable, OwnableUpgradeable{
       Rescue ERC20s and ERC721s mistakingly sent to the contract
     */
 
-    function rescueEther(address to) public onlyOwner{
-      //TODO add rescue
+    function rescueEther(address to, uint amount) public onlyOwner{
+      to.send(amount);
     }
 
 }
