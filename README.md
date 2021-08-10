@@ -13,7 +13,6 @@
 ##### Dependencies
 1. `nvm`
 2. Node version 14, because that's what redwood uses. Try `nvm install 14`, then `nvm use 14`.
-3. 
 
 We use Yarn as our package manager. To get the dependencies installed, just do this in the root directory:
 
@@ -26,6 +25,14 @@ yarn install
 ```terminal
 yarn redwood dev
 ```
+After running this dev server, access the Graphql playground at: http://localhost:8910/api/graphql
+
+Check out the components in the Story Book
+```terminal
+yarn rw storybook
+```
+
+
 
 Your browser should open automatically to `http://localhost:8910` to see the web app. Lambda functions run on `http://localhost:8911` and are also proxied to `http://localhost:8910/.redwood/functions/*`.
 
