@@ -3,27 +3,13 @@ import MovesDetails from 'src/components/MovesDetails/MovesDetails'
 import GameCard from 'src/components/GameCard/GameCard'
 import Button from 'src/components/Button/Button'
 
+import NftDetailsCell from 'src/components/NftDetailsCell/NftDetailsCell'
+
 const ACCEPT_HIGHEST_BID = 'accept highest bid'
 const PUT_ON_SALE = 'put on sale'
 const TRANSFER_NFT = 'transfer nft'
 
-const ItemPage = ({
-  opening,
-  movesList,
-  owner,
-  creator,
-  title,
-  bids,
-  nftHistory,
-  cardDetails,
-  onClick,
-}) => {
-  const bidsStrings = Object.entries(bids).map(([price, person], i) => (
-    <span key={i} className={`${i === 0 ? 'text--green' : ''}`}>
-      ${price} - {person}
-    </span>
-  ))
-
+const ItemPage = ({ opening, movesList, cardDetails, onClick }) => {
   return (
     <div className="item-page max-width-container">
       <div className="grid grid-rows-1">
@@ -55,19 +41,7 @@ const ItemPage = ({
             </div>
           </div>
           <div className="flex justify-center items-start order-3">
-            <div className="details-wrapper">
-              <h2 className="text-center text-5xl">NFT Details</h2>
-              <br />
-              <DetailsBox heading="Owner" items={[owner]} />
-              <br />
-              <DetailsBox heading="Creator" items={[creator]} />
-              <br />
-              <DetailsBox heading="Title" items={[title]} />
-              <br />
-              <DetailsBox heading="Bids" items={bidsStrings} />
-              <br />
-              <DetailsBox heading="NFT History" items={nftHistory} />
-            </div>
+            <NftDetailsCell />
           </div>
         </div>
       </div>
