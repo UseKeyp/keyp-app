@@ -2,6 +2,7 @@ import MobileNav from 'src/components/MobileNav'
 
 import { Toaster } from '@redwoodjs/web/toast'
 import { useAuth } from '@redwoodjs/auth'
+import SiteFooter from 'src/components/SiteFooter/SiteFooter'
 
 const DefaultLayout = ({ children }) => {
   const { logIn, logOut } = useAuth()
@@ -25,7 +26,7 @@ const DefaultLayout = ({ children }) => {
           {children}
         </div>
       </div>
-      <>{/*Footer*/}</>
+      <SiteFooter />
     </div>
   )
 }
