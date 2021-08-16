@@ -38,10 +38,10 @@ const FaqItem = ({ question, answer }) => {
   return (
     <div className="pb-20">
       <div className="flex justify-between">
-        <h3 className="text-2xl font-bold question-heading">{question}</h3>
+        <h3 className="text-xl font-bold question-heading">{question}</h3>
         <button
           onClick={() => setExpanded(!isExpanded)}
-          className="section-expand-button text-2xl font-bold"
+          className="section-expand-button text-xl font-bold"
           style={{
             color: isExpanded ? 'yellow' : 'green',
           }}
@@ -50,9 +50,9 @@ const FaqItem = ({ question, answer }) => {
         </button>
       </div>
       <p
-        className="answer-container text-xl font-semibold mt-10"
+        className="answer-container text-lg font-semibold mt-6"
         style={{
-          // 500 is arbitrarily large
+          // 400 is arbitrarily large
           maxHeight: isExpanded ? 400 : 0,
           opacity: isExpanded ? 1 : 0,
         }}
@@ -66,7 +66,7 @@ const FaqItem = ({ question, answer }) => {
 const FaqSection = () => {
   return (
     <div className="faq-container">
-      <h2 className="faq-header font-black text-5xl py-20">FAQs</h2>
+      <h2 className="faq-header font-black text-4xl py-20">FAQs</h2>
       {FAQ_CONFIG.map((item, idx) => (
         <FaqItem key={idx} question={item.question} answer={item.answer} />
       ))}
