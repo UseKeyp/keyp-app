@@ -1,19 +1,39 @@
 import PropTypes from 'prop-types'
 
+const parsePgn = (str) => {
+  const list = str
+    .split('.')
+    .map((line, i) => {
+      if (i === 0) return null
+      let moves = `${i}${line}`
+      moves = moves.split(' ')
+      if (moves.length === 4) moves.splice(-1)
+      return moves
+    })
+    .filter((item) => item !== null)
+  return list
+}
+
 const MovesDetails = ({ heading, movesList }) => {
+  const list = parsePgn(movesList)
+
   return (
     <div className="moves-details">
       <h3 className="moves-details__heading">{heading}</h3>
       <ul className="moves-details__list">
-        {movesList.map(({ move, from, to }) => (
-          <li key={move} className="moves-details__item">
-            <div className="moves-details__item__inner">
-              <span className="moves-details__item__detail">{move}.</span>
-              <span className="moves-details__item__detail">{from}</span>
-              <span className="moves-details__item__detail">{to}</span>
-            </div>
-          </li>
-        ))}
+        {list.map((round) => {
+          const [turn, white, black] = round
+
+          return (
+            <li key={turn} className="moves-details__item">
+              <div className="moves-details__item__inner">
+                <span className="moves-details__item__detail">{turn}.</span>
+                <span className="moves-details__item__detail">{white}</span>
+                <span className="moves-details__item__detail">{black}</span>
+              </div>
+            </li>
+          )
+        })}
       </ul>
     </div>
   )
@@ -21,7 +41,7 @@ const MovesDetails = ({ heading, movesList }) => {
 
 MovesDetails.propTypes = {
   heading: PropTypes.string.isRequired,
-  movesList: PropTypes.array.isRequired,
+  movesList: PropTypes.string.isRequired,
 }
 
 export default MovesDetails

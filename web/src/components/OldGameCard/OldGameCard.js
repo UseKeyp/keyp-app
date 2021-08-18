@@ -1,8 +1,6 @@
 import BannerWhiteWon from '../GameCard/banner-white-won.svg'
 import blackChest from '../GameCard/black-chest.png'
 
-import './styles.scss'
-
 const RarityFlag = ({ color }) => {
   return (
     <svg

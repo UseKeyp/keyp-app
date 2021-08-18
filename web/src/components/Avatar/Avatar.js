@@ -1,11 +1,11 @@
 const Avatar = ({ image, bgColor, size }) => {
   return (
-    <di
+    <div
       className="avatar"
       style={{ width: size, height: size, backgroundColor: bgColor }}
     >
       <img className="avatar-img" src={image} alt="avatar" />
-    </di>
+    </div>
   )
 }
 
