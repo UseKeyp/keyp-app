@@ -1,15 +1,5 @@
 /* eslint-disable no-console */
 import ItemPage from './ItemPage'
-import {
-  title,
-  opening,
-  movesList,
-  bids,
-  owner,
-  creator,
-  nftHistory,
-  cardDetails,
-} from './datamock'
 
 const ACCEPT_HIGHEST_BID = 'accept highest bid'
 const PUT_ON_SALE = 'put on sale'
@@ -26,19 +16,7 @@ const handleClick = (id) => {
 }
 
 export const generated = () => {
-  return (
-    <ItemPage
-      title={title}
-      opening={opening}
-      movesList={movesList}
-      bids={bids}
-      owner={owner}
-      creator={creator}
-      nftHistory={nftHistory}
-      cardDetails={cardDetails}
-      onClick={handleClick}
-    />
-  )
+  return <ItemPage onClick={handleClick} matchId={42} />
 }
 
 export default { title: 'Pages/ItemPage' }

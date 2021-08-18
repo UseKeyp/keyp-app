@@ -18,7 +18,10 @@ const MovesDetails = ({ heading, movesList }) => {
   const list = parsePgn(movesList)
 
   return (
-    <div className="moves-details">
+    <div
+      className="moves-details"
+      style={{ minHeight: movesList.length > 0 ? 0 : 120 }}
+    >
       <h3 className="moves-details__heading">{heading}</h3>
       <ul className="moves-details__list">
         {list.map((round) => {
