@@ -6,7 +6,7 @@ export const QUERY = gql`
   query MEMBERS {
     members {
       id
-      handle
+      address
       dateJoined
       rating
     }
@@ -19,7 +19,7 @@ export const Empty = () => {
   return (
     <div className="rw-text-center">
       {'No members yet. '}
-      <Link to={routes.home()} className="rw-link">
+      <Link to={routes.newMember()} className="rw-link">
         {'Create one?'}
       </Link>
     </div>

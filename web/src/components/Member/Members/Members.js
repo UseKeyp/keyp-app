@@ -5,7 +5,7 @@ import { Link, routes } from '@redwoodjs/router'
 import { QUERY } from 'src/components/Member/MembersCell'
 
 const DELETE_MEMBER_MUTATION = gql`
-  mutation DeleteMemberMutation($id: Int!) {
+  mutation DeleteMemberMutation($id: String!) {
     deleteMember(id: $id) {
       id
     }
@@ -62,7 +62,7 @@ const MembersList = ({ members }) => {
         <thead>
           <tr>
             <th>Id</th>
-            <th>Handle</th>
+            <th>Address</th>
             <th>Date joined</th>
             <th>Rating</th>
             <th>&nbsp;</th>
@@ -72,7 +72,7 @@ const MembersList = ({ members }) => {
           {members.map((member) => (
             <tr key={member.id}>
               <td>{truncate(member.id)}</td>
-              <td>{truncate(member.handle)}</td>
+              <td>{truncate(member.address)}</td>
               <td>{timeTag(member.dateJoined)}</td>
               <td>{truncate(member.rating)}</td>
               <td>

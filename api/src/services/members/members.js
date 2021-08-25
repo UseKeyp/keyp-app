@@ -38,4 +38,10 @@ export const deleteMember = ({ id }) => {
 export const Member = {
   treasuresOwned: (_obj, { root }) =>
     db.member.findUnique({ where: { id: root.id } }).treasuresOwned(),
+  treasuresMinted: (_obj, { root }) =>
+    db.member.findUnique({ where: { id: root.id } }).treasuresMinted(),
+  treasuresPlayedWhite: (_obj, { root }) =>
+    db.member.findUnique({ where: { id: root.id } }).treasuresPlayedWhite(),
+  treasuresPlayedBlack: (_obj, { root }) =>
+    db.member.findUnique({ where: { id: root.id } }).treasuresPlayedBlack(),
 }

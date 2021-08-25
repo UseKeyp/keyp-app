@@ -34,3 +34,14 @@ export const deleteTreasure = ({ id }) => {
     where: { id },
   })
 }
+
+export const Treasure = {
+  black: (_obj, { root }) =>
+    db.treasure.findUnique({ where: { id: root.id } }).black(),
+  white: (_obj, { root }) =>
+    db.treasure.findUnique({ where: { id: root.id } }).white(),
+  minter: (_obj, { root }) =>
+    db.treasure.findUnique({ where: { id: root.id } }).minter(),
+  owner: (_obj, { root }) =>
+    db.treasure.findUnique({ where: { id: root.id } }).owner(),
+}

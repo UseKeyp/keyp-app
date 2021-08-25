@@ -4,22 +4,62 @@ import { navigate, routes } from '@redwoodjs/router'
 import TreasureForm from 'src/components/Treasure/TreasureForm'
 
 export const QUERY = gql`
-  query FindTreasureById($id: Int!) {
+  query FindTreasureById($id: String!) {
     treasure: treasure(id: $id) {
       id
       createdAt
-      updatedAt
+      blackId
+      whiteId
+      minterAddress
+      ownerAddress
       name
+      updatedAt
+      cardColor
+      blackRating
+      duration
+      whiteRating
+      termination
+      endTime
+      event
+      moves
+      moveCount
+      gameRuleVariant
+      winner
+      externalUrl
+      opening
+      achievements
+      tokenId
+      mintedAt
     }
   }
 `
 const UPDATE_TREASURE_MUTATION = gql`
-  mutation UpdateTreasureMutation($id: Int!, $input: UpdateTreasureInput!) {
+  mutation UpdateTreasureMutation($id: String!, $input: UpdateTreasureInput!) {
     updateTreasure(id: $id, input: $input) {
       id
       createdAt
-      updatedAt
+      blackId
+      whiteId
+      minterAddress
+      ownerAddress
       name
+      updatedAt
+      cardColor
+      blackRating
+      duration
+      whiteRating
+      termination
+      endTime
+      event
+      moves
+      moveCount
+      gameRuleVariant
+      winner
+      externalUrl
+      opening
+      achievements
+      tokenId
+      mintedAt
     }
   }
 `
@@ -38,7 +78,8 @@ export const Success = ({ treasure }) => {
   )
 
   const onSave = (input, id) => {
-    updateTreasure({ variables: { id, input } })
+    const castInput = Object.assign(input, { tokenId: parseInt(input.tokenId) })
+    updateTreasure({ variables: { id, input: castInput } })
   }
 
   return (

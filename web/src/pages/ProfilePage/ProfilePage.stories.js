@@ -1,5 +1,5 @@
 import ProfilePage from './ProfilePage'
-import TwoPlayers from 'src/components/TwoPlayers'
+import TwoPlayers from './TwoPlayers'
 import MiniButton from 'src/components/MiniButton'
 import avatar from 'src/components/Avatar/chess-avatar.png'
 

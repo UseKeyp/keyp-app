@@ -2,6 +2,7 @@ datasource db {
   // provider = "sqlite"
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
 generator client {
@@ -20,7 +21,8 @@ model Member {
   // --------------- LINKS --------------
   treasuresOwned Treasure[] @relation(name: "treasuresOwned" )
   treasuresMinted Treasure[] @relation(name: "treasuresMinted" )
-  treasuresPlayed Treasure[] @relation(name: "treasuresPlayed" )
+  treasuresPlayedWhite Treasure[] @relation(name: "treasuresPlayedWhite" )
+  treasuresPlayedBlack Treasure[] @relation(name: "treasuresPlayedBlack" )
 }
 
 model Treasure {
@@ -28,9 +30,9 @@ model Treasure {
   createdAt DateTime @default(now())
   // --------------- LINKS --------------
   // Chess.com (required)
-  black Member relation(name: "treasuresPlayed", fields: [blackId], references: [id])
+  black Member @relation(name: "treasuresPlayedWhite", fields: [blackId], references: [id])
   blackId String
-  white Member relation(name: "treasuresPlayed", fields: [whiteId], references: [id])
+  white Member @relation(name: "treasuresPlayedBlack", fields: [whiteId], references: [id])
   whiteId String
   // NFT (optional)
   minter Member? @relation(name: "treasuresMinted", fields: [minterAddress], references: [address])

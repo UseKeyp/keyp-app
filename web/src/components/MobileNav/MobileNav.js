@@ -17,7 +17,6 @@ const MobileNav = ({ onClick, forceSmallNav = false }) => {
   } catch (e) {
     console.log('User is not logged in')
   }
-  console.log(userMetadata)
   const isLoggedIn = !!userMetadata
 
   const userDetails = isLoggedIn ? (

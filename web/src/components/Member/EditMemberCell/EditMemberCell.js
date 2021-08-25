@@ -4,20 +4,20 @@ import { navigate, routes } from '@redwoodjs/router'
 import MemberForm from 'src/components/Member/MemberForm'
 
 export const QUERY = gql`
-  query FindMemberById($id: Int!) {
+  query FindMemberById($id: String!) {
     member: member(id: $id) {
       id
-      handle
+      address
       dateJoined
       rating
     }
   }
 `
 const UPDATE_MEMBER_MUTATION = gql`
-  mutation UpdateMemberMutation($id: Int!, $input: UpdateMemberInput!) {
+  mutation UpdateMemberMutation($id: String!, $input: UpdateMemberInput!) {
     updateMember(id: $id, input: $input) {
       id
-      handle
+      address
       dateJoined
       rating
     }

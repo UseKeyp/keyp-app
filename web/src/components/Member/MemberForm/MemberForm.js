@@ -31,20 +31,20 @@ const MemberForm = (props) => {
         />
 
         <Label
-          name="handle"
+          name="address"
           className="rw-label"
           errorClassName="rw-label rw-label-error"
         >
-          Handle
+          Address
         </Label>
         <TextField
-          name="handle"
-          defaultValue={props.member?.handle}
+          name="address"
+          defaultValue={props.member?.address}
           className="rw-input"
           errorClassName="rw-input rw-input-error"
           validation={{ required: true }}
         />
-        <FieldError name="handle" className="rw-field-error" />
+        <FieldError name="address" className="rw-field-error" />
 
         <Label
           name="dateJoined"
