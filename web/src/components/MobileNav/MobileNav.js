@@ -98,7 +98,11 @@ const MobileNav = ({ onClick, forceSmallNav = false }) => {
               <NavLink className="ml-2" to={''} activeClassName="underline">
                 Marketplace
               </NavLink>
-              <NavLink className="ml-2" to={''} activeClassName="underline">
+              <NavLink
+                className="ml-2"
+                to={routes.faq()}
+                activeClassName="underline"
+              >
                 FAQ
               </NavLink>
             </div>
