@@ -23,12 +23,12 @@ const MobileNav = ({ onClick, forceSmallNav = false }) => {
   const userDetails = isLoggedIn ? (
     <>
       <img
-        src={userMetadata.userInfo.profileImage}
+        src={userMetadata?.userInfo?.profileImage}
         alt="profile"
         className="w-12"
       />
       <div className="ml-4">
-        <div className="text-sm font-bold">{userMetadata.userInfo.name}</div>
+        <div className="text-sm font-bold">{userMetadata?.userInfo?.name}</div>
         <button
           onClick={onClick}
           id="logout"
@@ -37,7 +37,7 @@ const MobileNav = ({ onClick, forceSmallNav = false }) => {
             background: 'linear-gradient(180deg, #B9CC36 0%, #7FA650 100%)',
           }}
         >
-          {trimAddress(userMetadata.publicAddress)}
+          {trimAddress(userMetadata?.publicAddress)}
         </button>
       </div>
     </>
