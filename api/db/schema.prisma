@@ -43,12 +43,20 @@ model Treasure {
   updatedAt DateTime @updatedAt
   // Chess
   cardColor String // white or black
+  blackRating Int
+  duration Int // game length in seconds
+  whiteRating Int
+  termination String // eg. "Checkmate"
   endTime DateTime
-  event String
-  moves String
-  moveCount Int
-  winner String // white or black
+  event String // eg. "Live Chess"
+  moves String // pgn moves
+  moveCount Int // eg. "43"
+  gameRuleVariant String // eg. "Standard" or "Chess960"
+  winner String // "white" or "black"
   externalUrl String? // Linkg to game on chess.com
+  opening String // eg. "Queen's Gambit"
+  achievements String // List eg. "win/play above 2200,queen side castle,mate with a bishop"
+
   // NFT
   tokenId Int?
   mintedAt DateTime
