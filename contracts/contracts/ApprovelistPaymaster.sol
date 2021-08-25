@@ -2,7 +2,7 @@
 pragma solidity ^0.8.0;
 pragma experimental ABIEncoderV2;
 
-import "@opengsn/contracts/src/BasePaymaster.sol";
+import "https://github.com/opengsn/gsn/blob/master/packages/paymasters/contracts/SingleRecipientPaymaster.sol";
 
 /**
  * a paymaster for a single recipient contract.
