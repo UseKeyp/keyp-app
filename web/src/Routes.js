@@ -15,7 +15,6 @@ import DefaultLayout from 'src/layouts/DefaultLayout'
 const Routes = () => {
   return (
     <Router>
-      <Route path="/item" page={ItemPage} name="item" />
       <Route path="/profile" page={ProfilePage} name="profile" />
       <Set wrap={DefaultLayout}>
         <Route path="/" page={HomePage} name="home" />

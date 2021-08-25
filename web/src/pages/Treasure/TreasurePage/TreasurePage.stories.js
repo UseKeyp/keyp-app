@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import ItemPage from './ItemPage'
+import TreasurePage from './TreasurePage'
 
 const ACCEPT_HIGHEST_BID = 'accept highest bid'
 const PUT_ON_SALE = 'put on sale'
@@ -16,7 +16,7 @@ const handleClick = (id) => {
 }
 
 export const generated = () => {
-  return <ItemPage onClick={handleClick} matchId={42} />
+  return <TreasurePage onClick={handleClick} matchId={42} />
 }
 
-export default { title: 'Pages/ItemPage' }
+export default { title: 'Pages/TreasurePage' }

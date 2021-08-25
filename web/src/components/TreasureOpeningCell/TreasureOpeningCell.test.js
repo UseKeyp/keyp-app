@@ -1,8 +1,8 @@
 import { render } from '@redwoodjs/testing'
-import { Loading, Empty, Failure, Success } from './MatchDetailsCell'
-import { standard } from './MatchDetailsCell.mock'
+import { Loading, Empty, Failure, Success } from './TreasureOpeningCell'
+import { standard } from './TreasureOpeningCell.mock'
 
-describe('MatchDetailsCell', () => {
+describe('TreasureOpeningCell', () => {
   it('renders Loading successfully', () => {
     expect(() => {
       render(<Loading />)
@@ -29,7 +29,7 @@ describe('MatchDetailsCell', () => {
 
   it('renders Success successfully', async () => {
     expect(() => {
-      render(<Success matchDetails={standard().matchDetails} />)
+      render(<Success treasureOpening={standard().treasureOpening} />)
     }).not.toThrow()
   })
 })
