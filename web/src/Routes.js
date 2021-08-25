@@ -1,10 +1,17 @@
 import { Set, Router, Route } from '@redwoodjs/router'
+import MembersLayout from 'src/layouts/MembersLayout'
 import TreasuresLayout from 'src/layouts/TreasuresLayout'
 import DefaultLayout from 'src/layouts/DefaultLayout'
 
 const Routes = () => {
   return (
     <Router>
+      <Set wrap={MembersLayout}>
+        <Route path="/members/new" page={MemberNewMemberPage} name="newMember" />
+        <Route path="/members/{id}/edit" page={MemberEditMemberPage} name="editMember" />
+        <Route path="/members/{id}" page={MemberMemberPage} name="member" />
+        <Route path="/members" page={MemberMembersPage} name="members" />
+      </Set>
       <Route path="/profile" page={ProfilePage} name="profile" />
       <Set wrap={DefaultLayout}>
         <Route path="/" page={HomePage} name="home" />
