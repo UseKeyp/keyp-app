@@ -5,6 +5,7 @@ import { Link, routes, navigate } from '@redwoodjs/router'
 import ProfileBox from 'src/components/ProfileBox/ProfileBox'
 import Table from 'src/components/Table/Table'
 import GameCard from 'src/components/GameCard/GameCard'
+import MemberActivityCell from 'src/components/MemberActivityCell'
 
 const Member = ({ member }) => {
   const [activeMatchId, setActiveMatchId] = React.useState('')
@@ -44,11 +45,7 @@ const Member = ({ member }) => {
             <ProfileBox member={member} />
           </div>
           <div>
-            {/*  <Table
-              data={activitiesData}
-              colProportions={[4, 1, 1]}
-              maxHeight={250}
-            />*/}
+            <MemberActivityCell address={member.address} />
           </div>
         </div>
       </div>
