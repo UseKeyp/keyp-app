@@ -2,105 +2,76 @@ import { useMutation } from '@redwoodjs/web'
 import { toast } from '@redwoodjs/web/toast'
 import { Link, routes, navigate } from '@redwoodjs/router'
 
-const DELETE_MEMBER_MUTATION = gql`
-  mutation DeleteMemberMutation($id: String!) {
-    deleteMember(id: $id) {
-      id
-    }
-  }
-`
-
-const jsonDisplay = (obj) => {
-  return (
-    <pre>
-      <code>{JSON.stringify(obj, null, 2)}</code>
-    </pre>
-  )
-}
-
-const timeTag = (datetime) => {
-  return (
-    <time dateTime={datetime} title={datetime}>
-      {new Date(datetime).toUTCString()}
-    </time>
-  )
-}
-
-const checkboxInputTag = (checked) => {
-  return <input type="checkbox" checked={checked} disabled />
-}
+import ProfileBox from 'src/components/ProfileBox/ProfileBox'
+import Table from 'src/components/Table/Table'
+import GameCard from 'src/components/GameCard/GameCard'
 
 const Member = ({ member }) => {
-  const [deleteMember] = useMutation(DELETE_MEMBER_MUTATION, {
-    onCompleted: () => {
-      toast.success('Member deleted')
-      navigate(routes.members())
-    },
-  })
+  const [activeMatchId, setActiveMatchId] = React.useState('')
 
-  const onDeleteClick = (id) => {
-    if (confirm('Are you sure you want to delete member ' + id + '?')) {
-      deleteMember({ variables: { id } })
-    }
-  }
+  // const userData = {
+  //   avatar,
+  //   date: '21st May 2021',
+  //   name: 'Username',
+  //   score: 1337,
+  //   address: '0x706342C7F358cF05370db27ae0d9b1791ADefd08',
+  // }
+
+  // matchesData,
+  // matchesTableData,
+  // activitiesData,
+  //
+  // const handleRowClick = (id) => {
+  //   if (id === activeMatchId) {
+  //     setActiveMatchId('')
+  //   } else {
+  //     setActiveMatchId(id)
+  //   }
+  // }
+  // const getActiveMatch = () => {
+  //   const current = matchesData.find((match) => match.id === activeMatchId)
+  //   if (!current) return
+  //   return <GameCard {...current} />
+  // }
 
   return (
-    <>
-      <div className="rw-segment">
-        <header className="rw-segment-header">
-          <h2 className="rw-heading rw-heading-secondary">
-            Member {member.id} Detail
-          </h2>
-        </header>
-        <table className="rw-table">
-          <tbody>
-            <tr>
-              <th>Id</th>
-              <td>{member.id}</td>
-            </tr>
-            <tr>
-              <th>Address</th>
-              <td>{member.address}</td>
-            </tr>
-            <tr>
-              <th>Date joined</th>
-              <td>{timeTag(member.dateJoined)}</td>
-            </tr>
-            <tr>
-              <th>Rating</th>
-              <td>{member.rating}</td>
-            </tr>
-            <tr>
-              <th>Image src</th>
-              <td>{member.imageSrc}</td>
-            </tr>
-            <tr>
-              <th>Country</th>
-              <td>{member.country}</td>
-            </tr>
-            <tr>
-              <th>Master title</th>
-              <td>{member.masterTitle}</td>
-            </tr>
-          </tbody>
-        </table>
+    <div className="max-width-container">
+      <div className="grid grid-rows-1">
+        <div className="grid md:grid-cols-2 grid-cols-1 gap-10">
+          <div>
+            <h1>Personal Profile</h1>
+            <br />
+            <ProfileBox member={member} />
+          </div>
+          <div>
+            {/*  <Table
+              data={activitiesData}
+              colProportions={[4, 1, 1]}
+              maxHeight={250}
+            />*/}
+          </div>
+        </div>
       </div>
-      <nav className="rw-button-group">
-        <Link
-          to={routes.editMember({ id: member.id })}
-          className="rw-button rw-button-blue"
-        >
-          Edit
-        </Link>
-        <a
-          href="#"
-          className="rw-button rw-button-red"
-          onClick={() => onDeleteClick(member.id)}
-        >
-          Delete
-        </a>
-      </nav>
-    </>
+      <br />
+      <div className="grid grid-rows-1">
+        <div className="grid md:grid-cols-2 grid-cols-1 gap-10">
+          <div>
+            <h1>Chess.com Games</h1>
+            {/*  <Table
+              data={matchesTableData}
+              onRowClick={handleRowClick}
+              selectedRowId={activeMatchId}
+            />*/}
+          </div>
+          <div>
+            <br />
+            <div className="flex justify-center items-center">
+              {/*  {getActiveMatch()}*/}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
 

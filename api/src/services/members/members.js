@@ -10,10 +10,12 @@ export const members = () => {
   return db.member.findMany()
 }
 
-export const member = ({ id }) => {
-  return db.member.findUnique({
+export const member = async ({ id }) => {
+  const member = await db.member.findUnique({
     where: { id },
   })
+  // TODO: Pull these values from chess.com API
+  return { ...member, rating: 999, country: 'USA', imageSrc: '' }
 }
 
 export const createMember = ({ input }) => {

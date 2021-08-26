@@ -3,11 +3,7 @@ import { Toaster } from '@redwoodjs/web/toast'
 
 const MembersLayout = (props) => {
   return (
-    <div className="rw-scaffold">
-      <Toaster />
-      <header className="rw-header">
-        <h1 className="rw-heading rw-heading-primary">Members</h1>
-      </header>
+    <div className="">
       <main className="rw-main">{props.children}</main>
     </div>
   )
