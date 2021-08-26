@@ -10,30 +10,22 @@ import MemberActivityCell from 'src/components/MemberActivityCell'
 const Member = ({ member }) => {
   const [activeMatchId, setActiveMatchId] = React.useState('')
 
-  // const userData = {
-  //   avatar,
-  //   date: '21st May 2021',
-  //   name: 'Username',
-  //   score: 1337,
-  //   address: '0x706342C7F358cF05370db27ae0d9b1791ADefd08',
-  // }
-
-  // matchesData,
-  // matchesTableData,
-  // activitiesData,
-  //
-  // const handleRowClick = (id) => {
-  //   if (id === activeMatchId) {
-  //     setActiveMatchId('')
-  //   } else {
-  //     setActiveMatchId(id)
-  //   }
-  // }
-  // const getActiveMatch = () => {
-  //   const current = matchesData.find((match) => match.id === activeMatchId)
-  //   if (!current) return
-  //   return <GameCard {...current} />
-  // }
+  const handleRowClick = (id) => {
+    if (id === activeMatchId) {
+      setActiveMatchId('')
+    } else {
+      setActiveMatchId(id)
+    }
+  }
+  const getActiveMatch = () => {
+    const current = matchesData.find((match) => match.id === activeMatchId)
+    if (!current) return
+    return <GameCard {...current} />
+  }
+  const treasuresList = [
+    ...member.treasuresPlayedBlack,
+    ...member.treasuresPlayedWhite,
+  ].sort((a, b) => new Date(a.endTime) < new Date(b.endTime))
 
   return (
     <div className="max-width-container">
@@ -54,11 +46,15 @@ const Member = ({ member }) => {
         <div className="grid md:grid-cols-2 grid-cols-1 gap-10">
           <div>
             <h1>Chess.com Games</h1>
-            {/*  <Table
-              data={matchesTableData}
+            {/* TODO: Replace with games cell
+              We need to show a list of recent games, with filtering
+              Not just the treasures
+              */}
+            <Table
+              data={treasuresList}
               onRowClick={handleRowClick}
               selectedRowId={activeMatchId}
-            />*/}
+            />
           </div>
           <div>
             <br />

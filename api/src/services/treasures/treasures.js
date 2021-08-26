@@ -40,6 +40,8 @@ export const Treasure = {
     db.treasure.findUnique({ where: { id: root.id } }).black(),
   white: (_obj, { root }) =>
     db.treasure.findUnique({ where: { id: root.id } }).white(),
+  winner: (_obj, { root }) =>
+    db.treasure.findUnique({ where: { id: root.id } }).winner(),
   minter: (_obj, { root }) =>
     db.treasure.findUnique({ where: { id: root.id } }).minter(),
   owner: (_obj, { root }) =>

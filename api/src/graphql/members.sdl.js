@@ -7,6 +7,7 @@ export const schema = gql`
     treasuresMinted: [Treasure]!
     treasuresPlayedWhite: [Treasure]!
     treasuresPlayedBlack: [Treasure]!
+    treasuresWon: [Treasure]!
     rating: Int!
     imageSrc: String!
     country: String!

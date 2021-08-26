@@ -46,4 +46,6 @@ export const Member = {
     db.member.findUnique({ where: { id: root.id } }).treasuresPlayedWhite(),
   treasuresPlayedBlack: (_obj, { root }) =>
     db.member.findUnique({ where: { id: root.id } }).treasuresPlayedBlack(),
+  treasuresWon: (_obj, { root }) =>
+    db.member.findUnique({ where: { id: root.id } }).treasuresWon(),
 }

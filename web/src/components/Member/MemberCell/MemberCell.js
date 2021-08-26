@@ -10,6 +10,18 @@ export const QUERY = gql`
       imageSrc
       country
       masterTitle
+      treasuresPlayedWhite {
+        id
+        endTime
+        moveCount
+        winner
+      }
+      treasuresPlayedBlack {
+        id
+        endTime
+        moveCount
+        winner
+      }
     }
   }
 `

@@ -22,6 +22,7 @@ model Member {
   treasuresMinted Treasure[] @relation(name: "treasuresMinted" )
   treasuresPlayedWhite Treasure[] @relation(name: "treasuresPlayedWhite" )
   treasuresPlayedBlack Treasure[] @relation(name: "treasuresPlayedBlack" )
+  treasuresWon Treasure[] @relation(name: "treasuresWon" )
   // !! For Scaffolding purposes only - should be commented out
   // rating Int
   // imageSrc String // Profile image URL
@@ -38,6 +39,8 @@ model Treasure {
   blackId String
   white Member @relation(name: "treasuresPlayedBlack", fields: [whiteId], references: [id])
   whiteId String
+  winner Member?  @relation(name: "treasuresWon", fields: [winnerId], references: [id])
+  winnerId string?
   // NFT (optional)
   minter Member? @relation(name: "treasuresMinted", fields: [minterAddress], references: [address])
   minterAddress String?
@@ -59,7 +62,6 @@ model Treasure {
   moves String // pgn moves
   moveCount Int // eg. "43"
   gameRuleVariant String // eg. "Standard" or "Chess960"
-  winner String // "white" or "black"
   externalUrl String? // Link to game on chess.com
   opening String // eg. "Queen's Gambit"
   achievements String // List eg. "win/play above 2200,queen side castle,mate with a bishop"

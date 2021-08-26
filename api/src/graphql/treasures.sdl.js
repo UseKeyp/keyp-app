@@ -6,6 +6,8 @@ export const schema = gql`
     blackId: String!
     white: Member!
     whiteId: String!
+    winner: Member
+    winnerId: String
     minter: Member
     minterAddress: String
     owner: Member
@@ -22,7 +24,6 @@ export const schema = gql`
     moves: String!
     moveCount: Int!
     gameRuleVariant: String!
-    winner: String!
     externalUrl: String
     opening: String!
     achievements: String!
@@ -38,6 +39,7 @@ export const schema = gql`
   input CreateTreasureInput {
     blackId: String!
     whiteId: String!
+    winnerId: String
     minterAddress: String
     ownerAddress: String
     name: String!
@@ -62,6 +64,7 @@ export const schema = gql`
   input UpdateTreasureInput {
     blackId: String
     whiteId: String
+    winnerId: String
     minterAddress: String
     ownerAddress: String
     name: String
