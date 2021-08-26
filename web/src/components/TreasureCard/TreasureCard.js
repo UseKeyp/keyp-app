@@ -23,7 +23,7 @@ const TreasureCard = ({ treasure }) => {
       ? winIndicatorBlackWhiteEd
       : winIndicatorBlack
     winnerText = 'Black Wins!'
-  } else if (treasure.outcome === 'WHITE') {
+  } else if (treasure.outcome === 'white') {
     winIndicatorBanner = isWhiteEdition
       ? winIndicatorWhiteWhiteEd
       : winIndicatorWhite
@@ -106,7 +106,7 @@ const TreasureCard = ({ treasure }) => {
               {player2.id}
             </div>
             <div className="user-details-container">
-              <span className="user-number-text">{treasure.blackeRating}</span>
+              <span className="user-number-text">{treasure.blackRating}</span>
               <span
                 className={`flag-icon flag-icon-right flag-icon-${player2.countryCode}`}
               />
@@ -135,7 +135,7 @@ const TreasureCard = ({ treasure }) => {
           </div>
           <div className="flex bottom-bar-info-datum">
             <img alt="" src={clockIcon} className="bottom-bar-icon" />
-            {treasure.duration}
+            {new Date(treasure.duration * 1000).toISOString().substr(14, 5)}
           </div>
           <div className="colored-banner-container">
             <ColoredBanner
