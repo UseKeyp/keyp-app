@@ -17,14 +17,16 @@ model Member {
   address String @unique // Wallet address
   // --------------- STATE --------------
   dateJoined DateTime
-  rating Int
-  imageSrc String // Profile image URL
-  country String // Player's country
   // --------------- LINKS --------------
   treasuresOwned Treasure[] @relation(name: "treasuresOwned" )
   treasuresMinted Treasure[] @relation(name: "treasuresMinted" )
   treasuresPlayedWhite Treasure[] @relation(name: "treasuresPlayedWhite" )
   treasuresPlayedBlack Treasure[] @relation(name: "treasuresPlayedBlack" )
+  // !! For Scaffolding purposes only
+  // rating Int
+  // imageSrc String // Profile image URL
+  // country String // Player's country
+  // masterTitle String //
 }
 
 model Treasure {
@@ -48,8 +50,8 @@ model Treasure {
   cardColor String // white or black
   blackRating Int // Rating at the time of the game
   whiteRating Int
-  blackMasterTitle String // eg. "Grand Master" or "International Master"
-  whiteMasterTitle String
+  blackMasterTitle String? // eg. "Grand Master" or "International Master"
+  whiteMasterTitle String?
   duration Int // game length in seconds
   termination String // eg. "Checkmate"
   endTime DateTime
@@ -63,5 +65,5 @@ model Treasure {
   achievements String // List eg. "win/play above 2200,queen side castle,mate with a bishop"
   // NFT
   tokenId Int?
-  mintedAt DateTime
+  mintedAt DateTime?
 }
