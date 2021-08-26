@@ -1,10 +1,11 @@
-import Table from 'src/components/Table/Table'
+import Table from 'src/components/Table'
 
 const Games = ({ games, onRowClick, selectedRowId }) => {
   const formatGamesForTable = (games) => {
     return games.map((game) => {
-      const { white, black, winner, outcome, moveCount } = game
+      const { white, black, winner, outcome, moveCount, id } = game
       return {
+        id,
         White: white.id,
         Black: black.id,
         Winner: winner.id,

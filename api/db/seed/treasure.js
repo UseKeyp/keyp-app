@@ -16,6 +16,7 @@ const treasureData = [
     },
     name: 'Erik crushes',
     cardColor: 'white', // white or black
+    outcome: 'white',
     blackRating: 1500,
     whiteRating: 1400,
     blackMasterTitle: 'GM',

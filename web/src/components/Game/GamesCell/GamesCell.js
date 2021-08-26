@@ -1,4 +1,4 @@
-import Games from 'src/components/Games'
+import Games from 'src/components/Game/Games'
 
 export const QUERY = gql`
   query GamesByMemberQuery($id: String!) {

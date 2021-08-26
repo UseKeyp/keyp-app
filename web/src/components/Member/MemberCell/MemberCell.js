@@ -14,6 +14,7 @@ export const QUERY = gql`
         id
         endTime
         moveCount
+        outcome
         winner {
           id
         }
@@ -21,6 +22,7 @@ export const QUERY = gql`
       treasuresPlayedBlack {
         id
         endTime
+        outcome
         moveCount
         winner {
           id

@@ -20,6 +20,8 @@ export const schema = gql`
     whiteRating: Int!
     outcome: String!
     termination: String!
+    blackMasterTitle: String
+    whiteMasterTitle: String
     endTime: DateTime!
     event: String!
     moves: String!

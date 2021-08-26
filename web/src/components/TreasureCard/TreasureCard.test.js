@@ -1,12 +1,12 @@
 import { render } from '@redwoodjs/testing'
 
-import GameCard from './GameCard'
+import TreasureCard from './TreasureCard'
 
-describe('GameCard', () => {
+describe('TreasureCard', () => {
   it('renders successfully', () => {
     expect(() => {
       render(
-        <GameCard
+        <TreasureCard
           title="User-Made Title"
           numMoves="42"
           winner="WHITE"

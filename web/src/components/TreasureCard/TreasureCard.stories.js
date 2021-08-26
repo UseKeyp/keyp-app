@@ -1,4 +1,4 @@
-import GameCard from './GameCard'
+import TreasureCard from './TreasureCard'
 
 const TEST_PLAYER_DATA = [
   {
@@ -41,7 +41,7 @@ const sharedProps = {
 export const whiteWinBlackEdition = () => {
   return (
     <div className="p-8">
-      <GameCard {...sharedProps} winner="WHITE" edition="BLACK" />
+      <TreasureCard {...sharedProps} winner="WHITE" edition="BLACK" />
     </div>
   )
 }
@@ -49,7 +49,7 @@ export const whiteWinBlackEdition = () => {
 export const blackWinBlackEdition = () => {
   return (
     <div className="p-8">
-      <GameCard {...sharedProps} winner="BLACK" edition="BLACK" />
+      <TreasureCard {...sharedProps} winner="BLACK" edition="BLACK" />
     </div>
   )
 }
@@ -57,7 +57,7 @@ export const blackWinBlackEdition = () => {
 export const drawBlackEdition = () => {
   return (
     <div className="p-8">
-      <GameCard {...sharedProps} winner="DRAW" edition="BLACK" />
+      <TreasureCard {...sharedProps} winner="DRAW" edition="BLACK" />
     </div>
   )
 }
@@ -65,7 +65,7 @@ export const drawBlackEdition = () => {
 export const whiteWinWhiteEdition = () => {
   return (
     <div className="p-8">
-      <GameCard {...sharedProps} winner="WHITE" edition="WHITE" />
+      <TreasureCard {...sharedProps} winner="WHITE" edition="WHITE" />
     </div>
   )
 }
@@ -73,7 +73,7 @@ export const whiteWinWhiteEdition = () => {
 export const blackWinWhiteEdition = () => {
   return (
     <div className="p-8">
-      <GameCard {...sharedProps} winner="BLACK" edition="WHITE" />
+      <TreasureCard {...sharedProps} winner="BLACK" edition="WHITE" />
     </div>
   )
 }
@@ -81,9 +81,9 @@ export const blackWinWhiteEdition = () => {
 export const drawWhiteEdition = () => {
   return (
     <div className="p-8">
-      <GameCard {...sharedProps} winner="DRAW" edition="WHITE" />
+      <TreasureCard {...sharedProps} winner="DRAW" edition="WHITE" />
     </div>
   )
 }
 
-export default { title: 'Components/GameCard' }
+export default { title: 'Components/TreasureCard' }

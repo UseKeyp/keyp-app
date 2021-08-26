@@ -11,40 +11,35 @@ import ColoredBanner from './ColoredBanner'
 import './styles.scss'
 import 'flag-icon-css/css/flag-icon.css'
 
-const GameCard = ({
-  bannerColors, // Type: array - [lightColorHexString, darkColorHexString]
-  edition,
-  gameTypeString,
-  gifUrl,
-  lengthOfGameString,
-  matchDate, // Type: JS Date object
-  matchId,
-  notableFeatures,
-  players,
-  title,
-  winner,
-  wonByText,
-}) => {
-  const isWhiteEdition = edition === 'WHITE'
-  const isDraw = winner === 'DRAW'
-
+const TreasureCard = ({ treasure }) => {
+  const isWhiteEdition = treasure.cardColor === 'white'
+  const isDraw = treasure.outcome === 'draw'
   let winnerText = 'Draw!'
   let winIndicatorBanner = isWhiteEdition
     ? winIndicatorDrawWhiteEd
     : winIndicatorDraw
-  if (winner === 'BLACK') {
+  if (treasure.outcome === 'black') {
     winIndicatorBanner = isWhiteEdition
       ? winIndicatorBlackWhiteEd
       : winIndicatorBlack
     winnerText = 'Black Wins!'
-  } else if (winner === 'WHITE') {
+  } else if (treasure.outcome === 'WHITE') {
     winIndicatorBanner = isWhiteEdition
       ? winIndicatorWhiteWhiteEd
       : winIndicatorWhite
     winnerText = 'White Wins!'
   }
 
-  const [player1, player2] = players
+  const { white: player1, black: player2 } = treasure
+  // TODO: Add edition to Treasure backend
+  const edition = 1
+  // TODO: Pull from treasure
+  const gifUrl = 'https://media0.giphy.com/media/3o6ZsYLRb6IG6vAkcU/giphy.gif'
+  // TODO: Calculate from achievement
+  const bannerColors = ['#fffff', '#00000']
+  // TODO: clean chess.com ID from externalUrl
+  const matchId = treasure.externalUrl
+  const gameDate = new Date(treasure.endTime)
 
   return (
     <div
@@ -56,18 +51,18 @@ const GameCard = ({
         color: isWhiteEdition ? '#4B4847' : '#ffffff',
       }}
     >
-      <h2 className="game-card-title-cont">{title}</h2>
+      <h2 className="game-card-title-cont">{treasure.name}</h2>
       <div className="inner-container">
         <div className="top-row-container">
           <div className="profile-container">
             <div
               alt="player 1"
               className="player-pic"
-              style={{ backgroundImage: `url(${player1.profilePicSrc})` }}
+              style={{ backgroundImage: `url(${player1.imgSrc})` }}
             />
             <div className="username-text">
-              {player1.username}
-              {player1.isGrandMaster && <span className="gm-tag">GM</span>}
+              {player1.id}
+              {treasure.whiteMasterTitle && <span className="gm-tag">GM</span>}
             </div>
             <div className="user-details-container">
               {/* `countryCode` should be the ISO 3166-1-alpha-2 code */}
@@ -75,14 +70,14 @@ const GameCard = ({
               <span
                 className={`flag-icon flag-icon-left flag-icon-${player1.countryCode}`}
               />
-              <span className="user-number-text">{player1.userNumber}</span>
+              <span className="user-number-text">{treasure.whiteRating}</span>
             </div>
           </div>
           <div className="center-info">
             <img
               className="win-indicator-background"
               style={{
-                marginLeft: winner !== 'WHITE' ? 'auto' : undefined,
+                marginLeft: treasure.outcome !== 'white' ? 'auto' : undefined,
                 marginRight: isDraw ? 'auto' : undefined,
               }}
               src={winIndicatorBanner}
@@ -97,21 +92,21 @@ const GameCard = ({
               className="winner-text"
             >
               {winnerText}
-              <div className="winner-subtext">by {wonByText}</div>
+              <div className="winner-subtext">by {treasure.termination}</div>
             </div>
           </div>
           <div className="profile-container profile-container_right">
             <div
               alt="player 2"
               className="player-pic"
-              style={{ backgroundImage: `url(${player2.profilePicSrc})` }}
+              style={{ backgroundImage: `url(${player2.imgSrc})` }}
             />
             <div className="username-text">
-              {player2.isGrandMaster && <span className="gm-tag">GM</span>}
-              {player2.username}
+              {treasure.blackMasterTitle && <span className="gm-tag">GM</span>}
+              {player2.id}
             </div>
             <div className="user-details-container">
-              <span className="user-number-text">{player2.userNumber}</span>
+              <span className="user-number-text">{treasure.blackeRating}</span>
               <span
                 className={`flag-icon flag-icon-right flag-icon-${player2.countryCode}`}
               />
@@ -125,7 +120,7 @@ const GameCard = ({
         />
         <div className="feature-list-container">
           <ul className="list-disc feature-list">
-            {notableFeatures.map((feature) => (
+            {treasure.achievements.split(',').map((feature) => (
               <li key={feature}>{feature}</li>
             ))}
           </ul>
@@ -136,11 +131,11 @@ const GameCard = ({
         >
           <div className="flex bottom-bar-info-datum">
             <img alt="" src={chessBoardIcon} className="bottom-bar-icon" />
-            {gameTypeString}
+            {treasure.gameRuleVariant}
           </div>
           <div className="flex bottom-bar-info-datum">
             <img alt="" src={clockIcon} className="bottom-bar-icon" />
-            {lengthOfGameString}
+            {treasure.duration}
           </div>
           <div className="colored-banner-container">
             <ColoredBanner
@@ -153,8 +148,7 @@ const GameCard = ({
         <div className="footer-bar">
           <div>
             <span className="green-text">
-              <span className="capitalize">{edition.toLowerCase()}</span>{' '}
-              Edition
+              <span className="capitalize">{edition}</span> Edition
             </span>{' '}
             {/* Does this need to be configurable - I thought there's always only one edition of each type */}
             1/1
@@ -163,9 +157,9 @@ const GameCard = ({
             <span className="green-text">Match</span> #{matchId}
           </div>
           <div className="right-item">
-            {matchDate.toLocaleString('default', { month: 'long' })}{' '}
-            <span className="green-text">{matchDate.getDate()}</span>{' '}
-            {matchDate.getFullYear()}
+            {gameDate.toLocaleString('default', { month: 'long' })}{' '}
+            <span className="green-text">{gameDate.getDate()}</span>{' '}
+            {gameDate.getFullYear()}
           </div>
         </div>
       </div>
@@ -173,4 +167,4 @@ const GameCard = ({
   )
 }
 
-export default GameCard
+export default TreasureCard

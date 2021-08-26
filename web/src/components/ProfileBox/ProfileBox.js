@@ -72,19 +72,4 @@ const ProfileBox = ({ member }) => {
   )
 }
 
-ProfileBox.defaultProps = {
-  score: 0,
-  balance: 0,
-  treasuresAmount: 0,
-}
-ProfileBox.propTypes = {
-  address: PropTypes.string.isRequired,
-  avatar: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  date: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
-  balance: PropTypes.number,
-  score: PropTypes.number,
-  treasuresAmount: PropTypes.number,
-}
-
 export default ProfileBox
