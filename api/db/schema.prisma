@@ -22,11 +22,11 @@ model Member {
   treasuresMinted Treasure[] @relation(name: "treasuresMinted" )
   treasuresPlayedWhite Treasure[] @relation(name: "treasuresPlayedWhite" )
   treasuresPlayedBlack Treasure[] @relation(name: "treasuresPlayedBlack" )
-  // !! For Scaffolding purposes only
+  // !! For Scaffolding purposes only - should be commented out
   // rating Int
   // imageSrc String // Profile image URL
   // country String // Player's country
-  // masterTitle String //
+  // masterTitle String? //
 }
 
 model Treasure {
