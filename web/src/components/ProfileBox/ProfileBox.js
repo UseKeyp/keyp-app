@@ -23,7 +23,13 @@ const ProfileBox = ({ member }) => {
           <div className="profileBox__content flex flex-col justify-between">
             <p className="profileBox__text profileBox__text--small">
               <span className="profileBox__coloredText">Date joined:</span>{' '}
-              {member.dateJoined}
+              {new Date(member.dateJoined).toLocaleString('default', {
+                month: 'long',
+              })}{' '}
+              <span className="green-text">
+                {new Date(member.dateJoined).getDate()}
+              </span>{' '}
+              {new Date(member.dateJoined).getFullYear()}
             </p>
             <div className="profileBox__content__inner">
               <p className="profileBox__text">{member.id}</p>

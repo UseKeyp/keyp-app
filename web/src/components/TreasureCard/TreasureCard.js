@@ -135,7 +135,7 @@ const TreasureCard = ({ treasure }) => {
           </div>
           <div className="flex bottom-bar-info-datum">
             <img alt="" src={clockIcon} className="bottom-bar-icon" />
-            {new Date(treasure.duration * 1000).toISOString().substr(14, 5)}
+            {new Date(treasure.duration * 1000).toISOString().substr(11, 5)}
           </div>
           <div className="colored-banner-container">
             <ColoredBanner
