@@ -1,9 +1,24 @@
-const Games = () => {
+import Table from 'src/components/Table/Table'
+
+const Games = ({ games, onRowClick, selectedRowId }) => {
+  const formatGamesForTable = (games) => {
+    return games.map((game) => {
+      const { white, black, winner, outcome, moveCount } = game
+      return {
+        White: white.id,
+        Black: black.id,
+        Winner: winner.id,
+        Result: outcome,
+        Moves: moveCount,
+      }
+    })
+  }
   return (
-    <div>
-      <h2>{'Games'}</h2>
-      <p>{'Find me in ./web/src/components/Games/Games.js'}</p>
-    </div>
+    <Table
+      data={formatGamesForTable(games)}
+      onRowClick={onRowClick}
+      selectedRowId={selectedRowId}
+    />
   )
 }
 

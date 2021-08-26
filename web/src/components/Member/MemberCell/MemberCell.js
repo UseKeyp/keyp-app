@@ -14,13 +14,17 @@ export const QUERY = gql`
         id
         endTime
         moveCount
-        winner
+        winner {
+          id
+        }
       }
       treasuresPlayedBlack {
         id
         endTime
         moveCount
-        winner
+        winner {
+          id
+        }
       }
     }
   }

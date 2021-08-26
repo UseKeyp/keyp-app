@@ -3,9 +3,9 @@ import { toast } from '@redwoodjs/web/toast'
 import { Link, routes, navigate } from '@redwoodjs/router'
 
 import ProfileBox from 'src/components/ProfileBox/ProfileBox'
-import Table from 'src/components/Table/Table'
 import GameCard from 'src/components/GameCard/GameCard'
 import MemberActivityCell from 'src/components/MemberActivityCell'
+import GamesCell from 'src/components/GamesCell'
 
 const Member = ({ member }) => {
   const [activeMatchId, setActiveMatchId] = React.useState('')
@@ -46,12 +46,8 @@ const Member = ({ member }) => {
         <div className="grid md:grid-cols-2 grid-cols-1 gap-10">
           <div>
             <h1>Chess.com Games</h1>
-            {/* TODO: Replace with games cell
-              We need to show a list of recent games, with filtering
-              Not just the treasures
-              */}
-            <Table
-              data={treasuresList}
+            <GamesCell
+              id={member.id}
               onRowClick={handleRowClick}
               selectedRowId={activeMatchId}
             />

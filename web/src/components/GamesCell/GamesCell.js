@@ -1,9 +1,21 @@
 import Games from 'src/components/Games'
 
 export const QUERY = gql`
-  query GamesQuery {
-    games {
+  query GamesByMemberQuery($id: String!) {
+    games: games(id: $id) {
       id
+      endTime
+      moveCount
+      outcome
+      winner {
+        id
+      }
+      black {
+        id
+      }
+      white {
+        id
+      }
     }
   }
 `
@@ -17,5 +29,6 @@ export const Failure = ({ error }) => (
 )
 
 export const Success = ({ games, ...rest }) => {
+  // TODO: add sorting/filtering
   return <Games games={games} {...rest} />
 }

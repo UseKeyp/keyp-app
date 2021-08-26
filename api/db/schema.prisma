@@ -40,7 +40,7 @@ model Treasure {
   white Member @relation(name: "treasuresPlayedBlack", fields: [whiteId], references: [id])
   whiteId String
   winner Member?  @relation(name: "treasuresWon", fields: [winnerId], references: [id])
-  winnerId string?
+  winnerId String?
   // NFT (optional)
   minter Member? @relation(name: "treasuresMinted", fields: [minterAddress], references: [address])
   minterAddress String?
@@ -58,6 +58,7 @@ model Treasure {
   duration Int // game length in seconds
   termination String // eg. "Checkmate"
   endTime DateTime
+  outcome String  // "white" "black" "draw" etc.
   event String // eg. "Live Chess"
   moves String // pgn moves
   moveCount Int // eg. "43"

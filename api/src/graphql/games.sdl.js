@@ -2,10 +2,12 @@ export const schema = gql`
   type Game {
     id: String!
     createdAt: DateTime!
+    winner: Member
     black: Member!
     blackId: String!
     white: Member!
     whiteId: String!
+    outcome: String!
     name: String!
     updatedAt: DateTime!
     blackRating: Int!
@@ -17,12 +19,11 @@ export const schema = gql`
     moves: String!
     moveCount: Int!
     gameRuleVariant: String!
-    winner: String!
     externalUrl: String
     opening: String!
   }
 
   type Query {
-    games(id: String!): [Games!]!
+    games(id: String!): [Game!]!
   }
 `

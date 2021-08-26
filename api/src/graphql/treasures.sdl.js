@@ -18,6 +18,7 @@ export const schema = gql`
     blackRating: Int!
     duration: Int!
     whiteRating: Int!
+    outcome: String!
     termination: String!
     endTime: DateTime!
     event: String!
