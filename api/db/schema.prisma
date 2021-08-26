@@ -18,6 +18,8 @@ model Member {
   // --------------- STATE --------------
   dateJoined DateTime
   rating Int
+  imageSrc String // Profile image URL
+  country String // Player's country
   // --------------- LINKS --------------
   treasuresOwned Treasure[] @relation(name: "treasuresOwned" )
   treasuresMinted Treasure[] @relation(name: "treasuresMinted" )
@@ -44,9 +46,11 @@ model Treasure {
   updatedAt DateTime @updatedAt
   // Chess
   cardColor String // white or black
-  blackRating Int
-  duration Int // game length in seconds
+  blackRating Int // Rating at the time of the game
   whiteRating Int
+  blackMasterTitle String // eg. "Grand Master" or "International Master"
+  whiteMasterTitle String
+  duration Int // game length in seconds
   termination String // eg. "Checkmate"
   endTime DateTime
   event String // eg. "Live Chess"
