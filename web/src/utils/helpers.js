@@ -12,3 +12,7 @@ export const trimAddress = (address) => {
   if (typeof address !== 'string') return ''
   return address.substring(0, 5) + '...' + address.substring(38, 42)
 }
+
+export const isHexAddress = (address) => {
+  return /^(0x)?[0-9a-f]{40}$/i.test(address)
+}

@@ -1,8 +1,8 @@
 import { render } from '@redwoodjs/testing'
-import { Loading, Empty, Failure, Success } from './NftDetailsCell'
-import { standard } from './NftDetailsCell.mock'
+import { Loading, Empty, Failure, Success } from './TreasureNftDetailsCell'
+import { standard } from './TreasureNftDetailsCell.mock'
 
-describe('NftDetailsCell', () => {
+describe('TreasureNftDetailsCell', () => {
   it('renders Loading successfully', () => {
     expect(() => {
       render(<Loading />)

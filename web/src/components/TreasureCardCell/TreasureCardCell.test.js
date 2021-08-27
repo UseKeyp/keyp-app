@@ -1,8 +1,8 @@
 import { render } from '@redwoodjs/testing'
-import { Loading, Empty, Failure, Success } from './GameCardCell'
-import { standard } from './GameCardCell.mock'
+import { Loading, Empty, Failure, Success } from './TreasureCardCell'
+import { standard } from './TreasureCardCell.mock'
 
-describe('GameCardCell', () => {
+describe('TreasureCardCell', () => {
   it('renders Loading successfully', () => {
     expect(() => {
       render(<Loading />)

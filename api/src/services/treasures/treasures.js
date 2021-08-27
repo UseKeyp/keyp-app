@@ -1,5 +1,6 @@
 import { db } from 'src/lib/db'
 import { requireAuth } from 'src/lib/auth'
+import { fetchMember } from 'src/lib/members'
 
 // Used when the environment variable REDWOOD_SECURE_SERVICES=1
 export const beforeResolver = (rules) => {
@@ -14,6 +15,26 @@ export const treasure = ({ id }) => {
   return db.treasure.findUnique({
     where: { id },
   })
+}
+
+export const treasureNftDetails = async ({ id }) => {
+  const treasure = await db.treasure.findUnique({
+    where: { id },
+  })
+  if (treasure) {
+    treasure.owner = await fetchMember(treasure.ownerAddress)
+    treasure.minter = await fetchMember(treasure.minterAddress)
+    treasure.bids = [
+      { price: '1.00', bidder: 'jschiarizzi' },
+      { price: '1.00', bidder: '0xf4b420F15d6d878dCD0Df7120Ac0fc1509ee9Cad' },
+    ]
+    treasure.history = [
+      { price: '1.00', bidder: 'jschiarizzi' },
+      { price: '1.00', bidder: '0xf4b420F15d6d878dCD0Df7120Ac0fc1509ee9Cad' },
+    ]
+    return treasure
+  }
+  return null
 }
 
 export const createTreasure = ({ input }) => {

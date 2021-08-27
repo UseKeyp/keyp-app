@@ -1,4 +1,4 @@
-import GameCard from 'src/components/Game/GameCard/GameCard'
+import GameCard from 'src/components/Game/GameCard'
 
 export const QUERY = gql`
   query GameQuery($id: String!) {

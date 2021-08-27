@@ -34,9 +34,22 @@ export const schema = gql`
     mintedAt: DateTime!
   }
 
+  type TreasureNftDetails {
+    id: String!
+    mintedAt: DateTime!
+    minter: Member
+    minterAddress: String
+    owner: Member
+    ownerAddress: String
+    tokenId: Int
+    bids: JSON
+    history: JSON
+  }
+
   type Query {
     treasures: [Treasure!]!
     treasure(id: String!): Treasure
+    treasureNftDetails(id: String!): TreasureNftDetails
   }
 
   input CreateTreasureInput {
