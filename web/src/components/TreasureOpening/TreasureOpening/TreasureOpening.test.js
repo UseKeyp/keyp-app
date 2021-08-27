@@ -1,11 +1,11 @@
 import { render } from '@redwoodjs/testing'
 
-import MovesDetails from './MovesDetails'
+import TreasureOpening from './TreasureOpening'
 
-describe('MovesDetails', () => {
+describe('TreasureOpening', () => {
   it('renders successfully', () => {
     expect(() => {
-      render(<MovesDetails />)
+      render(<TreasureOpening />)
     }).not.toThrow()
   })
 })

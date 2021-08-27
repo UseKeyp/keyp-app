@@ -1,8 +1,8 @@
-import TreasureCell from 'src/components/Treasure/TreasureCell'
-import CardCell from 'src/components/CardCell'
-import TreasureOpeningCell from 'src/components/TreasureOpeningCell'
-import TreasureMovesCell from 'src/components/TreasureMovesCell'
 import Button from 'src/components/Button'
+
+import CardCell from 'src/components/CardCell'
+import TreasureOpeningCell from 'src/components/TreasureOpening/TreasureOpeningCell'
+import TreasureMovesCell from 'src/components/TreasureMoves/TreasureMovesCell'
 import TreasureNftDetailsCell from 'src/components/TreasureNftDetails/TreasureNftDetailsCell'
 
 const TreasurePage = ({ id }) => {

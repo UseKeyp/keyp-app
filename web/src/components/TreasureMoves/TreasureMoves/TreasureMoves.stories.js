@@ -1,4 +1,4 @@
-import MovesDetails from './MovesDetails'
+import TreasureMoves from './TreasureMoves'
 
 const heading = 'Moves'
 
@@ -8,9 +8,9 @@ const moves =
 export const generated = () => {
   return (
     <div style={{ maxWidth: 530 }}>
-      <MovesDetails heading={heading} movesList={moves} />
+      <TreasureMoves heading={heading} movesList={moves} />
     </div>
   )
 }
 
-export default { title: 'Components/MovesDetails' }
+export default { title: 'Components/TreasureMoves' }

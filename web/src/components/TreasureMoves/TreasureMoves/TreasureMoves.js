@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types'
+import DetailsBox from 'src/components/DetailsBox'
 
 const parsePgn = (str) => {
   const list = str
@@ -13,16 +13,18 @@ const parsePgn = (str) => {
     .filter((item) => item !== null)
   return list
 }
+const TABLE_TITLE = 'Moves'
 
-const MovesDetails = ({ heading, movesList }) => {
-  const list = parsePgn(movesList)
+const TreasureMoves = ({ treasure }) => {
+  if (!treasure) return <DetailsBox heading={TABLE_TITLE} />
+  const list = parsePgn(treasure.moves)
 
   return (
     <div
       className="moves-details"
-      style={{ minHeight: movesList.length > 0 ? 0 : 120 }}
+      style={{ minHeight: treasure.moves.length > 0 ? 0 : 120 }}
     >
-      <h3 className="moves-details__heading">{heading}</h3>
+      <h3 className="moves-details__heading">{TABLE_TITLE}</h3>
       <ul className="moves-details__list">
         {list.map((round) => {
           const [turn, white, black] = round
@@ -42,9 +44,4 @@ const MovesDetails = ({ heading, movesList }) => {
   )
 }
 
-MovesDetails.propTypes = {
-  heading: PropTypes.string.isRequired,
-  movesList: PropTypes.string.isRequired,
-}
-
-export default MovesDetails
+export default TreasureMoves
