@@ -15,7 +15,10 @@ export const generated = () => {
     >
       <ModalContainer
         title="Mint Game"
-        onClose={() => console.log('CLOSED MODAL')}
+        onClose={() => {
+          /* eslint-disable-next-line no-console */
+          console.log('CLOSED MODAL')
+        }}
         stepNum={1}
         totalNumSteps={2}
         statusText="Processing"

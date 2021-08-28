@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types'
 import Avatar from 'src/components/Avatar'
 import { isMobile } from 'src/utils/helpers'
 import config from 'src/global.config'

@@ -12,8 +12,6 @@ export const QUERY = gql`
 export const Loading = () => <div>Loading...</div>
 
 export const Empty = (props) => {
-  // console.log(props)
-  console.log(props)
   // If treasure doesn't exist, load the game card
   return <GameCardCell id={props.id} />
 }

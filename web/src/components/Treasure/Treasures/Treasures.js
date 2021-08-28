@@ -1,16 +1,4 @@
-import { useMutation } from '@redwoodjs/web'
-import { toast } from '@redwoodjs/web/toast'
 import { Link, routes } from '@redwoodjs/router'
-
-import { QUERY } from 'src/components/Treasure/TreasuresCell'
-
-const DELETE_TREASURE_MUTATION = gql`
-  mutation DeleteTreasureMutation($id: String!) {
-    deleteTreasure(id: $id) {
-      id
-    }
-  }
-`
 
 const MAX_STRING_LENGTH = 150
 
@@ -22,10 +10,6 @@ const truncate = (text) => {
   return output
 }
 
-const jsonTruncate = (obj) => {
-  return truncate(JSON.stringify(obj, null, 2))
-}
-
 const timeTag = (datetime) => {
   return (
     <time dateTime={datetime} title={datetime}>
@@ -34,28 +18,7 @@ const timeTag = (datetime) => {
   )
 }
 
-const checkboxInputTag = (checked) => {
-  return <input type="checkbox" checked={checked} disabled />
-}
-
 const TreasuresList = ({ treasures }) => {
-  const [deleteTreasure] = useMutation(DELETE_TREASURE_MUTATION, {
-    onCompleted: () => {
-      toast.success('Treasure deleted')
-    },
-    // This refetches the query on the list page. Read more about other ways to
-    // update the cache over here:
-    // https://www.apollographql.com/docs/react/data/mutations/#making-all-other-cache-updates
-    refetchQueries: [{ query: QUERY }],
-    awaitRefetchQueries: true,
-  })
-
-  const onDeleteClick = (id) => {
-    if (confirm('Are you sure you want to delete treasure ' + id + '?')) {
-      deleteTreasure({ variables: { id } })
-    }
-  }
-
   return (
     <div className="rw-segment rw-table-wrapper-responsive">
       <table className="rw-table">
@@ -131,14 +94,6 @@ const TreasuresList = ({ treasures }) => {
                   >
                     Edit
                   </Link>
-                  <a
-                    href="#"
-                    title={'Delete treasure ' + treasure.id}
-                    className="rw-button rw-button-small rw-button-red"
-                    onClick={() => onDeleteClick(treasure.id)}
-                  >
-                    Delete
-                  </a>
                 </nav>
               </td>
             </tr>

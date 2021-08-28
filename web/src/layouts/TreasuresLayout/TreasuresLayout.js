@@ -1,6 +1,3 @@
-import { Link, routes } from '@redwoodjs/router'
-import { Toaster } from '@redwoodjs/web/toast'
-
 const TreasuresLayout = (props) => {
   return (
     <div className="">

@@ -15,7 +15,8 @@ const MobileNav = ({ onClick, forceSmallNav = false }) => {
   try {
     userMetadata = JSON.parse(localStorage.getItem('chess_com_auth_token'))
   } catch (e) {
-    console.log('User is not logged in')
+    /* eslint-disable-next-line no-console */
+    console.log(e)
   }
   const isLoggedIn = !!userMetadata
 

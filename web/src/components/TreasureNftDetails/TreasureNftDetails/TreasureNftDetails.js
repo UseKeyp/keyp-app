@@ -24,12 +24,12 @@ const TreasureNftDetails = ({ treasureNftDetails }) => {
       <br />
       <DetailsBox
         heading="Owner"
-        items={[<MemberLink member={treasureNftDetails.owner} />]}
+        items={[<MemberLink key="0" member={treasureNftDetails.owner} />]}
       />
       <br />
       <DetailsBox
         heading="Minter"
-        items={[<MemberLink member={treasureNftDetails.minter} />]}
+        items={[<MemberLink key="0" member={treasureNftDetails.minter} />]}
       />
       <br />
       <DetailsBox heading="Bids" items={bidItems} />

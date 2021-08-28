@@ -1,9 +1,5 @@
-import { useMutation } from '@redwoodjs/web'
-import { toast } from '@redwoodjs/web/toast'
-import { Link, routes, navigate } from '@redwoodjs/router'
-
 import ProfileBox from 'src/components/ProfileBox/ProfileBox'
-import MemberActivityCell from 'src/components/MemberActivityCell'
+import MemberActivityCell from 'src/components/MemberActivity/MemberActivityCell'
 import GamesCell from 'src/components/Game/GamesCell'
 import CardCell from 'src/components/CardCell'
 

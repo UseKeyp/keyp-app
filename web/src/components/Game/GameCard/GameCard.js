@@ -1,7 +1,7 @@
 import Table from 'src/components/Table/Table'
 
 const GameCard = ({ game }) => {
-  const formatGameForTable = (gameg) => {
+  const formatGameForTable = (game) => {
     const { white, black, winner, outcome, moveCount } = game
     return [
       {

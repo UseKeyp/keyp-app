@@ -1,4 +1,3 @@
-import DetailsBox from 'src/components/DetailsBox/DetailsBox'
 import TreasureNftDetails from 'src/components/TreasureNftDetails/TreasureNftDetails'
 
 export const QUERY = gql`

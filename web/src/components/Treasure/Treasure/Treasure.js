@@ -1,22 +1,4 @@
-import { useMutation } from '@redwoodjs/web'
-import { toast } from '@redwoodjs/web/toast'
-import { Link, routes, navigate } from '@redwoodjs/router'
-
-const DELETE_TREASURE_MUTATION = gql`
-  mutation DeleteTreasureMutation($id: String!) {
-    deleteTreasure(id: $id) {
-      id
-    }
-  }
-`
-
-const jsonDisplay = (obj) => {
-  return (
-    <pre>
-      <code>{JSON.stringify(obj, null, 2)}</code>
-    </pre>
-  )
-}
+import { Link, routes } from '@redwoodjs/router'
 
 const timeTag = (datetime) => {
   return (
@@ -26,24 +8,7 @@ const timeTag = (datetime) => {
   )
 }
 
-const checkboxInputTag = (checked) => {
-  return <input type="checkbox" checked={checked} disabled />
-}
-
 const Treasure = ({ treasure }) => {
-  const [deleteTreasure] = useMutation(DELETE_TREASURE_MUTATION, {
-    onCompleted: () => {
-      toast.success('Treasure deleted')
-      navigate(routes.treasures())
-    },
-  })
-
-  const onDeleteClick = (id) => {
-    if (confirm('Are you sure you want to delete treasure ' + id + '?')) {
-      deleteTreasure({ variables: { id } })
-    }
-  }
-
   return (
     <>
       <div className="rw-segment">
@@ -160,13 +125,6 @@ const Treasure = ({ treasure }) => {
         >
           Edit
         </Link>
-        <a
-          href="#"
-          className="rw-button rw-button-red"
-          onClick={() => onDeleteClick(treasure.id)}
-        >
-          Delete
-        </a>
       </nav>
     </>
   )

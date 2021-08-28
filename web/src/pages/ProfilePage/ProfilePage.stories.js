@@ -67,6 +67,7 @@ const userData = {
 
 const handleClick = (e) => {
   e.stopPropagation()
+  /* eslint-disable-next-line no-console */
   console.log('Doing something')
 }
 

@@ -1,4 +1,3 @@
-import { db } from 'src/lib/db'
 import { requireAuth } from 'src/lib/auth'
 
 // Used when the environment variable REDWOOD_SECURE_SERVICES=1
@@ -7,13 +6,13 @@ export const beforeResolver = (rules) => {
 }
 
 // Games by member id
-export const games = async ({ id }) => {
+export const games = async () => {
   // TODO: Fetch games from chess.com API
   return [exampleGame]
 }
 
 // Game by game id
-export const game = async ({ id }) => {
+export const game = async () => {
   return exampleGame
 }
 

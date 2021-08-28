@@ -1,4 +1,4 @@
-import { Link, routes } from '@redwoodjs/router'
+import { Link } from '@redwoodjs/router'
 
 const Pagination = ({ count, page, perPage }) => {
   const items = []

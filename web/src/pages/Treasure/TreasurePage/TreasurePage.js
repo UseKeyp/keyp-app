@@ -6,6 +6,13 @@ import TreasureMovesCell from 'src/components/TreasureMoves/TreasureMovesCell'
 import TreasureNftDetailsCell from 'src/components/TreasureNftDetails/TreasureNftDetailsCell'
 
 const TreasurePage = ({ id }) => {
+  const ACCEPT_HIGHEST_BID = 'accept highest bid'
+  const PUT_ON_SALE = 'put on sale'
+  const TRANSFER_NFT = 'transfer nft'
+  const onClick = (id) => {
+    /* eslint-disable-next-line no-console */
+    console.log(id)
+  }
   return (
     <div className="item-page max-width-container">
       <div className="grid grid-rows-1">
