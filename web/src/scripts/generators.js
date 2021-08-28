@@ -18,6 +18,7 @@ const generateIconComponentStory = (icons, { dir }) => {
   ].join('\n')
 
   writeFileSync(`${dir}/Icon.stories.js`, indexContent)
+  /* eslint-disable-next-line no-console */
   console.log('Icon component story created! ✅')
 }
 
@@ -38,6 +39,7 @@ const generateWebIconMap = (icons, { dir }) => {
   ].join('\n')
 
   writeFileSync(`${dir}/icon-map.js`, iconMapContent)
+  /* eslint-disable-next-line no-console */
   console.log('Web Icon Map created! ✅')
 }
 

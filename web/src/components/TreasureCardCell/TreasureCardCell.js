@@ -1,0 +1,42 @@
+import TreasureCard from 'src/components/TreasureCard'
+
+export const QUERY = gql`
+  query FindTreasureQuery($id: String!) {
+    treasure: treasure(id: $id) {
+      id
+      endTime
+      moveCount
+      outcome
+      gameRuleVariant
+      termination
+      achievements
+      whiteRating
+      blackRating
+      blackMasterTitle
+      whiteMasterTitle
+      externalUrl
+      duration
+      winner {
+        id
+      }
+      black {
+        id
+      }
+      white {
+        id
+      }
+    }
+  }
+`
+
+export const Loading = () => <div>Loading...</div>
+
+export const Empty = () => <div></div>
+
+export const Failure = ({ error }) => (
+  <div style={{ color: 'red' }}>Error: {error.message}</div>
+)
+
+export const Success = ({ treasure }) => {
+  return <TreasureCard treasure={treasure} />
+}

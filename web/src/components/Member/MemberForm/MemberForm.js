@@ -31,20 +31,20 @@ const MemberForm = (props) => {
         />
 
         <Label
-          name="handle"
+          name="address"
           className="rw-label"
           errorClassName="rw-label rw-label-error"
         >
-          Handle
+          Address
         </Label>
         <TextField
-          name="handle"
-          defaultValue={props.member?.handle}
+          name="address"
+          defaultValue={props.member?.address}
           className="rw-input"
           errorClassName="rw-input rw-input-error"
           validation={{ required: true }}
         />
-        <FieldError name="handle" className="rw-field-error" />
+        <FieldError name="address" className="rw-field-error" />
 
         <Label
           name="dateJoined"
@@ -77,6 +77,54 @@ const MemberForm = (props) => {
           validation={{ required: true }}
         />
         <FieldError name="rating" className="rw-field-error" />
+
+        <Label
+          name="imageSrc"
+          className="rw-label"
+          errorClassName="rw-label rw-label-error"
+        >
+          Image src
+        </Label>
+        <TextField
+          name="imageSrc"
+          defaultValue={props.member?.imageSrc}
+          className="rw-input"
+          errorClassName="rw-input rw-input-error"
+          validation={{ required: true }}
+        />
+        <FieldError name="imageSrc" className="rw-field-error" />
+
+        <Label
+          name="country"
+          className="rw-label"
+          errorClassName="rw-label rw-label-error"
+        >
+          Country
+        </Label>
+        <TextField
+          name="country"
+          defaultValue={props.member?.country}
+          className="rw-input"
+          errorClassName="rw-input rw-input-error"
+          validation={{ required: true }}
+        />
+        <FieldError name="country" className="rw-field-error" />
+
+        <Label
+          name="masterTitle"
+          className="rw-label"
+          errorClassName="rw-label rw-label-error"
+        >
+          Master title
+        </Label>
+        <TextField
+          name="masterTitle"
+          defaultValue={props.member?.masterTitle}
+          className="rw-input"
+          errorClassName="rw-input rw-input-error"
+          validation={{ required: true }}
+        />
+        <FieldError name="masterTitle" className="rw-field-error" />
 
         <div className="rw-button-group">
           <Submit disabled={props.loading} className="rw-button rw-button-blue">

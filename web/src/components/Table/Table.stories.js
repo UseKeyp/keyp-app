@@ -35,6 +35,7 @@ const smallerData = [
 const proportions = [4, 1, 1]
 
 const handleRowClick = (id) => {
+  /* eslint-disable-next-line no-console */
   console.log(`Row with id "${id}" has been clicked`)
 }
 

@@ -25,7 +25,7 @@ body {
   /* Works on Firefox */
   scrollbar-width: auto;
   scrollbar-color: #f2994a #3d3b38;
-  @media (max-width: 896px) {
+  @screen md {
     font-size: theme('fontSize.xl');
   }
 }

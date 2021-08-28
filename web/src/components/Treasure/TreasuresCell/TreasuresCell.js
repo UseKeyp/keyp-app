@@ -7,8 +7,28 @@ export const QUERY = gql`
     treasures {
       id
       createdAt
-      updatedAt
+      blackId
+      whiteId
+      minterAddress
+      ownerAddress
       name
+      updatedAt
+      cardColor
+      blackRating
+      duration
+      whiteRating
+      termination
+      endTime
+      event
+      moves
+      moveCount
+      gameRuleVariant
+      winner
+      externalUrl
+      opening
+      achievements
+      tokenId
+      mintedAt
     }
   }
 `

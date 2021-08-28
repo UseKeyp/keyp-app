@@ -90,7 +90,7 @@ Table.defaultProps = {
 Table.propTypes = {
   maxHeight: PropTypes.number,
   onRowClick: PropTypes.func,
-  data: PropTypes.object.isRequired,
+  data: PropTypes.array.isRequired,
   showId: PropTypes.bool,
   colProportions: PropTypes.arrayOf(PropTypes.number),
   selectedRowId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),

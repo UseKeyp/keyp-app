@@ -23,7 +23,8 @@ const NewTreasure = () => {
   )
 
   const onSave = (input) => {
-    createTreasure({ variables: { input } })
+    const castInput = Object.assign(input, { tokenId: parseInt(input.tokenId) })
+    createTreasure({ variables: { input: castInput } })
   }
 
   return (

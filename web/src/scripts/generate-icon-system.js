@@ -16,5 +16,6 @@ try {
   generateIconComponentStory(icons, { dir: ICON_OUTPUT_FOLDER })
   generateWebIconMap(icons, { dir: ICON_SOURCE_FOLDER })
 } catch (e) {
+  /* eslint-disable-next-line no-console */
   console.error(e)
 }

@@ -1,6 +1,8 @@
 /* eslint-disable no-console */
 const { PrismaClient } = require('@prisma/client')
 const dotenv = require('dotenv')
+const memberData = require('./seed/member')
+const treasureData = require('./seed/treasure')
 
 dotenv.config()
 const db = new PrismaClient()
@@ -14,26 +16,26 @@ const db = new PrismaClient()
  * @see https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#createmany
  */
 async function main() {
-  console.warn('Please define your seed data.')
-
-  // // Change to match your data model and seeding needs
-  // const data = [
-  //   { name: 'alice', email: 'alice@example.com' },
-  //   { name: 'mark', email: 'mark@example.com' },
-  //   { name: 'jackie', email: 'jackie@example.com' },
-  //   { name: 'bob', email: 'bob@example.com' },
-  // ]
-
-  // // Note: if using PostgreSQL, using `createMany` to insert multiple records is much faster
-  // // @see: https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#createmany
-  // return Promise.all(
-  //   data.map(async (user) => {
-  //     const record = await db.user.create({
-  //       data: { name: user.name, email: user.email },
-  //     })
-  //     console.log(record)
-  //   })
-  // )
+  // Note: if using PostgreSQL, using `createMany` to insert multiple records is much faster
+  // @see: https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#createmany
+  // Create members
+  await Promise.all(
+    memberData.map(async (member) => {
+      const record = await db.member.create({
+        data: member,
+      })
+      console.log(record)
+    })
+  )
+  // Create treasures
+  await Promise.all(
+    treasureData.map(async (treasure) => {
+      const record = await db.treasure.create({
+        data: treasure,
+      })
+      console.log(record)
+    })
+  )
 }
 
 main()

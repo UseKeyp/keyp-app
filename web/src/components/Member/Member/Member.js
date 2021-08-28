@@ -1,94 +1,49 @@
-import { useMutation } from '@redwoodjs/web'
-import { toast } from '@redwoodjs/web/toast'
-import { Link, routes, navigate } from '@redwoodjs/router'
-
-const DELETE_MEMBER_MUTATION = gql`
-  mutation DeleteMemberMutation($id: Int!) {
-    deleteMember(id: $id) {
-      id
-    }
-  }
-`
-
-const jsonDisplay = (obj) => {
-  return (
-    <pre>
-      <code>{JSON.stringify(obj, null, 2)}</code>
-    </pre>
-  )
-}
-
-const timeTag = (datetime) => {
-  return (
-    <time dateTime={datetime} title={datetime}>
-      {new Date(datetime).toUTCString()}
-    </time>
-  )
-}
-
-const checkboxInputTag = (checked) => {
-  return <input type="checkbox" checked={checked} disabled />
-}
+import ProfileBox from 'src/components/ProfileBox/ProfileBox'
+import MemberActivityCell from 'src/components/MemberActivity/MemberActivityCell'
+import GamesCell from 'src/components/Game/GamesCell'
+import CardCell from 'src/components/CardCell'
 
 const Member = ({ member }) => {
-  const [deleteMember] = useMutation(DELETE_MEMBER_MUTATION, {
-    onCompleted: () => {
-      toast.success('Member deleted')
-      navigate(routes.members())
-    },
-  })
-
-  const onDeleteClick = (id) => {
-    if (confirm('Are you sure you want to delete member ' + id + '?')) {
-      deleteMember({ variables: { id } })
-    }
-  }
+  const treasuresList = [
+    ...member.treasuresPlayedBlack,
+    ...member.treasuresPlayedWhite,
+  ].sort((a, b) => new Date(a.endTime) < new Date(b.endTime))
+  const [activeGameId, setActiveGameId] = React.useState(treasuresList[0]?.id)
 
   return (
-    <>
-      <div className="rw-segment">
-        <header className="rw-segment-header">
-          <h2 className="rw-heading rw-heading-secondary">
-            Member {member.id} Detail
-          </h2>
-        </header>
-        <table className="rw-table">
-          <tbody>
-            <tr>
-              <th>Id</th>
-              <td>{member.id}</td>
-            </tr>
-            <tr>
-              <th>Handle</th>
-              <td>{member.handle}</td>
-            </tr>
-            <tr>
-              <th>Date joined</th>
-              <td>{timeTag(member.dateJoined)}</td>
-            </tr>
-            <tr>
-              <th>Rating</th>
-              <td>{member.rating}</td>
-            </tr>
-          </tbody>
-        </table>
+    <div className="max-width-container">
+      <div className="grid grid-rows-1">
+        <div className="grid md:grid-cols-2 grid-cols-1 gap-10">
+          <div>
+            <h1>Personal Profile</h1>
+            <br />
+            <ProfileBox member={member} />
+          </div>
+          <div>
+            <MemberActivityCell address={member.address} />
+          </div>
+        </div>
       </div>
-      <nav className="rw-button-group">
-        <Link
-          to={routes.editMember({ id: member.id })}
-          className="rw-button rw-button-blue"
-        >
-          Edit
-        </Link>
-        <a
-          href="#"
-          className="rw-button rw-button-red"
-          onClick={() => onDeleteClick(member.id)}
-        >
-          Delete
-        </a>
-      </nav>
-    </>
+      <br />
+      <div className="grid grid-rows-1">
+        <div className="grid md:grid-cols-2 grid-cols-1 gap-10">
+          <div>
+            <h1>Chess.com Games</h1>
+            <GamesCell
+              id={member.id}
+              onRowClick={setActiveGameId}
+              selectedRowId={activeGameId}
+            />
+          </div>
+          <div>
+            <br />
+            <div className="flex justify-center items-center">
+              <CardCell id={activeGameId} />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }
 

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import ProfileBox from 'src/components/ProfileBox/ProfileBox'
 import Table from 'src/components/Table/Table'
-import GameCard from 'src/components/GameCard/GameCard'
+import GameCard from 'src/components/Game/GameCard'
 
 const ProfilePage = ({
   userData,

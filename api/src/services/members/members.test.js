@@ -22,25 +22,31 @@ describe('members', () => {
   scenario('creates a member', async () => {
     const result = await createMember({
       input: {
-        handle: 'String8461893',
-        dateJoined: '2021-07-05T23:15:08Z',
-        rating: 4899556,
+        id: 'String',
+        address: 'String6973540',
+        dateJoined: '2021-08-26T03:34:19Z',
+        rating: 8198066,
+        imageSrc: 'String',
+        country: 'String',
       },
     })
 
-    expect(result.handle).toEqual('String8461893')
-    expect(result.dateJoined).toEqual('2021-07-05T23:15:08Z')
-    expect(result.rating).toEqual(4899556)
+    expect(result.id).toEqual('String')
+    expect(result.address).toEqual('String6973540')
+    expect(result.dateJoined).toEqual('2021-08-26T03:34:19Z')
+    expect(result.rating).toEqual(8198066)
+    expect(result.imageSrc).toEqual('String')
+    expect(result.country).toEqual('String')
   })
 
   scenario('updates a member', async (scenario) => {
     const original = await member({ id: scenario.member.one.id })
     const result = await updateMember({
       id: original.id,
-      input: { handle: 'String24661712' },
+      input: { id: 'String2' },
     })
 
-    expect(result.handle).toEqual('String24661712')
+    expect(result.id).toEqual('String2')
   })
 
   scenario('deletes a member', async (scenario) => {

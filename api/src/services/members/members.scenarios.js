@@ -1,15 +1,21 @@
 export const standard = defineScenario({
   member: {
     one: {
-      handle: 'String2047664',
-      dateJoined: '2021-07-05T23:15:08Z',
-      rating: 5972229,
+      id: 'String',
+      address: 'String3035077',
+      dateJoined: '2021-08-26T03:34:19Z',
+      rating: 9435259,
+      imageSrc: 'String',
+      country: 'String',
     },
 
     two: {
-      handle: 'String2366336',
-      dateJoined: '2021-07-05T23:15:08Z',
-      rating: 4124490,
+      id: 'String',
+      address: 'String5369453',
+      dateJoined: '2021-08-26T03:34:19Z',
+      rating: 7496497,
+      imageSrc: 'String',
+      country: 'String',
     },
   },
 })

@@ -1,12 +1,33 @@
 import Member from 'src/components/Member/Member'
 
 export const QUERY = gql`
-  query FindMemberById($id: Int!) {
+  query FindMemberById($id: String!) {
     member: member(id: $id) {
       id
-      handle
+      address
       dateJoined
       rating
+      imageSrc
+      country
+      masterTitle
+      treasuresPlayedWhite {
+        id
+        endTime
+        moveCount
+        outcome
+        winner {
+          id
+        }
+      }
+      treasuresPlayedBlack {
+        id
+        endTime
+        outcome
+        moveCount
+        winner {
+          id
+        }
+      }
     }
   }
 `

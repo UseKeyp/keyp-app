@@ -2,6 +2,7 @@ datasource db {
   // provider = "sqlite"
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
 generator client {
@@ -12,22 +13,60 @@ generator client {
 // Define your own datamodels here and run `yarn redwood prisma migrate dev`
 // to create migrations for them and apply to your dev DB.
 model Member {
-  id    Int     @id @default(autoincrement())
+  id    String     @id // Chess.com username
+  address String @unique // Wallet address
   // --------------- STATE --------------
-  handle String @unique
   dateJoined DateTime
-  rating Int
   // --------------- LINKS --------------
   treasuresOwned Treasure[] @relation(name: "treasuresOwned" )
+  treasuresMinted Treasure[] @relation(name: "treasuresMinted" )
+  treasuresPlayedWhite Treasure[] @relation(name: "treasuresPlayedWhite" )
+  treasuresPlayedBlack Treasure[] @relation(name: "treasuresPlayedBlack" )
+  treasuresWon Treasure[] @relation(name: "treasuresWon" )
+  // !! For Scaffolding purposes only - should be commented out
+  // rating Int
+  // imageSrc String // Profile image URL
+  // country String // Player's country
+  // masterTitle String? //
 }
 
 model Treasure {
-  id    Int     @id @default(autoincrement())
+  id   String  @id // Moves hash plus end time
   createdAt DateTime @default(now())
-  // --------------- STATE --------------
-  updatedAt DateTime @updatedAt
-  name String
   // --------------- LINKS --------------
-  owner Member @relation(name: "treasuresOwned", fields: [ownerId], references: [id])
-  ownerId Int
+  // Chess.com (required)
+  black Member @relation(name: "treasuresPlayedWhite", fields: [blackId], references: [id])
+  blackId String
+  white Member @relation(name: "treasuresPlayedBlack", fields: [whiteId], references: [id])
+  whiteId String
+  winner Member?  @relation(name: "treasuresWon", fields: [winnerId], references: [id])
+  winnerId String?
+  // NFT (optional)
+  minter Member? @relation(name: "treasuresMinted", fields: [minterAddress], references: [address])
+  minterAddress String?
+  owner Member? @relation(name: "treasuresOwned", fields: [ownerAddress], references: [address])
+  ownerAddress String?
+  // --------------- STATE --------------
+  name String
+  updatedAt DateTime @updatedAt
+  // Chess
+  cardColor String // white or black
+  blackRating Int // Rating at the time of the game
+  whiteRating Int
+  blackMasterTitle String? // eg. "Grand Master" or "International Master"
+  whiteMasterTitle String?
+  duration Int // game length in seconds
+  termination String // eg. "Checkmate"
+  endTime DateTime
+  outcome String  // "white" "black" "draw" etc.
+  event String // eg. "Live Chess"
+  moves String // pgn moves
+  moveCount Int // eg. "43"
+  gameRuleVariant String // eg. "Standard" or "Chess960"
+  externalUrl String? // Link to game on chess.com
+  opening String // eg. "Queen's Gambit"
+  achievements String // List eg. "win/play above 2200,queen side castle,mate with a bishop"
+  // NFT
+  tokenId Int?
+  mintedAt DateTime?
 }

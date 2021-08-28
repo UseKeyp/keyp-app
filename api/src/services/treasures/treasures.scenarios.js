@@ -1,6 +1,77 @@
 export const standard = defineScenario({
   treasure: {
-    one: { updatedAt: '2021-06-30T23:45:43Z', name: 'String' },
-    two: { updatedAt: '2021-06-30T23:45:43Z', name: 'String' },
+    one: {
+      id: 'String',
+      name: 'String',
+      updatedAt: '2021-08-25T21:34:37Z',
+      cardColor: 'String',
+      blackRating: 9784770,
+      duration: 6843251,
+      whiteRating: 9408717,
+      termination: 'String',
+      endTime: '2021-08-25T21:34:37Z',
+      event: 'String',
+      moves: 'String',
+      moveCount: 3392811,
+      gameRuleVariant: 'String',
+      winner: 'String',
+      opening: 'String',
+      achievements: 'String',
+      mintedAt: '2021-08-25T21:34:37Z',
+      black: {
+        create: {
+          id: 'String',
+          address: 'String8756755',
+          dateJoined: '2021-08-25T21:34:37Z',
+          rating: 9388552,
+        },
+      },
+
+      white: {
+        create: {
+          id: 'String',
+          address: 'String218123',
+          dateJoined: '2021-08-25T21:34:37Z',
+          rating: 2625039,
+        },
+      },
+    },
+
+    two: {
+      id: 'String',
+      name: 'String',
+      updatedAt: '2021-08-25T21:34:37Z',
+      cardColor: 'String',
+      blackRating: 144946,
+      duration: 8315397,
+      whiteRating: 1756211,
+      termination: 'String',
+      endTime: '2021-08-25T21:34:37Z',
+      event: 'String',
+      moves: 'String',
+      moveCount: 6264767,
+      gameRuleVariant: 'String',
+      winner: 'String',
+      opening: 'String',
+      achievements: 'String',
+      mintedAt: '2021-08-25T21:34:37Z',
+      black: {
+        create: {
+          id: 'String',
+          address: 'String5941498',
+          dateJoined: '2021-08-25T21:34:37Z',
+          rating: 7363534,
+        },
+      },
+
+      white: {
+        create: {
+          id: 'String',
+          address: 'String6785004',
+          dateJoined: '2021-08-25T21:34:37Z',
+          rating: 1926861,
+        },
+      },
+    },
   },
 })

@@ -1,5 +1,5 @@
 import ProfilePage from './ProfilePage'
-import TwoPlayers from 'src/components/TwoPlayers'
+import TwoPlayers from './TwoPlayers'
 import MiniButton from 'src/components/MiniButton'
 import avatar from 'src/components/Avatar/chess-avatar.png'
 
@@ -67,6 +67,7 @@ const userData = {
 
 const handleClick = (e) => {
   e.stopPropagation()
+  /* eslint-disable-next-line no-console */
   console.log('Doing something')
 }
 
