@@ -12,7 +12,7 @@ const Member = ({ member }) => {
     ...member.treasuresPlayedBlack,
     ...member.treasuresPlayedWhite,
   ].sort((a, b) => new Date(a.endTime) < new Date(b.endTime))
-  const [activeGameId, setActiveGameId] = React.useState(treasuresList[0].id)
+  const [activeGameId, setActiveGameId] = React.useState(treasuresList[0]?.id)
 
   return (
     <div className="max-width-container">

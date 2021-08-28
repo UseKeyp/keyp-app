@@ -1,5 +1,6 @@
 import { db } from 'src/lib/db'
 import { requireAuth } from 'src/lib/auth'
+import { fetchMember } from 'src/lib/members'
 
 // Used when the environment variable REDWOOD_SECURE_SERVICES=1
 export const beforeResolver = (rules) => {
@@ -10,13 +11,7 @@ export const members = () => {
   return db.member.findMany()
 }
 
-export const member = async ({ id }) => {
-  const member = await db.member.findUnique({
-    where: { id },
-  })
-  // TODO: Pull these values from chess.com API
-  return { ...member, rating: 999, country: 'USA', imageSrc: '' }
-}
+export const member = ({ id }) => fetchMember(id)
 
 export const createMember = ({ input }) => {
   return db.member.create({
