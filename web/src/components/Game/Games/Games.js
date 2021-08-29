@@ -26,10 +26,14 @@ const Games = ({ games, onRowClick, selectedRowId }) => {
       }
     })
   }
+  const onClick = (id) => {
+    const activeGame = games.find((game) => game.id === id)
+    onRowClick(activeGame)
+  }
   return (
     <Table
       data={formatGamesForTable(games)}
-      onRowClick={onRowClick}
+      onRowClick={onClick}
       selectedRowId={selectedRowId}
     />
   )

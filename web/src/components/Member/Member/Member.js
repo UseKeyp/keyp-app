@@ -10,7 +10,6 @@ const Member = ({ member }) => {
     ...member.treasuresPlayedWhite,
   ].sort((a, b) => new Date(a.endTime) < new Date(b.endTime))
   const [activeGame, setActiveGame] = React.useState(treasuresList[0])
-
   return (
     <div className="max-width-container">
       <div className="grid grid-rows-1">
@@ -44,7 +43,7 @@ const Member = ({ member }) => {
               ) : (
                 <GameCardCell
                   id={activeGame.id}
-                  memberId={activeGame.whiteId}
+                  memberId={member.id}
                   endTime={activeGame.endTime}
                 />
               )}

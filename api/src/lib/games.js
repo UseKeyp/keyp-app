@@ -98,14 +98,14 @@ export const fetchGames = async (id) => {
 
 export const fetchGame = async ({ id, memberId, endTime }) => {
   const year = new Date(endTime).getFullYear()
-  const month = new Date(endTime).getMonth() + 1
+  let month = new Date(endTime).getMonth() + 1
+  if (month.toString().length < 2) month = '0' + month
   const res = await fetch(
-    `https://api.chess.com/pub/player/${id}/games/${year}/${month}`
+    `https://api.chess.com/pub/player/${memberId}/games/${year}/${month}`
   )
   const json = await res.json()
   if (!json.games) return null
-  console.log(json.games)
-  const game = json.games.find((g) => g.url.includes(gameId))
+  const game = json.games.find((g) => g.url.includes(id))
   if (!game) return null
   return parseGame(game)
 }
