@@ -19,7 +19,6 @@ const parseDate = (rawDate) => {
 }
 
 export const parsePgn = (pgn) => {
-  console.log(pgn)
   let black
   let white
   let winner = 'white'
@@ -63,14 +62,14 @@ const getGameOutcome = ({ white, black }) => {
   if (black.result === 'win') return 'black'
   return 'draw'
 }
-const parseGames = (gamesFromChessDotCom) => {
+export const parseGames = (gamesFromChessDotCom) => {
   return gamesFromChessDotCom.map((game) => {
-    console.log(game)
-    const { termination, blackRating, whiteRating, timeControl } = parsePgn(
-      game.pgn
-    )
+    const { termination, blackRating, whiteRating, timeControl, moveCount } =
+      parsePgn(game.pgn)
+    const splitUrl = game.url.split('/')
+    const id = splitUrl[splitUrl.length - 1]
     return {
-      id: game.url.split('/')[-1],
+      id,
       outcome: getGameOutcome({ white: game.white, black: game.black }),
       termination,
       blackRating,
@@ -79,6 +78,7 @@ const parseGames = (gamesFromChessDotCom) => {
       blackId: game.black.username,
       whiteId: game.white.username,
       endTime: game.end_time,
+      moveCount,
     }
   })
 }

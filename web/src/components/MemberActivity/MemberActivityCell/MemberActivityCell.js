@@ -2,9 +2,8 @@ import MemberActivity from 'src/components/MemberActivity/MemberActivity'
 
 export const QUERY = gql`
   query FindMemberActivityQuery($address: String!) {
-    member: member(id: $address) {
-      id
-      address
+    activity: member(id: $address) {
+      activity
     }
   }
 `
@@ -17,6 +16,6 @@ export const Failure = ({ error }) => (
   <div style={{ color: 'red' }}>Error: {error.message}</div>
 )
 
-export const Success = ({ memberActivity }) => {
-  return <MemberActivity memberActivity={memberActivity} />
+export const Success = ({ activity }) => {
+  return <MemberActivity activity={activity} />
 }

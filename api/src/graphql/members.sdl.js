@@ -12,6 +12,7 @@ export const schema = gql`
     imageSrc: String!
     country: String!
     masterTitle: String
+    activity: JSON
   }
 
   type Query {

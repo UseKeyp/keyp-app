@@ -35,5 +35,5 @@ export const fetchMember = async (idOrAddress) => {
   const rating = 999
   const country = 'USA'
   const imageSrc = ''
-  return { ...member, rating, country, imageSrc }
+  return { ...member, rating, country, imageSrc, activity: null }
 }

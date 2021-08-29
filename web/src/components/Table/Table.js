@@ -9,6 +9,7 @@ const Table = ({
   colProportions,
   selectedRowId,
 }) => {
+  if (!data[0]) return <></>
   const headRow = Object.keys(data[0])
     .filter((item) => item !== 'id' && !showId)
     .map((item) => item.charAt(0).toUpperCase() + item.slice(1))

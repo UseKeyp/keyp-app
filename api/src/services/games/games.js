@@ -8,12 +8,12 @@ export const beforeResolver = (rules) => {
 
 // Games by member id
 export const games = async ({ id }) => {
-  // TODO: Fetch games from chess.com API
   const res = await fetch(
     `https://api.chess.com/pub/player/${id}/games/2021/02`
   )
-  const games = await res.json()
-  return parseGames(games)
+  const json = await res.json()
+  const games = parseGames(json.games)
+  return games
 }
 
 // Game by game id

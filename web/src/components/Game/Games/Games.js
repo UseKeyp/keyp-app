@@ -3,14 +3,13 @@ import Table from 'src/components/Table'
 const Games = ({ games, onRowClick, selectedRowId }) => {
   const formatGamesForTable = (games) => {
     return games.map((game) => {
-      const { whiteId, blackId, outcome, moveCount, id } = game
       return {
-        id,
-        White: whiteId,
-        Black: blackId,
-        Winner: outcome,
-        Result: termination,
-        Moves: moveCount,
+        Id: game.id,
+        White: game.whiteId,
+        Black: game.blackId,
+        Winner: game.outcome,
+        Result: game.termination,
+        Moves: game.moveCount,
       }
     })
   }
