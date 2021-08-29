@@ -21,8 +21,8 @@ contract TreasureMarket is
   mapping(address => uint) private lastSignedMetaTransaction;
   uint public gasLessRateLimit;
 
-  uint feePercentagePoint; //out of 1000. 25/1000 = 2.5%
-  uint royaltyPercentagePoint; //out of 1000.
+  uint public feePercentagePoint; //out of 1000. 25/1000 = 2.5%
+  uint public royaltyPercentagePoint; //out of 1000.
 
   //sale storage
   mapping (uint => bool) public isForSaleById;
@@ -76,6 +76,14 @@ contract TreasureMarket is
     //use `call` here to pass on gas, so you can do more stuff when this is called.
     bool sent, bytes memory data = to.call{value: amount}("");
     require(sent, "Failed to send ETH. Transaction fails.");
+  }
+
+  function setRoyalty(uint _points) public onlyOwner{
+    royaltyPercentagePoint = _points;
+  }
+
+  function setFee(uint _points) public onlyOwner{
+    feePercentagePoint = _points;
   }
 
 }
