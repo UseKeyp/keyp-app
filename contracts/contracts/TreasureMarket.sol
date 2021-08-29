@@ -66,13 +66,6 @@ contract TreasureMarket is
     treasure.safeTransferFrom(treasure.ownerOf(_id), _msgSender(), _id);
   }
 
-  //User can transfer their NFT for free using a metaTransaction that just calls basic safeTransferFrom in the Treasure contract.
-  //Other checks in safeTransferFrom should still protect the asset.
-  function metaTransfer(address _to, uint _id) public {
-    require(_msgSender() == treasure.ownerOf(_id));
-    treasure.safeTransferFrom(_msgSender(), _to, _id);
-  }
-
   //User signs a message using Signature
   function startAuction(uint startTime, uint endTime, uint _id, uint minPrice) public pure{
     //TODO
