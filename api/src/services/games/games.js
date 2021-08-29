@@ -1,6 +1,6 @@
 import { requireAuth } from 'src/lib/auth'
+import { parseGames } from 'src/lib/games'
 
-import { parsePgn } from 'src/lib/games'
 // Used when the environment variable REDWOOD_SECURE_SERVICES=1
 export const beforeResolver = (rules) => {
   rules.add(requireAuth)
@@ -9,34 +9,11 @@ export const beforeResolver = (rules) => {
 // Games by member id
 export const games = async ({ id }) => {
   // TODO: Fetch games from chess.com API
-  const games = await fetch(
+  const res = await fetch(
     `https://api.chess.com/pub/player/${id}/games/2021/02`
   )
-  const getGameOutcome = ({ white, black }) => {
-    if (white.result === 'win') return 'white'
-    if (black.result === 'win') return 'black'
-    return 'draw'
-  }
-  const { termination, blackRating, whiteRating, timeControl } = parsePgn(
-    game.pgn
-  )
-  const parseGames = (gamesFromChessDotCom) => {
-    return gamesFromChessDotCom.map((game) => {
-      // Convert pgn
-      return {
-        id: game.url.split('/')[-1],
-        outcome: getGameOutcome({ white: game.white, black: game.black }),
-        termination,
-        blackRating,
-        whiteRating,
-        timeControl,
-        blackId: game.black.username,
-        whiteId: game.white.username,
-        endTime: game.end_time,
-      }
-    })
-  }
-  return parseGames(await games.json)
+  const games = await res.json()
+  return parseGames(games)
 }
 
 // Game by game id
