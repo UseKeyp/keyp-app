@@ -1,4 +1,4 @@
-import TreasureOpening from 'src/components/TreasureOpening/TreasureOpening'
+import TreasureOpening from 'src/components/Treasure/TreasureOpening'
 
 export const QUERY = gql`
   query FindTreasureOpeningQuery($id: String!) {

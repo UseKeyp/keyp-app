@@ -96,9 +96,11 @@ export const fetchGames = async (id) => {
   return games.map((game) => parseGame(game))
 }
 
-export const fetchGame = async (id, gameId, date) => {
+export const fetchGame = async ({ id, memberId, endTime }) => {
+  const year = new Date(endTime).getFullYear()
+  const month = new Date(endTime).getMonth() + 1
   const res = await fetch(
-    `https://api.chess.com/pub/player/${id}/games/2021/02`
+    `https://api.chess.com/pub/player/${id}/games/${year}/${month}`
   )
   const json = await res.json()
   if (!json.games) return null

@@ -1,4 +1,4 @@
-import TreasureCard from 'src/components/TreasureCard'
+import TreasureCard from 'src/components/Treasure/TreasureCard'
 
 export const QUERY = gql`
   query FindTreasureQuery($id: String!) {

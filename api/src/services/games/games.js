@@ -14,11 +14,12 @@ export const games = async ({
 }
 
 // Game by game id and date
-export const game = async ({
+export const game = ({
   id, // game ID
-  date,
+  memberId,
+  endTime,
 }) => {
-  return await fetchGame(id, date)
+  return fetchGame({ id, memberId, endTime })
 }
 
 const exampleGame = {

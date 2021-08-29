@@ -1,9 +1,9 @@
 import Button from 'src/components/Button'
 
-import CardCell from 'src/components/CardCell'
-import TreasureOpeningCell from 'src/components/TreasureOpening/TreasureOpeningCell'
-import TreasureMovesCell from 'src/components/TreasureMoves/TreasureMovesCell'
-import TreasureNftDetailsCell from 'src/components/TreasureNftDetails/TreasureNftDetailsCell'
+import TreasureCardCell from 'src/components/Treasure/TreasureCardCell'
+import TreasureOpeningCell from 'src/components/Treasure/TreasureOpeningCell'
+import TreasureMovesCell from 'src/components/Treasure/TreasureMovesCell'
+import TreasureNftDetailsCell from 'src/components/Treasure/TreasureNftDetailsCell'
 
 const TreasurePage = ({ id }) => {
   const ACCEPT_HIGHEST_BID = 'accept highest bid'
@@ -27,7 +27,7 @@ const TreasurePage = ({ id }) => {
             </div>
           </div>
           <div className="flex flex-col justify-start items-center order-1 md:order-2">
-            <CardCell id={id} />
+            <TreasureCardCell id={id} />
             <div className="buttons-wrapper w-full flex flex-wrap justify-center">
               <Button
                 onClick={() => onClick(ACCEPT_HIGHEST_BID)}
