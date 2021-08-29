@@ -4,73 +4,85 @@ pragma solidity ^0.8.0;
 import { OwnableUpgradeable } from '@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol';
 import { PausableUpgradable } from '@openzeppelin/contracts-upgradeable/access/PausableUpgradeable.sol';
 
-import '@opengsn/contracts/src/BaseRelayRecipient.sol';
+//Includes BaseRelayRecipient, for meta transactions.
+import "@openzeppelin/contracts/metatx/ERC2771Context.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
-import 'Treasure.sol';
+import "Treasure.sol";
+import "SignatureChecker.sol";
 
 contract TreasureMarket is
-  PausableUpgradable,
-  OwnableUpgradeable,
-  BaseRelayRecipient
+  PausableUpgradable, // pausable by owner.
+  OwnableUpgradeable, //owned by deployer.
+  ERC2771Context, // meta transactions enabled.
+  ReentrancyGuard
 {
   //Time of last meta transaction by this user.
-  mapping(address => uint256) private lastSignedMetaTransaction;
-  uint256 public gasLessRateLimit;
+  mapping(address => uint) private lastSignedMetaTransaction;
+  uint public gasLessRateLimit;
 
-  mapping(uint256 => bool) public isForSaleById;
-  mapping(uint256 => uint256) public priceById;
+  uint feePercentagePoint; //out of 1000. 25/1000 = 2.5%
+  uint royaltyPercentagePoint; //out of 1000.
+
+  //sale storage
+  mapping (uint => bool) public isForSaleById;
+  mapping (uint => uint) public priceById;
+  mapping (uint => address) public seller;
 
   Treasure treasure;
 
   constructor(
     uint256 _gasLessRateLimit,
     address _treasureDeployedAddress,
-    address _forwarder
+    address _forwarder,
+    uint _feePercentagePoint,
+    uint _royaltyPercentagePoint
   ) {
     gasLessRateLimit = _gasLessRateLimit;
     treasure = Treasure(_treasureDeployedAddress);
     trustedForwarder = _forwarder;
+    feePercentagePoint = _feePercentagePoint;
+    royaltyPercentagePoint = _royaltyPercentagePoint;
   }
 
-  function listAsset(
-    uint256 weiPrice,
-    bool isForSale,
-    uint256 _id
-  ) {
-    require(msg.sender == treasure.ownerOf(_id));
-
-    if (isForSale) {
-      isForSaleById[_id] = true;
-      priceById[_id] = weiPrice;
-    } else {
-      isForSaleById[_id] = false;
-      priceById[_id] = 0;
-    }
-  }
-
-  function metaListAsset(
-    uint256 weiPrice,
-    bool isForSale,
-    uint256 _id
-  ) {
-    require(_msgSender() == treasure.ownerOf(_id));
-  }
-
-  function instantBuy(uint256 _id) public payable {
+  //signature validation can be checked in SignatureChecker.sol
+  //assets are listed offchain using eth-sig-util to sign messages
+  function instantBuy(
+    uint _id
+  ) public payable nonReentrant() {
+    //check SignatureChecker of sale. if its invalid, remove it.
     require(isForSaleById[_id]);
     require(msg.value == priceById[_id]);
 
-    treasure.safeTransferFrom(treasure.ownerOf(_id), msg.sender, _id);
-  }
+    //Split profits
+    bool sentRoyalty, bytes memory data = treasure.games[_id].originalPlayer.call{value: msg.value * royaltyPercentagePoint / 1000}("");
+    require(sentRoyalty, "Failed to send royalty. Transaction fails.");
 
-  function metaInstantBuy() public payable {
-    require(isForSaleById[_id]);
-    require(msg.value == priceById[_id]);
+
+    bool sentFunds, data = seller.call{value: msg.value * (1000 - royaltyPercentagePoint - feePercentagePoint) / 1000}("");
+    require(sentRoyalty, "Failed to send funds to seller. Transaction fails.");
+    //remaining funds (msg.value*feePercentagePoint/1000) are held in this contract until owner wants to withdraw.
 
     treasure.safeTransferFrom(treasure.ownerOf(_id), _msgSender(), _id);
   }
 
-  function metaTransfer() public {
+  //User can transfer their NFT for free using a metaTransaction that just calls basic safeTransferFrom in the Treasure contract.
+  //Other checks in safeTransferFrom should still protect the asset.
+  function metaTransfer(address _to, uint _id) public {
     require(_msgSender() == treasure.ownerOf(_id));
+    treasure.safeTransferFrom(_msgSender(), _to, _id);
   }
+
+  //User signs a message using Signature
+  function startAuction(uint startTime, uint endTime, uint _id, uint minPrice) public pure{
+    //TODO
+  }
+
+  //Marketplace Owner can withdraw fees.
+  function ownerWithdrawFees(address payable to, uint256 amount) public onlyOwner {
+    //use `call` here to pass on gas, so you can do more stuff when this is called.
+    bool sent, bytes memory data = to.call{value: amount}("");
+    require(sent, "Failed to send ETH. Transaction fails.");
+  }
+
 }

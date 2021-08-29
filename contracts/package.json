@@ -1,7 +1,7 @@
 {
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.2",
-    "@openzeppelin/contracts-upgradeable":"^4.1.0",
+    "@openzeppelin/contracts-upgradeable": "^4.1.0",
     "@typechain/ethers-v5": "^7.0.1",
     "@typechain/hardhat": "^2.0.2",
     "@types/chai": "^4.2.18",
@@ -11,8 +11,8 @@
     "chai-ethers": "^0.0.1",
     "dotenv": "^10.0.0",
     "ethereum-waffle": "^3.3.0",
-    "ethers": "^5.3.1",
-    "hardhat": "^2.3.3",
+    "ethers": "^5.4.5",
+    "hardhat": "^2.6.1",
     "hardhat-deploy": "^0.8.6",
     "hardhat-deploy-ethers": "^0.3.0-beta.10",
     "hardhat-prettier": "^0.0.1",
