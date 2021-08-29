@@ -13,7 +13,7 @@ export const QUERY = gql`
       updatedAt
       cardColor
       blackRating
-      duration
+      timeControl
       whiteRating
       termination
       endTime

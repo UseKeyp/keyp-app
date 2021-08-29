@@ -16,7 +16,7 @@ export const schema = gql`
     updatedAt: DateTime!
     cardColor: String!
     blackRating: Int!
-    duration: Int!
+    timeControl: Int!
     whiteRating: Int!
     outcome: String!
     termination: String!
@@ -61,7 +61,7 @@ export const schema = gql`
     name: String!
     cardColor: String!
     blackRating: Int!
-    duration: Int!
+    timeControl: Int!
     whiteRating: Int!
     termination: String!
     endTime: DateTime!
@@ -86,7 +86,7 @@ export const schema = gql`
     name: String
     cardColor: String
     blackRating: Int
-    duration: Int
+    timeControl: Int
     whiteRating: Int
     termination: String
     endTime: DateTime

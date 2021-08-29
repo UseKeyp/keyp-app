@@ -15,7 +15,7 @@ export const QUERY = gql`
       blackMasterTitle
       whiteMasterTitle
       externalUrl
-      duration
+      timeControl
       winner {
         id
       }
