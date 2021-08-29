@@ -1,5 +1,5 @@
 import { requireAuth } from 'src/lib/auth'
-import { parseGames } from 'src/lib/games'
+import { parseGames, fetchGame, fetchGames } from 'src/lib/games'
 
 // Used when the environment variable REDWOOD_SECURE_SERVICES=1
 export const beforeResolver = (rules) => {
@@ -7,18 +7,18 @@ export const beforeResolver = (rules) => {
 }
 
 // Games by member id
-export const games = async ({ id }) => {
-  const res = await fetch(
-    `https://api.chess.com/pub/player/${id}/games/2021/02`
-  )
-  const json = await res.json()
-  const games = parseGames(json.games)
-  return games
+export const games = async ({
+  id, // user ID
+}) => {
+  return fetchGames(id)
 }
 
-// Game by game id
-export const game = async () => {
-  return exampleGame
+// Game by game id and date
+export const game = async ({
+  id, // game ID
+  date,
+}) => {
+  return await fetchGame(id, date)
 }
 
 const exampleGame = {

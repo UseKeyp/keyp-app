@@ -19,6 +19,6 @@ export const schema = gql`
 
   type Query {
     games(id: String!): [Game!]!
-    game(id: String!): Game
+    game(id: String!, gameId: String!, date: DateTime!): Game
   }
 `

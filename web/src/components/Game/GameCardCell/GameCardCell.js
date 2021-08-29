@@ -1,21 +1,15 @@
 import GameCard from 'src/components/Game/GameCard'
 
 export const QUERY = gql`
-  query GameQuery($id: String!) {
-    game: game(id: $id) {
+  query GameQuery($id: String!, $gameId: String!, $date: DateTime!) {
+    game: game(id: $id, gameId: $gameId, date: $date) {
       id
       endTime
       moveCount
       outcome
-      winner {
-        id
-      }
-      black {
-        id
-      }
-      white {
-        id
-      }
+      termination
+      blackId
+      whiteId
     }
   }
 `

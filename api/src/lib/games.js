@@ -62,23 +62,48 @@ const getGameOutcome = ({ white, black }) => {
   if (black.result === 'win') return 'black'
   return 'draw'
 }
-export const parseGames = (gamesFromChessDotCom) => {
-  return gamesFromChessDotCom.map((game) => {
-    const { termination, blackRating, whiteRating, timeControl, moveCount } =
-      parsePgn(game.pgn)
-    const splitUrl = game.url.split('/')
-    const id = splitUrl[splitUrl.length - 1]
-    return {
-      id,
-      outcome: getGameOutcome({ white: game.white, black: game.black }),
-      termination,
-      blackRating,
-      whiteRating,
-      timeControl,
-      blackId: game.black.username,
-      whiteId: game.white.username,
-      endTime: game.end_time,
-      moveCount,
-    }
-  })
+export const parseGame = (game) => {
+  const {
+    termination,
+    date,
+    blackRating,
+    whiteRating,
+    timeControl,
+    moveCount,
+  } = parsePgn(game.pgn)
+  const splitUrl = game.url.split('/')
+  const id = splitUrl[splitUrl.length - 1]
+  return {
+    id,
+    outcome: getGameOutcome({ white: game.white, black: game.black }),
+    termination,
+    blackRating,
+    whiteRating,
+    timeControl,
+    blackId: game.black.username,
+    whiteId: game.white.username,
+    endTime: new Date(game.end_time * 1000),
+    moveCount,
+  }
+}
+
+export const fetchGames = async (id) => {
+  const res = await fetch(
+    `https://api.chess.com/pub/player/${id}/games/2021/02`
+  )
+  const games = (await res.json()).games
+  if (!games) return []
+  return games.map((game) => parseGame(game))
+}
+
+export const fetchGame = async (id, gameId, date) => {
+  const res = await fetch(
+    `https://api.chess.com/pub/player/${id}/games/2021/02`
+  )
+  const json = await res.json()
+  if (!json.games) return null
+  console.log(json.games)
+  const game = json.games.find((g) => g.url.includes(gameId))
+  if (!game) return null
+  return parseGame(game)
 }

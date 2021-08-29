@@ -2,12 +2,12 @@ import Table from 'src/components/Table/Table'
 
 const GameCard = ({ game }) => {
   const formatGameForTable = (game) => {
-    const { white, black, winner, outcome, moveCount } = game
+    const { whiteId, blackId, winnerId, outcome, moveCount } = game
     return [
       {
-        White: white.id,
-        Black: black.id,
-        Winner: winner.id,
+        White: whiteId,
+        Black: blackId,
+        Winner: winnerId,
         Result: outcome,
         Moves: moveCount,
       },

@@ -13,7 +13,7 @@ export const Loading = () => <div>Loading...</div>
 
 export const Empty = (props) => {
   // If treasure doesn't exist, load the game card
-  return <GameCardCell id={props.id} />
+  return <GameCardCell id={props.id} gameId={props.gameId} date={props.date} />
 }
 
 export const Failure = ({ error }) => (
