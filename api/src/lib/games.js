@@ -1,3 +1,6 @@
+import { db } from 'src/lib/db'
+import { getTreasureId } from 'src/lib/treasure'
+
 const countMoves = (moves) => {
   return Math.round(moves.trim().split(' ').length / 2)
 }
@@ -62,7 +65,8 @@ const getGameOutcome = ({ white, black }) => {
   if (black.result === 'win') return 'black'
   return 'draw'
 }
-export const parseGame = (game) => {
+
+export const parseGame = async (game) => {
   const {
     termination,
     date,
@@ -70,6 +74,7 @@ export const parseGame = (game) => {
     whiteRating,
     timeControl,
     moveCount,
+    moves,
   } = parsePgn(game.pgn)
   const splitUrl = game.url.split('/')
   const id = splitUrl[splitUrl.length - 1]
@@ -84,7 +89,18 @@ export const parseGame = (game) => {
     whiteId: game.white.username,
     endTime: new Date(game.end_time * 1000),
     moveCount,
+    moves,
   }
+}
+
+const hydrateGameWithTreasures = async ({ game, memberId }) => {
+  const cardColor = memberId === game.whiteId ? 'white' : 'black'
+  const treasureId = getTreasureId({
+    moves: game.moves,
+    endTime: game.endTime,
+    cardColor,
+  })
+  return await db.treasure.findUnique({ where: { id: treasureId } })
 }
 
 export const fetchGames = async (id) => {
@@ -93,7 +109,12 @@ export const fetchGames = async (id) => {
   )
   const games = (await res.json()).games
   if (!games) return []
-  return games.map((game) => parseGame(game))
+  return await Promise.all(
+    games.map(async (game) => {
+      const g = await parseGame(game)
+      return await hydrateGameWithTreasures({ game: g, memberId: id })
+    })
+  )
 }
 
 export const fetchGame = async ({ id, memberId, endTime }) => {

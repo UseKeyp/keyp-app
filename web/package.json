@@ -16,6 +16,7 @@
     "generate-icons": "node src/scripts/generate-icon-system"
   },
   "dependencies": {
+    "@ethersproject/hash": "^5.4.0",
     "@redwoodjs/auth": "^0.34.1",
     "@redwoodjs/forms": "^0.34.1",
     "@redwoodjs/router": "^0.34.1",

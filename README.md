@@ -11,6 +11,7 @@
 ### Setup
 
 ##### Dependencies
+
 1. `nvm`
 2. Node version 14, because that's what redwood uses. Try `nvm install 14`, then `nvm use 14`.
 
@@ -25,14 +26,14 @@ yarn install
 ```terminal
 yarn redwood dev
 ```
+
 After running this dev server, access the Graphql playground at: http://localhost:8910/api/graphql
 
 Check out the components in the Story Book
+
 ```terminal
 yarn rw storybook
 ```
-
-
 
 Your browser should open automatically to `http://localhost:8910` to see the web app. Lambda functions run on `http://localhost:8911` and are also proxied to `http://localhost:8910/.redwood/functions/*`.
 
@@ -41,6 +42,53 @@ Your browser should open automatically to `http://localhost:8910` to see the web
 See docs for [Local Postgres Setup](https://redwoodjs.com/docs/local-postgres-setup)
 
 After you've set up postgres, run `yarn rw prisma migrate dev`
+
+# Usage
+
+Treasure ID is calculated as `hash(moves + endTime + white/black variant)`. We use the games End Time as the date for the game. You can fetch details about any game via the Chess.com public API like this:
+
+```js
+// Note: single digit months must be pre-pended with a "0"
+// eg `https://api.chess.com/pub/player/jschiarizzi/games/2021/02`
+// See https://www.chess.com/news/view/published-data-api
+const res = await fetch(
+  `https://api.chess.com/pub/player/${id}/games/${year}/${month}`
+)
+const games = (await res.json()).games
+const endTime = games[0].end_time
+```
+
+You can also calculate End Time from the PGN. Grab these two values:
+
+```js
+// pgn
+[EndDate "2021.02.08"]
+[EndTime "01:52:23"]
+```
+
+In your browser or Javascript console, convert to UNIX timestamp like this:
+
+```js
+Date.parse('2021-02-08 1:52:23.000Z') / 1000
+// > 1612749143
+```
+
+Now that you have all the required variables, create the hash as follows:
+
+```js
+const { id: sha3 } = require('@ethersproject/hash')
+
+export const getTreasureId = ({
+  moves, // String of moves from the PGN
+  endTime, // String of UNIX timecode from chess.com API
+  cardColor, // String of version of treasure: "white" or "black"
+}) => {
+  return sha3(moves + endTime + variant)
+  // sha3("1. d4 d5 2. c4 e6 3. Nc3 c6 4. e3 Nf6"+"1612749143"+"white")
+}
+```
+
+# Devops
 
 ### Docker
 
