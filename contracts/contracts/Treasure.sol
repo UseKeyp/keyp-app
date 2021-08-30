@@ -1,18 +1,18 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import { OwnableUpgradeable } from '@openzeppelin/contracts/access/Ownable.sol';
-import { ERC721Upgradeable } from '@openzeppelin/contracts/token/ERC721/ERC721.sol';
-import { ERC721URIStorageUpgradeable } from '@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol';
-import { CountersUpgradeable } from '@openzeppelin/contracts/utils/Counters.sol';
+import { Ownable } from '@openzeppelin/contracts/access/Ownable.sol';
+import { ERC721 } from '@openzeppelin/contracts/token/ERC721/ERC721.sol';
+import { ERC721URIStorage } from '@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol';
+import { Counters } from '@openzeppelin/contracts/utils/Counters.sol';
 
 //Only used for rescues.
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 
-contract NiftyCheckers is ERC721URIStorageUpgradeable, OwnableUpgradeable {
-  using CountersUpgradeable for CountersUpgradeable.Counter;
-  CountersUpgradeable.Counter private _tokenIds;
+contract Treasure is ERC721URIStorage, Ownable {
+  using Counters for Counters.Counter;
+  Counters.Counter private _tokenIds;
 
   //State Storage
   bool private initialized;
@@ -28,17 +28,17 @@ contract NiftyCheckers is ERC721URIStorageUpgradeable, OwnableUpgradeable {
     uint16 achievement2; //If these are onchain, it can be something that future gov token...
     uint16 achievement3; //...holders can vote on later.
     bool color; //0 white, 1 black
-    address originalPlayer;
   }
 
   mapping(uint256 => Game) public games;
+  mapping (uint256 => address) public originalPlayers;
 
   //Events
   event GameMinted(address to, uint256 id, string uri, bytes32 movesHash);
   event AdminAdded(address addedBy, address newAdmin);
   event AdminRemoved(address addedBy, address newAdmin);
 
-  constructor() {
+  constructor() ERC721("Treasure Chess", "CHESS") {
     //TODO remove constructor function. use initializer instead
     admins[msg.sender] = true;
   }
@@ -51,7 +51,7 @@ contract NiftyCheckers is ERC721URIStorageUpgradeable, OwnableUpgradeable {
   function mint(
     address player,
     string memory tokenURI,
-    bytes _moveHash,
+    bytes32 _moveHash,
     uint8 _level,
     uint16 _achievement1,
     uint16 _achievement2,
@@ -64,12 +64,18 @@ contract NiftyCheckers is ERC721URIStorageUpgradeable, OwnableUpgradeable {
     _mint(player, newItemId);
     _setTokenURI(newItemId, tokenURI);
 
-    Game newGame = Game(_moveHash, _level, _achievement1, _achievement2, _achievement3, _color, player);
-    games.add(newGame);
+    Game memory newGame = Game(_moveHash, _level, _achievement1, _achievement2, _achievement3, _color);
+    games[newItemId] = newGame;
+    originalPlayers[newItemId] = player;
 
     emit GameMinted(player, newItemId, tokenURI, _moveHash);
     return newItemId;
   }
+
+
+    function getOriginalPlayer(uint _id) public view returns(address){
+      return originalPlayers[_id];
+    }
 
   function getTotalGames() public view returns (uint256) {
     return _tokenIds.current();
@@ -89,7 +95,7 @@ contract NiftyCheckers is ERC721URIStorageUpgradeable, OwnableUpgradeable {
       Rescue ERC20s and ERC721s mistakingly sent to the contract
   */
   function rescueEtherOwner(address payable to, uint256 amount) public onlyOwner {
-    to.send(amount);
+    to.transfer(amount);
   }
 
   function rescueERC20Owner(address _token, address to, uint amount) public onlyOwner{
