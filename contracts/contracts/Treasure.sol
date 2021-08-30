@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import { OwnableUpgradeable } from '@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol';
-import { ERC721Upgradeable } from '@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol';
-import { ERC721URIStorageUpgradeable } from '@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721URIStorageUpgradeable.sol';
-import { CountersUpgradeable } from '@openzeppelin/contracts-upgradeable/utils/CountersUpgradeable.sol';
+import { OwnableUpgradeable } from '@openzeppelin/contracts/access/Ownable.sol';
+import { ERC721Upgradeable } from '@openzeppelin/contracts/token/ERC721/ERC721.sol';
+import { ERC721URIStorageUpgradeable } from '@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol';
+import { CountersUpgradeable } from '@openzeppelin/contracts/utils/Counters.sol';
 
 //Only used for rescues.
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";

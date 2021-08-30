@@ -2,14 +2,13 @@
 pragma solidity ^0.8.0;
 
 import { OwnableUpgradeable } from '@openzeppelin/contracts/access/Ownable.sol';
-import { PausableUpgradable } from '@openzeppelin/contracts/access/Pausable.sol';
+import { PausableUpgradable } from '@openzeppelin/contracts/security/Pausable.sol';
 
 //Includes BaseRelayRecipient, for meta transactions.
 import "@openzeppelin/contracts/metatx/ERC2771Context.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
-import "Treasure.sol";
-import "SignatureChecker.sol";
+import "./Treasure.sol";
 
 contract TreasureMarket is
   Pausable, // pausable by owner.
