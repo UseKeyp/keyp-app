@@ -19,7 +19,6 @@ contract NiftyCheckers is ERC721URIStorageUpgradeable, OwnableUpgradeable {
 
   //Access Storage
   mapping(address => bool) admins;
-  address marketplace;
 
   //Treasure Storage
   struct Game {
@@ -66,6 +65,7 @@ contract NiftyCheckers is ERC721URIStorageUpgradeable, OwnableUpgradeable {
     _setTokenURI(newItemId, tokenURI);
 
     Game newGame = Game(_moveHash, _level, _achievement1, _achievement2, _achievement3, _color, player);
+    games.add(newGame);
 
     emit GameMinted(player, newItemId, tokenURI, _moveHash);
     return newItemId;
@@ -83,13 +83,6 @@ contract NiftyCheckers is ERC721URIStorageUpgradeable, OwnableUpgradeable {
   function removeAdmin(address _admin) public onlyOwner {
     admins[_admin] = false;
     AdminRemoved(msg.sender, _admin);
-  }
-
-  /**
-    @dev used to set the marketplace contract so users can use it without a first transaction to approve it
-    **/
-  function updateTreasureMarket(address _newMarket) public onlyOwner {
-    marketplace = _newMarket;
   }
 
   /*

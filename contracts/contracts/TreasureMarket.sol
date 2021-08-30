@@ -5,8 +5,8 @@ import { OwnableUpgradeable } from '@openzeppelin/contracts-upgradeable/access/O
 import { PausableUpgradable } from '@openzeppelin/contracts-upgradeable/access/PausableUpgradeable.sol';
 
 //Includes BaseRelayRecipient, for meta transactions.
-import "@openzeppelin/contracts/metatx/ERC2771Context.sol";
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts-upgradeable/metatx/ERC2771ContextUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
 
 import "Treasure.sol";
 import "SignatureChecker.sol";
@@ -14,8 +14,8 @@ import "SignatureChecker.sol";
 contract TreasureMarket is
   PausableUpgradable, // pausable by owner.
   OwnableUpgradeable, //owned by deployer.
-  ERC2771Context, // meta transactions enabled.
-  ReentrancyGuard
+  ERC2771ContextUpgradeable, // meta transactions enabled.
+  ReentrancyGuardUpgradeable
 {
   //Time of last meta transaction by this user.
   mapping(address => uint) private lastSignedMetaTransaction;
@@ -28,6 +28,7 @@ contract TreasureMarket is
   mapping (uint => bool) public isForSaleById;
   mapping (uint => uint) public priceById;
   mapping (uint => address) public seller;
+  mapping (uint => uint) public endTime
 
   Treasure treasure;
 
@@ -45,14 +46,28 @@ contract TreasureMarket is
     royaltyPercentagePoint = _royaltyPercentagePoint;
   }
 
+  function listItem(uint _id, uint price, uint duration){
+    require(treasure.ownerOf(_id) == _msgSender(), "You can not list assets you dont own.");
+    require(price != 0, "Price can not be set to 0.");
+    require(duration > 1, "Duration of the sale must be longer");
+
+    isForSaleById[_id] = true;
+    priceById[_id] = price;
+    seller[_id] = _msgSender()
+    endTime[_id] = block.timestamp + duration;
+
+    treasure.safeTransferFrom(_msgSender(), address(this), _tokenId);
+  }
+
   //signature validation can be checked in SignatureChecker.sol
   //assets are listed offchain using eth-sig-util to sign messages
   function instantBuy(
     uint _id
   ) public payable nonReentrant() {
     //check SignatureChecker of sale. if its invalid, remove it.
-    require(isForSaleById[_id]);
-    require(msg.value == priceById[_id]);
+    require(isForSaleById[_id], "Item not for sale.");
+    require(msg.value == priceById[_id], "Incorrect amount of value sent.");
+    require(block.timestamp < endTime[_id], "Auction has ended.")
 
     //Split profits
     bool sentRoyalty, bytes memory data = treasure.games[_id].originalPlayer.call{value: msg.value * royaltyPercentagePoint / 1000}("");
@@ -64,11 +79,6 @@ contract TreasureMarket is
     //remaining funds (msg.value*feePercentagePoint/1000) are held in this contract until owner wants to withdraw.
 
     treasure.safeTransferFrom(treasure.ownerOf(_id), _msgSender(), _id);
-  }
-
-  //User signs a message using Signature
-  function startAuction(uint startTime, uint endTime, uint _id, uint minPrice) public pure{
-    //TODO
   }
 
   //Marketplace Owner can withdraw fees.
