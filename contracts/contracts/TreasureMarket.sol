@@ -38,7 +38,7 @@ contract TreasureMarket is
   event SaleComplete(address _seller, uint _id, address _buyer);
   event RoyaltySet(uint _royalty);
   event FeeSet(uint _fee);
-  event FeesWithdrawn(address _caller, address _to, uint256 amount);
+  event FeesWithdrawn(address _caller, address _to, uint256 _amount);
 
 
   constructor(
@@ -66,6 +66,7 @@ contract TreasureMarket is
     endTime[_id] = block.timestamp + duration;
 
     treasure.safeTransferFrom(_msgSender(), address(this), _tokenId);
+    emit StartSale(seller[_id], _id, price);
   }
 
   function cancelSale(_id) public{
@@ -77,7 +78,7 @@ contract TreasureMarket is
     endTime[_id] = 0;
 
     treasure.safeTransferFrom(address(this), _msgSender(), _tokenId);
-
+    emit CancelSale(_msgSender(), _id);
   }
 
   //signature validation can be checked in SignatureChecker.sol
@@ -101,7 +102,18 @@ contract TreasureMarket is
     //remaining funds (msg.value*feePercentagePoint/1000) are held in this contract until owner wants to withdraw.
 
     isForSaleById[_id] = false;
+    emit SaleComplete(seller[_id], _id, _msgSender());
     treasure.safeTransferFrom(treasure.ownerOf(_id), _msgSender(), _id);
+  }
+
+  function setRoyalty(uint _points) public onlyOwner{
+    royaltyPercentagePoint = _points;
+    emit RoyaltySet(_points);
+  }
+
+  function setFee(uint _points) public onlyOwner{
+    feePercentagePoint = _points;
+    emit FeeSet(_points);
   }
 
   //Marketplace Owner can withdraw fees.
@@ -109,14 +121,7 @@ contract TreasureMarket is
     //use `call` here to pass on gas, so you can do more stuff when this is called.
     bool sent, bytes memory data = to.call{value: amount}("");
     require(sent, "Failed to send ETH. Transaction fails.");
-  }
-
-  function setRoyalty(uint _points) public onlyOwner{
-    royaltyPercentagePoint = _points;
-  }
-
-  function setFee(uint _points) public onlyOwner{
-    feePercentagePoint = _points;
+    emit FeesWithdrawn(_msgSender(), to, amount);
   }
 
 }
