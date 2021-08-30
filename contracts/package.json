@@ -1,7 +1,7 @@
 {
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.2",
-    "@openzeppelin/contracts-upgradeable": "^4.1.0",
+    "@openzeppelin/contracts-upgradeable": "^4.3.1",
     "@typechain/ethers-v5": "^7.0.1",
     "@typechain/hardhat": "^2.0.2",
     "@types/chai": "^4.2.18",
@@ -31,5 +31,9 @@
     "compile": "hardhat compile",
     "test": "hardhat test",
     "deploy": "hardhat deploy"
+  },
+  "dependencies": {
+    "@opengsn/contracts": "^2.2.2",
+    "@openzeppelin/contracts": "^4.3.1"
   }
 }

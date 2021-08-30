@@ -1,21 +1,21 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import { OwnableUpgradeable } from '@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol';
-import { PausableUpgradable } from '@openzeppelin/contracts-upgradeable/access/PausableUpgradeable.sol';
+import { OwnableUpgradeable } from '@openzeppelin/contracts/access/Ownable.sol';
+import { PausableUpgradable } from '@openzeppelin/contracts/access/Pausable.sol';
 
 //Includes BaseRelayRecipient, for meta transactions.
-import "@openzeppelin/contracts-upgradeable/metatx/ERC2771ContextUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
+import "@openzeppelin/contracts/metatx/ERC2771Context.sol";
+import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 
 import "Treasure.sol";
 import "SignatureChecker.sol";
 
 contract TreasureMarket is
-  PausableUpgradable, // pausable by owner.
-  OwnableUpgradeable, //owned by deployer.
-  ERC2771ContextUpgradeable, // meta transactions enabled.
-  ReentrancyGuardUpgradeable
+  Pausable, // pausable by owner.
+  Ownable, //owned by deployer.
+  ERC2771Context, // meta transactions enabled.
+  ReentrancyGuard
 {
   //Time of last meta transaction by this user.
   mapping(address => uint) private lastSignedMetaTransaction;
