@@ -78,6 +78,7 @@ contract TreasureMarket is
     require(sentRoyalty, "Failed to send funds to seller. Transaction fails.");
     //remaining funds (msg.value*feePercentagePoint/1000) are held in this contract until owner wants to withdraw.
 
+    isForSaleById[_id] = false;
     treasure.safeTransferFrom(treasure.ownerOf(_id), _msgSender(), _id);
   }
 
