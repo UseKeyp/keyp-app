@@ -1,10 +1,8 @@
-import hre from "hardhat";
-
 async function main() {
   // We get the contract to deploy
   const Treasure = await ethers.getContractFactory("Treasure");
   const Market = await ethers.getContractFactory("TreasureMarket");
-  const Paymaster = await ethers.getContractFactory("ApprovelistPaymaster");
+  const Paymaster = await ethers.getContractFactory("SingleRecipientPaymaster");
 
 
   const treasure = await Treasure.deploy();
