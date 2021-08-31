@@ -20,7 +20,7 @@ const treasureData = [
     blackRating: 1500,
     whiteRating: 1400,
     blackMasterTitle: 'GM',
-    timeControl: 500, // game length in seconds
+    timeControl: 500, // game time variant
     termination: 'Checkmate', // eg. "Checkmate"
     endTime: new Date('2021-08-24T21:17:15+0000'),
     event: 'Live Chess', // eg. "Live Chess"
@@ -54,7 +54,7 @@ const treasureData = [
     blackRating: 1500,
     whiteRating: 1400,
     blackMasterTitle: 'GM',
-    timeControl: 500, // game length in seconds
+    timeControl: 500, // game time variant
     termination: 'Checkmate', // eg. "Checkmate"
     endTime: new Date('2021-08-25T21:17:15+0000'),
     event: 'Live Chess', // eg. "Live Chess"
@@ -93,7 +93,7 @@ const treasureData = [
     blackRating: 1500,
     whiteRating: 1400,
     blackMasterTitle: 'GM',
-    timeControl: 500, // game length in seconds
+    timeControl: 500, // game time variant
     termination: 'Checkmate', // eg. "Checkmate"
     endTime: new Date('2021-08-26T21:17:15+0000'),
     event: 'Live Chess', // eg. "Live Chess"
