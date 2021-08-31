@@ -31,14 +31,11 @@ const TreasureCard = ({ treasure }) => {
   }
 
   const { white: player1, black: player2 } = treasure
-  // TODO: Add edition to Treasure backend
-  const edition = 1
   // TODO: Pull from treasure
   const gifUrl = 'https://media0.giphy.com/media/3o6ZsYLRb6IG6vAkcU/giphy.gif'
   // TODO: Calculate from achievement
   const bannerColors = ['#fffff', '#00000']
-  // TODO: clean chess.com ID from externalUrl
-  const matchId = treasure.externalUrl
+  const matchId = treasure.externalUrl.split('/').pop()
   const gameDate = new Date(treasure.endTime)
 
   return (
@@ -148,13 +145,18 @@ const TreasureCard = ({ treasure }) => {
         <div className="footer-bar">
           <div>
             <span className="green-text">
-              <span className="capitalize">{edition}</span> Edition
-            </span>{' '}
-            {/* Does this need to be configurable - I thought there's always only one edition of each type */}
+              <span className="capitalize">
+                {treasure.cardColor.replace(/^\w/, (c) => c.toUpperCase())}
+              </span>{' '}
+              Edition{' '}
+            </span>
             1/1
           </div>
           <div className="middle-item">
-            <span className="green-text">Match</span> #{matchId}
+            <span className="green-text">Match</span>{' '}
+            <a href={treasure.externalUrl} target="_blank">
+              #{matchId}
+            </a>
           </div>
           <div className="right-item">
             {gameDate.toLocaleString('default', { month: 'long' })}{' '}
