@@ -29,7 +29,7 @@ describe('treasures', () => {
         updatedAt: '2021-08-25T21:34:37Z',
         cardColor: 'String',
         blackRating: 5203304,
-        duration: 3831849,
+        timeControl: 3831849,
         whiteRating: 3345481,
         termination: 'String',
         endTime: '2021-08-25T21:34:37Z',
@@ -51,7 +51,7 @@ describe('treasures', () => {
     expect(result.updatedAt).toEqual('2021-08-25T21:34:37Z')
     expect(result.cardColor).toEqual('String')
     expect(result.blackRating).toEqual(5203304)
-    expect(result.duration).toEqual(3831849)
+    expect(result.timeControl).toEqual(3831849)
     expect(result.whiteRating).toEqual(3345481)
     expect(result.termination).toEqual('String')
     expect(result.endTime).toEqual('2021-08-25T21:34:37Z')

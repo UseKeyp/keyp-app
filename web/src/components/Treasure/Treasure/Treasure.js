@@ -61,7 +61,7 @@ const Treasure = ({ treasure }) => {
             </tr>
             <tr>
               <th>Duration</th>
-              <td>{treasure.duration}</td>
+              <td>{treasure.timeControl}</td>
             </tr>
             <tr>
               <th>White rating</th>

@@ -17,20 +17,20 @@ export const fetchMember = async (idOrAddress) => {
     })
   }
   // Member is not in our database
-  if (!member) console.log('no member found with id: ', idOrAddress)
-  return {
-    address: idOrAddress,
-    id: '',
-    dateJoined: new Date(0),
-    treasuresOwned: [],
-    treasuresMinted: [],
-    treasuresPlayedWhite: [],
-    treasuresPlayedBlack: [],
-    treasuresWon: [],
-    rating: 0,
-    imageSrc: '',
-    country: '',
-  }
+  if (!member)
+    return {
+      address: idOrAddress,
+      id: '',
+      dateJoined: new Date(0),
+      treasuresOwned: (_obj, { root }) => [],
+      treasuresMinted: (_obj, { root }) => [],
+      treasuresPlayedWhite: (_obj, { root }) => [],
+      treasuresPlayedBlack: (_obj, { root }) => [],
+      treasuresWon: (_obj, { root }) => [],
+      rating: 0,
+      imageSrc: '',
+      country: '',
+    }
   // TODO: Pull these values from chess.com API
   const rating = 999
   const country = 'USA'

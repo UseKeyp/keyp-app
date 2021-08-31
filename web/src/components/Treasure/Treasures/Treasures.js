@@ -64,7 +64,7 @@ const TreasuresList = ({ treasures }) => {
               <td>{timeTag(treasure.updatedAt)}</td>
               <td>{truncate(treasure.cardColor)}</td>
               <td>{truncate(treasure.blackRating)}</td>
-              <td>{truncate(treasure.duration)}</td>
+              <td>{truncate(treasure.timeControl)}</td>
               <td>{truncate(treasure.whiteRating)}</td>
               <td>{truncate(treasure.termination)}</td>
               <td>{timeTag(treasure.endTime)}</td>

@@ -1,4 +1,4 @@
-import TreasureNftDetails from 'src/components/TreasureNftDetails/TreasureNftDetails'
+import TreasureNftDetails from 'src/components/Treasure/TreasureNftDetails'
 
 export const QUERY = gql`
   query TreasureNftDetailsQuery($id: String!) {

@@ -7,15 +7,10 @@ export const QUERY = gql`
       endTime
       moveCount
       outcome
-      winner {
-        id
-      }
-      black {
-        id
-      }
-      white {
-        id
-      }
+      termination
+      blackId
+      whiteId
+      treasureId
     }
   }
 `

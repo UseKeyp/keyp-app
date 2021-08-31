@@ -143,20 +143,20 @@ const TreasureForm = (props) => {
         <FieldError name="blackRating" className="rw-field-error" />
 
         <Label
-          name="duration"
+          name="timeControl"
           className="rw-label"
           errorClassName="rw-label rw-label-error"
         >
           Duration
         </Label>
         <NumberField
-          name="duration"
-          defaultValue={props.treasure?.duration}
+          name="timeControl"
+          defaultValue={props.treasure?.timeControl}
           className="rw-input"
           errorClassName="rw-input rw-input-error"
           validation={{ required: true }}
         />
-        <FieldError name="duration" className="rw-field-error" />
+        <FieldError name="timeControl" className="rw-field-error" />
 
         <Label
           name="whiteRating"

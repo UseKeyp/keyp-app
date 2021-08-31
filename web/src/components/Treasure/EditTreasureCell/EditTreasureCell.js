@@ -16,7 +16,7 @@ export const QUERY = gql`
       updatedAt
       cardColor
       blackRating
-      duration
+      timeControl
       whiteRating
       termination
       endTime
@@ -46,7 +46,7 @@ const UPDATE_TREASURE_MUTATION = gql`
       updatedAt
       cardColor
       blackRating
-      duration
+      timeControl
       whiteRating
       termination
       endTime

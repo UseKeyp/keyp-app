@@ -1,8 +1,9 @@
 datasource db {
   // provider = "sqlite"
   provider = "postgresql"
+  // url      = "postgres://dev:let-me-in@localhost:5432/treasurechessplayground?connection_limit=1"
   url      = env("DATABASE_URL")
-  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+  // shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
 generator client {
@@ -55,8 +56,8 @@ model Treasure {
   whiteRating Int
   blackMasterTitle String? // eg. "Grand Master" or "International Master"
   whiteMasterTitle String?
-  duration Int // game length in seconds
-  termination String // eg. "Checkmate"
+  timeControl Int // game length in seconds
+  termination String // eg. "Checkmate",  "Resignation", "Stalemate", "Insufficient Material"
   endTime DateTime
   outcome String  // "white" "black" "draw" etc.
   event String // eg. "Live Chess"

@@ -1,15 +1,15 @@
 import ProfileBox from 'src/components/ProfileBox/ProfileBox'
 import MemberActivityCell from 'src/components/MemberActivity/MemberActivityCell'
 import GamesCell from 'src/components/Game/GamesCell'
-import CardCell from 'src/components/CardCell'
+import TreasureCardCell from 'src/components/Treasure/TreasureCardCell'
+import GameCardCell from 'src/components/Game/GameCardCell'
 
 const Member = ({ member }) => {
   const treasuresList = [
     ...member.treasuresPlayedBlack,
     ...member.treasuresPlayedWhite,
   ].sort((a, b) => new Date(a.endTime) < new Date(b.endTime))
-  const [activeGameId, setActiveGameId] = React.useState(treasuresList[0]?.id)
-
+  const [activeGame, setActiveGame] = React.useState(treasuresList[0])
   return (
     <div className="max-width-container">
       <div className="grid grid-rows-1">
@@ -31,14 +31,22 @@ const Member = ({ member }) => {
             <h1>Chess.com Games</h1>
             <GamesCell
               id={member.id}
-              onRowClick={setActiveGameId}
-              selectedRowId={activeGameId}
+              onRowClick={setActiveGame}
+              selectedRowId={activeGame.id}
             />
           </div>
           <div>
             <br />
             <div className="flex justify-center items-center">
-              <CardCell id={activeGameId} />
+              {activeGame.treasureId ? (
+                <TreasureCardCell id={activeGame.treasureId} />
+              ) : (
+                <GameCardCell
+                  id={activeGame.id}
+                  memberId={member.id}
+                  endTime={activeGame.endTime}
+                />
+              )}
             </div>
           </div>
         </div>

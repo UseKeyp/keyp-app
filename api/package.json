@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@redwoodjs/api": "^0.34.1",
+    "chess-web-api": "^1.1.0",
     "react": "17.0.2"
   }
 }

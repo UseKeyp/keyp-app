@@ -1,4 +1,4 @@
-import TreasureCard from 'src/components/TreasureCard'
+import TreasureCard from 'src/components/Treasure/TreasureCard'
 
 export const QUERY = gql`
   query FindTreasureQuery($id: String!) {
@@ -7,6 +7,8 @@ export const QUERY = gql`
       endTime
       moveCount
       outcome
+      cardColor
+      name
       gameRuleVariant
       termination
       achievements
@@ -15,7 +17,7 @@ export const QUERY = gql`
       blackMasterTitle
       whiteMasterTitle
       externalUrl
-      duration
+      timeControl
       winner {
         id
       }
