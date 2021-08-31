@@ -15,6 +15,7 @@ export const schema = gql`
     gameRuleVariant: String!
     externalUrl: String
     opening: String!
+    treasureId: String
   }
 
   type Query {

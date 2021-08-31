@@ -1,5 +1,8 @@
 import { db } from 'src/lib/db'
 import { getTreasureId } from 'src/lib/treasure'
+import ChessWebAPI from 'chess-web-api'
+
+const chessAPI = new ChessWebAPI()
 
 const countMoves = (moves) => {
   return Math.round(moves.trim().split(' ').length / 2)
@@ -21,7 +24,7 @@ const parseDate = (rawDate) => {
   }
 }
 
-export const parsePgn = (pgn) => {
+const parsePgn = (pgn) => {
   let black
   let white
   let winner = 'white'
@@ -66,7 +69,7 @@ const getGameOutcome = ({ white, black }) => {
   return 'draw'
 }
 
-export const parseGame = async (game) => {
+const parseGame = (game) => {
   const {
     termination,
     date,
@@ -93,28 +96,37 @@ export const parseGame = async (game) => {
   }
 }
 
-const hydrateGameWithTreasures = async ({ game, memberId }) => {
+const addTreasureIdToGame = async ({ game, memberId }) => {
   const cardColor = memberId === game.whiteId ? 'white' : 'black'
   const treasureId = getTreasureId({
     moves: game.moves,
     endTime: game.endTime,
     cardColor,
   })
-  return await db.treasure.findUnique({ where: { id: treasureId } })
+  const treasure = await db.treasure.findUnique({ where: { id: treasureId } })
+  if (treasure) return { ...game, treasureId }
+  return game
 }
 
 export const fetchGames = async (id) => {
-  const res = await fetch(
-    `https://api.chess.com/pub/player/${id}/games/2021/02`
+  const options = {}
+  const year = 2021
+  const month = 8
+  const gameData = await chessAPI.getPlayerCompleteMonthlyArchives(
+    id,
+    year,
+    month,
+    options
   )
-  const games = (await res.json()).games
+  const games = gameData.body.games
   if (!games) return []
-  return await Promise.all(
+  const gamesAndTreasures = await Promise.all(
     games.map(async (game) => {
-      const g = await parseGame(game)
-      return await hydrateGameWithTreasures({ game: g, memberId: id })
+      const g = parseGame(game)
+      return await addTreasureIdToGame({ game: g, memberId: id })
     })
   )
+  return gamesAndTreasures
 }
 
 export const fetchGame = async ({ id, memberId, endTime }) => {

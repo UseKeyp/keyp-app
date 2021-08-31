@@ -17,6 +17,7 @@ const Games = ({ games, onRowClick, selectedRowId }) => {
     return games.map((game) => {
       return {
         id: game.id,
+        Treasure: game.treasureId ? 'Yes' : 'No',
         White: game.whiteId,
         Black: game.blackId,
         Winner: game.outcome,

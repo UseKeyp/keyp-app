@@ -1,8 +1,9 @@
 datasource db {
   // provider = "sqlite"
   provider = "postgresql"
+  // url      = "postgres://dev:let-me-in@localhost:5432/treasurechessplayground?connection_limit=1"
   url      = env("DATABASE_URL")
-  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+  // shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
 generator client {

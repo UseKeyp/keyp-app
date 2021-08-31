@@ -10,6 +10,7 @@ export const QUERY = gql`
       termination
       blackId
       whiteId
+      treasureId
     }
   }
 `
