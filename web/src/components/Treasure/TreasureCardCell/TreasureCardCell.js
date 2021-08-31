@@ -8,6 +8,7 @@ export const QUERY = gql`
       moveCount
       outcome
       cardColor
+      name
       gameRuleVariant
       termination
       achievements

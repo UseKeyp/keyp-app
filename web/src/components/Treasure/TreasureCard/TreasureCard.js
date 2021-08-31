@@ -118,7 +118,9 @@ const TreasureCard = ({ treasure }) => {
         <div className="feature-list-container">
           <ul className="list-disc feature-list">
             {treasure.achievements.split(',').map((feature) => (
-              <li key={feature}>{feature}</li>
+              <li key={feature}>
+                {feature.replace(/^\w/, (c) => c.toUpperCase())}
+              </li>
             ))}
           </ul>
         </div>
