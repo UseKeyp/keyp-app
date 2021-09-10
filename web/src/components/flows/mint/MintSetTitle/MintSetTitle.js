@@ -6,6 +6,8 @@ import {
   Submit,
 } from '@redwoodjs/forms'
 
+import PropTypes from 'prop-types'
+
 const MintSetTitle = (props) => {
   return (
     <div className="rw-form-wrapper mint-set-title">
@@ -40,6 +42,11 @@ const MintSetTitle = (props) => {
       </a>
     </div>
   )
+}
+
+MintSetTitle.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+  error: PropTypes.any.isRequired,
 }
 
 export default MintSetTitle
