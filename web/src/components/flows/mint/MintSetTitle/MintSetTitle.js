@@ -5,6 +5,7 @@ import {
   TextField,
   Submit,
 } from '@redwoodjs/forms'
+import { Link } from '@redwoodjs/router'
 
 import PropTypes from 'prop-types'
 
@@ -23,23 +24,21 @@ const MintSetTitle = (props) => {
           listClassName="rw-form-error-list"
         />
         <TextField
-          name="Title"
+          name="name"
           defaultValue={''}
           className="rw-input mint-set-title__input "
           errorClassName="rw-input rw-input-error"
           validation={{ required: true }}
-          placeholder="Title"
+          placeholder="name"
         />
-        <FieldError name="Title" className="rw-field-error" />
-        {/* <div className="rw-button-group"> */}
+        <FieldError name="name" className="rw-field-error" />
         <Submit className="rect-button green rw-button rw-button-blue mint-set-title__submit">
           Continue
         </Submit>
-        {/* </div> */}
       </Form>
-      <a href="/" className="mint-set-title__link">
+      <Link to="faq" className="mint-set-title__link">
         What does mint mean?
-      </a>
+      </Link>
     </div>
   )
 }

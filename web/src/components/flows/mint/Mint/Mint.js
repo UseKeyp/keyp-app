@@ -1,22 +1,30 @@
-import ModalContainer from '../../../ModalContainer/ModalContainer'
+import { navigate, routes } from '@redwoodjs/router'
 
-import MintSetTitle from '../MintSetTitle/MintSetTitle'
-import MintPay from '../MintPay/MintPay'
-import MintProcessing from '../MintProcessing/MintProcessing'
-import MintComplete from '../MintComplete/MintComplete'
+import ModalContainer from 'src/components/ModalContainer'
 
-const Mint = () => {
+import MintSetTitle from '../MintSetTitle'
+import MintPay from '../MintPay'
+import MintProcessing from '../MintProcessing'
+import MintComplete from '../MintComplete'
+
+const Mint = ({ id }) => {
   const [step, setStep] = React.useState(1)
   const [error, setError] = React.useState()
+  const [name, setName] = React.useState('')
 
   const onSubmit = (data) => {
-    console.log(data)
-    if (step === 4) return setStep(1)
+    if (step === 1) setName(data.name) // TODO: Save treasure name to state
+
+    // TODO: handle success of stripe payments
+
+    if (step === 4) return navigate(routes.treasure({ id }))
+
     return setStep(step + 1)
   }
 
   let stepContent = <></>
 
+  // TODO: Add an error step with option to restart
   switch (step) {
     case 1:
       stepContent = <MintSetTitle onSubmit={onSubmit} error={error} />
