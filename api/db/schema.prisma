@@ -14,9 +14,9 @@ generator client {
 // to create migrations for them and apply to your dev DB.
 model Member {
   id    String     @id // Chess.com username
-  address String @unique // Wallet address
+  address String? @unique // Wallet address
   // --------------- STATE --------------
-  dateJoined DateTime
+  dateJoined DateTime?
   // --------------- LINKS --------------
   treasuresOwned Treasure[] @relation(name: "treasuresOwned" )
   treasuresMinted Treasure[] @relation(name: "treasuresMinted" )
@@ -62,7 +62,7 @@ model Treasure {
   event String // eg. "Live Chess"
   moves String // pgn moves
   moveCount Int // eg. "43"
-  gameRuleVariant String // eg. "Standard" or "Chess960"
+  ruleVariant String // eg. "Standard" or "Chess960"
   externalUrl String? // Link to game on chess.com
   opening String // eg. "Queen's Gambit"
   achievements String // List eg. "win/play above 2200,queen side castle,mate with a bishop"
