@@ -5,19 +5,22 @@ import { Menu, X } from 'react-feather'
 import { NavLink, routes } from '@redwoodjs/router'
 // import { useAuth } from '@redwoodjs/auth'
 import { isMobile, trimAddress } from 'src/utils/helpers'
+import { useAuth } from '@redwoodjs/auth'
 
 const MobileNav = ({ onClick, forceSmallNav = false }) => {
-  // const { isLoggedIn, userMetadata } = useAuth()
+  const { userMetadata, getCurrentUser, currentUser } = useAuth()
   const [isExpanded, setExpanded] = useState(false)
 
-  // TODO Pull this from useAuth
-  let userMetadata = {}
-  try {
-    userMetadata = JSON.parse(localStorage.getItem('chess_com_auth_token'))
-  } catch (e) {
-    /* eslint-disable-next-line no-console */
-    console.log(e)
+  const load = async () => {
+    console.log({ currentUser })
+    console.log({ userMetadata })
+    const user = await getCurrentUser()
+    console.log({ user })
   }
+  React.useEffect(() => {
+    load()
+  }, [])
+
   const isLoggedIn = !!userMetadata
 
   const userDetails = isLoggedIn ? (

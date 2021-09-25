@@ -5,7 +5,7 @@ import { FetchConfigProvider, useFetchConfig } from '@redwoodjs/web'
 import { ApolloClient, InMemoryCache } from '@apollo/client'
 
 import { ContextProvider } from 'src/providers/context'
-import TreasureChessAuthClient from 'src/auth/client'
+import CustomAuthClient from 'src/auth/client'
 
 import FatalErrorPage from 'src/pages/FatalErrorPage'
 import Routes from 'src/Routes'
@@ -13,7 +13,7 @@ import Routes from 'src/Routes'
 import './scaffold.css'
 import './index.scss'
 
-let authClient
+let customAuthClient
 // For more examples see https://github.com/oneclickdapp/ethereum-auth
 const ApolloInjector = ({ children }) => {
   const { uri, headers } = useFetchConfig()
@@ -29,14 +29,14 @@ const ApolloInjector = ({ children }) => {
         variables,
       })
 
-    authClient = new TreasureChessAuthClient({
+    customAuthClient = new CustomAuthClient({
       makeQuery,
       debug: process.NODE_ENV === 'development',
     })
   } catch (e) {
     console.log(e)
   }
-  return React.cloneElement(children, { client: authClient })
+  return React.cloneElement(children, { client: customAuthClient })
 }
 
 console.log('++++++++++++++++++++++++++')
@@ -50,7 +50,7 @@ const App = () => (
     <RedwoodProvider titleTemplate="%PageTitle | %AppTitle">
       <FetchConfigProvider>
         <ApolloInjector>
-          <AuthProvider client={authClient} type="custom">
+          <AuthProvider client={customAuthClient} type="custom">
             <RedwoodApolloProvider>
               <ContextProvider>
                 <Routes />

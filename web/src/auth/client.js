@@ -5,6 +5,7 @@ import { LOCAL_TOKEN_KEY } from 'src/auth/constants'
 import { torus, loginWithTorus } from 'src/auth/torus'
 import { isProduction } from 'src/utils/helpers'
 import { toast } from '@redwoodjs/web/toast'
+import { decode as decodeJwt } from 'jsonwebtoken'
 
 export const LOGIN_URL_QUERY = gql`
   query LoginUrlQuery {
@@ -20,6 +21,7 @@ class TreasureChessAuthClient {
     this.onNetworkChange = onNetworkChange
     this.onDisconnect = onDisconnect
     this.makeQuery = makeQuery
+    this.type = 'custom'
   }
 
   async login() {
@@ -49,8 +51,8 @@ class TreasureChessAuthClient {
     /* eslint-disable-next-line no-console */
     console.log('getting user metadata')
     /* eslint-disable-next-line no-console */
-    console.log(localStorage.getItem(LOCAL_TOKEN_KEY))
-    return JSON.parse(localStorage.getItem(LOCAL_TOKEN_KEY))
+    console.log(decodeJwt(this.getToken()))
+    return decodeJwt(this.getToken())
   }
 }
 

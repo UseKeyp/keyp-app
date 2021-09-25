@@ -1,4 +1,5 @@
 import { AuthenticationError, ForbiddenError, parseJWT } from '@redwoodjs/api'
+import { verifyChessJwt } from 'src/lib/oAuth/jwt'
 
 import { db } from './db'
 
@@ -15,11 +16,12 @@ import { db } from './db'
  * @see https://github.com/redwoodjs/redwood/tree/main/packages/auth for examples
  */
 export const getCurrentUser = async (
-  decoded,
+  idToken, // Not decoded for custom auth
   { _token, _type },
   { _event, _context }
 ) => {
-  return { ...decoded, roles: parseJWT({ decoded }).roles }
+  const member = await verifyChessJwt(idToken)
+  return member
 }
 
 export const isAuthenticated = () => {

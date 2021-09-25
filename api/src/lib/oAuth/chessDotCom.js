@@ -59,6 +59,8 @@ export const getChessAccessTokenFromCode = async (code, codeVerifier) => {
     } = response
     if (!response.id_token) throw 'Failed to get id_token from Chess.com'
     const decodedIdToken = await verifyChessJwt(idToken)
+    if (new Date() - new Date(decodedIdToken.iat * 1000) > 60 * 1000)
+      throw 'Chess.com token was not issued recently. It must be <1 minute old.'
     return {
       accessToken,
       accessTokenExpiration: getExpiration(expiration),
