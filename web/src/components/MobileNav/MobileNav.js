@@ -11,16 +11,6 @@ const MobileNav = ({ onClick, forceSmallNav = false }) => {
   const { userMetadata, getCurrentUser, currentUser } = useAuth()
   const [isExpanded, setExpanded] = useState(false)
 
-  const load = async () => {
-    console.log({ currentUser })
-    console.log({ userMetadata })
-    const user = await getCurrentUser()
-    console.log({ user })
-  }
-  React.useEffect(() => {
-    load()
-  }, [])
-
   const isLoggedIn = !!userMetadata
 
   const userDetails = isLoggedIn ? (

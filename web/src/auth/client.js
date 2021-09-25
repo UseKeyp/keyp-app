@@ -50,8 +50,6 @@ class TreasureChessAuthClient {
     // TODO: remove console.logs
     /* eslint-disable-next-line no-console */
     console.log('getting user metadata')
-    /* eslint-disable-next-line no-console */
-    console.log(decodeJwt(this.getToken()))
     return decodeJwt(this.getToken())
   }
 }

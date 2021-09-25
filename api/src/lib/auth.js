@@ -20,8 +20,8 @@ export const getCurrentUser = async (
   { _token, _type },
   { _event, _context }
 ) => {
-  const member = await verifyChessJwt(idToken)
-  return member
+  const user = await verifyChessJwt(idToken)
+  return { ...user, id: user.sub }
 }
 
 export const isAuthenticated = () => {
