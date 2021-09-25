@@ -20,8 +20,10 @@ export const getCurrentUser = async (
   { _token, _type },
   { _event, _context }
 ) => {
+  // Do we need to verify here?
   const user = await verifyChessJwt(idToken)
-  return { ...user, id: user.sub }
+  return db.member.findUnique({ where: user.sub })
+  // If expired, rotate the JWT
 }
 
 export const isAuthenticated = () => {

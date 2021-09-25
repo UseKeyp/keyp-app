@@ -23,5 +23,3 @@ export const fetchWalletAddress = async () => {
   console.log({ publicAddress, privateKey })
   return publicAddress
 }
-
-// export const loginWithTorus = async () =>
