@@ -10,6 +10,7 @@
   apiProxyPath = "/api"
   host = "0.0.0.0"
   title = "Treasure Chess"
+  includeEnvironmentVariables = ['CHESS_OAUTH_URL']
 [api]
   port = 8911
   schemaPath = "./api/db/schema.prisma"

@@ -3,6 +3,7 @@ import { AuthenticationError, parseJWT } from '@redwoodjs/api'
 import { db } from 'src/lib/db'
 import { v4 as uuidv4 } from 'uuid'
 import pkceChallenge, { verifyChallenge } from 'pkce-challenge'
+import { fetchWalletAddress } from 'src/lib/torus/torus'
 
 import {
   CHESS_SCOPE,
@@ -84,7 +85,15 @@ export const handleOauthCodeGrant = async ({ state, code }) => {
 
     // Get Torus wallet address if needed
     if (!member.address) {
-      console.log('TODO: fetch new wallet from Torus')
+      try {
+        const address = await fetchWalletAddress(idToken)
+        await db.member.update({
+          where: { id: decodedIdToken.sub },
+          data: { address },
+        })
+      } catch (e) {
+        console.log("Error fetching user's wallet from Torus")
+      }
     }
 
     // Save the Discord auth credentials and update state

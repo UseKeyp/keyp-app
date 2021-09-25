@@ -41,6 +41,7 @@ export const verifyChessJwt = async (jwt) => {
       return decoded
     }
   )
+  console.log(decoded)
   if (new Date() - new Date(decoded.iat * 1000) > 60 * 1000)
     throw 'Chess.com token was not issued recently. It must be <1 minute old.'
   return decoded
