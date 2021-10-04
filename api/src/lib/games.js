@@ -1,26 +1,27 @@
 import { db } from 'src/lib/db'
 import { getTreasureId, getTreasureCardColor } from 'src/lib/treasure'
-import { fetchChessDotComGames } from 'src/lib/chessDotCom'
+import { fetchChessGames, fetchChessGame } from 'src/lib/chessDotCom'
 
 const countMoves = (moves) => {
   return Math.round(moves.trim().split(' ').length / 2)
 }
 
-const parseDate = (rawDate) => {
-  try {
-    if (!rawDate) return ''
-    if (typeof rawDate === 'object')
-      rawDate = new Date(rawDate).toISOString().split('T')[0].replace('-', '.')
-    let [year, month, day] = rawDate.split(/[\.-]/)
-    if (year.includes('?')) year = 0
-    month = month.includes('?') ? 0 : month - 1
-    if (day.includes('?')) day = 1
-    return new Date(year, month, day)
-  } catch (e) {
-    console.log('Error in parseDate() with argument: ')
-    console.log({ rawDate })
-  }
-}
+// TODO: Delete if unused
+// const parseDate = (rawDate) => {
+//   try {
+//     if (!rawDate) return ''
+//     if (typeof rawDate === 'object')
+//       rawDate = new Date(rawDate).toISOString().split('T')[0].replace('-', '.')
+//     let [year, month, day] = rawDate.split(/[\.-]/)
+//     if (year.includes('?')) year = 0
+//     month = month.includes('?') ? 0 : month - 1
+//     if (day.includes('?')) day = 1
+//     return new Date(year, month, day)
+//   } catch (e) {
+//     console.log('Error in parseDate() with argument: ')
+//     console.log({ rawDate })
+//   }
+// }
 
 const parsePgn = (pgn) => {
   let black
@@ -83,13 +84,13 @@ const getGameRuleVariant = (game) => {
   return game.rules.replace(/^\w/, (c) => c.toUpperCase())
 }
 
-export const getOpening = (moves) => {
+export const getOpening = (_moves) => {
   // Currently only used in Treasures
   // TODO: Complete this function
   return "Queen's Gambit"
 }
 
-export const getAchievements = (moves) => {
+export const getAchievements = (_moves) => {
   // Currently only used in Treasures
   // TODO: Complete this function
   return 'win/play above 2200,queen side castle,mate with a bishop'
@@ -98,7 +99,6 @@ export const getAchievements = (moves) => {
 const parseGameFromChessDotCom = (game) => {
   const {
     termination,
-    date,
     blackRating,
     whiteRating,
     timeControl,
@@ -127,8 +127,8 @@ const parseGameFromChessDotCom = (game) => {
   }
 }
 
-const addTreasureIdToGame = async ({ game, memberId }) => {
-  const cardColor = getTreasureCardColor({ game, memberId })
+const addTreasureIdToGame = async ({ game, username }) => {
+  const cardColor = getTreasureCardColor({ game, username })
   const treasureId = getTreasureId({
     moves: game.moves,
     endTime: game.endTime,
@@ -139,34 +139,25 @@ const addTreasureIdToGame = async ({ game, memberId }) => {
   return game
 }
 
-export const fetchGames = async (id) => {
+export const fetchGames = async ({ username }) => {
+  // TODO: Remove hard-coded values and add year, month arguments
   const year = 2021
   const month = 8
-  const games = await fetchChessDotComGames({ memberId: id, year, month })
+  const games = await fetchChessGames({ username, year, month })
   if (!games) return []
   const gamesWithTreasureIds = await Promise.all(
     games.map(
-      async (game, i) =>
+      async (game) =>
         await addTreasureIdToGame({
           game: parseGameFromChessDotCom(game),
-          memberId: id,
+          username,
         })
     )
   )
   return gamesWithTreasureIds
 }
 
-export const fetchGame = async ({ id, memberId, endTime }) => {
-  const year = new Date(endTime).getFullYear()
-  let month = new Date(endTime).getMonth() + 1
-  if (month.toString().length < 2) month = '0' + month
-  // TODO: use chess-web-api instead
-  const res = await fetch(
-    `https://api.chess.com/pub/player/${memberId}/games/${year}/${month}`
-  )
-  const json = await res.json()
-  if (!json.games) return null
-  const game = json.games.find((g) => g.url.includes(id))
-  if (!game) return null
+export const fetchGame = async ({ username, gameId, endTime }) => {
+  const game = await fetchChessGame({ username, gameId, endTime })
   return parseGameFromChessDotCom(game)
 }

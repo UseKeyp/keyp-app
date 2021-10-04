@@ -20,22 +20,8 @@ const ProfileBox = ({ member }) => {
       <div className="profileBox__contentWrapper flex flex-col flex-1 justify-between">
         <div className="profileBox__contentWrapper__inner flex justify-between">
           <div className="profileBox__content flex flex-col justify-between">
-            <p className="profileBox__text profileBox__text--small">
-              <span className="profileBox__coloredText">Date joined:</span>{' '}
-              {new Date(member.dateJoined).toLocaleString('default', {
-                month: 'long',
-              })}{' '}
-              <span className="green-text">
-                {new Date(member.dateJoined).getDate()}
-              </span>{' '}
-              {new Date(member.dateJoined).getFullYear()}
-            </p>
             <div className="profileBox__content__inner">
-              <p className="profileBox__text">{member.id}</p>
-              <p className="profileBox__text profileBox__text--small">
-                <span className="profileBox__coloredText">Rating:</span>{' '}
-                {member.rating}
-              </p>
+              <p className="profileBox__text">{member.username}</p>
             </div>
           </div>
           <div className="profileBox__content flex flex-col justify-between text-right">
@@ -62,16 +48,18 @@ const ProfileBox = ({ member }) => {
             </p>
           </div>
         </div>
-        <div className="profileBox__addressWrapper">
-          <a
-            href={url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex"
-          >
-            {member.address} <ExtUrl />
-          </a>
-        </div>
+        {member.address && (
+          <div className="profileBox__addressWrapper">
+            <a
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex"
+            >
+              {member.address} <ExtUrl />
+            </a>
+          </div>
+        )}
       </div>
     </div>
   )

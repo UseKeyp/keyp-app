@@ -1,44 +1,32 @@
 import fetch from 'cross-fetch'
-import { AuthenticationError } from '@redwoodjs/api'
-import ChessWebAPI from 'chess-web-api'
-
-const chessAPI = new ChessWebAPI()
 
 const API_URL = process.env.CHESS_API_URL
 
-///////////////////////
-// cross-fetch
-///////////////////////
-
-export const getChessMember = async ({ accessToken, id }) => {
-  // TODO: Finish fetching member from chess.com via accessToken
-  const response = await fetch(`${API_URL}/@me`, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  }).then((res) => res.json())
-  console.log(response)
-  return response.user
+const defaultFetchOptions = {
+  // Required to prevent rate-limiting
+  headers: {
+    Authorization: `Bearer ${process.env.CHESS_API_ACCESS_TOKEN}`,
+  },
 }
 
-///////////////////////
-// chess-web-api
-///////////////////////
-
-export const fetchMemberDetails = (id) => {
-  return chessAPI.player(id)
+export const fetchChessMember = (username) => {
+  return fetch(`${API_URL}/pub/player/${username}`, defaultFetchOptions).then(
+    (res) => res.json()
+  )
 }
 
-export const fetchChessDotComGames = async ({ memberId, year, month }) => {
-  try {
-    const data = await chessAPI.getPlayerCompleteMonthlyArchives(
-      id,
-      year,
-      month
-      // options
-    )
-    return data.body.games
-  } catch (e) {
-    throw `Error fetching data from chess.com ${JSON.stringify(e)}`
-  }
+export const fetchChessGames = ({ username, year, month }) => {
+  return fetch(
+    `${API_URL}/pub/player/${username}/games/${year}/${month}`,
+    defaultFetchOptions
+  ).then((res) => res.json())
+}
+
+export const fetchChessGame = async ({ username, gameId, endTime }) => {
+  const year = new Date(endTime).getFullYear()
+  let month = new Date(endTime).getMonth() + 1
+  if (month.toString().length < 2) month = '0' + month
+  const games = await fetchChessGames({ username, year, month })
+  const game = games.find((g) => g.url.includes(gameId))
+  return game
 }
