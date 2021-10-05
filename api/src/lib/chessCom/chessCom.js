@@ -3,8 +3,8 @@ import fetch from 'cross-fetch'
 const API_URL = process.env.CHESS_API_URL
 
 const defaultFetchOptions = {
-  // Required to prevent rate-limiting
   headers: {
+    // Required to prevent rate-limiting
     Authorization: `Bearer ${process.env.CHESS_API_ACCESS_TOKEN}`,
   },
 }
@@ -15,11 +15,12 @@ export const fetchChessMember = (username) => {
   )
 }
 
-export const fetchChessGames = ({ username, year, month }) => {
-  return fetch(
+export const fetchChessGames = async ({ username, year, month }) => {
+  const response = await fetch(
     `${API_URL}/pub/player/${username}/games/${year}/${month}`,
     defaultFetchOptions
   ).then((res) => res.json())
+  return response.games || []
 }
 
 export const fetchChessGame = async ({ username, gameId, endTime }) => {
