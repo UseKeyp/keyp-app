@@ -1,7 +1,8 @@
 import { db } from 'src/lib/db'
 import { fetchMember } from 'src/lib/members'
-import { createTreasure } from 'src/lib/treasure'
 import { fetchGame } from 'src/lib/games'
+import { createMintReservation } from 'src/lib/wyre/wyre'
+import { validateTreasureTitle } from 'src/lib/helpers'
 
 export const treasures = () => {
   return db.treasure.findMany()
@@ -35,32 +36,23 @@ export const treasureNftDetails = async ({ id }) => {
   return null
 }
 
-export const mintTreasure = async ({ gameId, endTime, name }) => {
-  // Get user's wallet and sign meta-tx
-  const { username, id: memberId } = context.currentUser
-
-  // Submit meta-tx to admin wallet
-
-  // Create pending transaction in database
-
-  // Get game details
-  const game = await fetchGame({ gameId, username, endTime })
-  // Create treasure and connect pending transaction - minter, owner, tokenId
-  const treasure = await createTreasure({ game, memberId, name })
-  return treasure
-}
-
-export const updateTreasure = ({ id, input }) => {
-  return db.treasure.update({
-    data: input,
-    where: { id },
+export const mintCheckoutUrl = async ({ gameId, endTime, title }) => {
+  validateTreasureTitle(title)
+  const { username, address } = context.currentUser
+  // TODO: Remove if not necessary? The game must already exist right?
+  await fetchGame({
+    id: gameId,
+    username,
+    endTime,
   })
-}
-
-export const deleteTreasure = ({ id }) => {
-  return db.treasure.delete({
-    where: { id },
+  const url = await createMintReservation({
+    username,
+    gameId,
+    endTime,
+    address,
+    title,
   })
+  return url
 }
 
 export const Treasure = {
