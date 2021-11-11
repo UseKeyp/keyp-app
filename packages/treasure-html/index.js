@@ -111,6 +111,7 @@ const getCard = ({ treasure, gifData, gifUrl }) => {
 
   // Header
   updateContent('title', treasure.title)
+  updateContent('page-title', treasure.title)
   updateContent('termination', treasure.termination)
   updateTag('banner-image', 'src', `data:image/png;base64,${bannerLogoBase64}`)
   const rarityColor = getRarityColor(treasure.achievementScore)
@@ -150,7 +151,6 @@ const getCard = ({ treasure, gifData, gifUrl }) => {
   updateContent('achievement-2-icon', iconByPoints(4, treasure.cardColor), true)
   updateContent('achievement-3-icon', iconByPoints(3, treasure.cardColor), true)
   const achievements = treasure.achievements.split(',')
-  console.log(achievements)
   updateContent('achievement-1', achievements[0])
   updateContent('achievement-2', achievements[1])
   updateContent('achievement-3', achievements[2])

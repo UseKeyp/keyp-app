@@ -1,8 +1,13 @@
 const htmlString = `<html>
 	<head>
-
+    <title id="page-title">Treasure</title>
+    <meta content="Treasure Chess" property="og:title" />
+    <meta name="description" content="A collectible game of chess">
+    <meta name="keywords" content="treasure, chess, NFT, collectibe, chess.com">
+    <meta name="author" content="Treasure Chess">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	</head>
-	<body style="font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; background-color:#4F4F4F; display: flex; justify-content: center;  align-items: center;" >
+	<body style="font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; background-color:#4F4F4F; display: flex; align-items: center;" >
   	<div id="container" style="color:black; width: 258px; border-radius: 12px; background-color: #FFF8EE; display: flex; flex-direction: column; padding: 4px;">
 			<div id="banner" style="width: 100%; background-color: #ABB6B9; border-radius: 8px 8px 2px 2px; display: grid; grid-template-columns: 2fr 1fr; align-items: center; min-height: 39px; box-sizing: border-box; padding: 0 5px 0 5px">
   			<div style="display: flex;align-items: center; min-height: 39px;">
