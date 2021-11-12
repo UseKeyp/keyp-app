@@ -2,14 +2,17 @@
   "name": "treasure-html",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node tests/full.test.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "xmldom": "^0.6.0"
+  },
+  "devDependencies": {
+    "svg-png-converter": "^0.0.9"
   }
 }
