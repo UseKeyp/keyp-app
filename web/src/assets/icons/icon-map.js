@@ -1,4 +1,5 @@
 import { ReactComponent as TreasureChess } from './treasure_chess.svg'
+import { ReactComponent as Wyre } from './wyre.svg'
 import { ReactComponent as ChessCom } from './chess_com.svg'
 
 const MobileWallet = () => {
@@ -281,6 +282,7 @@ export default {
   checkmark: Checkmark,
   crown: Crown,
   copy: Copy,
+  wyre: Wyre,
   chess_com: ChessCom,
   discord: Discord,
 }
