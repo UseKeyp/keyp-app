@@ -105,7 +105,11 @@ const getWhereQueryFromArgs = ({ username, filter }) => {
         OR: [{ black: { username } }, { white: { username } }],
       }
     : null
-
+  const outcomeQuery = filterObj.outcome
+    ? {
+        OR: filterObj.outcome.split(',').map((outcome) => ({ outcome })),
+      }
+    : null
   const achievementQuery = filterObj.achievements
     ? {
         OR: filterObj.achievements.split(',').map((chiev) => ({
@@ -127,15 +131,14 @@ const getWhereQueryFromArgs = ({ username, filter }) => {
 
   return {
     ...(usernameQuery && usernameQuery),
-
     ...(achievementQuery && achievementQuery),
+    ...(outcomeQuery && outcomeQuery),
+    ...(moveCountQuery && moveCountQuery),
     ...(filterObj.opening && { opening: filterObj.opening }),
     ...(filterObj.color && { cardColor: filterObj.color }),
     ...(filterObj.title && { title: { contains: filterObj.title } }),
     ...(filterObj.termination && { termination: filterObj.termination }),
     ...(filterObj.timeControl && { timeControl: filterObj.timeControl }),
-    ...(filterObj.outcome && { outcome: filterObj.outcome }),
-    ...(moveCountQuery && moveCountQuery),
     ...(filterObj.rarity && { rarity: filterObj.rarity }),
     // TODO:  implement sale, and price
     // sale,
