@@ -11,10 +11,12 @@ const Button = ({ children, variant, onClick, ...rest }) => {
 
 Button.defaultProps = {
   variant: 'grey',
+  isDisabled: false,
 }
 Button.propTypes = {
   onClick: PropTypes.func.isRequired,
   variant: PropTypes.string,
+  isDisabled: PropTypes.bool,
 }
 
 export default Button
