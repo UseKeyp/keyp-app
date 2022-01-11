@@ -1,4 +1,4 @@
-name: publish
+name: 'GCP Publish Docker'
 on:
   workflow_dispatch:
     inputs:

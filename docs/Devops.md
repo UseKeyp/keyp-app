@@ -71,14 +71,13 @@ Images are built via Github Action. To build the images locally:
 ```bash
 # web
 docker build . -t pi0neerpat/treasure-chess-redwood-web-main -f web/Dockerfile \
---build-arg NODE_ENV=development \
+--build-arg NODE_ENV=production \
 --build-arg RUNTIME_ENV=local \
 --build-arg REDWOOD_API_URL=http://0.0.0.0:8911
 
-
 # api
 docker build . -t pi0neerpat/treasure-chess-redwood-api-main -f api/Dockerfile \
---build-arg NODE_ENV=development \
+--build-arg NODE_ENV=production \
 --build-arg RUNTIME_ENV=local
 
 # both

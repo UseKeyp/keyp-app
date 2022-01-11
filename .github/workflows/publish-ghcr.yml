@@ -1,8 +1,5 @@
 # Adapted from https://github.com/users/jeliasson/packages/container/package/redwoodjs-app-api-main
-
-# Force redeploy
-
-name: 'treasure-chess-app-ghcr-build'
+name: 'Github Publish Docker'
 
 on:
   push:
