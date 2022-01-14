@@ -35,6 +35,10 @@ Operations for Treasure Chess
 
 DATABASE_URL=postgres://ecrkevnypsqcsy:9b6db5a98ec891d1ef9ce7b1b028846a3dc9158bf1b71453050988936ef4ff3e@ec2-34-239-196-254.compute-1.amazonaws.com:5432/deg6ltaujv3vei?connection_limit=1
 APP_DOMAIN=https://treasure-chess-sandbox-4.vercel.app
+CONTRACT_ADDRESS_TREASURE=0x271DEb88eA5543c131A998327314dc02eAEc8a9C
+CONTRACT_ADDRESS_TREASURE_MARKET=0x55C0029BD0536Ac7EC2Ddd673436a0703E2081a9
+
+Vercel only builds sandbox using the `Ignored Build Step` setting with `bash -c 'if [[$VERCEL_GIT_COMMIT_REF == "sandbox"]]; then exit 1; fi'``
 
 # Other Resources
 
