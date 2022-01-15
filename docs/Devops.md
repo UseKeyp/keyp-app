@@ -43,27 +43,35 @@
 https://argo-cd.readthedocs.io/en/stable/
 https://kruschecompany.com/logstash-elasticsearch-kibana/#Install_Kibana
 
-# Config - Chess.com OAuth
+# Config - Chess.com OAuth / API
 
-### Development
+### 1. Development
 
 - Redirect URL https://treasure-chess-dev-4.vercel.app/redirect/chess
-- Image
+- CHESS_API_ACCESS_TOKEN eyJ0...
+- Image <img src="./icon-large-dev.png" width="100">
 
-### Sandbox
+### 2. Sandbox
 
 - Redirect URL https://treasure-chess-sandbox-4.vercel.app/redirect/chess
-- Image
+- CHESS_API_ACCESS_TOKEN eyJ0...
+- Image <img src="./icon-large-sandbox.png" width="100">
 
-### Staging
+### 3. Staging
 
 - Redirect URL https://treasure.gcp-staging.chess-platform.com/redirect/chess
-- Image
+- CHESS_API_ACCESS_TOKEN (???)
+- Image <img src="./icon-large-staging.png" width="100">
 
-### Production
+### 4. Production
 
 - Redirect URL https://treasure.chess.com/redirect/chess
-- Image
+- CHESS_API_ACCESS_TOKEN (???)
+- Image <img src="./icon-large.png" width="100">
+
+### For all environments
+
+- CHESS_API_URL https://api.chess.com
 
 ### Setting up a new environment
 
