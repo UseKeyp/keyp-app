@@ -82,14 +82,14 @@ https://kruschecompany.com/logstash-elasticsearch-kibana/#Install_Kibana
 
 ## Development
 
+Exclude `REDWOOD_API_URL` for vercel builds
+
 ```js
-// .env
 APP_DOMAIN=https://treasure-chess-sandbox-4.vercel.app
-PUBLIC_REDIRECT_URL=https://treasure-chess-dev-4.vercel.app/redirect
 BASIC_AUTH_PASSWORD=pauliemorphy
 ENCRYPTION_KEY=g1WM...
 ENCRYPTION_IV=999...
-DATABASE_URL=postgres://ldaqcibogfjwox:f1fc9e8588f0b7198129aa9ebf5d078a211fb16f86cc323bd347b91cc28d54dd@ec2-44-194-112-166.compute-1.amazonaws.com:5432/d27fkbgjshtb7g?connection_limit=1
+DATABASE_URL=postgres://...@ec2-44-194-112-166.compute-1.amazonaws.com:5432/d27fkbgjshtb7g?connection_limit=1
 CONTRACT_ADDRESS_TREASURE=0xCb9fC489C31309fD66F2F9b52593a699dAF49C86
 CONTRACT_ADDRESS_TREASURE_MARKET=0xc9234371D7943C0A333AB1eE4e9E6583323efD5d
 ETHEREUM_NETWORK_NAME=ropsten
@@ -97,14 +97,14 @@ ETHEREUM_NETWORK_NAME=ropsten
 
 ## Sandbox
 
+Exclude `REDWOOD_API_URL` for vercel
+
 ```js
-// .env
 APP_DOMAIN=https://treasure-chess-sandbox-4.vercel.app
-PUBLIC_REDIRECT_URL=https://treasure-chess-sandbox-4.vercel.app/redirect
 BASIC_AUTH_PASSWORD=pauliemorphy
 ENCRYPTION_KEY=g1WM...
 ENCRYPTION_IV=999...
-DATABASE_URL=postgres://ecrkevnypsqcsy:9b6db5a98ec891d1ef9ce7b1b028846a3dc9158bf1b71453050988936ef4ff3e@ec2-34-239-196-254.compute-1.amazonaws.com:5432/deg6ltaujv3vei?connection_limit=1
+DATABASE_URL=postgres://...@ec2-34-239-196-254.compute-1.amazonaws.com:5432/deg6ltaujv3vei?connection_limit=1
 CONTRACT_ADDRESS_TREASURE=0x271DEb88eA5543c131A998327314dc02eAEc8a9C
 CONTRACT_ADDRESS_TREASURE_MARKET=0x55C0029BD0536Ac7EC2Ddd673436a0703E2081a9
 ETHEREUM_NETWORK_NAME=ropsten
@@ -112,18 +112,18 @@ ETHEREUM_NETWORK_NAME=ropsten
 
 ## Staging - container tag prefix `staging`
 
+Environment is the same as for Production, except for the following:
+
 ```js
-// .env
 APP_DOMAIN=https://treasure.gcp-staging.chess-platform.com
-// ENV is the same as for Production, except for APP_DOMAIN
+REDWOOD_API_URL=
 ```
 
 ## Production - container tag prefix `prod`
 
 ```js
-// .env
 APP_DOMAIN=https://treasure.chess.com
-PUBLIC_REDIRECT_URL=https://treasure.chess.com/redirect
+REDWOOD_API_URL=
 ENCRYPTION_KEY=
 ENCRYPTION_IV=
 DATABASE_URL=
