@@ -45,6 +45,36 @@ https://kruschecompany.com/logstash-elasticsearch-kibana/#Install_Kibana
 
 # Config - Chess.com OAuth / API
 
+Development
+
+```
+{
+  "name": "Treasure Chess - Test",
+  "logo": "https://treasure-chess-dev-4.vercel.app/logo-test.png",
+  "redirectUri": [
+    "https://treasure-chess-dev-4.vercel.app/redirect/chess",
+    "https://treasure-chess-sandbox-4.vercel.app/redirect/chess",
+  ],
+  "privacyPolicyUrl": "https://treasure.chess.com/privacy",
+  "termsOfServiceUrl": "https://treasure.chess.com/terms"
+}
+```
+
+Production
+
+```
+{
+  "name": "Treasure Chess",
+  "logo": "https://treasure.chess.com/logo.png",
+  "redirectUri": [
+    "https://treasure.chess.com/redirect/chess",
+    "https://treasure.gcp-staging.chess-platform.com/redirect/chess"
+  ],
+  "privacyPolicyUrl": "https://treasure.chess.com/privacy",
+  "termsOfServiceUrl": "https://treasure.chess.com/terms"
+}
+```
+
 ### 1. Development
 
 - Redirect URL https://treasure-chess-dev-4.vercel.app/redirect/chess
