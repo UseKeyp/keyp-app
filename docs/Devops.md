@@ -90,6 +90,8 @@ Production
 
 ### 3. Staging
 
+NOTE: For `CHESS_API_ACCESS_TOKEN`, they don’t check TTL, only check that they are signed by chess.com keys. You can obtain one and use it forever in order to bypass rate limiting. Since this is just a user's api token, make sure if it's exposed, it can't access that user's Torus wallet. Create one by uncommenting the line in `api/src/lib/oAuth/chessDotCom.js` and then logging in.
+
 - Redirect URL https://treasure.gcp-staging.chess-platform.com/redirect/chess
 - CHESS_API_ACCESS_TOKEN (???)
 - Image <img src="./icon-large-staging.png" width="100">
