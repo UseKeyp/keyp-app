@@ -10,11 +10,12 @@
   host = "0.0.0.0"
   title = "Treasure Chess"
   # apiProxyPort = 8911
-  apiUrl = "${REDWOOD_API_URL:/.redwood/functions}"
+  apiUrl = "${REDWOOD_API_URL:/api}"
   includeEnvironmentVariables = [
     "APP_DOMAIN",
     "ETHEREUM_NETWORK_NAME",
-    "REDWOOD_API_URL"
+    "REDWOOD_API_URL",
+    "BASIC_AUTH_PASSWORD"
   ]
 [api]
   port = 8911
