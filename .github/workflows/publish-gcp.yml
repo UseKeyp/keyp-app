@@ -5,7 +5,7 @@ on:
       image_tag_prefix:
         description: 'Image Tag Prefix'
         required: true
-        default: 'prod'
+        default: 'staging'
 env:
   NODE_ENV: 'development'
   RUNTIME_ENV: 'main'
