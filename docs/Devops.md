@@ -52,6 +52,7 @@ Development
   "name": "Treasure Chess - Test",
   "logo": "https://treasure-chess-dev-4.vercel.app/logo-test.png",
   "redirectUri": [
+    "http://0.0.0.0:8910/redirect/chess",
     "https://treasure-chess-dev-4.vercel.app/redirect/chess",
     "https://treasure-chess-sandbox-4.vercel.app/redirect/chess",
   ],
