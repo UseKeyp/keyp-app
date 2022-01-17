@@ -9,7 +9,6 @@ on:
 env:
   NODE_ENV: 'development'
   RUNTIME_ENV: 'main'
-  BASIC_AUTH_PASSWORD: 'pauliemorphy'
 
   GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
   GITHUB_SHA: ${{ github.sha }}
