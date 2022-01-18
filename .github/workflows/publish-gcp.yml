@@ -3,11 +3,11 @@ on:
   workflow_dispatch:
     inputs:
       image_tag_prefix:
-        description: 'Image Tag Prefix'
+        description: 'Image Tag Prefix (prod or staging)'
         required: true
         default: 'staging'
 env:
-  NODE_ENV: 'production'
+  NODE_ENV: 'development'
   BASIC_AUTH_PASSWORD: 'pauliemorphy'
 
   GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
