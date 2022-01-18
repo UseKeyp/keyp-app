@@ -2,7 +2,7 @@ name: Repo sync w/ @treasure-chess
 
 on:
   push:
-    branches: [main, dev]
+    branches: [main, sandbox]
   workflow_dispatch:
 
 jobs:
