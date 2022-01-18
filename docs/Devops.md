@@ -115,8 +115,6 @@ NOTE: For `CHESS_API_ACCESS_TOKEN`, they don’t check TTL, only check that they
 
 ## Development
 
-Exclude `REDWOOD_API_URL` for vercel builds
-
 ```js
 APP_DOMAIN=https://treasure-chess-sandbox-4.vercel.app
 BASIC_AUTH_PASSWORD=pauliemorphy
