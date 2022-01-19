@@ -14,13 +14,13 @@ rm -f prod.env.enc.js
 rm -rf -f docs
 
 # Configure git
+git init
 git config --local user.email "team@niftychess.com"
 git config --local user.name "Nifty Chess"
 GIT_SSH_COMMAND="ssh -v"
 git config --local core.sshCommand "/usr/bin/ssh -i ~/.ssh/id_rsa-repo-sync"
 
 # New git history
-git init
 git checkout -b main
 git add --a
 git commit -m "${LATEST_COMMIT_SHORT_REV} - ${LATEST_COMMIT_COMMENT}"
