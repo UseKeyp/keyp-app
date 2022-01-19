@@ -26,6 +26,8 @@ chmod 600 ~/.ssh/id_rsa-repo-sync
 cp /root/.ssh/* ~/.ssh/ 2>/dev/null || true
 
 # Configure git
+git config --local user.email "team@niftychess.com"
+git config --local user.name "Nifty Chess"
 GIT_SSH_COMMAND="ssh -v"
 git config --local core.sshCommand "/usr/bin/ssh -i ~/.ssh/id_rsa-repo-sync"
 
