@@ -4,6 +4,8 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+env:
+  SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
 jobs:
   repo-sync:
@@ -11,7 +13,5 @@ jobs:
     steps:
       - name: git-sync-main
       - uses: actions/checkout@v2
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
         run: |
           tasks/clean-and-sync-repo.sh
