@@ -4,16 +4,14 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+env:
+  SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
 jobs:
   repo-sync:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - name: git-sync-main
-        uses: wei/git-sync@v3
-        with:
-          source_repo: 'git@github.com:pi0neerpat/treasure-chess-app.git'
-          source_branch: 'main'
-          destination_repo: 'git@github.com:treasure-chess/treasure-chess-app.git'
-          destination_branch: 'main'
-          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+        run: |
+          tasks/clean-and-sync-repo.sh
