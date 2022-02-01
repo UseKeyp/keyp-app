@@ -1,4 +1,3 @@
-const { getIdFromNetworkName } = require('@treasure-chess/web3-helpers')
 import { web3Provider } from 'src/lib/web3/helpers'
 import { Contract } from '@ethersproject/contracts'
 import { formatUnits } from '@ethersproject/units'

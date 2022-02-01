@@ -5,9 +5,6 @@ const CHAIN_ID = getIdFromNetworkName(process.env.ETHEREUM_NETWORK_NAME)
 
 export const getProviderByChainId = (chainId) => {
   try {
-    console.log({ chainId })
-    console.log(process.env.MATIC_RPC)
-    console.log(process.env.MUMBAI_RPC)
     if (chainId == 100) return new JsonRpcProvider(process.env.XDAI_RPC)
     if (chainId == 137) return new JsonRpcProvider(process.env.MATIC_RPC)
     if (chainId == 80001) return new JsonRpcProvider(process.env.MUMBAI_RPC)
