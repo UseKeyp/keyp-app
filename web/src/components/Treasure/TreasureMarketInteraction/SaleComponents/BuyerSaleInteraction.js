@@ -3,12 +3,12 @@ import { useMarket } from 'src/providers/market'
 import LoadingDots from 'src/components/LoadingDots/LoadingDots'
 import Button from 'src/components/Button/Button'
 
-import { PENDING_SOLD, SOLD } from 'src/providers/market/constants'
+import { PENDING_SOLD, SOLD, DELISTED } from 'src/providers/market/constants'
 
 const BuyerSaleInteraction = () => {
   const { actionStatus, actionError, marketStatus, buy, amount } = useMarket()
 
-  if (marketStatus === null) return <></>
+  if ([null, DELISTED].includes(marketStatus)) return <></>
 
   let buttonText = 'Buy'
   if (actionStatus === PENDING_SOLD) buttonText = 'Purchase in Progress'

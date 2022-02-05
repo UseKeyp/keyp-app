@@ -14,7 +14,9 @@ const MemberBalance = () => {
       <h4 className="memberBalance__title">Balance</h4>
       <h4 className="memberBalance__balance">
         {usdcBalance ? (
-          `$${usdcBalance > 0 ? usdcBalance.toLocaleString() : 0}`
+          `$${
+            Number(usdcBalance) > 0 ? Number(usdcBalance).toLocaleString() : 0
+          }`
         ) : (
           <LoadingDots />
         )}
