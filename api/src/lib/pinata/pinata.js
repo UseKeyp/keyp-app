@@ -1,6 +1,7 @@
 import FormData from 'form-data'
 import fetch from 'cross-fetch'
 import { logger } from 'src/lib/logger'
+import { isProduction } from 'src/lib/helpers'
 
 import { getCardHtml } from '@treasure-chess/treasure-html'
 import { getAchievementNamesFromValues } from '@treasure-chess/treasure-filters'
@@ -13,15 +14,19 @@ const PINATA_API_KEY = process.env.PINATA_API_KEY
 const PINATA_API_SECRET_KEY = process.env.PINATA_API_SECRET_KEY
 const TOKEN_URI_DOMAIN = process.env.APP_DOMAIN
 
+const API_DOMAIN = isProduction
+  ? 'http://treasure-chess-api:8080'
+  : `${process.env.APP_DOMAIN}/api`
+
 const fetchScreenshotBase64Buffer = async (url) => {
-  const target = `${process.env.APP_DOMAIN}/api/screenshot?url=${url}`
+  const target = `${API_DOMAIN}/screenshot?url=${url}`
   const result = await fetch(target)
   if (result.status !== 200) throw "Couldn't get card snapshot"
   const buffer = await result.buffer()
   return buffer
 }
 const fetchBoardBase64Buffer = async ({ boardLayout, playerColor }) => {
-  const result = await fetch(`${process.env.APP_DOMAIN}/api/image`, {
+  const result = await fetch(`${API_DOMAIN}/image`, {
     method: 'POST',
     body: JSON.stringify({ boardLayout, playerColor }),
   })
