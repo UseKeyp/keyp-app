@@ -8,6 +8,7 @@ import { getAchievementNamesFromValues } from '@treasure-chess/treasure-filters'
 
 import { getDescription, getAttributes } from 'src/lib/pinata/helpers'
 import { getGifBase64 } from 'src/lib/chessCom/gifGetter'
+import placeholderImage from './logo'
 
 const PINATA_API_URL = 'https://api.pinata.cloud'
 const PINATA_API_KEY = process.env.PINATA_API_KEY
@@ -19,11 +20,12 @@ const API_DOMAIN = isProduction
   : `${process.env.APP_DOMAIN}/api`
 
 const fetchScreenshotBase64Buffer = async (url) => {
-  const target = `${API_DOMAIN}/screenshot?url=${url}`
-  const result = await fetch(target)
-  if (result.status !== 200) throw "Couldn't get card snapshot"
-  const buffer = await result.buffer()
-  return buffer
+  // const target = `${API_DOMAIN}/screenshot?url=${url}`
+  // const result = await fetch(target)
+  // if (result.status !== 200) throw "Couldn't get card snapshot"
+  // const buffer = await result.buffer()
+  // return buffer
+  return Buffer.from(placeholderImage, 'base64')
 }
 const fetchBoardBase64Buffer = async ({ boardLayout, playerColor }) => {
   const result = await fetch(`${API_DOMAIN}/image`, {
