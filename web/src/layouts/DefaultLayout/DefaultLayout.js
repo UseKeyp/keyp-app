@@ -6,15 +6,15 @@ const DefaultLayout = ({ children }) => {
   return (
     <div>
       <div className="flex flex-col min-h-screen">
-        <header className="relative mb-8 mt-4">
-          <Header />
-        </header>
         <div className="flex-grow">
-          <div className="max-w-7xl mx-4 sm:mx-auto px-0 sm:px-0 sm:max-w-screen">
-            {children}
+          <div className="max-w-7xl mx-4 sm:mx-auto px-0 sm:px-4 sm:max-w-screen">
+            <header className="relative mb-8 mt-4 px-4">
+              <Header />
+            </header>
+            <div className="mx-4">{children}</div>
           </div>
         </div>
-        <SiteFooter className="self-end" />
+        <SiteFooter className="fixed inset-x-0 bottom-0 mx-4" />
       </div>
     </div>
   )

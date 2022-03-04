@@ -5,7 +5,7 @@ import fetch from 'node-fetch'
 const WYRE_SECRET_KEY = process.env.WYRE_SECRET_KEY
 const WYRE_API_KEY = process.env.WYRE_API_KEY
 const API_URL = isProduction
-  ? 'https://api.wyre.com/v3'
+  ? 'https://api.sendwyre.com/v3'
   : 'https://api.testwyre.com/v3'
 const WYRE_TOKEN_SYMBOL = 'MUSDC'
 
@@ -103,7 +103,7 @@ export const createDepositReservation = async (destinationAddress) => {
       redirectUrl: `${process.env.APP_DOMAIN}/redirect/wyre`,
       failureRedirectUrl: `${process.env.APP_DOMAIN}/redirect/wyre`,
       referrerAccountId: process.env.WYRE_ACCOUNT_ID_TREASURE,
-      dest: `ethereum:${destinationAddress}`,
+      dest: `matic:${destinationAddress}`,
       lockFields: ['destCurrency', 'dest', 'paymentMethod'],
     })
     if (!response.url) throw 'Error'

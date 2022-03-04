@@ -33,10 +33,23 @@ const MemberDetails = ({ member, isProfile }) => {
             </a>
           </h3>
           <div className="flex mt-2">
-            <p className="mr-2">{trimAddress(member.address)}</p>
-            <button onClick={getAddress}>
-              <Icon name="copy" color="#147DDD" />
-            </button>
+            {isProfile ? (
+              <>
+                <p className="mr-2">{trimAddress(member.address)}</p>
+                <button onClick={getAddress}>
+                  <Icon name="copy" color="#147DDD" />
+                </button>
+              </>
+            ) : (
+              <Button
+                onClick={getAddress}
+                variant="green"
+                size="small"
+                className="w-40"
+              >
+                Donate
+              </Button>
+            )}
           </div>
           <div className="mt-2">
             {member.masterTitle && <p>{member.masterTitle}</p>}
@@ -54,20 +67,20 @@ const MemberDetails = ({ member, isProfile }) => {
             </h4>
             <Button
               onClick={deposit}
-              variant="green"
+              variant="blue"
               size="small"
               className="w-40"
             >
-              Deposit Funds
+              Deposit
             </Button>
             <Button
               onClick={withdraw}
-              variant="orange"
-              textColor="black"
+              variant="green"
+              // textColor="black"
               size="small"
               className="w-40"
             >
-              Withdraw Funds
+              Withdraw
             </Button>
             <p className="mt-2">
               <a
