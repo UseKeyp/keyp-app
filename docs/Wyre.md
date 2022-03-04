@@ -170,3 +170,7 @@ RESPONSE
 "webhook": "https://requestinspector.com/inspect/benswyreprod"
 }
 ```
+
+## Wyre Troubleshooting
+
+Why accounts may not be approved: https://docs.sendwyre.com/docs/account-resource#cases-to-expect-auto-kyc-errors

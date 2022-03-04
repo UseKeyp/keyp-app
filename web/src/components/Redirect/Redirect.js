@@ -16,7 +16,7 @@ const Redirect = ({ type }) => {
   const [errorMessage, setErrorMessage] = React.useState()
   const [orderSubmitted, setOrderSubmitted] = React.useState()
   const [successMessage, setSuccessMessage] = React.useState()
-  const { code, state } = useParams()
+  const { code, state, error } = useParams()
   const { logIn } = useAuth()
   const [codeGrant] = useMutation(OAUTH_CODE_GRANT_MUTATION)
 
@@ -65,6 +65,7 @@ const Redirect = ({ type }) => {
 
   // ###############  Wyre  #####################
   const completeWyreOrder = async () => {
+    if (error) return setErrorMessage('Unknown Wyre Error')
     setOrderSubmitted(true)
     setTimeout(() => {
       window.close()
