@@ -1,3 +1,4 @@
+import { useCallback, useEffect } from 'react'
 import { routes, useLocation } from '@redwoodjs/router'
 import { useAuth } from '@redwoodjs/auth'
 import { useWallet } from 'src/providers/wallet'
@@ -24,7 +25,7 @@ const WalletBalance = () => {
           textColor="blue"
           className={'header__nav__fund-wallet'}
         >
-          Fund Wallet
+          Add Funds
         </Button>
       </div>
     </div>
@@ -122,6 +123,16 @@ const Header = () => {
 
   const address = trimAddress(profile?.address) || 'No address set'
 
+  const handleUserStatus = useCallback(() => {
+    if (profile !== null && profile.banned) {
+      logOut()
+    }
+  }, [profile, logOut])
+
+  useEffect(() => {
+    handleUserStatus()
+  }, [handleUserStatus])
+
   return (
     <div className={'header'}>
       <Button to={routes.home()} className="mr-4 align-center">
@@ -179,7 +190,7 @@ const Header = () => {
                   textColor="blue"
                   className="header__nav__username"
                 >
-                  {profile.username}
+                  {profile?.username}
                 </Button>
                 <div className="header__nav__address">{address}</div>
               </div>
