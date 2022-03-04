@@ -4,9 +4,12 @@ import fetch from 'node-fetch'
 
 const WYRE_SECRET_KEY = process.env.WYRE_SECRET_KEY
 const WYRE_API_KEY = process.env.WYRE_API_KEY
-const API_URL = isProduction
-  ? 'https://api.sendwyre.com/v3'
-  : 'https://api.testwyre.com/v3'
+// const API_URL = isProduction
+//   ? 'https://api.sendwyre.com/v3'
+//   : 'https://api.testwyre.com/v3'
+// TODO: uncomment above
+const API_URL = 'https://api.sendwyre.com/v3'
+
 const WYRE_TOKEN_SYMBOL = 'MUSDC'
 
 const signature = (url, data) => {
@@ -80,7 +83,7 @@ export const createMintReservation = async ({
       referenceId,
       hideTrackBtn: true,
       redirectUrl: `${process.env.APP_DOMAIN}/redirect/wyre`,
-      failureRedirectUrl: `${process.env.APP_DOMAIN}/redirect/wyre`,
+      failureRedirectUrl: `${process.env.APP_DOMAIN}/redirect/wyre?error=true`,
       referrerAccountId: process.env.WYRE_ACCOUNT_ID_TREASURE,
       dest: `account:${process.env.WYRE_ACCOUNT_ID_TREASURE}`,
       country: 'US',
@@ -101,7 +104,7 @@ export const createDepositReservation = async (destinationAddress) => {
       destCurrency: WYRE_TOKEN_SYMBOL,
       hideTrackBtn: true,
       redirectUrl: `${process.env.APP_DOMAIN}/redirect/wyre`,
-      failureRedirectUrl: `${process.env.APP_DOMAIN}/redirect/wyre`,
+      failureRedirectUrl: `${process.env.APP_DOMAIN}/redirect/wyre?error=true`,
       referrerAccountId: process.env.WYRE_ACCOUNT_ID_TREASURE,
       dest: `matic:${destinationAddress}`,
       lockFields: ['destCurrency', 'dest', 'paymentMethod'],
