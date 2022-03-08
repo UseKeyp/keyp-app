@@ -4,11 +4,9 @@ import fetch from 'node-fetch'
 
 const WYRE_SECRET_KEY = process.env.WYRE_SECRET_KEY
 const WYRE_API_KEY = process.env.WYRE_API_KEY
-// const API_URL = isProduction
-//   ? 'https://api.sendwyre.com/v3'
-//   : 'https://api.testwyre.com/v3'
-// TODO: uncomment above
-const API_URL = 'https://api.sendwyre.com/v3'
+const API_URL = isProduction
+  ? 'https://api.sendwyre.com/v3'
+  : 'https://api.testwyre.com/v3'
 
 const WYRE_TOKEN_SYMBOL = 'MUSDC'
 
@@ -132,4 +130,14 @@ export const createWithdrawReservation = async () => {
       'createDepositReservation() Error creating Wyre reservation'
     )
   }
+}
+
+export const createPaymentMethod = async ({ processorToken, country }) => {
+  const url = `${API_URL}/orders/reserve`
+  const response = await fetchWyre(url, {
+    plaidProcessorToken: processorToken,
+    paymentMethodType: 'LOCAL_TRANSFER',
+    country,
+  })
+  console.log(response)
 }

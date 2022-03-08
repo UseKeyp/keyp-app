@@ -1,6 +1,7 @@
 import { oAuthUrl, connectPlaid } from './oAuth'
 import { COINBASE } from 'src/lib/oAuth'
-jest.setTimeout(20000)
+import { getSandboxPublicToken } from 'src/lib/oAuth/wyre'
+jest.setTimeout(40000)
 
 // describe('coinbaseLoginUrl', () => {
 //   scenario('Happy case', async (scenario) => {
@@ -16,9 +17,12 @@ jest.setTimeout(20000)
 describe('plaidConnection', () => {
   scenario('Happy case', async (scenario) => {
     mockCurrentUser(scenario.member.alice)
+    const { code, accountId } = await getSandboxPublicToken()
     await connectPlaid({
-      code: 'public-sandbox-a8d66bb6-e2fb-443c-bf5f-fa9018c38b62',
-      accountId: 'ln9va9vRk3SQAkNxvov9I1lnKa3MEMsEjJqxM',
+      // code: 'public-sandbox-a8d66bb6-e2fb-443c-bf5f-fa9018c38b62',
+      // accountId: 'ln9va9vRk3SQAkNxvov9I1lnKa3MEMsEjJqxM',
+      code,
+      accountId,
     })
   })
 })
