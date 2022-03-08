@@ -20,10 +20,10 @@ import {
 } from 'src/lib/oAuth/coinbase'
 
 import {
-  PLAID,
+  WYRE,
   createPlaidLink,
   getPlaidAccessTokenFromCode,
-} from 'src/lib/oAuth/plaid'
+} from 'src/lib/oAuth/wyre'
 
 export const oAuthUrl = async (type) => {
   let url
@@ -37,7 +37,7 @@ export const oAuthUrl = async (type) => {
   } else if (type === COINBASE) {
     params = coinbaseParams
     url = new URL(COINBASE_OAUTH_URL + '/authorize')
-  } else if (type === PLAID) {
+  } else if (type === WYRE) {
     const plaidLink = await createPlaidLink()
     return {
       text: plaidLink,

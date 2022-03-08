@@ -14,14 +14,15 @@ import { AuthenticationError } from '@redwoodjs/graphql-server'
 
 import { encodeBody, getExpiration } from 'src/lib/oAuth/helpers'
 
-export const PLAID = 'coinbase'
+export const WYRE = 'wyre'
 
-const PLAID_REDIRECT_URI = process.env.APP_DOMAIN + '/redirect/coinbase'
+const PLAID_REDIRECT_URI = 'https://0.0.0.0:8910/redirect/plaid'
+// const PLAID_REDIRECT_URI = process.env.APP_DOMAIN + '/redirect/coinbase'
 
-const createPlaidLink = async () => {
+export const createPlaidLink = async () => {
   try {
     const configuration = new Configuration({
-      basePath: PlaidEnvironments[isProduction ? 'production' : 'development'],
+      basePath: PlaidEnvironments[isProduction ? 'production' : 'sandbox'],
       baseOptions: {
         headers: {
           'PLAID-CLIENT-ID': process.env.PLAID_CLIENT_ID,
@@ -40,9 +41,10 @@ const createPlaidLink = async () => {
       country_codes: [CountryCode.Us],
     }
     const createTokenResponse = await client.linkTokenCreate(request)
-    console.log(createTokenResponse.data)
-    return JSON.stringify(createTokenResponse.data)
+    if (!createTokenResponse?.data?.link_token) throw 'No link token returned'
+    return createTokenResponse.data.link_token
   } catch (e) {
+    console.log(e)
     throw `createPlaidLink() ${e}`
   }
 }

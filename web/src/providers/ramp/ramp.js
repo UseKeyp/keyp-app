@@ -1,5 +1,8 @@
 import { useQuery, useLazyQuery } from '@apollo/client'
 import { useAuth } from '@redwoodjs/auth'
+import { navigate, routes } from '@redwoodjs/router'
+
+import { OAUTH_CODE_GRANT_MUTATION } from 'src/components/Redirect/graphql'
 
 import {
   MEMBER_RAMPS_QUERY,
@@ -21,7 +24,7 @@ const RampProvider = ({ children }) => {
   const [wyre, setWyre] = React.useState({
     isLoading: false,
     isConnected: false,
-    name: 'Wyre',
+    name: 'Wyre + Plaid',
   })
 
   const {
@@ -33,7 +36,6 @@ const RampProvider = ({ children }) => {
     skip: !isAuthenticated,
     fetchPolicy: 'network-only',
   })
-
   const updateRamps = () => {
     setCoinbase({
       ...coinbase,
@@ -88,14 +90,24 @@ const RampProvider = ({ children }) => {
 
   const connectWyre = async () => {
     setWyre({ isLoading: true, ...wyre })
-    // const { data: { url } = {} } = await coinbaseLoginUrlQuery()
+    const { data: { oAuthUrl } = {} } = await oAuthUrlQuery({
+      variables: { type: 'wyre' },
+    })
     setWyre({ isLoading: false, ...wyre })
-    // window.open(
-    //   url,
-    //   'Coinbase - Connect',
-    //   'width=600,height=1000,toolbar=yes,location=yes,directories=yes,status=yes,menubar=yes,scrollbars=yes,copyhistory=yes,resizable=yes'
-    // )
-    // setCoinbase({ ...coinbaseDetails, isLoading: true })
+    var linkHandler = Plaid.create({
+      token: oAuthUrl.text,
+      onSuccess: function (public_token, metadata) {
+        navigate(
+          routes.redirect({ type: 'wyre', code: public_token, state: 'foo' })
+        )
+      },
+      onExit: function (err, _metadata) {
+        if (err != null) {
+          // The user encountered a Plaid API error prior to exiting.
+        }
+      },
+    })
+    linkHandler.open()
   }
 
   const withdrawCoinbase = async (_amount) => {
