@@ -7,6 +7,10 @@ const WYRE_API_KEY = process.env.WYRE_API_KEY
 const API_URL = isProduction
   ? 'https://api.sendwyre.com/v3'
   : 'https://api.testwyre.com/v3'
+const API_URL_V2 = isProduction
+  ? 'https://api.sendwyre.com/v2'
+  : 'https://api.testwyre.com/v2'
+const WYRE_WEBHOOKS_URL = process.env.APP_DOMAIN + '/api/wyre'
 
 const WYRE_TOKEN_SYMBOL = 'MUSDC'
 
@@ -45,6 +49,7 @@ const fetchWyre = (url, data) => {
       'X-Api-Signature': signature(urlWithTimestamp, stringData),
     },
   }).then((res) => {
+    console.log(res)
     return res.json()
   })
 }
@@ -133,11 +138,20 @@ export const createWithdrawReservation = async () => {
 }
 
 export const createPaymentMethod = async ({ processorToken, country }) => {
-  const url = `${API_URL}/orders/reserve`
+  const url = `${API_URL_V2}/paymentMethods`
   const response = await fetchWyre(url, {
     plaidProcessorToken: processorToken,
     paymentMethodType: 'LOCAL_TRANSFER',
     country,
   })
-  console.log(response)
+  return response
+}
+
+export const attachBlockchainPaymentMethod = async ({ paymentMethodId }) => {
+  const url = `${API_URL_V2}/paymentMethod/${paymentMethodId}/attach`
+  const response = await fetchWyre(url, {
+    blockchain: 'ETH',
+    notifyUrl: WYRE_WEBHOOKS_URL,
+  })
+  return response
 }

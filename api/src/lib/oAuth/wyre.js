@@ -8,7 +8,10 @@ import {
 
 import { isProduction } from 'src/lib/helpers'
 import fetch from 'cross-fetch'
-import { createPaymentMethod } from 'src/lib/wyre'
+import {
+  createPaymentMethod,
+  attachBlockchainPaymentMethod,
+} from 'src/lib/wyre'
 import { db } from 'src/lib/db'
 import Sentry from 'src/lib/sentry'
 import { AuthenticationError } from '@redwoodjs/graphql-server'
@@ -68,11 +71,6 @@ export const handlePlaidConnection = async ({ code, accountId }) => {
       account_id: accountId,
       processor: 'wyre',
     }
-
-    const processorTokenResponse = await client.processorTokenCreate(request)
-
-    const processorToken = processorTokenResponse.data.processor_token
-    console.log(processorToken)
     // Get the account country needed for wyre
     const { data: accountsResponse } = await client.accountsGet({
       access_token: accessToken,
@@ -85,11 +83,22 @@ export const handlePlaidConnection = async ({ code, accountId }) => {
     if (!account)
       throw 'No account found matching the criteria - checking or savings'
     const accountNickname = `${account.name} - ${account.subtype}`
-    console.log(account)
     console.log(accountNickname)
+    // TODO: details to member
     // TODO: get actual country
     const country = 'US'
-    const paymentId = await createPaymentMethod({ processorToken, country })
+
+    const processorTokenResponse = await client.processorTokenCreate(request)
+    const processorToken = processorTokenResponse.data.processor_token
+    const paymentMethod = await createPaymentMethod({
+      processorToken,
+      country,
+    })
+    console.log(paymentMethod)
+    const blockchainAddress = await attachBlockchainPaymentMethod({
+      paymentMethodId: paymentMethod.id,
+    })
+    console.log(blockchainAddress)
     // pass processor_token to wyre
   } catch (e) {
     /* eslint-enable no-console */

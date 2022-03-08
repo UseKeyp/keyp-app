@@ -1,7 +1,7 @@
 import { oAuthUrl, connectPlaid } from './oAuth'
 import { COINBASE } from 'src/lib/oAuth'
 import { getSandboxPublicToken } from 'src/lib/oAuth/wyre'
-jest.setTimeout(40000)
+jest.setTimeout(60000)
 
 // describe('coinbaseLoginUrl', () => {
 //   scenario('Happy case', async (scenario) => {
