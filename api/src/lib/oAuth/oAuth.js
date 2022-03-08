@@ -19,6 +19,12 @@ import {
   getCoinbaseAccessTokenFromCode,
 } from 'src/lib/oAuth/coinbase'
 
+import {
+  PLAID,
+  createPlaidLink,
+  getPlaidAccessTokenFromCode,
+} from 'src/lib/oAuth/plaid'
+
 export const oAuthUrl = async (type) => {
   let url
   let params
@@ -31,6 +37,12 @@ export const oAuthUrl = async (type) => {
   } else if (type === COINBASE) {
     params = coinbaseParams
     url = new URL(COINBASE_OAUTH_URL + '/authorize')
+  } else if (type === PLAID) {
+    const plaidLink = await createPlaidLink()
+    return {
+      text: plaidLink,
+      type: 'code',
+    }
   }
   Object.keys(params).map((key) => {
     url.searchParams.set(key, params[key])
@@ -78,6 +90,8 @@ export const validateCodeGrant = async ({ state, code, type }) => {
       return getChessAccessTokenFromCode(code, oAuth)
     } else if (type === COINBASE) {
       return getCoinbaseAccessTokenFromCode(code, oAuth)
+    } else if (type === PLAID) {
+      return getPlaidAccessTokenFromCode(code, oAuth)
     }
   } catch (e) {
     /* eslint-disable no-console */

@@ -6,6 +6,16 @@ Currently using version `2020-09-14`
 
 https://plaid.com/docs/auth/partnerships/wyre/
 
+## Config
+
+```js
+export const PlaidEnvironments: PlaidEnvironment = {
+  production: 'https://production.plaid.com',
+  sandbox: 'https://sandbox.plaid.com',
+  development: 'https://development.plaid.com',
+}
+```
+
 ## Libraries
 
 - https://github.com/plaid/react-plaid-link
