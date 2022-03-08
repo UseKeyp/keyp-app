@@ -8,7 +8,10 @@ import {
   MEMBER_RAMPS_QUERY,
   WYRE_DEPOSIT_URL_QUERY,
   OAUTH_URL_QUERY,
+  CONNECT_PLAID_QUERY,
 } from './graphql'
+
+const PLAID = 'plaid'
 
 const RampContext = React.createContext({
   isLoading: true,
@@ -61,6 +64,9 @@ const RampProvider = ({ children }) => {
   const [oAuthUrlQuery] = useLazyQuery(OAUTH_URL_QUERY, {
     fetchPolicy: 'network-only',
   })
+  const [connectPlaidQuery] = useLazyQuery(CONNECT_PLAID_QUERY, {
+    fetchPolicy: 'network-only',
+  })
 
   const depositWyre = async () => {
     setWyre({ isLoading: true, ...wyre })
@@ -91,15 +97,18 @@ const RampProvider = ({ children }) => {
   const connectWyre = async () => {
     setWyre({ isLoading: true, ...wyre })
     const { data: { oAuthUrl } = {} } = await oAuthUrlQuery({
-      variables: { type: 'wyre' },
+      variables: { type: PLAID },
     })
     setWyre({ isLoading: false, ...wyre })
     var linkHandler = Plaid.create({
       token: oAuthUrl.text,
-      onSuccess: function (public_token, metadata) {
-        navigate(
-          routes.redirect({ type: 'wyre', code: public_token, state: 'foo' })
-        )
+      onSuccess: async (public_token, metadata) => {
+        console.log(metadata.accounts)
+        const accountId = metadata.accounts[0].id
+        const { data: { connectPlaid } = {} } = await connectPlaidQuery({
+          variables: { code: public_token, accountId },
+        })
+        console.log(connectPlaid)
       },
       onExit: function (err, _metadata) {
         if (err != null) {

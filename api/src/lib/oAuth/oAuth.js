@@ -20,7 +20,7 @@ import {
 } from 'src/lib/oAuth/coinbase'
 
 import {
-  WYRE,
+  PLAID,
   createPlaidLink,
   getPlaidAccessTokenFromCode,
 } from 'src/lib/oAuth/wyre'
@@ -37,7 +37,7 @@ export const oAuthUrl = async (type) => {
   } else if (type === COINBASE) {
     params = coinbaseParams
     url = new URL(COINBASE_OAUTH_URL + '/authorize')
-  } else if (type === WYRE) {
+  } else if (type === PLAID) {
     const plaidLink = await createPlaidLink()
     return {
       text: plaidLink,
@@ -90,8 +90,6 @@ export const validateCodeGrant = async ({ state, code, type }) => {
       return getChessAccessTokenFromCode(code, oAuth)
     } else if (type === COINBASE) {
       return getCoinbaseAccessTokenFromCode(code, oAuth)
-    } else if (type === PLAID) {
-      return getPlaidAccessTokenFromCode(code, oAuth)
     }
   } catch (e) {
     /* eslint-disable no-console */

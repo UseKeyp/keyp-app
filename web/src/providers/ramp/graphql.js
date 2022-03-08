@@ -11,6 +11,15 @@ export const WYRE_DEPOSIT_URL_QUERY = gql`
     wyreDepositUrl
   }
 `
+export const CONNECT_PLAID_QUERY = gql`
+  query connectPlaidQuery($code: String!, $accountId: String!) {
+    connectPlaid(code: $code, accountId: $accountId) {
+      action
+      text
+      status
+    }
+  }
+`
 
 export const OAUTH_URL_QUERY = gql`
   query oAuthUrlQuery($type: String!) {

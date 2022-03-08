@@ -93,7 +93,13 @@ export const DepositModal = ({ isVisible, toggleModal }) => {
   )
 }
 
-const VendorConnection = ({ ramp, amount, isLoading, disabled }) => {
+const VendorConnection = ({
+  ramp,
+  amount,
+  isLoading,
+  toggleModal,
+  disabled,
+}) => {
   if (!ramp) return null
   const backgroundColor = isLoading
     ? 'bg-chessBlack-200 pointer-events-none'
@@ -107,7 +113,12 @@ const VendorConnection = ({ ramp, amount, isLoading, disabled }) => {
   let button = (
     <Button
       className={buttonClassName}
-      onClick={ramp.onConnect}
+      onClick={() => {
+        ramp.onConnect()
+        setTimeout(() => {
+          toggleModal()
+        }, 3000)
+      }}
       disabled={isLoading}
     >
       {ramp.isLoading ? loadingText : 'Connect  '}
@@ -166,6 +177,7 @@ export const WithdrawModal = ({ isVisible, toggleModal }) => {
               isLoading={isLoading}
               amount={amount}
               ramp={ramp}
+              toggleModal={toggleModal}
             />
           ))}
         </>

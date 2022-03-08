@@ -15,22 +15,25 @@ import { AuthenticationError } from '@redwoodjs/graphql-server'
 import { encodeBody, getExpiration } from 'src/lib/oAuth/helpers'
 
 export const WYRE = 'wyre'
+export const PLAID = 'plaid'
 
 const PLAID_REDIRECT_URI = 'https://0.0.0.0:8910/redirect/plaid'
 // const PLAID_REDIRECT_URI = process.env.APP_DOMAIN + '/redirect/coinbase'
 
+const configuration = new Configuration({
+  basePath: PlaidEnvironments[isProduction ? 'production' : 'sandbox'],
+  baseOptions: {
+    headers: {
+      'PLAID-CLIENT-ID': process.env.PLAID_CLIENT_ID,
+      'PLAID-SECRET': process.env.PLAID_CLIENT_SECRET,
+      'Plaid-Version': '2020-09-14',
+    },
+  },
+})
+const client = new PlaidApi(configuration)
+
 export const createPlaidLink = async () => {
   try {
-    const configuration = new Configuration({
-      basePath: PlaidEnvironments[isProduction ? 'production' : 'sandbox'],
-      baseOptions: {
-        headers: {
-          'PLAID-CLIENT-ID': process.env.PLAID_CLIENT_ID,
-          'PLAID-SECRET': process.env.PLAID_CLIENT_SECRET,
-        },
-      },
-    })
-    const client = new PlaidApi(configuration)
     const request = {
       user: { client_user_id: context.currentUser.id },
       client_name: 'Treasure Chess',
@@ -49,97 +52,24 @@ export const createPlaidLink = async () => {
   }
 }
 
-export const getPlaidAccessTokenFromCode = async (
-  code,
-  { codeVerifier, memberId }
-) => {
+export const handlePlaidConnection = async ({ code, accountId }) => {
   try {
-    const body = {
-      grant_type: 'authorization_code',
-      client_id: process.env.PLAID_CLIENT_ID,
-      client_secret: process.env.PLAID_CLIENT_SECRET,
-      redirect_uri: PLAID_REDIRECT_URI,
-      code,
-      code_verifier: codeVerifier,
-    }
-    const encodedBody = encodeBody(body)
-    // console.log(encodedBody.split('&'))
-    const response = await fetch(PLAID_OAUTH_URL + '/token', {
-      method: 'post',
-      body: encodedBody,
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-    }).then((res) => {
-      // console.log(res)
-      if (res.status != 200)
-        throw 'Plaid basic authorization failed, or secret invalid'
-      return res.json()
+    console.log(code, accountId)
+    const tokenResponse = await client.itemPublicTokenExchange({
+      public_token: code,
     })
-    if (response.error)
-      throw `${response.error} - ${response.hint}. ${response.message}`
-
-    const {
+    const accessToken = tokenResponse.access_token
+    // Create a processor token for a specific account id.
+    const request = {
       access_token: accessToken,
-      refresh_token: refreshToken,
-      expires_in: expiration,
-    } = response
-
-    if (!refreshToken) throw 'Failed to get refresh_token from Plaid'
-    return {
-      accessToken,
-      accessTokenExpiration: getExpiration(expiration),
-      refreshToken,
-      memberId,
+      account_id: accountId,
+      processor: 'wyre',
     }
-  } catch (e) {
-    throw `getPlaidAccessTokenFromCode() ${e}`
-  }
-}
 
-export const handlePlaidLogin = async ({
-  accessToken,
-  refreshToken,
-  memberId,
-}) => {
-  try {
-    const userDetails = await fetch('https://api.coinbase.com/v2/user', {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    }).then((res) => {
-      if (res.status != 200)
-        throw 'Plaid authorization failed, or secret invalid'
-      return res.json()
-    })
-    const accounts = await fetch(`https://api.coinbase.com/v2/accounts`, {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    }).then((res) => {
-      if (res.status != 200)
-        throw 'Plaid authorization failed, or secret invalid'
-      return res.json()
-    })
-    const ethAccount = accounts.data.find(
-      (account) => account.currency === 'ETH'
-    )
-    const addresses = await fetch(
-      `https://api.coinbase.com/v2/accounts/${ethAccount.id}/addresses`,
-      { headers: { Authorization: `Bearer ${accessToken}` } }
-    ).then((res) => {
-      if (res.status != 200)
-        throw 'Plaid authorization failed, or secret invalid'
-      return res.json()
-    })
-    const address = addresses.data[0].address
-    await db.member.update({
-      where: {
-        id: memberId,
-      },
-      data: {
-        coinbaseWithdrawAddress: address.toLowerCase(),
-        emailPlaid: userDetails.data.email,
-        accessTokenPlaid: accessToken,
-        refreshTokenPlaid: refreshToken,
-      },
-    })
+    const processorTokenResponse = await client.createProcessorToken(request)
+
+    const processorToken = processorTokenResponse.processor_token
+    // pass processor_token to wyre
   } catch (e) {
     /* eslint-enable no-console */
     Sentry.captureException(e)
