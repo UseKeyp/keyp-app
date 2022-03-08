@@ -31,8 +31,7 @@ model Member {
   country                 String // Player's country  eg. US, DE
   mintCredits             Int            @default(3) // Mint for free!
   banned                  Boolean        @default(false)
-  // Oauth
-  refreshToken            String?
+  refreshToken            String? // Chess.com Oauth
   // Ramps
   coinbaseWithdrawAddress String?
   wyreWithdrawAddress     String?

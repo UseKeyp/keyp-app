@@ -136,7 +136,7 @@ Submit the game data to be minted!
 
 ## `/paymentMethods`
 
-- For plaid-integration offramp bank details, no additional KYC is performed on these bank details. Set `chargebablePM` to false, then the status will go directly into `AWAITING FOLLOW UP`. This the final status for offramp PMs.
+- For plaid-integration offramp bank details, no additional KYC is performed on these bank details. Set `chargebablePM` to false during PM creation, then the status will go directly into `AWAITING FOLLOW UP`. This the final status for offramp PMs.
 - Only US support is available for Plaid integration. For International accounts, we can create PMs by passing bank details directly. Maybe this list for supported regions: https://docs.sendwyre.com/docs/wyre-checkout-1#supported-states-and-countries (waiting for confirmation)
 
 ## Creating the checkout URL

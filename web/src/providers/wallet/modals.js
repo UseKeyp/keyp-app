@@ -113,12 +113,7 @@ const VendorConnection = ({
   let button = (
     <Button
       className={buttonClassName}
-      onClick={() => {
-        ramp.onConnect()
-        setTimeout(() => {
-          toggleModal()
-        }, 3000)
-      }}
+      onClick={ramp.onConnect}
       disabled={isLoading}
     >
       {ramp.isLoading ? loadingText : 'Connect  '}

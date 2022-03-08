@@ -137,21 +137,26 @@ export const createWithdrawReservation = async () => {
   }
 }
 
-export const createPaymentMethod = async ({ processorToken, country }) => {
+export const createPaymentMethodFromPlaid = async (processorToken) => {
   const url = `${API_URL_V2}/paymentMethods`
   const response = await fetchWyre(url, {
     plaidProcessorToken: processorToken,
     paymentMethodType: 'LOCAL_TRANSFER',
-    country,
+    country: 'US',
+    // chargebablePM: true
   })
   return response
 }
 
 export const attachBlockchainPaymentMethod = async ({ paymentMethodId }) => {
-  const url = `${API_URL_V2}/paymentMethod/${paymentMethodId}/attach`
+  let url = `${API_URL_V2}/paymentMethod/${paymentMethodId}/attach`
   const response = await fetchWyre(url, {
     blockchain: 'ETH',
     notifyUrl: WYRE_WEBHOOKS_URL,
   })
-  return response
+  // Bug with wyre returning 'No Content' status 204
+  // TODO: remove the extra call once this is fixed
+  url = `${API_URL_V2}/paymentMethod/${paymentMethodId}`
+  const accountDetails = await fetchWyre(url)
+  return accountDetails
 }

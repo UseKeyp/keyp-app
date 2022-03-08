@@ -9,7 +9,7 @@ import {
 import { isProduction } from 'src/lib/helpers'
 import fetch from 'cross-fetch'
 import {
-  createPaymentMethod,
+  createPaymentMethodFromPlaid,
   attachBlockchainPaymentMethod,
 } from 'src/lib/wyre'
 import { db } from 'src/lib/db'
@@ -21,10 +21,12 @@ import { encodeBody, getExpiration } from 'src/lib/oAuth/helpers'
 export const WYRE = 'wyre'
 export const PLAID = 'plaid'
 
-// TODO: Change this back
+// TODO: Change these back. Some issue with https?
 const PLAID_REDIRECT_URI = 'https://0.0.0.0:8910/redirect/plaid'
+const PLAID_WEBHOOK_URL = isProduction
+  ? 'https://treasure.chess.com/api/plaid'
+  : 'https://tc-checkout-dev.ngrok.io/api/plaid'
 // const PLAID_REDIRECT_URI = process.env.APP_DOMAIN + '/redirect/coinbase'
-const PLAID_WEBHOOKS_URL = process.env.APP_DOMAIN + '/api/plaid'
 
 const configuration = new Configuration({
   basePath: PlaidEnvironments[isProduction ? 'production' : 'sandbox'],
@@ -46,7 +48,7 @@ export const createPlaidLink = async () => {
       client_name: 'Treasure Chess',
       products: PRODUCTS_SCOPE,
       language: 'en', // TODO get from user's account
-      webhook: PLAID_WEBHOOKS_URL,
+      webhook: PLAID_WEBHOOK_URL,
       redirect_uri: PLAID_REDIRECT_URI,
       country_codes: [CountryCode.Us], // TODO: How do we know this?
     }
@@ -65,13 +67,12 @@ export const handlePlaidConnection = async ({ code, accountId }) => {
       public_token: code,
     })
     const accessToken = tokenResponse.data.access_token
-    // Create a processor token for a specific account id.
     const request = {
       access_token: accessToken,
       account_id: accountId,
       processor: 'wyre',
     }
-    // Get the account country needed for wyre
+    // Get the account nickname needed for wyre
     const { data: accountsResponse } = await client.accountsGet({
       access_token: accessToken,
     })
@@ -83,23 +84,27 @@ export const handlePlaidConnection = async ({ code, accountId }) => {
     if (!account)
       throw 'No account found matching the criteria - checking or savings'
     const accountNickname = `${account.name} - ${account.subtype}`
-    console.log(accountNickname)
-    // TODO: details to member
-    // TODO: get actual country
-    const country = 'US'
 
+    // Create a processor token for a specific account id.
     const processorTokenResponse = await client.processorTokenCreate(request)
     const processorToken = processorTokenResponse.data.processor_token
-    const paymentMethod = await createPaymentMethod({
-      processorToken,
-      country,
-    })
+    // Pass processor token to Wyre
+    const paymentMethod = await createPaymentMethodFromPlaid(processorToken)
     console.log(paymentMethod)
+    // Attach blockchain address to Payment Method
     const blockchainAddress = await attachBlockchainPaymentMethod({
       paymentMethodId: paymentMethod.id,
     })
     console.log(blockchainAddress)
-    // pass processor_token to wyre
+
+    // Save details to the user
+    await db.member.update({
+      where: { id: conext.currentUser.id },
+      data: {
+        wyreWithdrawAddress: blockchainAddress,
+        emailWyre: '', // TODO: get email from plaid or wyre?
+      },
+    })
   } catch (e) {
     /* eslint-enable no-console */
     Sentry.captureException(e)
