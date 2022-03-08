@@ -58,7 +58,7 @@ export const handlePlaidConnection = async ({ code, accountId }) => {
     const tokenResponse = await client.itemPublicTokenExchange({
       public_token: code,
     })
-    const accessToken = tokenResponse.access_token
+    const accessToken = tokenResponse.data.access_token
     // Create a processor token for a specific account id.
     const request = {
       access_token: accessToken,
@@ -66,13 +66,40 @@ export const handlePlaidConnection = async ({ code, accountId }) => {
       processor: 'wyre',
     }
 
-    const processorTokenResponse = await client.createProcessorToken(request)
+    const processorTokenResponse = await client.processorTokenCreate(request)
 
-    const processorToken = processorTokenResponse.processor_token
+    const processorToken = processorTokenResponse.data.processor_token
+    console.log(processorToken)
     // pass processor_token to wyre
   } catch (e) {
     /* eslint-enable no-console */
     Sentry.captureException(e)
     throw new AuthenticationError(e)
+  }
+}
+
+// For testing purposes
+export const getPublicToken = async () => {
+  try {
+    const publicTokenRequest = {
+      institution_id: institutionID,
+      initial_products: initialProducts,
+    }
+    const publicTokenResponse = await client.sandboxPublicTokenCreate(
+      publicTokenRequest
+    )
+    const publicToken = publicTokenResponse.data.public_token
+    // The generated public_token can now be exchanged
+    // for an access_token
+    const exchangeRequest = {
+      public_token: publicToken,
+    }
+
+    const exchangeTokenResponse = await client.itemPublicTokenExchange(
+      exchangeRequest
+    )
+    const accessToken = exchangeTokenResponse.data.access_token
+  } catch (e) {
+    console.log(e)
   }
 }
