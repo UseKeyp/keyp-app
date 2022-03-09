@@ -49,7 +49,7 @@ const fetchWyre = (url, data) => {
       'X-Api-Signature': signature(urlWithTimestamp, stringData),
     },
   }).then((res) => {
-    console.log(res)
+    if (res.status === 204) throw 'No content returned by Wyre'
     return res.json()
   })
 }
