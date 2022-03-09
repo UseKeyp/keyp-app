@@ -145,20 +145,20 @@ export const createPaymentMethodFromPlaid = async (processorToken) => {
     country: 'US', // Wyre only supports US Plaid accounts
     chargebablePM: false,
   }
-  console.log(args)
+  // console.log(args)
   const response = await fetchWyre(url, args)
+  // console.log(response);
   return response
 }
 
 export const fetchPaymentMethod = async (paymentMethodId) => {
   const url = `${API_URL_V2}/paymentMethod/${paymentMethodId}`
   const paymentMethod = await fetchWyre(url)
-  console.log(url)
-  console.log({ paymentMethod })
+  console.log(paymentMethod)
   return paymentMethod
 }
 
-export const attachBlockchainPaymentMethod = async ({ paymentMethodId }) => {
+export const attachBlockchainPaymentMethod = async (paymentMethodId) => {
   let url = `${API_URL_V2}/paymentMethod/${paymentMethodId}/attach`
   const response = await fetchWyre(url, {
     blockchain: 'ETH',

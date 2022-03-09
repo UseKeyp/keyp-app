@@ -21,12 +21,12 @@ import { encodeBody, getExpiration } from 'src/lib/oAuth/helpers'
 export const WYRE = 'wyre'
 export const PLAID = 'plaid'
 
-// TODO: Change these back. Some issue with https?
-const PLAID_REDIRECT_URI = 'https://0.0.0.0:8910/redirect/plaid'
 const PLAID_WEBHOOK_URL = isProduction
   ? 'https://treasure.chess.com/api/plaid'
   : 'https://tc-checkout-dev.ngrok.io/api/plaid'
-// const PLAID_REDIRECT_URI = process.env.APP_DOMAIN + '/redirect/coinbase'
+const PLAID_REDIRECT_URI = isProduction
+  ? process.env.APP_DOMAIN + '/redirect/coinbase'
+  : 'https://0.0.0.0:8910/redirect/plaid'
 
 const configuration = new Configuration({
   basePath: PlaidEnvironments[isProduction ? 'production' : 'sandbox'],
@@ -90,29 +90,39 @@ export const handlePlaidConnection = async ({ code, accountId }) => {
     const { data: identityResponse } = await client.identityGet({
       access_token: accessToken,
     })
-    // console.log(identityResponse)
-    const accountWithOwnerData = identityResponse.accounts.find(
+    const itemId = identityResponse.item.item_id // For record-keeping purposes
+    const account = identityResponse.accounts.find(
       (acc) => acc.account_id === accountId
     )
-    const emailWyre = accountWithOwnerData.owners[0].emails[0].data
-    const accountNickname = `${accountWithOwnerData.name} - ${accountWithOwnerData.subtype}`
-    console.log(emailWyre)
-    console.log(accountNickname)
+    const {
+      owners,
+      verification_status,
+      mask,
+      balances: { iso_currency_code },
+    } = account
+    const email = owners[0].emails.find((item) => item.primary).data
+    const accountNickname = `${account.name} - ${account.subtype}`
     // Create a processor token for a specific account id.
     const processorTokenResponse = await client.processorTokenCreate(request)
     const processorToken = processorTokenResponse.data.processor_token
     // Pass processor token to Wyre
     const paymentMethod = await createPaymentMethodFromPlaid(processorToken)
     // Attach blockchain address to Payment Method
-    const blockchainAddress = await attachBlockchainPaymentMethod({
-      paymentMethodId: paymentMethod.id,
-    })
+    const address = await attachBlockchainPaymentMethod(paymentMethod.id)
     // Save details to the user
     await db.member.update({
       where: { id: context.currentUser.id },
       data: {
-        wyreWithdrawAddress: blockchainAddress,
-        emailWyre, // TODO: get email from plaid or wyre?
+        ramps: {
+          create: {
+            address,
+            email,
+            itemId,
+            verificationStatus: verification_status,
+            isoCurrencyCode: iso_currency_code,
+            paymentMethodId: paymentMethod.id,
+          },
+        },
       },
     })
   } catch (e) {

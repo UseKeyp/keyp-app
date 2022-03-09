@@ -10,36 +10,50 @@ generator client {
 }
 
 model Member {
-  id                      String         @id // Chess.com id
-  username                String         @unique // Chess.com username
-  address                 String?        @unique // Torus wallet address
+  id                   String         @id // Chess.com id
+  username             String         @unique // Chess.com username
+  address              String?        @unique // Torus wallet address
   // --------------- LINKS --------------
-  treasuresOwned          Treasure[]     @relation("treasuresOwned")
-  treasuresMinted         Treasure[]     @relation("treasuresMinted")
-  treasuresPlayedWhite    Treasure[]     @relation("treasuresPlayedWhite")
-  treasuresPlayedBlack    Treasure[]     @relation("treasuresPlayedBlack")
-  treasuresWon            Treasure[]     @relation("treasuresWon")
-  mintPurchases           MintPurchase[] @relation("mintPurchases")
-  marketSalesSold         MarketSale[]   @relation("marketSalesSold")
-  marketSalesPurchased    MarketSale[]   @relation("marketSalesPurchased")
-  rampWithdraws           RampWithdraw[] @relation("rampWithdraws")
+  treasuresOwned       Treasure[]     @relation("treasuresOwned")
+  treasuresMinted      Treasure[]     @relation("treasuresMinted")
+  treasuresPlayedWhite Treasure[]     @relation("treasuresPlayedWhite")
+  treasuresPlayedBlack Treasure[]     @relation("treasuresPlayedBlack")
+  treasuresWon         Treasure[]     @relation("treasuresWon")
+  mintPurchases        MintPurchase[] @relation("mintPurchases")
+  marketSalesSold      MarketSale[]   @relation("marketSalesSold")
+  marketSalesPurchased MarketSale[]   @relation("marketSalesPurchased")
+  rampWithdraws        RampWithdraw[] @relation("rampWithdraws")
   // --------------- STATE --------------
-  createdAt               DateTime       @default(now())
-  updatedAt               DateTime       @updatedAt
-  imageSrc                String? // Avatar URL
-  masterTitle             MasterTitle? // "Grand Master" or "International Master"
-  country                 String // Player's country  eg. US, DE
-  mintCredits             Int            @default(3) // Mint for free!
-  banned                  Boolean        @default(false)
-  refreshToken            String? // Chess.com Oauth
-  // Ramps
-  coinbaseWithdrawAddress String?
-  wyreWithdrawAddress     String?
-  emailCoinbase           String?
-  emailWyre               String?
-  accessTokenCoinbase     String?
-  refreshTokenCoinbase    String?
-  OAuth                   OAuth[]
+  createdAt            DateTime       @default(now())
+  updatedAt            DateTime       @updatedAt
+  imageSrc             String? // Avatar URL
+  masterTitle          MasterTitle? // "Grand Master" or "International Master"
+  country              String // Player's country  eg. US, DE
+  mintCredits          Int            @default(3) // Mint for free!
+  banned               Boolean        @default(false)
+  refreshToken         String? // Chess.com Oauth
+  ramps                Ramp[]
+  OAuth                OAuth[]
+}
+
+model Ramp {
+  id                 String  @id @default(uuid())
+  Member             Member? @relation(fields: [memberId], references: [id])
+  memberId           String?
+  email              String?
+  address            String?
+  // Plaid
+  accountId          String?
+  accountNickname    String?
+  mask               String?
+  isoCurrencyCode    String?
+  itemId             String?
+  verificationStatus String? // Only used for Auth Item initiated through Automated or Manual micro-deposits
+  // Wyre
+  paymentMethodId    String? // Wyre
+  // Coinbase
+  accessToken        String?
+  refreshToken       String?
 }
 
 model Treasure {
@@ -151,7 +165,7 @@ model RampWithdraw {
   id            String      @id
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
-  ramp          Ramp
+  ramp          RampType
   status        RampStatus  @default(PENDING)
   toAddress     String
   amount        Int
@@ -159,17 +173,6 @@ model RampWithdraw {
   transactionId String      @unique
   Member        Member?     @relation("rampWithdraws", fields: [memberId], references: [id])
   memberId      String?
-}
-
-enum Ramp {
-  COINBASE
-  WYRE
-}
-
-enum RampStatus {
-  PENDING
-  COMPLETE
-  FAILED
 }
 
 model Transaction {
@@ -183,6 +186,17 @@ model Transaction {
   marketSaleSale   MarketSale?   @relation("saleTransactions", fields: [marketSaleSaleId], references: [id])
   marketSaleSaleId Int?
   rampWithdraw     RampWithdraw?
+}
+
+enum RampType {
+  COINBASE
+  WYRE
+}
+
+enum RampStatus {
+  PENDING
+  COMPLETE
+  FAILED
 }
 
 enum MarketSaleStatus {
