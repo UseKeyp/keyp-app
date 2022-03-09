@@ -48,7 +48,7 @@ export const oAuthUrl = async (type) => {
   let memberId
   if (context.currentUser?.id) memberId = context.currentUser?.id
 
-  const oauth = await db.oAuth.create({
+  await db.oAuth.create({
     data: {
       state,
       codeVerifier: pkce.code_verifier,

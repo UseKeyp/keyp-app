@@ -9,6 +9,8 @@ import {
 } from './graphql'
 
 const PLAID = 'plaid'
+const COINBASE = 'COINBASE'
+const WYRE = 'WYRE'
 
 const RampContext = React.createContext({
   isLoading: true,
@@ -16,6 +18,7 @@ const RampContext = React.createContext({
 
 const RampProvider = ({ children }) => {
   const { isAuthenticated } = useAuth()
+  const [shouldPoll, setShouldPoll] = React.useState(false)
   const [coinbase, setCoinbase] = React.useState({
     isLoading: false,
     isConnected: false,
@@ -28,32 +31,32 @@ const RampProvider = ({ children }) => {
   })
 
   const {
-    data: { memberRamps } = {},
+    data: { ramps } = {},
     error: rampError,
     loading: rampsLoading,
   } = useQuery(MEMBER_RAMPS_QUERY, {
     pollInterval: 30000,
-    skip: !isAuthenticated,
+    skip: !isAuthenticated || !shouldPoll,
     fetchPolicy: 'network-only',
   })
   const updateRamps = () => {
+    const coinbaseRamp = ramps.find((ramp) => ramp.type === COINBASE)
+    const wyreRamp = ramps.find((ramp) => ramp.type === WYRE)
     setCoinbase({
       ...coinbase,
-      isConnected: memberRamps.coinbaseWithdrawAddress && true,
-      address: memberRamps.coinbaseWithdrawAddress,
+      ...coinbaseRamp,
     })
     setWyre({
       ...wyre,
-      isConnected: memberRamps.wyreWithdrawAddress && true,
-      address: memberRamps.wyreWithdrawAddress,
+      ...wyreRamp,
     })
   }
 
   React.useEffect(() => {
-    if (!memberRamps) return
+    if (!ramps) return
     updateRamps()
     /* eslint-disable-next-line react-hooks/exhaustive-deps */
-  }, [memberRamps])
+  }, [ramps])
 
   const [wyreDepositUrlQuery] = useLazyQuery(WYRE_DEPOSIT_URL_QUERY, {
     fetchPolicy: 'network-only',
@@ -84,6 +87,7 @@ const RampProvider = ({ children }) => {
       variables: { type: 'coinbase' },
     })
     setCoinbase({ isLoading: false, ...coinbase })
+    setShouldPoll(true)
     window.open(
       oAuthUrl.url,
       'Coinbase - Connect',
@@ -103,13 +107,19 @@ const RampProvider = ({ children }) => {
       /* eslint-disable camelcase*/
       onSuccess: async (public_token, metadata) => {
         const accountId = metadata.accounts[0].id
-        await connectPlaidQuery({
+        const { data: wyreRamp = {} } = await connectPlaidQuery({
           variables: { code: public_token, accountId },
         })
-        // TODO: Trigger polling to update the UI on success
+        // console.log(wyreRamp)
+        setWyre({
+          ...wyre,
+          ...wyreRamp,
+        })
+        // TODO: trigger some success notification
       },
       onExit: function (err, _metadata) {
         if (err != null) {
+          // TODO: Trigger some error notification
           // The user encountered a Plaid API error prior to exiting.
         }
       },

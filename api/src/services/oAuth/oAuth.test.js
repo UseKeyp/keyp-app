@@ -32,6 +32,6 @@ describe('plaidConnection', () => {
       code,
       accountId,
     })
-    console.log(response)
+    expect(typeof response.address === 'string').toBe(true)
   })
 })

@@ -1,8 +1,11 @@
 export const MEMBER_RAMPS_QUERY = gql`
   query FindMemberRampsQuery {
-    memberRamps {
-      coinbaseWithdrawAddress
-      wyreWithdrawAddress
+    ramps {
+      id
+      address
+      accountNickname
+      isoCurrencyCode
+      type
     }
   }
 `
@@ -13,11 +16,8 @@ export const WYRE_DEPOSIT_URL_QUERY = gql`
 `
 export const CONNECT_PLAID_QUERY = gql`
   query connectPlaidQuery($code: String!, $accountId: String!) {
-    connectPlaid(code: $code, accountId: $accountId) {
-      action
-      text
-      status
-    }
+    connectPlaid(code: $code, accountId: $accountId)
+    ramps
   }
 `
 
