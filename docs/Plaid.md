@@ -6,6 +6,10 @@ Currently using version `2020-09-14`
 
 https://plaid.com/docs/auth/partnerships/wyre/
 
+## Notes
+
+Wyre says we don't need Products.Identity for off-ramps. Emails are only required for on-ramp. How much will be Identity services
+
 ## Config
 
 ```js

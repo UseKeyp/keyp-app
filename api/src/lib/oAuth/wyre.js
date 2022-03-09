@@ -39,7 +39,8 @@ const configuration = new Configuration({
   },
 })
 const client = new PlaidApi(configuration)
-const PRODUCTS_SCOPE = [Products.Auth, Products.Identity]
+
+const PRODUCTS_SCOPE = [Products.Auth]
 
 export const createPlaidLink = async () => {
   try {
@@ -73,36 +74,45 @@ export const handlePlaidConnection = async ({ code, accountId }) => {
       processor: 'wyre',
     }
     // Get the account nickname needed for wyre
-    const { data: accountsResponse } = await client.accountsGet({
+    // TODO: Remove this old way for getting accounts once we remove
+    // Identity product version below.
+    // const { data: accountsResponse } = await client.accountsGet({
+    //   access_token: accessToken,
+    // })
+    // const account = accountsResponse.accounts.find(
+    //   (account) =>
+    //     account.type === 'depository' &&
+    //     ['checking', 'savings'].includes(account.subtype)
+    // )
+    // if (!account)
+    //   throw 'No account found matching the criteria - checking or savings'
+    // const accountNickname = `${account.name} - ${account.subtype}`
+    const { data: identityResponse } = await client.identityGet({
       access_token: accessToken,
     })
-    const account = accountsResponse.accounts.find(
-      (account) =>
-        account.type === 'depository' &&
-        ['checking', 'savings'].includes(account.subtype)
+    // console.log(identityResponse)
+    const accountWithOwnerData = identityResponse.accounts.find(
+      (acc) => acc.account_id === accountId
     )
-    if (!account)
-      throw 'No account found matching the criteria - checking or savings'
-    const accountNickname = `${account.name} - ${account.subtype}`
-    console.log({ account })
+    const emailWyre = accountWithOwnerData.owners[0].emails[0].data
+    const accountNickname = `${accountWithOwnerData.name} - ${accountWithOwnerData.subtype}`
+    console.log(emailWyre)
+    console.log(accountNickname)
     // Create a processor token for a specific account id.
     const processorTokenResponse = await client.processorTokenCreate(request)
     const processorToken = processorTokenResponse.data.processor_token
     // Pass processor token to Wyre
     const paymentMethod = await createPaymentMethodFromPlaid(processorToken)
-    console.log({ paymentMethod })
     // Attach blockchain address to Payment Method
     const blockchainAddress = await attachBlockchainPaymentMethod({
       paymentMethodId: paymentMethod.id,
     })
-    console.log({ blockchainAddress })
-
     // Save details to the user
     await db.member.update({
       where: { id: context.currentUser.id },
       data: {
         wyreWithdrawAddress: blockchainAddress,
-        emailWyre: '', // TODO: get email from plaid or wyre?
+        emailWyre, // TODO: get email from plaid or wyre?
       },
     })
   } catch (e) {
