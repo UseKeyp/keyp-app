@@ -106,23 +106,21 @@ export const handlePlaidConnection = async ({ code, accountId }) => {
     // Attach blockchain address to Payment Method
     const address = await attachBlockchainPaymentMethod(paymentMethod.id)
     // Save details to the user
-    await db.member.update({
-      where: { id: context.currentUser.id },
+    const ramp = await db.ramp.create({
       data: {
-        ramps: {
-          create: {
-            address,
-            email,
-            itemId,
-            mask,
-            accountNickname,
-            verificationStatus: verification_status,
-            isoCurrencyCode: iso_currency_code,
-            paymentMethodId: paymentMethod.id,
-          },
-        },
+        address,
+        email,
+        itemId,
+        mask,
+        accountNickname,
+        verificationStatus: verification_status,
+        isoCurrencyCode: iso_currency_code,
+        paymentMethodId: paymentMethod.id,
+        type: 'WYRE',
+        member: { connect: { id: context.currentUser.id } },
       },
     })
+    return ramp
   } catch (e) {
     /* eslint-enable no-console */
     Sentry.captureException(e)

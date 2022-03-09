@@ -37,9 +37,10 @@ model Member {
 }
 
 model Ramp {
-  id                 String  @id @default(uuid())
-  Member             Member? @relation(fields: [memberId], references: [id])
+  id                 String         @id @default(uuid())
+  member             Member?        @relation(fields: [memberId], references: [id])
   memberId           String?
+  type               RampType
   email              String?
   address            String?
   // Plaid
@@ -47,13 +48,14 @@ model Ramp {
   accountNickname    String?
   mask               String?
   isoCurrencyCode    String?
-  itemId             String?
+  itemId             String? // Used to identify an Item in a webhook
   verificationStatus String? // Only used for Auth Item initiated through Automated or Manual micro-deposits
   // Wyre
   paymentMethodId    String? // Wyre
   // Coinbase
   accessToken        String?
   refreshToken       String?
+  RampWithdraw       RampWithdraw[]
 }
 
 model Treasure {
@@ -165,7 +167,6 @@ model RampWithdraw {
   id            String      @id
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
-  ramp          RampType
   status        RampStatus  @default(PENDING)
   toAddress     String
   amount        Int
@@ -173,6 +174,8 @@ model RampWithdraw {
   transactionId String      @unique
   Member        Member?     @relation("rampWithdraws", fields: [memberId], references: [id])
   memberId      String?
+  ramp          Ramp        @relation(fields: [rampId], references: [id])
+  rampId        String
 }
 
 model Transaction {

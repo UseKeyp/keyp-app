@@ -9,17 +9,10 @@ export const schema = gql`
     text: String!
     status: CodeGrantStatus!
   }
-  type ConnectPlaidResponse {
-    action: String!
-    text: String!
-    status: CodeGrantStatus!
-  }
 
   type Query {
     oAuthUrl(type: String!): LoginUrl! @requireAuth
     chessLoginUrl: LoginUrl! @skipAuth
-    connectPlaid(code: String!, accountId: String!): ConnectPlaidResponse!
-      @requireAuth
   }
   type Mutation {
     codeGrant(code: String!, state: String!, type: String!): CodeGrantResponse!

@@ -25,7 +25,6 @@ export const oAuthUrl = async (type) => {
   let url
   let params
   const pkce = pkceChallenge()
-  console.log(type)
   if (type === CHESS) {
     params = chessParams
     url = new URL('authorize', CHESS_OAUTH_URL)
@@ -49,7 +48,7 @@ export const oAuthUrl = async (type) => {
   let memberId
   if (context.currentUser?.id) memberId = context.currentUser?.id
 
-  await db.oAuth.create({
+  const oauth = await db.oAuth.create({
     data: {
       state,
       codeVerifier: pkce.code_verifier,
@@ -57,7 +56,6 @@ export const oAuthUrl = async (type) => {
       ...(memberId && { member: { connect: { id: memberId } } }),
     },
   })
-
   url.searchParams.set('response_type', 'code')
   url.searchParams.set('state', state)
   url.searchParams.set('prompt', 'none')

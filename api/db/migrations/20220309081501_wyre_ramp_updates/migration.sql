@@ -7,7 +7,8 @@
   - You are about to drop the column `emailWyre` on the `Member` table. All the data in the column will be lost.
   - You are about to drop the column `refreshTokenCoinbase` on the `Member` table. All the data in the column will be lost.
   - You are about to drop the column `wyreWithdrawAddress` on the `Member` table. All the data in the column will be lost.
-  - Changed the type of `ramp` on the `RampWithdraw` table. No cast exists, the column would be dropped and recreated, which cannot be done if there is data, since the column is required.
+  - You are about to drop the column `ramp` on the `RampWithdraw` table. All the data in the column will be lost.
+  - Added the required column `rampId` to the `RampWithdraw` table without a default value. This is not possible if the table is not empty.
 
 */
 -- CreateEnum
@@ -23,7 +24,7 @@ DROP COLUMN "wyreWithdrawAddress";
 
 -- AlterTable
 ALTER TABLE "RampWithdraw" DROP COLUMN "ramp",
-ADD COLUMN     "ramp" "RampType" NOT NULL;
+ADD COLUMN     "rampId" TEXT NOT NULL;
 
 -- DropEnum
 DROP TYPE "Ramp";
@@ -32,6 +33,7 @@ DROP TYPE "Ramp";
 CREATE TABLE "Ramp" (
     "id" TEXT NOT NULL,
     "memberId" TEXT,
+    "type" "RampType" NOT NULL,
     "email" TEXT,
     "address" TEXT,
     "accountId" TEXT,
@@ -49,3 +51,6 @@ CREATE TABLE "Ramp" (
 
 -- AddForeignKey
 ALTER TABLE "Ramp" ADD CONSTRAINT "Ramp_memberId_fkey" FOREIGN KEY ("memberId") REFERENCES "Member"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "RampWithdraw" ADD CONSTRAINT "RampWithdraw_rampId_fkey" FOREIGN KEY ("rampId") REFERENCES "Ramp"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

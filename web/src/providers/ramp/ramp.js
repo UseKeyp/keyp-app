@@ -97,14 +97,16 @@ const RampProvider = ({ children }) => {
       variables: { type: PLAID },
     })
     setWyre({ isLoading: false, ...wyre })
+    /* eslint-disable-next-line no-undef */
     var linkHandler = Plaid.create({
       token: oAuthUrl.text,
       /* eslint-disable camelcase*/
       onSuccess: async (public_token, metadata) => {
         const accountId = metadata.accounts[0].id
-        const { data: { connectPlaid } = {} } = await connectPlaidQuery({
+        await connectPlaidQuery({
           variables: { code: public_token, accountId },
         })
+        // TODO: Trigger polling to update the UI on success
       },
       onExit: function (err, _metadata) {
         if (err != null) {
