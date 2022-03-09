@@ -7,7 +7,7 @@ import { isDevelopment } from 'src/lib/helpers'
 import { decode as decodeJwt } from 'jsonwebtoken'
 
 import { fetchMember } from 'src/lib/members'
-import { getTorusPublicAddress } from 'src/lib/torus/torus'
+import { getTorusPublicAddress } from 'src/lib/torus'
 import { encodeBody, getExpiration } from 'src/lib/oAuth/helpers'
 
 export const CHESS = 'chess'
@@ -173,6 +173,7 @@ export const handleChessLogin = async ({ refreshToken, decoded }) => {
         /* eslint-disable no-console */
         console.log("Error fetching user's wallet from Torus")
         console.log(e)
+        throw 'Error fetching wallet details'
         /* eslint-enable no-console */
       }
     }

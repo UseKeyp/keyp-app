@@ -154,13 +154,12 @@ export const createPaymentMethodFromPlaid = async (processorToken) => {
 export const fetchPaymentMethod = async (paymentMethodId) => {
   const url = `${API_URL_V2}/paymentMethod/${paymentMethodId}`
   const paymentMethod = await fetchWyre(url)
-  console.log(paymentMethod)
   return paymentMethod
 }
 
 export const attachBlockchainPaymentMethod = async (paymentMethodId) => {
   let url = `${API_URL_V2}/paymentMethod/${paymentMethodId}/attach`
-  const response = await fetchWyre(url, {
+  await fetchWyre(url, {
     blockchain: 'ETH',
     notifyUrl: WYRE_WEBHOOK_URL,
   })

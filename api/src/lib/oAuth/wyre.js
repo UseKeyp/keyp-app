@@ -7,16 +7,12 @@ import {
 } from 'plaid'
 
 import { isProduction } from 'src/lib/helpers'
-import fetch from 'cross-fetch'
 import {
   createPaymentMethodFromPlaid,
   attachBlockchainPaymentMethod,
 } from 'src/lib/wyre'
 import { db } from 'src/lib/db'
 import Sentry from 'src/lib/sentry'
-import { AuthenticationError } from '@redwoodjs/graphql-server'
-
-import { encodeBody, getExpiration } from 'src/lib/oAuth/helpers'
 
 export const WYRE = 'wyre'
 export const PLAID = 'plaid'
@@ -57,13 +53,13 @@ export const createPlaidLink = async () => {
     if (!createTokenResponse?.data?.link_token) throw 'No link token returned'
     return createTokenResponse.data.link_token
   } catch (e) {
-    console.log(e)
     throw `createPlaidLink() ${e}`
   }
 }
 
 export const handlePlaidConnection = async ({ code, accountId }) => {
   try {
+    /* eslint-disable camelcase*/
     const tokenResponse = await client.itemPublicTokenExchange({
       public_token: code,
     })
@@ -118,6 +114,8 @@ export const handlePlaidConnection = async ({ code, accountId }) => {
             address,
             email,
             itemId,
+            mask,
+            accountNickname,
             verificationStatus: verification_status,
             isoCurrencyCode: iso_currency_code,
             paymentMethodId: paymentMethod.id,
@@ -157,6 +155,7 @@ export const getSandboxPublicToken = async () => {
     )
     return { accountId: account.account_id, code: publicToken }
   } catch (e) {
+    /* eslint-disable-next-line no-console */
     console.log(e)
   }
 }

@@ -19,16 +19,13 @@ import {
   getCoinbaseAccessTokenFromCode,
 } from 'src/lib/oAuth/coinbase'
 
-import {
-  PLAID,
-  createPlaidLink,
-  getPlaidAccessTokenFromCode,
-} from 'src/lib/oAuth/wyre'
+import { PLAID, createPlaidLink } from 'src/lib/oAuth/wyre'
 
 export const oAuthUrl = async (type) => {
   let url
   let params
   const pkce = pkceChallenge()
+  console.log(type)
   if (type === CHESS) {
     params = chessParams
     url = new URL('authorize', CHESS_OAUTH_URL)

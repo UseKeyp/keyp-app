@@ -93,13 +93,7 @@ export const DepositModal = ({ isVisible, toggleModal }) => {
   )
 }
 
-const VendorConnection = ({
-  ramp,
-  amount,
-  isLoading,
-  toggleModal,
-  disabled,
-}) => {
+const VendorConnection = ({ ramp, amount, isLoading, disabled }) => {
   if (!ramp) return null
   const backgroundColor = isLoading
     ? 'bg-chessBlack-200 pointer-events-none'

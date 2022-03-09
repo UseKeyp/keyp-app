@@ -1,8 +1,5 @@
 import { useQuery, useLazyQuery } from '@apollo/client'
 import { useAuth } from '@redwoodjs/auth'
-import { navigate, routes } from '@redwoodjs/router'
-
-import { OAUTH_CODE_GRANT_MUTATION } from 'src/components/Redirect/graphql'
 
 import {
   MEMBER_RAMPS_QUERY,
@@ -102,13 +99,12 @@ const RampProvider = ({ children }) => {
     setWyre({ isLoading: false, ...wyre })
     var linkHandler = Plaid.create({
       token: oAuthUrl.text,
+      /* eslint-disable camelcase*/
       onSuccess: async (public_token, metadata) => {
-        console.log(metadata.accounts)
         const accountId = metadata.accounts[0].id
         const { data: { connectPlaid } = {} } = await connectPlaidQuery({
           variables: { code: public_token, accountId },
         })
-        console.log(connectPlaid)
       },
       onExit: function (err, _metadata) {
         if (err != null) {
