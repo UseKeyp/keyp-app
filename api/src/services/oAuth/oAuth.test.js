@@ -18,9 +18,11 @@ describe('plaidConnection', () => {
   scenario('Happy case', async (scenario) => {
     mockCurrentUser(scenario.member.alice)
     const { code, accountId } = await getSandboxPublicToken()
+    // console.log(code)
+    // console.log(accountId)
     await connectPlaid({
-      // code: 'public-sandbox-a8d66bb6-e2fb-443c-bf5f-fa9018c38b62',
-      // accountId: 'ln9va9vRk3SQAkNxvov9I1lnKa3MEMsEjJqxM',
+      // code: 'public-sandbox-6b0baaac-50a0-4cc4-8c70-3f5c8cf577e2',
+      // accountId: 'ywQkJpg4mmF5BopmR6evCKErg3Jd6pfWedyjW',
       code,
       accountId,
     })

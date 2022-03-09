@@ -84,22 +84,22 @@ export const handlePlaidConnection = async ({ code, accountId }) => {
     if (!account)
       throw 'No account found matching the criteria - checking or savings'
     const accountNickname = `${account.name} - ${account.subtype}`
-
+    console.log({ account })
     // Create a processor token for a specific account id.
     const processorTokenResponse = await client.processorTokenCreate(request)
     const processorToken = processorTokenResponse.data.processor_token
     // Pass processor token to Wyre
     const paymentMethod = await createPaymentMethodFromPlaid(processorToken)
-    console.log(paymentMethod)
+    console.log({ paymentMethod })
     // Attach blockchain address to Payment Method
     const blockchainAddress = await attachBlockchainPaymentMethod({
       paymentMethodId: paymentMethod.id,
     })
-    console.log(blockchainAddress)
+    console.log({ blockchainAddress })
 
     // Save details to the user
     await db.member.update({
-      where: { id: conext.currentUser.id },
+      where: { id: context.currentUser.id },
       data: {
         wyreWithdrawAddress: blockchainAddress,
         emailWyre: '', // TODO: get email from plaid or wyre?

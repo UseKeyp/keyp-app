@@ -16,6 +16,10 @@ export const PlaidEnvironments: PlaidEnvironment = {
 }
 ```
 
+## Resources
+
+Account types by product: https://plaid.com/docs/api/accounts/#account-type--product-support-matrix
+
 ## Libraries
 
 - https://github.com/plaid/react-plaid-link

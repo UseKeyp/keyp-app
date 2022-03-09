@@ -10,7 +10,7 @@ const API_URL = isProduction
 const API_URL_V2 = isProduction
   ? 'https://api.sendwyre.com/v2'
   : 'https://api.testwyre.com/v2'
-const WYRE_WEBHOOKS_URL = process.env.APP_DOMAIN + '/api/wyre'
+const WYRE_WEBHOOK_URL = process.env.APP_DOMAIN + '/api/wyre'
 
 const WYRE_TOKEN_SYMBOL = 'MUSDC'
 
@@ -49,7 +49,7 @@ const fetchWyre = (url, data) => {
       'X-Api-Signature': signature(urlWithTimestamp, stringData),
     },
   }).then((res) => {
-    if (res.status === 204) throw 'No content returned by Wyre'
+    if (res.status === 204) return `No content returned by Wyre - ${url}`
     return res.json()
   })
 }
@@ -139,24 +139,33 @@ export const createWithdrawReservation = async () => {
 
 export const createPaymentMethodFromPlaid = async (processorToken) => {
   const url = `${API_URL_V2}/paymentMethods`
-  const response = await fetchWyre(url, {
+  const args = {
     plaidProcessorToken: processorToken,
     paymentMethodType: 'LOCAL_TRANSFER',
-    country: 'US',
-    // chargebablePM: true
-  })
+    country: 'US', // Wyre only supports US Plaid accounts
+    chargebablePM: false,
+  }
+  console.log(args)
+  const response = await fetchWyre(url, args)
   return response
+}
+
+export const fetchPaymentMethod = async (paymentMethodId) => {
+  const url = `${API_URL_V2}/paymentMethod/${paymentMethodId}`
+  const paymentMethod = await fetchWyre(url)
+  console.log(url)
+  console.log({ paymentMethod })
+  return paymentMethod
 }
 
 export const attachBlockchainPaymentMethod = async ({ paymentMethodId }) => {
   let url = `${API_URL_V2}/paymentMethod/${paymentMethodId}/attach`
   const response = await fetchWyre(url, {
     blockchain: 'ETH',
-    notifyUrl: WYRE_WEBHOOKS_URL,
+    notifyUrl: WYRE_WEBHOOK_URL,
   })
   // Bug with wyre returning 'No Content' status 204
   // TODO: remove the extra call once this is fixed
-  url = `${API_URL_V2}/paymentMethod/${paymentMethodId}`
-  const accountDetails = await fetchWyre(url)
-  return accountDetails
+  const paymentMethod = await fetchPaymentMethod(paymentMethodId)
+  return paymentMethod.blockchains.ETH
 }
