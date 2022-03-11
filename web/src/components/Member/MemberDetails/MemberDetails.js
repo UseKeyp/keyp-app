@@ -13,7 +13,6 @@ import { trimAddress } from 'src/utils/helpers'
 
 const MemberDetails = ({ member, isProfile }) => {
   const { deposit, withdraw, getAddress } = useWallet()
-  console.log(deposit)
   return (
     <section className="member-details p-4">
       <div className="member-details--inner">
