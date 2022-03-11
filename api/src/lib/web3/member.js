@@ -13,8 +13,7 @@ export const memberSendTransaction = async ({ memberId, unsignedTx }) => {
     return memberWalletWithProvider.sendTransaction(unsignedTx)
   } catch (e) {
     // TODO: Better logging for why tx submission failed
-    /* eslint-disable-next-line no-console */
-    console.log(e)
+    logger.error(e)
     throw new Error('memberSendTransaction() ', e)
   }
 }

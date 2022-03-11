@@ -15,8 +15,7 @@ export const getTokenContract = () => {
       web3Provider
     )
   } catch (e) {
-    /* eslint-disable-next-line no-console */
-    console.log(e)
+    logger.error(e)
     throw new Error(e)
   }
 }
@@ -27,8 +26,7 @@ export const getUsdcBalance = async (address) => {
   try {
     contract = getTokenContract()
   } catch (e) {
-    /* eslint-disable-next-line no-console */
-    console.log(e)
+    logger.error(e)
     throw new EnvelopError('Unable to get USDC balance')
   }
 
@@ -36,8 +34,7 @@ export const getUsdcBalance = async (address) => {
     const bal = await contract.balanceOf(address)
     return formatUnits(bal, process.env.DECIMALS_PAYMENT_TOKEN)
   } catch (e) {
-    /* eslint-disable-next-line no-console */
-    console.log(e)
+    logger.error(e)
     throw new EnvelopError('Unable to get USDC balance')
   }
 }

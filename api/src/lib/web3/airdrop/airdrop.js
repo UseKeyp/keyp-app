@@ -32,8 +32,7 @@ const airdropGasTransaction = async ({ address, amount }) => {
     const payerWalletWithProvider = await payerWallet.connect(web3Provider)
     return await payerWalletWithProvider.sendTransaction(tx)
   } catch (e) {
-    /* eslint-disable-next-line no-console */
-    console.log(e?.message || e)
+    logger.error(e?.message || e)
     Sentry.captureException(e)
     throw new Error('airdropGasTransaction() ', e?.message || e)
   }
@@ -63,8 +62,7 @@ const checkGasAndAirdrop = async ({ member, amount = DEFAULT_DROP_AMOUNT }) => {
     }
     return null
   } catch (e) {
-    /* eslint-disable-next-line no-console */
-    console.log(e)
+    logger.error(e)
     throw new Error('checkGasAndAirdrop()', e.message || e)
   }
 }
@@ -93,8 +91,7 @@ Payer balance: **${payerBalance}**`,
       channelName: 'airdrop',
     })
   } catch (e) {
-    /* eslint-disable-next-line no-console */
-    console.log(e)
+    logger.error(e)
   }
 }
 

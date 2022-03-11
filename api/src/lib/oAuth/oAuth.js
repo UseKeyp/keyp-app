@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid'
 import pkceChallenge from 'pkce-challenge'
 import Sentry from 'src/lib/sentry'
 
+import { logger } from 'src/lib/logger'
 import { db } from 'src/lib/db'
 
 import {
@@ -80,9 +81,7 @@ export const validateCodeGrant = async ({ state, code, type }) => {
       return getCoinbaseAccessTokenFromCode(code, oAuth)
     }
   } catch (e) {
-    /* eslint-disable no-console */
-    console.log(e)
-    /* eslint-enable no-console */
+    logger.error(e)
     Sentry.captureException(e)
     throw new AuthenticationError(e)
   }

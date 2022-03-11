@@ -22,9 +22,7 @@ export const adminSendTransaction = async (unsigned) => {
     const adminWalletWithProvider = adminWallet.connect(web3Provider)
     return adminWalletWithProvider.sendTransaction(unsigned)
   } catch (e) {
-    // TODO: Better logging for why tx submission failed
-    /* eslint-disable-next-line no-console */
-    console.log(e)
+    logger.error(e)
     throw new Error('adminSendTransaction() ', e)
   }
 }

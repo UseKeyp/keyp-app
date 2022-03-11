@@ -1,6 +1,8 @@
 const CryptoJS = require('crypto-js')
-import { isProduction } from 'src/lib/helpers'
 import fetch from 'node-fetch'
+
+import { isProduction } from 'src/lib/helpers'
+import { logger } from 'src/lib/logger'
 
 const WYRE_SECRET_KEY = process.env.WYRE_SECRET_KEY
 const WYRE_API_KEY = process.env.WYRE_API_KEY
@@ -87,8 +89,7 @@ export const createMintReservation = async ({
     })
     return response
   } catch (e) {
-    /* eslint-disable-next-line no-console */
-    console.log(e)
+    logger.error(e)
     throw new Error('createMintReservation() Error creating Wyre reservation')
   }
 }
@@ -109,8 +110,7 @@ export const createDepositReservation = async (destinationAddress) => {
     if (!response.url) throw 'Error'
     return response
   } catch (e) {
-    /* eslint-disable-next-line no-console */
-    console.log(e)
+    logger.error(e)
     throw new Error(
       'createDepositReservation() Error creating Wyre reservation'
     )
@@ -123,8 +123,7 @@ export const createWithdrawReservation = async () => {
     const response = await fetchWyre(url)
     return response
   } catch (e) {
-    /* eslint-disable-next-line no-console */
-    console.log(e)
+    logger.error(e)
     throw new Error(
       'createDepositReservation() Error creating Wyre reservation'
     )
