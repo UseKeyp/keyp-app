@@ -8,7 +8,7 @@ export const schema = gql`
     createdAt: DateTime!
   }
   type Query {
-    ramps: [Ramp!]! @requireAuth
+    ramps: [Ramp]! @requireAuth
     connectPlaid(code: String!, accountId: String!): Ramp! @requireAuth
   }
 

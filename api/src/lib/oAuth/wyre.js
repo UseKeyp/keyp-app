@@ -113,6 +113,7 @@ export const handlePlaidConnection = async ({ code, accountId }) => {
         itemId,
         mask,
         accountNickname,
+        accountId,
         verificationStatus: verification_status,
         isoCurrencyCode: iso_currency_code,
         paymentMethodId: paymentMethod.id,

@@ -9,7 +9,12 @@ export const ramps = async () => {
   })
   const sortedRamps = ramps.sort((a, b) => a.createdAt > b.createdAt)
   // Get only the most recent for each type
+  console.log(sortedRamps)
+  logger.info({ custom: sortedRamps })
   const wyreRamp = sortedRamps.find((ramp) => ramp.type == 'WYRE')
   const coinbaseRamp = sortedRamps.find((ramp) => ramp.type == 'COINBASE')
-  return [wyreRamp, coinbaseRamp]
+  let filtered = []
+  if (wyreRamp) filtered.push(wyreRamp)
+  if (coinbaseRamp) filtered.push(coinbaseRamp)
+  return filtered
 }
