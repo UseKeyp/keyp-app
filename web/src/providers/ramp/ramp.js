@@ -1,5 +1,7 @@
 import { useQuery, useLazyQuery, useMutation } from '@apollo/client'
 import { useAuth } from '@redwoodjs/auth'
+import { useToast } from 'src/providers/toast'
+import { TxToast } from 'src/providers/market/toasts'
 
 import {
   MEMBER_RAMPS_QUERY,
@@ -19,6 +21,7 @@ const RampContext = React.createContext({
 
 const RampProvider = ({ children }) => {
   const { isAuthenticated } = useAuth()
+  const { toast } = useToast()
   const [shouldPoll, setShouldPoll] = React.useState(true)
   const [coinbase, setCoinbase] = React.useState({
     isLoading: false,
@@ -108,7 +111,9 @@ const RampProvider = ({ children }) => {
       onSuccess: async (public_token, metadata) => {
         const accountId = metadata.accounts[0].id
         try {
-          const { data: wyreRamp = {} } = await connectPlaidMutation({
+          const {
+            data: { wyreRamp = {} },
+          } = await connectPlaidMutation({
             variables: { code: public_token, accountId },
           })
           setWyre({
@@ -116,7 +121,7 @@ const RampProvider = ({ children }) => {
             isLoading: false,
             ...wyreRamp,
           })
-          // TODO: trigger some success notification
+          toast.success('Wyre + Plaid connected!')
         } catch (e) {
           setWyre({
             ...wyre,
@@ -128,6 +133,7 @@ const RampProvider = ({ children }) => {
       onExit: function (err, _metadata) {
         if (err != null) {
           // TODO: Trigger some error notification
+          toast.error('Failed to connect')
           // The user encountered a Plaid API error prior to exiting.
         }
       },
@@ -135,12 +141,20 @@ const RampProvider = ({ children }) => {
     linkHandler.open()
   }
 
-  const withdrawCoinbase = async (_amount) => {
+  const withdrawCoinbase = async (amount) => {
     try {
       setCoinbase({ isLoading: true, error: null, ...coinbase })
-      const { data } = await rampWithdrawMutation({
+      const {
+        data: { rampWithdraw },
+      } = await rampWithdrawMutation({
         variables: { type: COINBASE, amount },
       })
+      toast.success(
+        <TxToast text="Withdraw submitted" txHash={rampWithdraw.id} />,
+        {
+          id: rampWithdraw.id,
+        }
+      )
       setCoinbase({ isLoading: false, ...coinbase })
     } catch (e) {
       setCoinbase({ isLoading: false, error: e.message, ...coinbase })
@@ -150,9 +164,17 @@ const RampProvider = ({ children }) => {
   const withdrawWyre = async (amount) => {
     try {
       setWyre({ isLoading: true, error: null, ...wyre })
-      const { data } = await rampWithdrawMutation({
+      const {
+        data: { rampWithdraw },
+      } = await rampWithdrawMutation({
         variables: { type: WYRE, amount },
       })
+      toast.success(
+        <TxToast text="Withdraw submitted" txHash={rampWithdraw.id} />,
+        {
+          id: rampWithdraw.id,
+        }
+      )
       setWyre({ isLoading: false, ...wyre })
     } catch (e) {
       setWyre({ isLoading: false, error: e.message, ...wyre })

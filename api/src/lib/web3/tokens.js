@@ -5,7 +5,7 @@ import { EnvelopError } from '@envelop/core'
 import { logger } from 'src/lib/logger'
 import { checkGasAndAirdrop } from 'src/lib/web3/airdrop'
 import { memberSendTransaction } from 'src/lib/web3/member'
-console.log(process.env.CONTRACT_ADDRESS_PAYMENT_TOKEN)
+
 export const getTokenContract = () => {
   try {
     return new Contract(
@@ -81,6 +81,6 @@ export const transferUsdc = async ({ to, amount }) => {
     return tx
   } catch (e) {
     logger.error(e)
-    throw new EnvelopError(`Error transferring USDC - ${e}`)
+    throw new EnvelopError(`Error transferring USDC - ${e?.message || e}`)
   }
 }

@@ -1,7 +1,6 @@
 import { db } from 'src/lib/db'
 import { logger } from 'src/lib/logger'
 import { EnvelopError } from '@envelop/core'
-
 import { transferUsdc } from 'src/lib/web3/tokens'
 import { WYRE } from 'src/lib/oAuth/wyre'
 

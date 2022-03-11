@@ -30,7 +30,6 @@ export const getCoinbaseAccessTokenFromCode = async (
       client_secret: process.env.COINBASE_CLIENT_SECRET,
       redirect_uri: COINBASE_REDIRECT_URI,
       code,
-      code_verifier: codeVerifier,
     }
     const encodedBody = encodeBody(body)
     logger.debug(encodedBody.split('&'))
@@ -43,7 +42,7 @@ export const getCoinbaseAccessTokenFromCode = async (
     }).then((res) => {
       logger.debug(res)
       if (res.status != 200)
-        throw 'Coinbase basic authorization failed, or secret invalid'
+        throw `Coinbase API failed for /token. ${res.status} - ${res.statusText}`
       return res.json()
     })
     if (response.error)
@@ -87,6 +86,8 @@ export const handleCoinbaseLogin = async ({
         throw 'Coinbase authorization failed, or secret invalid'
       return res.json()
     })
+    console.log(accounts)
+    console.log(accounts.data)
     const ethAccount = accounts.data.find(
       (account) => account.currency === 'ETH'
     )
@@ -99,15 +100,14 @@ export const handleCoinbaseLogin = async ({
       return res.json()
     })
     const address = addresses.data[0].address
-    await db.member.update({
-      where: {
-        id: memberId,
-      },
+    await db.ramp.create({
       data: {
-        coinbaseWithdrawAddress: address.toLowerCase(),
-        emailCoinbase: userDetails.data.email,
-        accessTokenCoinbase: accessToken,
-        refreshTokenCoinbase: refreshToken,
+        address,
+        email: userDetails.data.email,
+        type: 'COINBASE',
+        accessToken,
+        refreshToken,
+        member: { connect: { id: context.currentUser.id } },
       },
     })
   } catch (e) {

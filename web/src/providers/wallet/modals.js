@@ -126,10 +126,16 @@ const VendorConnection = ({ ramp, amount, isLoading, disabled }) => {
   if (disabled) button = <h3 className="mt-4">(Coming soon)</h3>
 
   let status = 'Not connected'
-  if (ramp.address) status = `Connected - ${trimAddress(ramp.address)}`
+  if (ramp.address)
+    status = (
+      <div>
+        <p>Connected - {trimAddress(ramp.address)}</p>
+        <p>{ramp.accountNickname}</p>
+      </div>
+    )
   return (
     <div className="">
-      <div className="mt-4 flex align-center items-end">
+      <div className="mt-4 flex align-center items-center">
         <h3>{ramp.name}</h3>{' '}
         <p className="ml-4">
           <i>{status}</i>

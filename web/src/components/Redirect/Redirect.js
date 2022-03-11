@@ -55,7 +55,7 @@ const Redirect = ({ type }) => {
         setSuccessMessage('Connection complete')
         setTimeout(() => {
           window.close()
-        }, [1000])
+        }, [3000])
       } else {
         setErrorMessage('Something went wrong')
       }
