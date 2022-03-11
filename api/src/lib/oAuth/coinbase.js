@@ -4,7 +4,7 @@ import Sentry from 'src/lib/sentry'
 import { AuthenticationError } from '@redwoodjs/graphql-server'
 
 import { encodeBody, getExpiration } from 'src/lib/oAuth/helpers'
-
+import { logger } from 'src/lib/logger'
 export const COINBASE = 'coinbase'
 export const COINBASE_OAUTH_URL = 'https://www.coinbase.com/oauth'
 
@@ -33,7 +33,7 @@ export const getCoinbaseAccessTokenFromCode = async (
       code_verifier: codeVerifier,
     }
     const encodedBody = encodeBody(body)
-    // console.log(encodedBody.split('&'))
+    logger.debug(encodedBody.split('&'))
     const response = await fetch(COINBASE_OAUTH_URL + '/token', {
       method: 'post',
       body: encodedBody,
@@ -41,7 +41,7 @@ export const getCoinbaseAccessTokenFromCode = async (
         'Content-Type': 'application/x-www-form-urlencoded',
       },
     }).then((res) => {
-      // console.log(res)
+      logger.debug(res)
       if (res.status != 200)
         throw 'Coinbase basic authorization failed, or secret invalid'
       return res.json()
@@ -111,7 +111,6 @@ export const handleCoinbaseLogin = async ({
       },
     })
   } catch (e) {
-    /* eslint-enable no-console */
     Sentry.captureException(e)
     throw new AuthenticationError(e)
   }
