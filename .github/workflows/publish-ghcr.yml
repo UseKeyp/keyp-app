@@ -7,6 +7,9 @@ on:
         description: 'Image Tag Prefix (dev or sandbox)'
         required: true
         default: 'dev'
+  # TODO: implement auto deployment using releases
+  # release:
+  #   types: [published]
 env:
   NODE_ENV: ${{ github.event.inputs.image_tag_prefix }}
   REDWOOD_API_URL: 'http://0.0.0.0:8911'
@@ -35,7 +38,6 @@ jobs:
       fail-fast: true
       matrix:
         platform: [api, web]
-
     steps:
       # Checkout source code
       - name: Checkout source code
@@ -68,3 +70,16 @@ jobs:
           tags: |
             ${{ env.CONTAINER_REGISTRY_HOSTNAME }}/${{ env.CONTAINER_REGISTRY_REPOSITORY }}/${{ env.CONTAINER_REGISTRY_IMAGE_PREFIX }}-${{ matrix.platform }}:latest
             ${{ env.CONTAINER_REGISTRY_HOSTNAME }}/${{ env.CONTAINER_REGISTRY_REPOSITORY }}/${{ env.CONTAINER_REGISTRY_IMAGE_PREFIX }}-${{ matrix.platform }}:${{ env.NODE_ENV }}-${{ github.sha }}
+  notify:
+    name: Notify
+    runs-on: ubuntu-20.04
+    strategy:
+      steps:
+        - name: Discord notification
+          env:
+            DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_DEVOPS }}
+          uses: Ilshidur/action-discord@0c4b27844ba47cb1c7bee539c8eead5284ce9fa9
+          with:
+            args: |
+              New deployment - ${{ env.NODE_ENV }}-${{ github.sha }}
+              container tag: `${{ env.CONTAINER_REGISTRY_HOSTNAME }}/${{ env.CONTAINER_REGISTRY_REPOSITORY }}/${{ env.CONTAINER_REGISTRY_IMAGE_PREFIX }}-${{ matrix.platform }}:${{ env.NODE_ENV }}-${{ github.sha }}`

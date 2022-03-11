@@ -1,0 +1,37 @@
+name: CI Staging
+
+on:
+  push:
+    branches: ['staging']
+    paths:
+      - 'api/src*'
+      - 'web/src*'
+      - 'package.json'
+      - '.github/workflows/cd.master.*'
+
+jobs:
+  create-release-draft:
+    name: Create Release Draft
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js 12.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+          registry-url: https://registry.npmjs.org/
+      - name: Create release draft
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: staging-${{ github.sha }}
+          release_name: staging-${{ github.sha }}
+          body: |
+            Changes in this Release
+            ## Changed
+            ## Added
+            ## Fixes
+            ## Breaking
+          draft: true
