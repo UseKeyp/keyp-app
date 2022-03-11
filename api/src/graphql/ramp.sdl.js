@@ -9,7 +9,10 @@ export const schema = gql`
   }
   type Query {
     ramps: [Ramp]! @requireAuth
+  }
+  type Mutation {
     connectPlaid(code: String!, accountId: String!): Ramp! @requireAuth
+    rampWithdraw(type: String, amount: String!): Transaction! @requireAuth
   }
 
   enum RampType {

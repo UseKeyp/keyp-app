@@ -1,11 +1,12 @@
-import { useQuery, useLazyQuery } from '@apollo/client'
+import { useQuery, useLazyQuery, useMutation } from '@apollo/client'
 import { useAuth } from '@redwoodjs/auth'
 
 import {
   MEMBER_RAMPS_QUERY,
   WYRE_DEPOSIT_URL_QUERY,
   OAUTH_URL_QUERY,
-  CONNECT_PLAID_QUERY,
+  CONNECT_PLAID_MUTATION,
+  RAMP_WITHDRAW_MUTATION,
 } from './graphql'
 
 const PLAID = 'plaid'
@@ -21,12 +22,10 @@ const RampProvider = ({ children }) => {
   const [shouldPoll, setShouldPoll] = React.useState(true)
   const [coinbase, setCoinbase] = React.useState({
     isLoading: false,
-    isConnected: false,
     name: 'Coinbase',
   })
   const [wyre, setWyre] = React.useState({
     isLoading: false,
-    isConnected: false,
     name: 'Wyre + Plaid',
   })
 
@@ -40,9 +39,9 @@ const RampProvider = ({ children }) => {
     fetchPolicy: 'network-only',
   })
   const updateRamps = () => {
-    console.log(ramps)
     const coinbaseRamp = ramps.find((ramp) => ramp.type === COINBASE)
     const wyreRamp = ramps.find((ramp) => ramp.type === WYRE)
+    // TODO:  only continue if there's been a change, otherwise keep polling.
     setCoinbase({
       ...coinbase,
       ...coinbaseRamp,
@@ -51,6 +50,7 @@ const RampProvider = ({ children }) => {
       ...wyre,
       ...wyreRamp,
     })
+    setShouldPoll(false)
   }
 
   React.useEffect(() => {
@@ -65,12 +65,11 @@ const RampProvider = ({ children }) => {
   const [oAuthUrlQuery] = useLazyQuery(OAUTH_URL_QUERY, {
     fetchPolicy: 'network-only',
   })
-  const [connectPlaidQuery] = useLazyQuery(CONNECT_PLAID_QUERY, {
-    fetchPolicy: 'network-only',
-  })
+  const [connectPlaidMutation] = useMutation(CONNECT_PLAID_MUTATION)
+  const [rampWithdrawMutation] = useMutation(RAMP_WITHDRAW_MUTATION)
 
   const depositWyre = async () => {
-    setWyre({ isLoading: true, ...wyre })
+    setWyre({ isLoading: true, error: null, ...wyre })
     const { data: { wyreDepositUrl } = {} } = await wyreDepositUrlQuery()
     setWyre({ isLoading: false, ...wyre })
     window.open(
@@ -83,7 +82,7 @@ const RampProvider = ({ children }) => {
   }
 
   const connectCoinbase = async () => {
-    setCoinbase({ isLoading: true, ...coinbase })
+    setCoinbase({ isLoading: true, error: null, ...coinbase })
     const { data: { oAuthUrl } = {} } = await oAuthUrlQuery({
       variables: { type: 'coinbase' },
     })
@@ -97,7 +96,7 @@ const RampProvider = ({ children }) => {
   }
 
   const connectWyre = async () => {
-    setWyre({ isLoading: true, ...wyre })
+    setWyre({ isLoading: true, error: null, ...wyre })
     const { data: { oAuthUrl } = {} } = await oAuthUrlQuery({
       variables: { type: PLAID },
     })
@@ -108,15 +107,23 @@ const RampProvider = ({ children }) => {
       /* eslint-disable camelcase*/
       onSuccess: async (public_token, metadata) => {
         const accountId = metadata.accounts[0].id
-        const { data: wyreRamp = {} } = await connectPlaidQuery({
-          variables: { code: public_token, accountId },
-        })
-        // console.log(wyreRamp)
-        setWyre({
-          ...wyre,
-          ...wyreRamp,
-        })
-        // TODO: trigger some success notification
+        try {
+          const { data: wyreRamp = {} } = await connectPlaidMutation({
+            variables: { code: public_token, accountId },
+          })
+          setWyre({
+            ...wyre,
+            isLoading: false,
+            ...wyreRamp,
+          })
+          // TODO: trigger some success notification
+        } catch (e) {
+          setWyre({
+            ...wyre,
+            isLoading: false,
+            error: e.message,
+          })
+        }
       },
       onExit: function (err, _metadata) {
         if (err != null) {
@@ -129,16 +136,27 @@ const RampProvider = ({ children }) => {
   }
 
   const withdrawCoinbase = async (_amount) => {
-    setTimeout(() => {
-      setCoinbase({ isLoading: true, ...coinbase })
-    }, 2000)
-    setCoinbase({ isLoading: false, ...coinbase })
+    try {
+      setCoinbase({ isLoading: true, error: null, ...coinbase })
+      const { data } = await rampWithdrawMutation({
+        variables: { type: COINBASE, amount },
+      })
+      setCoinbase({ isLoading: false, ...coinbase })
+    } catch (e) {
+      setCoinbase({ isLoading: false, error: e.message, ...coinbase })
+    }
   }
-  const withdrawWyre = async (_amount) => {
-    setTimeout(() => {
-      setWyre({ isLoading: true, ...wyre })
-    }, 2000)
-    setWyre({ isLoading: false, ...wyre })
+
+  const withdrawWyre = async (amount) => {
+    try {
+      setWyre({ isLoading: true, error: null, ...wyre })
+      const { data } = await rampWithdrawMutation({
+        variables: { type: WYRE, amount },
+      })
+      setWyre({ isLoading: false, ...wyre })
+    } catch (e) {
+      setWyre({ isLoading: false, error: e.message, ...wyre })
+    }
   }
 
   const isLoading = rampsLoading || coinbase.isLoading || wyre.isLoading

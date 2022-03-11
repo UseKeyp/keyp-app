@@ -113,7 +113,7 @@ const VendorConnection = ({ ramp, amount, isLoading, disabled }) => {
       {ramp.isLoading ? loadingText : 'Connect  '}
     </Button>
   )
-  if (ramp.isConnected)
+  if (ramp.address)
     button = (
       <Button
         className={buttonClassName}
@@ -126,7 +126,7 @@ const VendorConnection = ({ ramp, amount, isLoading, disabled }) => {
   if (disabled) button = <h3 className="mt-4">(Coming soon)</h3>
 
   let status = 'Not connected'
-  if (ramp.isConnected) status = `Connected - ${trimAddress(ramp.address)}`
+  if (ramp.address) status = `Connected - ${trimAddress(ramp.address)}`
   return (
     <div className="">
       <div className="mt-4 flex align-center items-end">
@@ -136,15 +136,14 @@ const VendorConnection = ({ ramp, amount, isLoading, disabled }) => {
         </p>
       </div>
       {button}
-      <p className="mt-2 text-red">{ramp.error}</p>
+      <p className="mt-2 text-orange">{ramp.error}</p>
     </div>
   )
 }
 
 export const WithdrawModal = ({ isVisible, toggleModal }) => {
-  const [amount, setAmount] = React.useState(0)
+  const [amount, setAmount] = React.useState('0')
   const { ramps, isLoading } = useRamp()
-  // console.log(ramps)
   return (
     <ModalContainer
       headerText="Withdraw Funds"

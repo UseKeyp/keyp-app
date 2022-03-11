@@ -15,8 +15,18 @@ export const WYRE_DEPOSIT_URL_QUERY = gql`
     wyreDepositUrl
   }
 `
-export const CONNECT_PLAID_QUERY = gql`
-  query connectPlaidQuery($code: String!, $accountId: String!) {
+
+export const OAUTH_URL_QUERY = gql`
+  query oAuthUrlQuery($type: String!) {
+    oAuthUrl(type: $type) {
+      url
+      type
+      text
+    }
+  }
+`
+export const CONNECT_PLAID_MUTATION = gql`
+  mutation connectPlaidQuery($code: String!, $accountId: String!) {
     connectPlaid(code: $code, accountId: $accountId) {
       id
       address
@@ -27,12 +37,10 @@ export const CONNECT_PLAID_QUERY = gql`
   }
 `
 
-export const OAUTH_URL_QUERY = gql`
-  query oAuthUrlQuery($type: String!) {
-    oAuthUrl(type: $type) {
-      url
-      type
-      text
+export const RAMP_WITHDRAW_MUTATION = gql`
+  mutation rampWithdrawMutation($type: String!, $amount: String!) {
+    rampWithdraw(type: $type, amount: $amount) {
+      id
     }
   }
 `
