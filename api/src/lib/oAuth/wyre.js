@@ -24,8 +24,15 @@ const PLAID_REDIRECT_URI = isProduction
   ? process.env.APP_DOMAIN + '/redirect/coinbase'
   : 'https://0.0.0.0:8910/redirect/plaid'
 
+const getEnvironment = () => {
+  if (process.env.NODE_ENV === 'staging') return 'development'
+  // TODO: Change to production
+  else if (process.env.NODE_ENV === 'prod') return 'development'
+  return 'sandbox'
+}
+
 const configuration = new Configuration({
-  basePath: PlaidEnvironments[isProduction ? 'production' : 'sandbox'],
+  basePath: PlaidEnvironments[getEnvironment()],
   baseOptions: {
     headers: {
       'PLAID-CLIENT-ID': process.env.PLAID_CLIENT_ID,
