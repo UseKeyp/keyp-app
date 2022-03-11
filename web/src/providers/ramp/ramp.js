@@ -72,9 +72,7 @@ const RampProvider = ({ children }) => {
   const [rampWithdrawMutation] = useMutation(RAMP_WITHDRAW_MUTATION)
 
   const depositWyre = async () => {
-    setWyre({ isLoading: true, error: null, ...wyre })
     const { data: { wyreDepositUrl } = {} } = await wyreDepositUrlQuery()
-    setWyre({ isLoading: false, ...wyre })
     window.open(
       wyreDepositUrl,
       'Treasure Chess - Deposit',
@@ -188,6 +186,7 @@ const RampProvider = ({ children }) => {
       value={{
         isLoading,
         rampError, // Currently unused
+        deposit: depositWyre,
         ramps: [
           {
             ...coinbase,
