@@ -15,9 +15,11 @@ jobs:
         with:
           node-version: 12.x
           registry-url: https://registry.npmjs.org/
-      - name: Get short sha
+      - name: Set output
         id: vars
-        run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+        run: |
+          echo ::set-output name=short_ref::${GITHUB_REF#refs/*/}
+          echo ::set-output name=short_sha::$(echo ${GITHUB_SHA} | cut -c1-8)
       - name: Create release draft
         id: create_release
         uses: actions/create-release@v1

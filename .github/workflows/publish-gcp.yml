@@ -63,19 +63,18 @@ jobs:
                  docker push $PROJECT_NAME/$IMAGE_NAME-$COMPONENT:latest
               fi
           done
-  notify:
-    name: Notify
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Get short sha
+      - name: Set output
         id: vars
-        run: echo "::set-output name=sha_short::$(git rev-parse --short HEAD)"
+        run: |
+          echo ::set-output name=short_ref::${GITHUB_REF#refs/*/}
+          echo ::set-output name=short_sha::$(echo ${GITHUB_SHA} | cut -c1-8)
       - name: Discord notification
+        if: github.event_name == 'workflow_dispatch'
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_DEVOPS }}
         uses: Ilshidur/action-discord@0c4b27844ba47cb1c7bee539c8eead5284ce9fa9
         with:
           args: |
-            New Release ${{ env.NODE_ENV }}-${{ steps.vars.outputs.sha_short }}
-            Branch - `${{ github.ref }}`
+            New Release ${{ env.NODE_ENV }}-${{ steps.vars.outputs.short_sha }}
+            Branch - `${{ steps.vars.outputs.short_ref }}`
             container tag: `${{ env.CONTAINER_REGISTRY_HOSTNAME }}/${{ env.CONTAINER_REGISTRY_REPOSITORY }}/${{ env.CONTAINER_REGISTRY_IMAGE_PREFIX }}-${{ matrix.platform }}:${{ env.NODE_ENV }}-${{ github.sha }}`
