@@ -32,6 +32,8 @@ DROP TYPE "Ramp";
 -- CreateTable
 CREATE TABLE "Ramp" (
     "id" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
     "memberId" TEXT,
     "type" "RampType" NOT NULL,
     "email" TEXT,

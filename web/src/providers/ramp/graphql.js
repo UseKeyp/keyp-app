@@ -6,6 +6,7 @@ export const MEMBER_RAMPS_QUERY = gql`
       accountNickname
       isoCurrencyCode
       type
+      createdAt
     }
   }
 `

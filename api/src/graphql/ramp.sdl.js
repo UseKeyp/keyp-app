@@ -5,6 +5,7 @@ export const schema = gql`
     accountNickname: String!
     isoCurrencyCode: String!
     type: RampType!
+    createdAt: DateTime!
   }
   type Query {
     ramps: [Ramp!]! @requireAuth
