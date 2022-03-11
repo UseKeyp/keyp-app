@@ -144,6 +144,7 @@ const VendorConnection = ({ ramp, amount, isLoading, disabled }) => {
 export const WithdrawModal = ({ isVisible, toggleModal }) => {
   const [amount, setAmount] = React.useState(0)
   const { ramps, isLoading } = useRamp()
+  // console.log(ramps)
   return (
     <ModalContainer
       headerText="Withdraw Funds"

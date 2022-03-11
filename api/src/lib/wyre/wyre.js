@@ -50,9 +50,20 @@ const fetchWyre = (url, data) => {
       'X-Api-Key': WYRE_API_KEY,
       'X-Api-Signature': signature(urlWithTimestamp, stringData),
     },
-  }).then((res) => {
+  }).then(async (res) => {
     if (res.status === 204) return `No content returned by Wyre - ${url}`
-    return res.json()
+    const data = await res.json()
+    if (data.errorCode) {
+      throw {
+        status: res.status,
+        url,
+        statusText: res.statusText,
+        errorCode: data.errorCode,
+        type: data.type,
+        message: data.message,
+      }
+    }
+    return data
   })
 }
 
@@ -136,6 +147,17 @@ export const createWithdrawReservation = async () => {
   }
 }
 
+export const createPaymentMethod = async (details) => {
+  const url = `${API_URL_V2}/paymentMethods`
+  const args = {
+    ...details,
+    paymentMethodType: 'LOCAL_TRANSFER',
+    chargebablePM: false,
+  }
+  const response = await fetchWyre(url, args)
+  return response
+}
+
 export const createPaymentMethodFromPlaid = async (processorToken) => {
   const url = `${API_URL_V2}/paymentMethods`
   const args = {
@@ -146,7 +168,6 @@ export const createPaymentMethodFromPlaid = async (processorToken) => {
   }
   // console.log(args)
   const response = await fetchWyre(url, args)
-  // console.log(response);
   return response
 }
 
@@ -165,5 +186,7 @@ export const attachBlockchainPaymentMethod = async (paymentMethodId) => {
   // Bug with wyre returning 'No Content' status 204
   // TODO: remove the extra call once this is fixed
   const paymentMethod = await fetchPaymentMethod(paymentMethodId)
+  if (!paymentMethod || !paymentMethod?.blockchains?.ETH)
+    throw 'Error attaching blockchain'
   return paymentMethod.blockchains.ETH
 }

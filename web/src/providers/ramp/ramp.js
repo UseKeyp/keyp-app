@@ -18,7 +18,7 @@ const RampContext = React.createContext({
 
 const RampProvider = ({ children }) => {
   const { isAuthenticated } = useAuth()
-  const [shouldPoll, setShouldPoll] = React.useState(false)
+  const [shouldPoll, setShouldPoll] = React.useState(true)
   const [coinbase, setCoinbase] = React.useState({
     isLoading: false,
     isConnected: false,
@@ -36,10 +36,11 @@ const RampProvider = ({ children }) => {
     loading: rampsLoading,
   } = useQuery(MEMBER_RAMPS_QUERY, {
     pollInterval: 30000,
-    skip: !isAuthenticated || !shouldPoll,
+    skip: !isAuthenticated,
     fetchPolicy: 'network-only',
   })
   const updateRamps = () => {
+    console.log(ramps)
     const coinbaseRamp = ramps.find((ramp) => ramp.type === COINBASE)
     const wyreRamp = ramps.find((ramp) => ramp.type === WYRE)
     setCoinbase({

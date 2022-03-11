@@ -16,8 +16,13 @@ export const WYRE_DEPOSIT_URL_QUERY = gql`
 `
 export const CONNECT_PLAID_QUERY = gql`
   query connectPlaidQuery($code: String!, $accountId: String!) {
-    connectPlaid(code: $code, accountId: $accountId)
-    ramps
+    connectPlaid(code: $code, accountId: $accountId) {
+      id
+      address
+      accountNickname
+      isoCurrencyCode
+      type
+    }
   }
 `
 
