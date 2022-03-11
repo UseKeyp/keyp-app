@@ -3,11 +3,6 @@ name: CI Staging
 on:
   push:
     branches: ['staging']
-    paths:
-      - 'api/src*'
-      - 'web/src*'
-      - 'package.json'
-      - '.github/workflows/cd.master.*'
 
 jobs:
   create-release-draft:
