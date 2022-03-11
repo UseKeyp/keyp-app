@@ -53,9 +53,6 @@ const Redirect = ({ type }) => {
       })
       if (codeGrantData.status === 'SUCCESS') {
         setSuccessMessage('Connection complete')
-        setTimeout(() => {
-          window.close()
-        }, [3000])
       } else {
         setErrorMessage('Something went wrong')
       }
@@ -68,9 +65,6 @@ const Redirect = ({ type }) => {
   const completeWyreOrder = async () => {
     if (error) return setErrorMessage('Unknown Wyre Error')
     setOrderSubmitted(true)
-    setTimeout(() => {
-      window.close()
-    }, [1000])
   }
 
   React.useEffect(() => {
@@ -137,7 +131,7 @@ const Redirect = ({ type }) => {
             <Icon name="checkmark" width="3rem" height="3rem" color="green" />
             <h1 className="text-5xl ml-4 font-extrabold">Payment complete!</h1>
           </div>
-          <p className="text-s m-4">Taking you back to Treasure Chess...</p>
+          <p className="text-s m-4">You can close this page</p>
           <Link className="text-s mt-4" to={routes.profile()}>
             (Go to my Profile)
           </Link>
