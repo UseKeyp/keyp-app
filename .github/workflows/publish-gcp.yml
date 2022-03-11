@@ -63,3 +63,16 @@ jobs:
                  docker push $PROJECT_NAME/$IMAGE_NAME-$COMPONENT:latest
               fi
           done
+  notify:
+    name: Notify
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Discord notification
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_DEVOPS }}
+        uses: Ilshidur/action-discord@0c4b27844ba47cb1c7bee539c8eead5284ce9fa9
+        with:
+          args: |
+            New Release ${{ env.NODE_ENV }}-${{ github.sha::7 }}
+            Branch - `${{ github.ref }}`
+            container tag: `${{ env.CONTAINER_REGISTRY_HOSTNAME }}/${{ env.CONTAINER_REGISTRY_REPOSITORY }}/${{ env.CONTAINER_REGISTRY_IMAGE_PREFIX }}-${{ matrix.platform }}:${{ env.NODE_ENV }}-${{ github.sha }}`
