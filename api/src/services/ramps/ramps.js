@@ -1,8 +1,6 @@
 import { db } from 'src/lib/db'
-import { logger } from 'src/lib/logger'
 import { EnvelopError } from '@envelop/core'
 import { transferUsdc } from 'src/lib/web3/tokens'
-import { WYRE } from 'src/lib/oAuth/wyre'
 
 export const ramps = async () => {
   const ramps = await db.ramp.findMany({
@@ -28,7 +26,7 @@ export const rampWithdraw = async ({ type, amount }) => {
   const tx = await transferUsdc({ to: ramp.address, amount })
   // TODO: create ramp withdraw tx
   // TODO: Send email receipts
-  const rampWithdraw = await db.rampWithdraw.create({
+  await db.rampWithdraw.create({
     data: {
       toAddress: ramp.address,
       amount: Number(amount),

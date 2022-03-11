@@ -3,8 +3,6 @@ import fetch from 'cross-fetch'
 import { isDevelopment } from 'src/lib/helpers'
 import { decode as decodeJwt } from 'jsonwebtoken'
 
-import { fetchMember } from 'src/lib/members'
-import { getTorusPublicAddress } from 'src/lib/torus'
 import { logger } from 'src/lib/logger'
 import { encodeBody, getExpiration } from 'src/lib/oAuth/helpers'
 

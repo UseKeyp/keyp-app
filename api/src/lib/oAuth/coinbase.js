@@ -19,10 +19,7 @@ export const coinbaseParams = {
   account_currency: 'ETH',
 }
 
-export const getCoinbaseAccessTokenFromCode = async (
-  code,
-  { codeVerifier, memberId }
-) => {
+export const getCoinbaseAccessTokenFromCode = async (code, { memberId }) => {
   try {
     const body = {
       grant_type: 'authorization_code',
@@ -86,8 +83,6 @@ export const handleCoinbaseLogin = async ({
         throw 'Coinbase authorization failed, or secret invalid'
       return res.json()
     })
-    console.log(accounts)
-    console.log(accounts.data)
     const ethAccount = accounts.data.find(
       (account) => account.currency === 'ETH'
     )
@@ -107,7 +102,7 @@ export const handleCoinbaseLogin = async ({
         type: 'COINBASE',
         accessToken,
         refreshToken,
-        member: { connect: { id: context.currentUser.id } },
+        member: { connect: { id: memberId } },
       },
     })
   } catch (e) {

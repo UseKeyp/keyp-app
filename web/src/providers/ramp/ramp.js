@@ -38,7 +38,7 @@ const RampProvider = ({ children }) => {
     loading: rampsLoading,
   } = useQuery(MEMBER_RAMPS_QUERY, {
     pollInterval: 30000,
-    skip: !isAuthenticated,
+    skip: !isAuthenticated || !shouldPoll,
     fetchPolicy: 'network-only',
   })
   const updateRamps = () => {

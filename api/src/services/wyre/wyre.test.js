@@ -5,7 +5,7 @@ jest.setTimeout(20000)
 describe('src/lib/wyre', () => {
   let paymentMethodId
   // TODO: I think you have to create a user first, before creating a PM this way.
-  scenario('Create a Payment Method', async (scenario) => {
+  scenario('Create a Payment Method', async () => {
     const details = {
       country: 'US',
       currency: 'USD',
@@ -17,13 +17,13 @@ describe('src/lib/wyre', () => {
       accountType: 'CHECKING',
     }
     const response = await createPaymentMethod(details)
-    console.log(response)
+    // console.log(response)
     paymentMethodId = response.payment_id
     // expect(typeof url === 'string').toBe(true)
   })
-  scenario('Fetch a Payment Method', async (scenario) => {
-    const response = await fetchPaymentMethod(paymentMethodId)
-    console.log(response)
+  scenario('Fetch a Payment Method', async () => {
+    await fetchPaymentMethod(paymentMethodId)
+    // console.log(response)
     // expect(typeof url === 'string').toBe(true)
   })
 
