@@ -65,9 +65,14 @@ const SentryInjector = () => {
 const App = () => (
   <FatalErrorBoundary page={FatalErrorPage}>
     <RedwoodProvider titleTemplate="%PageTitle | %AppTitle">
-      <AuthProviderExtended type="dbAuth">
+      <AuthProviderExtended
+        type="dbAuth"
+        config={{ fetchConfig: { credentials: 'include' } }}
+      >
         <SentryInjector />
-        <RedwoodApolloProvider>
+        <RedwoodApolloProvider
+          graphQLClientConfig={{ httpLinkConfig: { credentials: 'include' } }}
+        >
           <AllContextProviders>
             <LandingModal />
             <Routes />
