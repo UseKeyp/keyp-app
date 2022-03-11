@@ -15,11 +15,8 @@ import { isProduction } from 'src/lib/helpers'
  * @param {boolean} showConfig - whether to display logger configuration on initialization
  */
 export const logger = createLogger({
-  options: {
-    // prettyPrint:  !isProduction,
-    prettyPrint: false,
-    prettifier: false,
-    // level: isProduction ? 'warn' : 'trace'  // These are the redwoodJS defaults
-  },
-  showConfig: !isProduction, // Helpful for debugging
+  // options: {
+  // level: isProduction ? 'warn' : 'trace'  // These are the redwoodJS defaults
+  // },
+  // showConfig: !isProduction, // Helpful for debugging
 })

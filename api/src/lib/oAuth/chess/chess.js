@@ -62,7 +62,7 @@ export const getChessAccessTokenFromCode = async (
     } = response
 
     // Use to get your own CHESS_API_ACCESS_TOKEN for rate-limiting
-    logger.debug('CHESS_API_ACCESS_TOKEN', accessToken)
+    accessToken && logger.debug('CHESS_API_ACCESS_TOKEN', accessToken)
 
     if (!response.id_token) throw 'Failed to get id_token from Chess.com'
     const decoded = await decodeJwt(idToken)
