@@ -3,6 +3,7 @@ import { parseEther, formatEther } from '@ethersproject/units'
 import { web3Provider } from 'src/lib/web3/helpers'
 import { sendDiscordAlert } from 'src/lib/discord/discord'
 import { getExplorerBaseUrlFromName } from '@treasure-chess/web3-helpers'
+import { logger } from 'src/lib/logger'
 import Sentry from 'src/lib/sentry'
 import { DEFAULT_GAS_PRICE } from 'src/lib/web3/helpers'
 

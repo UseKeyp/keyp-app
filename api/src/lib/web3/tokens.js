@@ -2,7 +2,7 @@ import { web3Provider } from 'src/lib/web3/helpers'
 import { Contract } from '@ethersproject/contracts'
 import { formatUnits } from '@ethersproject/units'
 import { EnvelopError } from '@envelop/core'
-
+import { logger } from 'src/lib/logger'
 export const getTokenContract = () => {
   try {
     return new Contract(
