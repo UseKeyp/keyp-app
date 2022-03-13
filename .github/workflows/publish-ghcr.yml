@@ -1,9 +1,6 @@
 # Adapted from https://github.com/users/jeliasson/packages/container/package/redwoodjs-app-api-main
 name: 'Github Publish Docker'
 on:
-  release:
-    types: [published]
-  # Allow deployment manually
   workflow_dispatch:
     inputs:
       image_tag_prefix:
