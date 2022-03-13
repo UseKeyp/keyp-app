@@ -61,15 +61,16 @@ jobs:
         with:
           node-version: 12.x
           registry-url: https://registry.npmjs.org/
+      - name: Exit early
+        run: |
+          if grep -q '^v[0-9]' <<< "${{ github.event.head_commit.message }}" ; then
+             success()
+          fi
       - name: Update version
         id: update_version
         env:
           GH_TOKEN: ${{ secrets.PAT_GITHUB }}
         run: |
-          if grep -q '^v[0-9]' <<< "${{ github.event.head_commit.message }}" ; then
-            echo "Skipping release draft creation"
-            exit 0
-          fi
           IS_PRERELEASE=true
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor}}@users.noreply.github.com"
