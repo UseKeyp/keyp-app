@@ -73,7 +73,7 @@ jobs:
         with:
           args: 🏭 Building... `${{ steps.get_version.outputs.VERSION }}`
   build:
-    name: Build and Deploy
+    name: Build
     runs-on: ubuntu-20.04
     needs: setup
     timeout-minutes: 10
