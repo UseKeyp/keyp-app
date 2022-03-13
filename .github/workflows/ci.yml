@@ -70,7 +70,7 @@ jobs:
           fi
           echo "::set-output name=SKIP_RELEASE::$SKIP_RELEASE"
       - name: Exit early
-        if: ${{ steps.check_repeat.outputs.SKIP_RELEASE }}
+        if: ${{ steps.check_repeat.outputs.SKIP_RELEASE }} == 'true'
         uses: andymckay/cancel-action@0.2
       - name: Update version
         id: update_version
