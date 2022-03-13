@@ -62,10 +62,8 @@ jobs:
           node-version: 12.x
           registry-url: https://registry.npmjs.org/
       - name: Exit early
-        run: |
-          if grep -q '^v[0-9]' <<< "${{ github.event.head_commit.message }}" ; then
-             success()
-          fi
+        if: grep -q '^v[0-9]' <<< "${{ github.event.head_commit.message }}"
+        uses: andymckay/cancel-action@0.2
       - name: Update version
         id: update_version
         env:
