@@ -55,7 +55,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          token: ${{ secrets.GITHUB_PAT }}
+          token: ${{ secrets.PAT_GITHUB }}
       - name: Use Node.js 12.x
         uses: actions/setup-node@v1
         with:
@@ -64,7 +64,7 @@ jobs:
       - name: Update version
         id: update_version
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_PAT }}
+          GH_TOKEN: ${{ secrets.PAT_GITHUB }}
         run: |
           IS_PRERELEASE=true
           git config user.name "${{ github.actor }}"
