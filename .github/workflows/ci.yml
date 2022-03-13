@@ -65,7 +65,7 @@ jobs:
         id: check_repeat
         run: |
           SKIP_RELEASE=false
-          if grep -q '^v[0-9]' <<< github.event.head_commit.message ; then
+          if grep -q '^v[0-9]' <<< ${{github.event.head_commit.message}} ; then
             SKIP_RELEASE=true
           fi
           echo "::set-output name=SKIP_RELEASE::$SKIP_RELEASE"
