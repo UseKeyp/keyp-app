@@ -49,7 +49,7 @@ jobs:
     name: Create Release Draft
     needs: runCI
     # Only create drafts on merge
-    if: github.event_name == 'push' && ! grep -q '^v[0-9]' <<< "${{ github.event.head_commit.message }}"
+    if: github.event_name == 'push'
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
@@ -66,6 +66,10 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.PAT_GITHUB }}
         run: |
+          if grep -q '^v[0-9]' <<< "${{ github.event.head_commit.message }}" ; then
+            echo "Skipping release draft creation"
+            exit 0
+          fi
           IS_PRERELEASE=true
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor}}@users.noreply.github.com"
