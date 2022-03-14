@@ -50,12 +50,13 @@ jobs:
       - name: Skip release
         id: skip_release
         run: |
-          SKIP_RELEASE=false
+          SKIP_RELEASE=true
           echo ${{ github.event.head_commit.message }}
-          echo $(grep '^v[0-9]' <<< ${{ github.event.head_commit.message }})
-          if grep -q '^v[0-9]' <<< "${{ github.event.head_commit.message }}" ; then
-            SKIP_RELEASE=true
+          echo $(grep '^v[0-9]' <<< "${{ github.event.head_commit.message }}")
+          if ! grep -q '^v[0-9]' <<< "${{ github.event.head_commit.message }}" ; then
+            SKIP_RELEASE=false
           fi
+          echo SKIP_RELEASE
           echo "::set-output name=SKIP_RELEASE::$SKIP_RELEASE"
   create-release-draft:
     name: Create Release Draft
