@@ -45,6 +45,15 @@ jobs:
       # - name: Check serverless size
       #   run: yarn zip-it-and-ship-it api/dist/functions/ zipped
       #   shell: bash
+  exit-early:
+    name: Skip creating draft
+    needs: runCI
+    # Only create drafts on merge
+    if: grep -q '^v[0-9]' <<< ${{ github.event.head_commit.message }}
+    steps:
+      - name: Exit early
+        if: ${{ steps.check_repeat.outputs.SKIP_RELEASE == 'true' }}
+        uses: andymckay/cancel-action@0.2
   create-release-draft:
     name: Create Release Draft
     needs: runCI
@@ -61,17 +70,6 @@ jobs:
         with:
           node-version: 12.x
           registry-url: https://registry.npmjs.org/
-      - name: Check repeat
-        id: check_repeat
-        run: |
-          SKIP_RELEASE=false
-          if grep -q '^v[0-9]' <<< ${{github.event.head_commit.message}} ; then
-            SKIP_RELEASE=true
-          fi
-          echo "::set-output name=SKIP_RELEASE::$SKIP_RELEASE"
-      - name: Exit early
-        if: ${{ steps.check_repeat.outputs.SKIP_RELEASE == 'true' }}
-        uses: andymckay/cancel-action@0.2
       - name: Update version
         id: update_version
         env:
