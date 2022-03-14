@@ -52,7 +52,6 @@ jobs:
     if: grep -q '^v[0-9]' <<< ${{ github.event.head_commit.message }}
     steps:
       - name: Exit early
-        if: ${{ steps.check_repeat.outputs.SKIP_RELEASE == 'true' }}
         uses: andymckay/cancel-action@0.2
   create-release-draft:
     name: Create Release Draft
