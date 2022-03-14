@@ -11,7 +11,7 @@ jobs:
     name: Run CI
     runs-on: ubuntu-latest
     outputs:
-      DO_RELEASE: ${{ steps.should_create_release.outputs.DO_RELEASE }}
+      SKIP_RELEASE: ${{ steps.skip_release.outputs.SKIP_RELEASE }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -47,20 +47,22 @@ jobs:
       # - name: Check serverless size
       #   run: yarn zip-it-and-ship-it api/dist/functions/ zipped
       #   shell: bash
-      - name: Should create release
-        id: should_create_release
+      - name: Check release
+        id: skip_release
         run: |
-          DO_RELEASE=true
-          if grep -q '^v[0-9]' <<< ${{github.event.head_commit.message}} ; then
-            DO_RELEASE=false
+          SKIP_RELEASE=false
+          echo ${{ github.event.head_commit.message }}
+          echo grep '^v[0-9]' <<< ${{ github.event.head_commit.message }}
+          if [ grep -q '^v[0-9]' <<< ${{ github.event.head_commit.message }} ] ; then
+            SKIP_RELEASE=true
           fi
-          echo "::set-output name=DO_RELEASE::$DO_RELEASE"
+          echo "::set-output name=SKIP_RELEASE::$SKIP_RELEASE"
   create-release-draft:
     name: Create Release Draft
     needs:
       - runCI
     # Only create drafts on merge
-    if: github.event_name == 'push' && ${{ needs.runCI.outputs.DO_RELEASE }}
+    if: github.event_name == 'push' && ! ${{ needs.runCI.outputs.SKIP_RELEASE }}
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
