@@ -61,10 +61,8 @@ jobs:
             SKIP_RELEASE=true
           elif github.event_name == 'pull_request' ; then
             SKIP_RELEASE=true
-          elif grep -q '^v[0-9]' <<< "${{ github.ref_name }}" ; then
-            SKIP_RELEASE=true
           fi
-          echo SKIP_RELEASE: $SKIP_RELEASE
+          # echo SKIP_RELEASE: $SKIP_RELEASE
           echo "::set-output name=SKIP_RELEASE::$SKIP_RELEASE"
   create-release-draft:
     name: Create Release Draft
