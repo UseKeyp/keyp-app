@@ -42,14 +42,15 @@ jobs:
         id: get_variables
         run: |
           NODE_ENV=staging
-          BRANCH=staging
+          BRANCH=${{ steps.get_release.outputs.tag_name }}
           if [ ${{ github.event.inputs.image_tag_prefix }} ] ; then
              NODE_ENV=${{ github.event.inputs.image_tag_prefix }}
              BRANCH=${{ github.ref_name }}
           elif ! grep -q "staging" <<< "${{ steps.get_release.outputs.tag_name }}" ; then
              NODE_ENV=prod
-             BRANCH=main
           fi
+          echo BRANCH: $BRANCH
+          echo NODE_ENV: $NODE_ENV
           echo "::set-output name=BRANCH::$BRANCH"
           echo "::set-output name=NODE_ENV::$NODE_ENV"
       - name: Checkout branch
