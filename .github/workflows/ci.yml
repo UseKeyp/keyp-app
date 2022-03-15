@@ -64,15 +64,15 @@ jobs:
           elif grep -q '^v[0-9]' <<< "${{ github.ref_name }}" ; then
             SKIP_RELEASE=true
           fi
-          echo $(SKIP_RELEASE)
+          echo SKIP_RELEASE: $SKIP_RELEASE
           echo "::set-output name=SKIP_RELEASE::$SKIP_RELEASE"
   create-release-draft:
     name: Create Release Draft
     needs:
       - runCI
     # Only create drafts on merge
-    if: github.event_name == 'push' && ! needs.runCI.outputs.SKIP_RELEASE && (github.ref_name == 'staging' || github.ref_name == 'main')
-    # if: ! needs.runCI.outputs.SKIP_RELEASE
+    # if: github.event_name == 'push' && ! needs.runCI.outputs.SKIP_RELEASE && (github.ref_name == 'staging' || github.ref_name == 'main')
+    if: ! needs.runCI.outputs.SKIP_RELEASE
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
