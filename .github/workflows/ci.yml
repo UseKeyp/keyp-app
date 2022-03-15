@@ -21,9 +21,7 @@ jobs:
           echo github.sha: ${{ github.sha }}
           echo github.repository: ${{ github.repository }}
           echo github.ref: ${{ github.ref }}
-          echo github.head_ref: ${{ github.head_ref }}
-          echo github.base_ref: ${{ github.base_ref }}
-          echo github.event.inputs.image_tag_prefix: ${{ github.event.inputs.image_tag_prefix }}
+          echo github.event.head_commit.message: ${{ github.event.head_commit.message }}
       - name: Setup Node.js v14
         uses: actions/setup-node@v2
         with:
@@ -59,8 +57,6 @@ jobs:
         id: skip_release
         run: |
           SKIP_RELEASE=false
-          echo ${{ github.event.head_commit.message }}
-          echo $(grep '^v[0-9]' <<< "${{ github.event.head_commit.message }}")
           if grep -q '^v[0-9]' <<< "${{ github.event.head_commit.message }}" ; then
             SKIP_RELEASE=true
           fi
@@ -71,7 +67,7 @@ jobs:
     needs:
       - runCI
     # Only create drafts on merge
-    if: github.event_name == 'push' && ! needs.runCI.outputs.SKIP_RELEASE && contains('staging main', github.ref_name)
+    if: github.event_name == 'push' && ! needs.runCI.outputs.SKIP_RELEASE && (github.ref_name == 'staging' || github.ref_name 'main')
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
