@@ -22,33 +22,33 @@ jobs:
           echo github.repository: ${{ github.repository }}
           echo github.ref: ${{ github.ref }}
           echo github.event.head_commit.message: ${{ github.event.head_commit.message }}
-      - name: Setup Node.js v14
-        uses: actions/setup-node@v2
-        with:
-          node-version: '14'
-      - name: Cache "node_modules"
-        uses: actions/cache@v2
-        with:
-          path: '**/node_modules'
-          key: node_modules_${{ hashFiles('**/yarn.lock') }}
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-      - name: Lint
-        run: yarn rw lint
-        shell: bash
-      - name: Check
-        run: yarn rw check
-        shell: bash
-      # TODO: Inject TEST_DATABASE_URL if you wish to run api testing
-      # - name: Test
-      #   run: yarn rw test
+      # - name: Setup Node.js v14
+      #   uses: actions/setup-node@v2
+      #   with:
+      #     node-version: '14'
+      # - name: Cache "node_modules"
+      #   uses: actions/cache@v2
+      #   with:
+      #     path: '**/node_modules'
+      #     key: node_modules_${{ hashFiles('**/yarn.lock') }}
+      # - name: Install dependencies
+      #   run: yarn install --frozen-lockfile
+      # - name: Lint
+      #   run: yarn rw lint
       #   shell: bash
-      - name: Build packages
-        run: yarn build-packages
-        shell: bash
-      - name: Build api & web
-        run: yarn rw build
-        shell: bash
+      # - name: Check
+      #   run: yarn rw check
+      #   shell: bash
+      # # TODO: Inject TEST_DATABASE_URL if you wish to run api testing
+      # # - name: Test
+      # #   run: yarn rw test
+      # #   shell: bash
+      # - name: Build packages
+      #   run: yarn build-packages
+      #   shell: bash
+      # - name: Build api & web
+      #   run: yarn rw build
+      #   shell: bash
       # TODO: throw error if size exceeds limit for vercel
       # - name: Check serverless size
       #   run: yarn zip-it-and-ship-it api/dist/functions/ zipped
@@ -58,6 +58,10 @@ jobs:
         run: |
           SKIP_RELEASE=false
           if grep -q '^v[0-9]' <<< "${{ github.event.head_commit.message }}" ; then
+            SKIP_RELEASE=true
+          elif github.event_name == 'pull_request' ; then
+            SKIP_RELEASE=true
+          elif grep -q '^v[0-9]' <<< "${{ github.ref_name }}" ; then
             SKIP_RELEASE=true
           fi
           echo $(SKIP_RELEASE)
