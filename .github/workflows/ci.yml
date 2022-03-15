@@ -69,7 +69,7 @@ jobs:
     needs:
       - runCI
     # Only create drafts on merge
-    if: github.event_name == 'push' && !needs.runCI.outputs.SKIP_RELEASE
+    if: (github.event_name == 'push' && !needs.runCI.outputs.SKIP_RELEASE)
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
