@@ -62,7 +62,7 @@ jobs:
           if grep -q '^v[0-9]' <<< "${{ github.event.head_commit.message }}" ; then
             SKIP_RELEASE=true
           fi
-          # echo SKIP_RELEASE: $SKIP_RELEASE
+          echo SKIP_RELEASE: $SKIP_RELEASE
           echo "::set-output name=SKIP_RELEASE::$SKIP_RELEASE"
   create-release-draft:
     name: Create Release Draft
