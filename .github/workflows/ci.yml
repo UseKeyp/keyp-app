@@ -58,9 +58,9 @@ jobs:
         # elif github.event_name == 'pull_request' ; then
         # SKIP_RELEASE=true
         run: |
-          SKIP_RELEASE=false
+          SKIP_RELEASE=0
           if grep -q '^v[0-9]' <<< "${{ github.event.head_commit.message }}" ; then
-            SKIP_RELEASE=true
+            SKIP_RELEASE=1
           fi
           echo SKIP_RELEASE: $SKIP_RELEASE
           echo "::set-output name=SKIP_RELEASE::$SKIP_RELEASE"
