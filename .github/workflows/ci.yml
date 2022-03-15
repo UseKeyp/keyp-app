@@ -69,7 +69,7 @@ jobs:
     needs:
       - runCI
     # Only create drafts on merge
-    if: !needs.runCI.outputs.SKIP_RELEASE
+    if: needs.runCI.outputs.SKIP_RELEASE == false
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout
