@@ -55,11 +55,13 @@ jobs:
       #   shell: bash
       - name: Skip release
         id: skip_release
-        # elif github.event_name == 'pull_request' ; then
-        # SKIP_RELEASE=true
         run: |
           SKIP_RELEASE=0
           if grep -q '^v[0-9]' <<< "${{ github.event.head_commit.message }}" ; then
+            SKIP_RELEASE=1
+          elif github.event_name == 'pull_request' ; then
+            SKIP_RELEASE=1
+          elif grep -q 'staging\|main' <<< "${{ github.ref_name }}" ; then
             SKIP_RELEASE=1
           fi
           echo SKIP_RELEASE: $SKIP_RELEASE
