@@ -18,7 +18,6 @@ jobs:
   setup:
     name: Setup
     runs-on: ubuntu-20.04
-    continue-on-error: true
     outputs:
       RELEASE_HTML_URL: ${{ steps.get_release.outputs.html_url }}
       BRANCH: ${{ steps.get_variables.outputs.VERSION }}
@@ -35,6 +34,7 @@ jobs:
           echo github.base_ref: ${{ github.base_ref }}
           echo github.event.inputs.image_tag_prefix: ${{ github.event.inputs.image_tag_prefix }}
       - name: Get release
+        continue-on-error: true
         id: get_release
         uses: bruceadams/get-release@v1.2.3
         env:
