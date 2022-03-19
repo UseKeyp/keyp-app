@@ -61,9 +61,12 @@ jobs:
       - name: Checkout branch
         uses: actions/checkout@v2
         with:
+          token: ${{ secrets.PAT_GITHUB }}
           ref: ${{ steps.get_variables.outputs.BRANCH }}
       - name: Get version
         id: get_version
+        env:
+          GH_TOKEN: ${{ secrets.PAT_GITHUB }}
         run: |
           if [ ${{ github.event.inputs.image_tag_prefix }} ] ;  then
             if [ $github.ref_name == "main" ] ; then
