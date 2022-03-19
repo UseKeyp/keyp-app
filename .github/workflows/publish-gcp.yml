@@ -64,14 +64,10 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.PAT_GITHUB }}
         run: |
-          if [ ${{ github.event.inputs.image_tag_prefix }} ] ;  then
-            if [ $github.ref_name == "main" ] ; then
-               npx lerna version --conventional-graduate --conventional-commits --yes
-            else
-               npx lerna version prerelease --yes --preid staging
-            fi
-          fi
           VERSION=`jq -r .version lerna.json`
+          if [ ${{ github.event.inputs.image_tag_prefix }} ] ;  then
+            VERSION=${{ steps.get_variables.outputs.BRANCH }}-$(echo $GITHUB_SHA | cut -c 1-7)
+          fi
           echo "::set-output name=VERSION::v$VERSION"
       - name: Discord notify building
         env:
