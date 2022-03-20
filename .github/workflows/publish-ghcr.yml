@@ -11,7 +11,7 @@ env:
   NODE_ENV: ${{ github.event.inputs.image_tag_prefix }}
   REDWOOD_API_URL: 'http://0.0.0.0:8911'
   APP_DOMAIN: 'http://0.0.0.0:8910'
-  BASIC_AUTH_PASSWORD: 'pauliemorphy' # required for sandbox or dev
+  BASIC_AUTH_PASSWORD: 'pauliemorphy'
 
   # Container Registry
   CONTAINER_REGISTRY_HOSTNAME: ghcr.io
@@ -112,6 +112,8 @@ jobs:
             REDWOOD_API_URL=${{ env.REDWOOD_API_URL }}
             APP_DOMAIN=${{ env.APP_DOMAIN }}
             VERSION=${{ needs.setup.outputs.VERSION }}
+            SENTRY_DSN=${{ env.SENTRY_DSN }}
+            SENTRY_ENVIRONMENT=${{ env.SENTRY_ENVIRONMENT }}
           tags: |
             ${{ env.CONTAINER_REGISTRY_HOSTNAME }}/${{ github.repository }}-${{ matrix.platform }}:latest
             ${{ env.CONTAINER_REGISTRY_HOSTNAME }}/${{ github.repository }}-${{ matrix.platform }}:${{ needs.setup.outputs.VERSION }}
