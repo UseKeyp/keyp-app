@@ -68,11 +68,11 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.PAT_GITHUB }}
         run: |
-          VERSION=v$(echo jq -r .version lerna.json)
+          VERSION=$(echo jq -r .version lerna.json)
           if [ ${{ github.event.inputs.image_tag_prefix }} ] ;  then
             VERSION=${{ steps.get_variables.outputs.BRANCH }}-$(echo $GITHUB_SHA | cut -c 1-7)
           fi
-          echo "::set-output name=VERSION::$VERSION"
+          echo "::set-output name=VERSION::v$VERSION"
       - name: Discord notify building
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_DEVOPS }}
