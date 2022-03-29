@@ -21,7 +21,7 @@ git config --local core.sshCommand "/usr/bin/ssh -i ~/.ssh/id_rsa-repo-sync"
 
 # New git history
 git checkout -b ${BRANCH_NAME}
-echo '.env.*.enc.js' >> .gitignore
+echo '.env.*.js.enc' >> .gitignore
 git add --a
 git commit -m "${LATEST_COMMIT_SHORT_REV} - ${LATEST_COMMIT_COMMENT}"
 
