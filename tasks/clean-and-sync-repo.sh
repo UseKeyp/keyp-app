@@ -10,7 +10,10 @@ LATEST_COMMIT_COMMENT=$(git log -1 --pretty=%B)
 
 # Cleanup
 rm -rf .git
-rm -f .env.*.enc.js
+rm -f .env.dev.enc.js
+rm -f .env.staging.enc.js
+rm -f .env.sandbox.enc.js
+rm -f .env.prod.enc.js
 rm -rf -f docs
 
 # Configure git
