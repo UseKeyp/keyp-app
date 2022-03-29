@@ -10,7 +10,6 @@ LATEST_COMMIT_COMMENT=$(git log -1 --pretty=%B)
 
 # Cleanup
 rm -rf .git
-find .env.*.enc.js -name . -o -prune -exec rm -rf -- {} +
 rm -rf -f docs
 
 # Configure git
@@ -23,6 +22,7 @@ git config --local core.sshCommand "/usr/bin/ssh -i ~/.ssh/id_rsa-repo-sync"
 # New git history
 git checkout -b ${BRANCH_NAME}
 git add --a
+git rm -r --cached .env.*.enc.js
 git commit -m "${LATEST_COMMIT_SHORT_REV} - ${LATEST_COMMIT_COMMENT}"
 
 # Configure ssh
