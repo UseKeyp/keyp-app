@@ -4,7 +4,7 @@
 # export SSH_PRIVATE_KEY=$(cat ~/.ssh/id_ed25519-treasurechess) && ./tasks/clean-and-sync-repo.sh
 
 # Get current commit hash and comment
-BRANCH_NAME="$0"
+BRANCH_NAME="$1"
 LATEST_COMMIT_SHORT_REV=$(git rev-parse --short HEAD)
 LATEST_COMMIT_COMMENT=$(git log -1 --pretty=%B)
 
