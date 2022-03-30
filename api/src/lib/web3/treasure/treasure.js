@@ -1,11 +1,14 @@
 const treasureArtifact = require('@treasure-chess/treasure-contracts/artifacts/contracts/Treasure.sol/Treasure.json')
 import { Contract } from '@ethersproject/contracts'
-import { parseUnits } from '@ethersproject/units'
 
 import achievementsList from '@treasure-chess/chess-achievements/src/achievementsList'
 
 import { adminSendTransaction } from 'src/lib/web3/admin'
-import { web3Provider, DEFAULT_GAS_PRICE } from 'src/lib/web3/helpers'
+import {
+  web3Provider,
+  DEFAULT_GAS_MAX_PRIORITY_FEE_PER_GAS,
+  DEFAULT_GAS_MAX_FEE_PER_GAS,
+} from 'src/lib/web3/helpers'
 import { logger } from 'src/lib/logger'
 
 const treasureAbi = treasureArtifact.abi
@@ -27,14 +30,14 @@ export const mint = async ({
   treasure,
   tokenUri,
   minterAddress,
-  gasMultiplier = 1,
+  // gasMultiplier = 1,
 }) => {
   try {
     if (!minterAddress) throw 'No minterAddress provided'
     if (!tokenUri) throw 'No tokenUri provided'
     if (!treasure) throw 'No treasure provided'
-    if (gasMultiplier > 1.25)
-      throw `Gas multiplier cannot be higher than 1.25, value is ${gasMultiplier}`
+    // if (gasMultiplier > 1.25)
+    //   throw `Gas multiplier cannot be higher than 1.25, value is ${gasMultiplier}`
     const treasureContract = getTreasureContract()
 
     // Lookup the number of each achievement
@@ -43,8 +46,6 @@ export const mint = async ({
       const match = achievementsList.find((item) => item.name == chiev)
       if (match) chievScore[index] = match.number
     })
-    const gasPrice = DEFAULT_GAS_PRICE && DEFAULT_GAS_PRICE * gasMultiplier
-    logger.debug(`mint gasPrice: ${gasPrice}`)
     let unsignedTx
     try {
       unsignedTx = await treasureContract.populateTransaction.mint(
@@ -57,9 +58,8 @@ export const mint = async ({
         chievScore[2], // uint16 _achievement3
         treasure.cardColor === 'black', // bool _color);
         {
-          maxPriorityFeePerGas: parseUnits('2', 'gwei'),
-          maxFeePerGas: parseUnits('10', 'gwei'),
-          // gasLimit: 300000,
+          maxPriorityFeePerGas: DEFAULT_GAS_MAX_PRIORITY_FEE_PER_GAS,
+          maxFeePerGas: DEFAULT_GAS_MAX_FEE_PER_GAS,
         }
       )
     } catch (e) {
