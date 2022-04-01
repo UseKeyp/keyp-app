@@ -76,11 +76,8 @@ export const processCodeGrant = async ({ state, code, type }) => {
       throw 'Sorry, authentication must be completed within 10 minutes.'
 
     const { onSubmitCode } = providers[type]
-    return onSubmitCode(code, { memberId: oAuth.memberId })
+    return onSubmitCode(code, oAuth)
   } catch (e) {
-    /* eslint-disable no-console */
-    console.log(e)
-    /* eslint-enable no-console */
     Sentry.captureException(e)
     throw new AuthenticationError(e)
   }
