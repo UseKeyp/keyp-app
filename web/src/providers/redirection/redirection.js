@@ -34,7 +34,13 @@ const RedirectionProvider = ({ children }) => {
       })
     if (response.id) {
       await reauthenticate()
-      navigate(getRedirectTo() || '/')
+      setState({
+        isLoading: false,
+        successMessage: "Great - You're logged in!",
+      })
+      setTimeout(() => {
+        navigate(getRedirectTo() || '/profile')
+      }, [3000])
     }
   }
 
@@ -60,6 +66,7 @@ const RedirectionProvider = ({ children }) => {
   }
 
   React.useEffect(() => {
+    if (!url.pathname.includes('/redirect')) return
     if (error)
       return setState({
         isLoading: false,
