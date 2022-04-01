@@ -36,7 +36,6 @@ const configuration = new Configuration({
     headers: {
       'PLAID-CLIENT-ID': process.env.PLAID_CLIENT_ID,
       'PLAID-SECRET': process.env.PLAID_CLIENT_SECRET,
-      'Plaid-Version': '2020-09-14',
     },
   },
 })
