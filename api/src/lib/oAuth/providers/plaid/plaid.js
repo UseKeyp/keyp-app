@@ -19,7 +19,9 @@ export const PLAID = 'PLAID'
 export const WYRE = 'WYRE'
 
 const PLAID_SCOPE = [Products.Auth, Products.Identity]
-const PLAID_REDIRECT_URI = process.env.APP_DOMAIN + '/redirect/plaid'
+const PLAID_REDIRECT_URI = isProduction
+  ? process.env.APP_DOMAIN + '/redirect/plaid'
+  : 'https://0.0.0.0:8910/redirect/plaid'
 
 const PLAID_WEBHOOK_URL = isProduction
   ? 'https://treasure.chess.com/api/plaid'
@@ -54,9 +56,10 @@ export const createPlaidLink = async () => {
     }
     logger.debug({ custom: request }, 'createPlaidLink request')
     const response = await client.linkTokenCreate(request)
-    logger.debug({ custom: response }, 'createPlaidLink response')
-    if (!response?.data?.link_token) throw 'No link token returned'
-    return { text: response.data.link_token, type: 'code' }
+    logger.debug({ custom: response.data }, 'createPlaidLink response')
+    const token = response?.data?.link_token
+    if (response.status !== 200 || !token) throw 'No link token returned'
+    return { text: token, type: 'code' }
   } catch (e) {
     logger.error(e)
     Sentry.captureException(e)
@@ -64,17 +67,14 @@ export const createPlaidLink = async () => {
   }
 }
 
-const onSubmitCode = async ({ code, accountId }) => {
+const onSubmitCode = async (code, { accountId }) => {
   try {
     /* eslint-disable camelcase*/
     const tokenResponse = await client.itemPublicTokenExchange({
       public_token: code,
     })
     const accessToken = tokenResponse.data.access_token
-    return {
-      accessToken,
-      accountId,
-    }
+    return onConnected({ accessToken, accountId })
   } catch (e) {
     logger.error(e)
     Sentry.captureException(e)

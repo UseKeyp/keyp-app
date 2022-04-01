@@ -4,9 +4,9 @@ import pkceChallenge from 'pkce-challenge'
 import Sentry from 'src/lib/sentry'
 
 import { db } from 'src/lib/db'
+import { logger } from 'src/lib/logger'
 
 import { providers, types } from 'src/lib/oAuth/providers'
-import { logger } from 'src/lib/logger'
 import { createPlaidLink, PLAID } from 'src/lib/oAuth/providers/plaid'
 
 export const oAuthUrl = async (type) => {
@@ -50,27 +50,37 @@ export const oAuthUrl = async (type) => {
   }
 }
 
-export const processCodeGrant = async ({ state, code, type }) => {
+export const processCodeGrant = async ({ state, code, type, accountId }) => {
   try {
-    if (!Object.values(types).includes(type))
-      throw `OAuth Provider "${type}" is not enabled.`
-    // Delete the OAuth Item
-    let oAuth
-    try {
-      oAuth = await db.oAuth.delete({ where: { state } })
-      if (!oAuth) throw 'state not valid'
-    } catch (e) {
-      throw 'Oauth state has expired. Please start over.'
-    }
-
-    // Check expiration
-    if (new Date() - new Date(oAuth.createdAt) > 10 * 60 * 1000)
-      throw 'Sorry, authentication must be completed within 10 minutes.'
-
-    const { onSubmitCode } = providers[type]
-    return onSubmitCode(code, oAuth)
+    logger.debug(`code grant - ${type}`)
+    if (!types.includes(type)) throw `Unknown OAuth Provider - ${type}`
+    const tokens = await submitCodeGrant({ state, code, type, accountId })
+    return providers[type].onConnected(tokens)
   } catch (e) {
+    logger.error(e)
     Sentry.captureException(e)
     throw new AuthenticationError(e)
   }
+}
+
+const submitCodeGrant = async ({ state, code, type, accountId }) => {
+  if (!Object.values(types).includes(type))
+    throw `OAuth Provider "${type}" is not enabled.`
+  const { onSubmitCode } = providers[type]
+  if (type === PLAID) return onSubmitCode(code, { accountId })
+
+  // Delete the OAuth Item
+  let oAuth
+  try {
+    oAuth = await db.oAuth.delete({ where: { state } })
+    if (!oAuth) throw 'state not valid'
+  } catch (e) {
+    throw 'Oauth state has expired. Please start over.'
+  }
+
+  // Check expiration
+  if (new Date() - new Date(oAuth.createdAt) > 10 * 60 * 1000)
+    throw 'Sorry, authentication must be completed within 10 minutes.'
+
+  return onSubmitCode(code, oAuth)
 }

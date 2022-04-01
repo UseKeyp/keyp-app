@@ -27,9 +27,11 @@ const RampProvider = ({ children }) => {
   const [coinbase, setCoinbase] = React.useState({
     isLoading: false,
     name: 'Coinbase',
+    type: COINBASE,
   })
   const [wyre, setWyre] = React.useState({
     isLoading: false,
+    type: WYRE,
     name: 'Wyre + Plaid',
   })
 

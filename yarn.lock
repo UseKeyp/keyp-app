@@ -17891,10 +17891,10 @@ pkg-up@^3.1.0:
   dependencies:
     find-up "^3.0.0"
 
-plaid@^10.0.0:
-  version "10.1.0"
-  resolved "https://registry.npmjs.org/plaid/-/plaid-10.1.0.tgz#b30ac14f3e6d51373014e2e4ad6fce986962248f"
-  integrity sha512-WUZi8XbWPH56h482ZYues1pkNbKdGcf6dNOdjYC6jacmLru1Lp98Scw374br8AD2kBfaMpu9jCab1mXGy2V4DA==
+plaid@^10.2.0:
+  version "10.2.0"
+  resolved "https://registry.npmjs.org/plaid/-/plaid-10.2.0.tgz#bddced2ebbde7a4909c3c0a412fe459c5c3e490d"
+  integrity sha512-uRQIwI02M9AHwPTrZ71Bg67SiNfY0IqpcM/Ik8+sGTpo/3+4CPd492QCtroCgxMq7qvSEe/oZh7OLOB0+sylqA==
   dependencies:
     axios "0.21.4"
 
