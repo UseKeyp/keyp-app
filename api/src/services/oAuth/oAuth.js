@@ -5,7 +5,9 @@ import { AuthenticationError } from '@redwoodjs/graphql-server'
 import { oAuthUrl as getOAuthUrl, processCodeGrant } from 'src/lib/oAuth'
 import { types, providers } from 'src/lib/oAuth/providers'
 
-export const oAuthUrl = ({ type }) => getOAuthUrl(type)
+export const oAuthUrl = ({ type }) => {
+  getOAuthUrl(type)
+}
 
 export const codeGrant = async (args) => {
   try {

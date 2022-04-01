@@ -13,18 +13,8 @@ export const oAuthUrl = async (type) => {
   try {
     if (!Object.values(types).includes(type))
       throw `OAuth Provider ${type} is not enabled.`
-    if (type === types[PLAID]) {
-      const plaidLink = await createPlaidLink()
-      return {
-        text: plaidLink,
-        type: 'code',
-      }
-    }
-    const { params, urlAuthorize } = providers[type]
-    const url = new URL(urlAuthorize)
-    const pkce = pkceChallenge()
-    url.searchParams.set('code_challenge', pkce.code_challenge) // eg. 3uWDl1fX2ioAqf38eSOFlKnxVEl_VyfaYKG2GyLndKs
-    url.searchParams.set('code_challenge_method', 'S256')
+    if (type === PLAID) return createPlaidLink()
+
     Object.keys(params).map((key) => {
       url.searchParams.set(key, params[key])
     })
@@ -50,9 +40,6 @@ export const oAuthUrl = async (type) => {
       url: url.href,
     }
   } catch (e) {
-    /* eslint-disable no-console */
-    logger.error(e)
-    /* eslint-enable no-console */
     Sentry.captureException(e)
     throw new AuthenticationError(e)
   }

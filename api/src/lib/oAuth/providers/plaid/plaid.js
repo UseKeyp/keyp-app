@@ -6,6 +6,7 @@ import {
   CountryCode,
 } from 'plaid'
 import Sentry from 'src/lib/sentry'
+import { logger } from 'src/lib/logger'
 
 import {
   createPaymentMethodFromPlaid,
@@ -17,7 +18,7 @@ import { isProduction } from 'src/lib/helpers'
 export const PLAID = 'PLAID'
 export const WYRE = 'WYRE'
 
-const PLAID_SCOPE = [Products.Auth]
+const PLAID_SCOPE = [Products.Auth, Products.Identity]
 const PLAID_REDIRECT_URI = process.env.APP_DOMAIN + '/redirect/plaid'
 
 const PLAID_WEBHOOK_URL = isProduction
@@ -25,9 +26,8 @@ const PLAID_WEBHOOK_URL = isProduction
   : 'https://tc-checkout-dev.ngrok.io/api/plaid'
 
 const getEnvironment = () => {
-  if (process.env.NODE_ENV === 'staging') return 'development'
-  // TODO: Change to production
-  else if (process.env.NODE_ENV === 'prod') return 'development'
+  if (process.env.ENVIRONMENT === 'staging') return 'development'
+  else if (process.env.ENVIRONMENT === 'prod') return 'production'
   return 'sandbox'
 }
 const configuration = new Configuration({
@@ -53,11 +53,15 @@ export const createPlaidLink = async () => {
       redirect_uri: PLAID_REDIRECT_URI,
       country_codes: [CountryCode.Us], // TODO: How do we know this?
     }
-    const createTokenResponse = await client.linkTokenCreate(request)
-    if (!createTokenResponse?.data?.link_token) throw 'No link token returned'
-    return createTokenResponse.data.link_token
+    logger.debug({ custom: request }, 'createPlaidLink request')
+    const response = await client.linkTokenCreate(request)
+    logger.debug({ custom: response }, 'createPlaidLink response')
+    if (!response?.data?.link_token) throw 'No link token returned'
+    return { text: response.data.link_token, type: 'code' }
   } catch (e) {
-    throw `Something went wrong`
+    logger.error(e)
+    Sentry.captureException(e)
+    throw `createPlaidLink() ${e}`
   }
 }
 
@@ -73,6 +77,7 @@ const onSubmitCode = async ({ code, accountId }) => {
       accountId,
     }
   } catch (e) {
+    logger.error(e)
     Sentry.captureException(e)
     throw `onSubmitCode() ${e}`
   }
