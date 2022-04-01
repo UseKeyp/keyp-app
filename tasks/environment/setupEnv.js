@@ -8,7 +8,7 @@ dotenv.config()
 // Usage example: node tasks/environment/setupEnv.js staging
 
 const arg = process.argv[2]
-const environment = arg ? arg : process.env.NODE_ENV || 'dev'
+const environment = arg ? arg : process.env.ENVIRONMENT || 'dev'
 
 const setupEnvironment = () => {
   const encrypted = require(path.join(
