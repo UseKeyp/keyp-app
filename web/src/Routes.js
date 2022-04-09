@@ -14,7 +14,7 @@ const Routes = () => {
         <Route path="/signin" page={SignInPage} name="signin" />
         <Route notfound page={NotFoundPage} />
         <Route path="/members/{usernameOrAddress}" page={MemberMemberPage} name="member" />
-        <Private unauthenticated="login">
+        <Private unauthenticated="signin">
           <Route path="/profile" page={ProfilePage} name="profile" />
         </Private>
         <Set wrap={TreasuresLayout}>
