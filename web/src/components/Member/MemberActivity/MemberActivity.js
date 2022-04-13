@@ -9,14 +9,12 @@ import { trimString } from 'src/utils/helpers'
 
 const TITLE = 'Activity'
 
-import { MINT_STATUS_SUCCESS } from 'src/providers/minting/constants'
-
 const MemberActivity = ({ member, isLoading, refetch }) => {
   const { pendingMintPurchases, mintStatus } = useMinting()
   React.useEffect(() => {
-    if (mintStatus === MINT_STATUS_SUCCESS) return refetch()
+    refetch && refetch()
     /* eslint-disable-next-line react-hooks/exhaustive-deps */
-  }, [mintStatus, refetch])
+  }, [mintStatus, refetch, pendingMintPurchases])
 
   const list = []
   if (!member || isLoading)
