@@ -20,6 +20,7 @@ export const handler = async (event, _context) => {
       }
     } else if (type === 'business') {
       const businessData = await getBusinessMetrics()
+      if (!businessData) throw "Couldn't get data"
       return {
         statusCode: 200,
         headers: {
