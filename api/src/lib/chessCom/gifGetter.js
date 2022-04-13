@@ -1,5 +1,5 @@
 const fetch = require('cross-fetch')
-import { logger } from 'src/lib/logger'
+const { logger } = require('../logger')
 
 function sleep(ms) {
   return new Promise((resolve) => {

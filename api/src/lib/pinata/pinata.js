@@ -128,8 +128,8 @@ export const pinTreasure = async ({ treasure, tcn }) => {
 
     const htmlStringScreenshot = await getCardHtml({
       treasure: { ...treasure, achievements: achievementNames },
-      gifBase64,
       staticBase64: boardBuffer,
+      isScreenshot: true,
     })
     const screenshotBuffer = await fetchScreenshotBase64Buffer(
       htmlStringScreenshot
@@ -138,7 +138,6 @@ export const pinTreasure = async ({ treasure, tcn }) => {
 
     const htmlStringPrerender = await getCardHtml({
       treasure: { ...treasure, achievements: achievementNames },
-      gifBase64,
       staticBase64: boardBuffer,
       isPrerender: true,
     })
