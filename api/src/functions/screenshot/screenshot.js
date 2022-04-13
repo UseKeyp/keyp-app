@@ -1,6 +1,5 @@
 const playwright = require('playwright-core')
 const chromium = require('chrome-aws-lambda')
-import { getCardHtml } from '@treasure-chess/treasure-html'
 
 import { logger } from 'src/lib/logger'
 import Sentry from 'src/lib/sentry'
