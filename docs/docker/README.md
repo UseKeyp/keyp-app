@@ -176,6 +176,15 @@ node_modules 37.8 M
 /usr/local/share/.cache/yarn 432 M
 /usr/local/share/.config/yarn/global 194.4 M
 
+### `87b2`
+
+Added back prisma binary, since its required for migrations
+
+container G
+/usr/local/share/.config/yarn/global M
+
+# TODO
+
 #### Changed --production flag for second build step
 
 Reduced by 670 M

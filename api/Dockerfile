@@ -36,15 +36,12 @@ FROM node:14 as serve
 
 WORKDIR /app
 
-COPY --from=build /app/api/package.json /app/api/package.json
-# Necessary for installing our local lerna packages
+COPY --from=build /app/api/package.json .
+# Helps locate our local packages
 COPY --from=build /app/yarn.lock /app/yarn.lock
-# Only install necessary dependencies
-# RUN yarn install --cwd "api" --production && \
+# Only install necessary dependencies. Prisma is needed for running migrations
 RUN yarn install  --production && \
-  yarn global add @redwoodjs/api-server @redwoodjs/internal
-# Add back any dev dependencies you still need
-RUN yarn add dotenv
+  yarn global add @redwoodjs/api-server @redwoodjs/internal prisma
 
 COPY tasks/environment/ tasks/environment/
 COPY .env.dev.js.enc .
@@ -61,7 +58,7 @@ COPY --from=build /app/packages /app/packages
 COPY --from=build /app/redwood.toml /app/redwood.toml
 
 RUN ["apt-get", "update"]
-RUN ["apt", "install", "-y", "libnss3"]
+RUN ["apt", "install", "-y", "libnss3", "nano", "ncdu"]
 
 # Expose RedwoodJS api port
 EXPOSE 8911
