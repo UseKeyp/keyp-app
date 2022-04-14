@@ -1,0 +1,8 @@
+{
+  "packages": [
+    "packages/*",
+    "web",
+    "api"
+  ],
+  "version": "0.11.1-staging.11"
+}

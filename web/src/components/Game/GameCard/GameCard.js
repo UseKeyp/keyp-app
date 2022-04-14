@@ -1,6 +1,5 @@
 import { P } from 'src/components/Typography'
 import Loader from 'src/components/Loader'
-import styles from './GameCard.module.scss'
 const {
   getBoardLayout,
   getBoardBase64,
@@ -29,14 +28,15 @@ const GameCard = ({ game, isMinting, isLoading, title, showGif }) => {
     config: { mass: 4, tension: 450, friction: 40 },
   }))
   const [imageSrc, setImageSrc] = React.useState('/loading-board.png') // Use loading image
-
+  const ref = React.useRef(null)
   const update = async () => {
     if (isMinting && !game) {
       const rawHtml = await getCardHtml({
         treasure: { ...placeholderGame },
         gifUrl: game.gifUrl,
       })
-      setCardHtml(rawHtml)
+
+      ref.current && setCardHtml(rawHtml)
     } else {
       const achievements = game.achievements
         ? getAchievementNamesFromValues(game.achievements)
@@ -49,7 +49,7 @@ const GameCard = ({ game, isMinting, isLoading, title, showGif }) => {
         },
         gifUrl: showGif ? game.gifUrl : imageSrc,
       })
-      setCardHtml(rawHtml)
+      ref.current && setCardHtml(rawHtml)
     }
   }
 
@@ -68,8 +68,17 @@ const GameCard = ({ game, isMinting, isLoading, title, showGif }) => {
       game.cardColor, // Which player to show on bottom
       options
     )
-    setImageSrc(boardBase64)
+    if (ref.current) {
+      setImageSrc(boardBase64)
+    }
   }
+
+  React.useEffect(() => {
+    ref.current = true
+    return () => {
+      ref.current = false
+    }
+  }, [])
 
   React.useEffect(() => {
     if (!game) return
@@ -86,10 +95,10 @@ const GameCard = ({ game, isMinting, isLoading, title, showGif }) => {
 
   if (!isMinting && !game)
     return (
-      <div className={styles.container}>
-        <div className={styles.gameCardWrapper}>
-          <div className={styles.gameCardMintingContainer}>
-            <div className={styles.gameCardEmpty}>
+      <div className="container">
+        <div className="gameCardWrapper">
+          <div className="gameCardMintingContainer">
+            <div className="gameCardEmpty">
               <h2>Select a game</h2>
             </div>
           </div>
@@ -102,11 +111,11 @@ const GameCard = ({ game, isMinting, isLoading, title, showGif }) => {
     listAmount = game.marketSales[0].amount
 
   return (
-    <div className={styles.container}>
-      <div className={styles.gameCardWrapper}>
+    <div className="container">
+      <div className="gameCardWrapper">
         {isMinting && (
-          <div className={styles.gameCardMintingContainer}>
-            <div className={styles.gameCardMintingOverlay} />
+          <div className="gameCardMintingContainer">
+            <div className="gameCardMintingOverlay" />
             <div>
               <div className="mb-6 h-full">
                 <Loader />
@@ -127,22 +136,20 @@ const GameCard = ({ game, isMinting, isLoading, title, showGif }) => {
         <animated.div
           id={`card_${game.id}`}
           className={
-            game.tokenId
-              ? `${styles.gameCardHtml} ${styles.mintedCardHtml}`
-              : `${styles.gameCardHtml}`
+            game.tokenId ? 'gameCardHtml mintedCardHtml' : 'gameCardHtml'
           }
           onMouseMove={(e) => {
             var div = document
               .getElementById(`card_${game.id}`)
               .getBoundingClientRect()
-            set({
+            set.start({
               xys: calc(
                 e.clientX - div.left - div.width / 2,
                 e.clientY - div.top - div.height / 2
               ),
             })
           }}
-          onMouseLeave={() => set({ xys: [0, 0, 1] })}
+          onMouseLeave={() => set.start({ xys: [0, 0, 1] })}
           style={{
             transform: game.id && !isMinting && props.xys.to(trans),
           }}
@@ -150,7 +157,7 @@ const GameCard = ({ game, isMinting, isLoading, title, showGif }) => {
         />
       </div>
       {listAmount > 0 ? (
-        <div className={styles.priceBadge}>
+        <div className="priceBadge">
           <h2>${listAmount.toLocaleString()}</h2>
         </div>
       ) : null}
