@@ -24,7 +24,6 @@ RUN yarn install --frozen-lockfile
 # Build
 FROM base as build
 
-COPY yarn.lock yarn.lock
 COPY api api
 COPY packages packages
 
@@ -36,27 +35,30 @@ FROM node:14 as serve
 
 WORKDIR /app
 
-COPY --from=build /app/api/package.json .
-# Helps locate our local packages
+COPY --from=build /app/lerna.json .
+COPY --from=build /app/package.json .
+COPY --from=build /app/api/package.json /app/api/package.json
 COPY --from=build /app/yarn.lock /app/yarn.lock
-# Only install necessary dependencies. Prisma is needed for running migrations
-RUN yarn install  --production && \
-  yarn global add @redwoodjs/api-server @redwoodjs/internal prisma
+COPY --from=build /app/packages /app/packages
+
+# Only install necessary dependencies.
+# Uses Lerna for linking local packages, and Prisma for migrations
+RUN yarn global add @redwoodjs/api-server @redwoodjs/internal lerna prisma && \
+      yarn install --production --frozen-lockfile
+
+COPY --from=build /app/api/dist /app/api/dist
+COPY --from=build /app/node_modules/.prisma /app/node_modules/.prisma
 
 COPY tasks/environment/ tasks/environment/
 COPY .env.dev.js.enc .
 COPY .env.sandbox.js.enc .
 COPY .env.staging.js.enc .
 COPY .env.prod.js.enc .
+COPY api/db /app/api/db
+COPY redwood.toml /app/redwood.toml
 COPY serve-api.sh .
 
-
-COPY --from=build /app/api/dist /app/api/dist
-COPY --from=build /app/node_modules/.prisma /app/node_modules/.prisma
-COPY --from=build /app/api/db /app/api/db
-COPY --from=build /app/packages /app/packages
-COPY --from=build /app/redwood.toml /app/redwood.toml
-
+# Helpful utilities for exploring your container
 RUN ["apt-get", "update"]
 RUN ["apt", "install", "-y", "libnss3", "nano", "ncdu"]
 

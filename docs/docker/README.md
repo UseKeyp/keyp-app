@@ -29,7 +29,7 @@
 - Includes `core-js`
 - Entrypoint `./serve-api.sh`
 
-### Guid
+## Build
 
 Images are built via Github Action. To build the images locally:
 
@@ -42,48 +42,43 @@ docker build . -t pi0neerpat/treasure-chess-web -f web/Dockerfile \
 
 # api
 docker build . -t pi0neerpat/treasure-chess-api -f api/Dockerfile --build-arg ENVIRONMENT=dev
-
-# both
-docker build . -t pi0neerpat/treasure-chess-both \
--f docker/Dockerfile \
---build-arg NODE_ENV=development \
---build-arg RUNTIME_ENV=local
 ```
 
-Explore
+## Run
 
-```bash
-# Container
-docker exec -u 0 -it <containerId> /bin/bash
-apt-get update
-apt-get install nano
+If you did not build the images locally, you'll need to download them from the Github Container Registry (GHCR). To enable access to GHCR, create a `GITHUB_PAT` in your Github "Developer Settings" with permissions `read:packages`.
 
-# Image (read-only?)
-docker run --rm -it --entrypoint=/bin/bash <imageId>
-```
-
-Run an image locally:
-
-Create a `GITHUB_PAT` in your Github "Developer Settings" with permissions `read:packages`
+Start both containers with `docker-compose`
 
 ```bash
 # Authenticate
 docker login https://ghcr.io -u USERNAME -p GITHUB_PAT
 
-# Pull the images (web and api)
-docker pull ghcr.io/pi0neerpat/treasure-chess-web:latest
-docker pull ghcr.io/pi0neerpat/treasure-chess-api:latest
-
 # Run
 docker-compose up
+```
 
-# Alternatively, run a single image
+To run a single image, use the `run` command:
+
+```bash
 docker run -it --rm \
        -p 8911:8911 \
         pi0neerpat/treasure-chess-api:latest
 ```
 
-Killing Docker
+## Explore
+
+Helpful commands for exploring containers.
+
+```bash
+# Container
+docker exec -u 0 -it <containerId> /bin/bash
+
+# Image (read-only?)
+docker run --rm -it --entrypoint=/bin/bash <imageId>
+```
+
+## Troubleshoot
 
 ```bash
 # WARNING: may kill other containers on your machine
@@ -110,7 +105,7 @@ sudo aa-remove-unknown
 https://javahowtos.com/guides/124-docker/414-solved-cannot-kill-docker-container-permission-denied.html
 ```
 
-# Troubleshooting image size
+## Image size-reduction tests
 
 redwood-release-devops example
 
@@ -151,7 +146,7 @@ node_modules 82 M
 
 Start of experiment
 
-Build time 9-11 minutes
+Build time 9-11 min
 container 5.45 G
 node_modules 2.2 G
 @redwoodjs 144 M
@@ -162,43 +157,34 @@ node_modules 2.2 G
 /usr/local/share/.cache/yarn 2.2 G
 /usr/local/share/.config/yarn/global n/a
 
-### `87b2`
+### `e41`
 
-Using the new --production flag
+Using the new --production flag, with lerna
 
-container 1.48 G
-node_modules 37.8 M
-@redwoodjs n/a
+Build time 14 min
+container 3.43 G
+node_modules 275 M
+@redwoodjs 1.4 M
 @storybook n/a
-@prisma n/a
+@prisma 4.9 M
 /root/.cache/prisma/master n/a
 /usr/lib x86_64-linux-gnu 303.5 M
-/usr/local/share/.cache/yarn 432 M
-/usr/local/share/.config/yarn/global 194.4 M
+/usr/local/share/.cache/yarn 2.2 G
+/usr/local/share/.config/yarn/global 244 M
 
-### `87b2`
+RESULTS: Reduced by 2GB for Treasure Chess, and 670 M for `redwood-release-devops-example`
 
-Added back prisma binary, since its required for migrations
+### ``
 
+Adding prisma global, and dotenv local
+
+Build time min
 container G
-/usr/local/share/.config/yarn/global M
 
-# TODO
+### ``
 
-#### Changed --production flag for second build step
+Ran `yarn cache clean`
 
-Reduced by 670 M
+### ``
 
-### Remove `/usr/local/share/.cache/yarn`
-
-UNTESTED
-
-### Remove unused dependencies manually
-
-eg. @storybook
-
-### Use Alpine image
-
-https://github.com/nodejs/docker-node#nodealpine
-
-### Don't install web deps for api
+Using Alpine image

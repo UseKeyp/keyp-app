@@ -1,6 +1,6 @@
 #!/bin/bash -ve
 
-# NOTE: require binaries to be install.
+# NOTE: Requires binaries. Install with:
 # yarn global add @redwoodjs/api-server @redwoodjs/internal prisma
 
 $(node tasks/environment/setupEnv)
