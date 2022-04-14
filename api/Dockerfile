@@ -1,6 +1,6 @@
 # ==
 # Base
-FROM node:14 as base
+FROM node:14-alpine as base
 
 WORKDIR /app
 
@@ -18,7 +18,9 @@ COPY api/package.json api/package.json
 COPY web/package.json web/package.json
 COPY lerna.json lerna.json
 
-RUN yarn install --frozen-lockfile
+# https://dev.to/grigorkh/node-gyp-support-in-alpine-linux-4d0f
+RUN apk add --no-cache --virtual .gyp python3 make g++ && \
+      yarn install --frozen-lockfile
 
 # ==
 # Build
@@ -31,7 +33,7 @@ RUN yarn build-packages && yarn rw build api
 
 # ==
 # Serve
-FROM node:14 as serve
+FROM node:14-alpine as serve
 
 WORKDIR /app
 
@@ -45,6 +47,7 @@ COPY --from=build /app/packages /app/packages
 # Uses Lerna for linking local packages, and Prisma for migrations
 RUN yarn global add @redwoodjs/api-server @redwoodjs/internal lerna prisma && \
       yarn install --production --frozen-lockfile
+RUN yarn cache clean
 
 COPY --from=build /app/api/dist /app/api/dist
 COPY --from=build /app/node_modules/.prisma /app/node_modules/.prisma

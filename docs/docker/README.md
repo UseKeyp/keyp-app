@@ -174,17 +174,19 @@ node_modules 275 M
 
 RESULTS: Reduced by 2GB for Treasure Chess, and 670 M for `redwood-release-devops-example`
 
-### ``
+### `3d6`
 
 Adding prisma global, and dotenv local
 
 Build time min
-container G
+container 3.68G
+/usr/local/share/.cache/yarn 2.3 G
+/usr/local/share/.config/yarn/global 363 M (prisma added 110.5 M)
 
 ### ``
 
-Ran `yarn cache clean`
+Using Alpine image and `yarn cache clean`
+
+/usr/local/share/.cache/yarn
 
 ### ``
-
-Using Alpine image

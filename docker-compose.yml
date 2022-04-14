@@ -13,8 +13,8 @@ services:
         max-file: '10'
     env_file:
       - .env
-    environment:
-      DATABASE_URL: 'postgres://dev:letmein@0.0.0.0:5432/treasurechessplayground?connection_limit=1'
+    # environment:
+    # DATABASE_URL: 'postgres://dev:letmein@0.0.0.0:5432/treasurechessplayground?connection_limit=1'
 
   # web:
   #   # image: pi0neerpat/treasure-chess-redwood-web
