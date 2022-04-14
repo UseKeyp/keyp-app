@@ -10,7 +10,6 @@ export const handler = async (event, _context) => {
     const Registry = client.Registry
     const register = new Registry()
     collectDefaultMetrics({ register })
-
     const { type } = event.queryStringParameters
     if (!type || type === 'prom') {
       const promData = await register.metrics()
