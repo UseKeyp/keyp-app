@@ -41,8 +41,7 @@ docker build . -t pi0neerpat/treasure-chess-web -f web/Dockerfile \
 --build-arg BASIC_AUTH_PASSWORD='pauliemorphy'
 
 # api
-docker build . -t pi0neerpat/treasure-chess-api -f api/Dockerfile \
---build-arg NODE_ENV=dev \
+docker build . -t pi0neerpat/treasure-chess-api -f api/Dockerfile --build-arg ENVIRONMENT=dev
 
 # both
 docker build . -t pi0neerpat/treasure-chess-both \
@@ -80,8 +79,8 @@ docker-compose up
 
 # Alternatively, run a single image
 docker run -it --rm \
-       -p 8910:8910 \
-        pi0neerpat/treasure-chess-web:latest
+       -p 8911:8911 \
+        pi0neerpat/treasure-chess-api:latest
 ```
 
 Killing Docker
@@ -110,3 +109,87 @@ sudo /etc/init.d/docker restart
 sudo aa-remove-unknown
 https://javahowtos.com/guides/124-docker/414-solved-cannot-kill-docker-container-permission-denied.html
 ```
+
+# Troubleshooting image size
+
+redwood-release-devops example
+
+```
+docker run --rm -it --entrypoint=/bin/bash <imageId>
+
+apt-get install ncdu
+ncdu
+```
+
+## Devops repo
+
+#### `33b`
+
+Start of experiment
+
+container 2.15G
+node_modules 2.2G
+@redwoodjs 972.1 M
+@prisma 229.2 M
+
+#### `0201`
+
+Changed `RUN yarn install --production && yarn global add @redwoodjs/api-server @redwoodjs/internal`
+
+container 1.48G
+node_modules 82 M
+@redwoodjs 1.8 M
+@prisma n/a
+/root 208 Kb
+/usr/local/share/.cache/yarn 446 M
+/usr/lib x86_64-linux-gnu 299 M
+/usr/local/share/.config/yarn/global 194 M
+
+## tc repo
+
+#### `dev-b11e2c5`
+
+Start of experiment
+
+Build time 9-11 minutes
+container 5.45 G
+node_modules 2.2 G
+@redwoodjs 144 M
+@storybook 192 M
+@prisma 428 M
+/root/.cache/prisma/master 309 M
+/usr/lib x86_64-linux-gnu 303 M
+/usr/local/share/.cache/yarn 2.2 G
+/usr/local/share/.config/yarn/global n/a
+
+### `87b2`
+
+Using the new --production flag
+
+container 1.48 G
+node_modules 37.8 M
+@redwoodjs n/a
+@storybook n/a
+@prisma n/a
+/root/.cache/prisma/master n/a
+/usr/lib x86_64-linux-gnu 303.5 M
+/usr/local/share/.cache/yarn 432 M
+/usr/local/share/.config/yarn/global 194.4 M
+
+#### Changed --production flag for second build step
+
+Reduced by 670 M
+
+### Remove `/usr/local/share/.cache/yarn`
+
+UNTESTED
+
+### Remove unused dependencies manually
+
+eg. @storybook
+
+### Use Alpine image
+
+https://github.com/nodejs/docker-node#nodealpine
+
+### Don't install web deps for api
