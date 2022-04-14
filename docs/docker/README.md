@@ -209,4 +209,4 @@ RUN apk update && apk add --no-cache -y libnss3 nano ncdu
 
 ### ``
 
-Did not install web dependencies
+Exclude install web dependencies. Needs `react` and `react-dom`
