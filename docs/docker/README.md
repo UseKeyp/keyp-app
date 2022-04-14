@@ -103,6 +103,10 @@ sudo /etc/init.d/docker restart
 # Potential fix for this problem
 sudo aa-remove-unknown
 https://javahowtos.com/guides/124-docker/414-solved-cannot-kill-docker-container-permission-denied.html
+
+sudo apt purge --auto-remove apparmor
+sudo service docker restart
+docker system prune --all --volumes
 ```
 
 ## Image size-reduction tests
@@ -178,15 +182,31 @@ RESULTS: Reduced by 2GB for Treasure Chess, and 670 M for `redwood-release-devop
 
 Adding prisma global, and dotenv local
 
-Build time min
 container 3.68G
+node_modules 275 M
 /usr/local/share/.cache/yarn 2.3 G
 /usr/local/share/.config/yarn/global 363 M (prisma added 110.5 M)
 
+### `3150`
+
+Added `yarn cache clean`
+
+container 1.58G
+node_modules 275 M
+/usr/lib x86_64-linux-gnu 303.5 M
+/usr/local/share/.cache/yarn 0
+/usr/local/share/.config/yarn/global 363 M
+
+Using Alpine image caused too many problems. Needed python and gyp libraries. But still many issues.
+
+```bash
+# https://dev.to/grigorkh/node-gyp-support-in-alpine-linux-4d0f
+RUN apk add --no-cache --virtual .gyp python3 make g++ pkgconfig && \
+apt install libpixman-1-dev libcairo2-dev libpango1.0-dev libjpeg8-dev libgif-dev && \
+yarn install --frozen-lockfile
+RUN apk update && apk add --no-cache -y libnss3 nano ncdu
+```
+
 ### ``
 
-Using Alpine image and `yarn cache clean`
-
-/usr/local/share/.cache/yarn
-
-### ``
+Did not install web dependencies

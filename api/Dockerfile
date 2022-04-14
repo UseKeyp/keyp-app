@@ -1,26 +1,23 @@
 # ==
 # Base
-FROM node:14-alpine as base
+FROM node:14 as base
 
 WORKDIR /app
 
 ARG ENVIRONMENT
 ENV ENVIRONMENT=$ENVIRONMENT
 
-COPY package.json package.json
-COPY yarn.lock yarn.lock
-
-COPY redwood.toml redwood.toml
-COPY graphql.config.js graphql.config.js
-
-COPY packages packages
+COPY package.json .
 COPY api/package.json api/package.json
 COPY web/package.json web/package.json
-COPY lerna.json lerna.json
+COPY lerna.json .
+COPY yarn.lock .
 
-# https://dev.to/grigorkh/node-gyp-support-in-alpine-linux-4d0f
-RUN apk add --no-cache --virtual .gyp python3 make g++ && \
-      yarn install --frozen-lockfile
+COPY packages packages
+COPY redwood.toml .
+COPY graphql.config.js .
+
+RUN yarn install --frozen-lockfile
 
 # ==
 # Build
@@ -33,7 +30,7 @@ RUN yarn build-packages && yarn rw build api
 
 # ==
 # Serve
-FROM node:14-alpine as serve
+FROM node:14 as serve
 
 WORKDIR /app
 
@@ -46,8 +43,11 @@ COPY --from=build /app/packages /app/packages
 # Only install necessary dependencies.
 # Uses Lerna for linking local packages, and Prisma for migrations
 RUN yarn global add @redwoodjs/api-server @redwoodjs/internal lerna prisma && \
-      yarn install --production --frozen-lockfile
-RUN yarn cache clean
+      yarn install --production --frozen-lockfile && \
+      yarn cache clean && \
+# Helpful utilities for exploring your container
+# apk update && apk add --no-cache -y libnss3 nano ncdu
+      apt-get update && apt install -y libnss3 nano ncdu
 
 COPY --from=build /app/api/dist /app/api/dist
 COPY --from=build /app/node_modules/.prisma /app/node_modules/.prisma
@@ -60,10 +60,6 @@ COPY .env.prod.js.enc .
 COPY api/db /app/api/db
 COPY redwood.toml /app/redwood.toml
 COPY serve-api.sh .
-
-# Helpful utilities for exploring your container
-RUN ["apt-get", "update"]
-RUN ["apt", "install", "-y", "libnss3", "nano", "ncdu"]
 
 # Expose RedwoodJS api port
 EXPOSE 8911
