@@ -14,7 +14,7 @@ const Member = ({ member, isLoading }) => {
           <MemberActivityCell usernameOrAddress={member.username} />
         </div>
       </div>
-      {member.twitchUsername && (
+      {/*member.twitchUsername && (
         <div className="mt-10 px-2 w-full flex justify-center bg-black rounded-xl border-4 border-[#5A3E85]">
           <iframe
             title={`Twitch stream for ${member.twitchUsername}`}
@@ -24,7 +24,7 @@ const Member = ({ member, isLoading }) => {
             height={300}
           ></iframe>
         </div>
-      )}
+      )*/}
 
       <h1 className="mt-10">Treasures Owned</h1>
       <div className="flex mt-4">
