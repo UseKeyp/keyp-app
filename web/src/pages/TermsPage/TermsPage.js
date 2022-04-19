@@ -1,4 +1,3 @@
-import { Link, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 
 const TermsPage = () => {
@@ -11,10 +10,10 @@ const TermsPage = () => {
 
       <MetaTags
         title="Terms of Service"
-        description="Treasure Chess Privacy Policy"
+        description="Treasure Chess Privacy Terms of Service"
       />
       <iframe
-        title="Treasure Chess Privacy Policy"
+        title="Treasure Chess Terms of Service"
         style={{
           width: '100%',
           height: '75vh',
