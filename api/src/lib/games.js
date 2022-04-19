@@ -73,6 +73,7 @@ const getFullGameDetails = async ({
     let winnerId
     if (game.winnerUsername === game.whiteUsername) winnerId = white.id
     else if (game.winnerUsername === game.blackUsername) winnerId = black.id
+    if (includeAchievements && !game.tcn) throw new Error('No tcn for game!')
     return {
       ...game,
       treasureId,
