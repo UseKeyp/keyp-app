@@ -69,35 +69,28 @@ const UsernameSearchBar = ({ setValue: setParentValue }) => {
   }
 
   const onChange = (e) => {
+    if (e.target.value === '') {
+      update('')
+      setValue('')
+      setParentValue
+        ? setParentValue(undefined)
+        : setFilter('username', undefined)
+      return
+    }
+
     setIsValueFromSelector(false)
     setValue(e.target.value)
   }
 
   return (
     <div className="relative">
-      <div className="flex flex-row items-center space-x-2">
-        <div className={'searchBarContainer w-full'}>
-          <input
-            placeholder="Search"
-            className="searchInput"
-            onChange={onChange}
-            value={value}
-          />
-        </div>
-        <button
-          className="searchClear"
-          disabled={!value}
-          type="button"
-          onClick={() => {
-            update('')
-            setValue('')
-            setParentValue
-              ? setParentValue(undefined)
-              : setFilter('username', undefined)
-          }}
-        >
-          Clear
-        </button>
+      <div className={'searchBarContainer'}>
+        <input
+          placeholder="Search"
+          className="searchInput"
+          onChange={onChange}
+          value={value}
+        />
       </div>
       {dropdownOptions?.length > 0 && (
         <div className="dropdownContainer">
