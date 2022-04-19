@@ -59,6 +59,7 @@ const TREASURES_WITH_FILTER = gql`
       achievementScore
       rarity
       tokenId
+      marketSaleStatus
       marketSales {
         id
         amount
@@ -88,6 +89,7 @@ const TreasuresFetcher = ({
   sort,
   limit,
   seeMore,
+  collapsedTreasures,
 }) => {
   const [treasures, setTreasures] = React.useState([])
   const [count, setCount] = React.useState()
@@ -131,11 +133,8 @@ const TreasuresFetcher = ({
     /* eslint-disable-next-line react-hooks/exhaustive-deps*/
   }, [username, filter])
 
-  // TODO: add button to scroll to top
-  // https://www.w3schools.com/howto/howto_js_scroll_to_top.asp
-
   if (error) return <h2 className="rw-text-center">Something went wrong</h2>
-  return (
+  return !collapsedTreasures ? (
     <Treasures
       treasures={treasures}
       count={count}
@@ -145,6 +144,8 @@ const TreasuresFetcher = ({
       loading={loading}
       seeMore={seeMore}
     />
+  ) : (
+    <></>
   )
 }
 
