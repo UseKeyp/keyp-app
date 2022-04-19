@@ -75,7 +75,7 @@ const UsernameSearchBar = ({ setValue: setParentValue }) => {
 
   return (
     <div className="relative">
-      <div className="flex flex-row space-x-2">
+      <div className="flex flex-row items-center space-x-2">
         <div className={'searchBarContainer w-full'}>
           <input
             placeholder="Search"
@@ -85,7 +85,8 @@ const UsernameSearchBar = ({ setValue: setParentValue }) => {
           />
         </div>
         <button
-          className="filterListItem hover:filterListItemSelected !leading-snug !my-0"
+          className="searchClear"
+          disabled={!value}
           type="button"
           onClick={() => {
             update('')
