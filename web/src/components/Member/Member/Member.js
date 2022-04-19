@@ -26,13 +26,13 @@ const Member = ({ member, isLoading }) => {
         </div>
       )*/}
 
-      <h1 className="mt-10">Treasures Owned</h1>
-      <div className="flex mt-4">
-        <TreasuresFetcher owner={member.username} />
-      </div>
       <h1 className="mt-10">Treasures Played</h1>
       <div className="flex mt-4">
-        <TreasuresFetcher username={member.username} />
+        <TreasuresFetcher limit username={member.username} sort="Most Rare" />
+      </div>
+      <h1 className="mt-10">Treasures Owned</h1>
+      <div className="flex mt-4">
+        <TreasuresFetcher owner={member.username} sort="Most Rare" />
       </div>
     </div>
   )

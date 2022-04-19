@@ -1,4 +1,5 @@
 import Button from 'src/components/Button/Button'
+import Icon from 'src/components/Icon/Icon'
 import { routes } from '@redwoodjs/router'
 import { getCardHtml } from '@treasure-chess/treasure-html'
 import { game } from './data.js'
@@ -33,17 +34,25 @@ const HomePageHero = () => {
   return (
     <div className="homePageWrapper">
       <div className="homePageContent">
-        <div className="leftContent ">
-          <h1>Treasure your Chess Games.</h1>
-          <h3>Every chess game is one-of-a-kind. Make yours a collectible.</h3>
-          <p>Connect Your Chess.com Account</p>
-          <Button
-            size="large"
-            className="bg-greenLight mt-4"
-            to={routes.signin()}
-          >
-            Get Started!
-          </Button>
+        <div>
+          <div className="figuresContent">
+            <Icon name="bishop" />
+            <Icon name="rook" />
+          </div>
+          <div className="leftContent ">
+            <h1>Treasure your Chess Games.</h1>
+            <h3>
+              Every chess game is one-of-a-kind. Make yours a collectible.
+            </h3>
+            <p>Connect Your Chess.com Account</p>
+            <Button
+              size="large"
+              className="bg-greenLight mt-4"
+              to={routes.signin()}
+            >
+              Get Started!
+            </Button>
+          </div>
         </div>
         <div
           className="mt-6 mx-auto lg:mx-0 md:mt-0"

@@ -1,10 +1,9 @@
 const FaqItem = ({ icon, question, answer, feature }) => {
-  // const [isExpanded, setExpanded] = useState(false)
   return (
     <div className="question-wrapper" has-piece={feature ? 'true' : 'false'}>
       <div className="piece" />
       <div className="mb-2">
-        {icon ? <div className="text-sm">{icon}</div> : <></>}
+        {icon ? <div className="text-lg">{icon}</div> : <></>}
         <div className="flex justify-between">
           <h3 className="text-base font-bold color-grey-light">{question}</h3>
         </div>

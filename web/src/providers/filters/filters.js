@@ -14,7 +14,7 @@ const initialState = {
 const defaultParams = {
   opening: filters.openingList[0].name,
   outcome: filters.outcomeList,
-  sale: filters.saleList,
+  sale: filters.saleList.map((status) => status.name),
   termination: filters.terminationList[0].name,
   sort: filters.sortList[4],
 }

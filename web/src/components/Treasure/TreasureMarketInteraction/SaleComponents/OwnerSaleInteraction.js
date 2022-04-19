@@ -13,15 +13,8 @@ import {
 } from 'src/providers/market/constants'
 
 const OwnerSaleInteraction = () => {
-  const {
-    actionStatus,
-    actionError,
-    marketStatus,
-    list,
-    unlist,
-    gift,
-    amount,
-  } = useMarket()
+  const { actionStatus, actionError, marketStatus, list, unlist, gift } =
+    useMarket()
   const [listAmount, setListAmount] = React.useState()
   const [username, setUsername] = React.useState(0)
   let statusContent = null
@@ -29,28 +22,6 @@ const OwnerSaleInteraction = () => {
   if (actionError) {
     statusContent = (
       <p className="text-red  font-bold text-[11px]">{actionError}</p>
-    )
-  } else if (actionStatus === PENDING_LISTED) {
-    statusContent = (
-      <div className=" flex">
-        <p className="text-white text-[10px]">
-          Listing can take up to 3 minutes.
-        </p>
-        <div className="ml-2">
-          <LoadingDots />
-        </div>
-      </div>
-    )
-  } else if (actionStatus === PENDING_DELISTED) {
-    statusContent = (
-      <div className=" flex">
-        <p className="text-white text-[10px]">
-          Delisting can take up to 3 minutes.
-        </p>
-        <div className="ml-2">
-          <LoadingDots />
-        </div>
-      </div>
     )
   }
 
@@ -71,7 +42,18 @@ const OwnerSaleInteraction = () => {
                 actionStatus === PENDING_LISTED && 'pointer-events-none'
               }`}
               variant={actionStatus === PENDING_LISTED ? 'grey' : 'green'}
-              label="List"
+              label={
+                actionStatus === PENDING_LISTED ? (
+                  <div className="flex items-center justify-center">
+                    <div className="mr-2">
+                      <LoadingDots />
+                    </div>
+                    Listing
+                  </div>
+                ) : (
+                  'List'
+                )
+              }
               onClick={() => list(listAmount)}
             />
           </div>
@@ -103,16 +85,22 @@ const OwnerSaleInteraction = () => {
           <h2 className="text-base text-white">Listed</h2>
           {statusContent}
         </div>
-        <div className="flex items-center justify-between">
-          <h2 className="text-xl ml-3.5 text-white">{`$${amount}`}</h2>
+        <div className="flex items-center justify-center">
           <Button
-            className={`w-[272px] h-[40px] text-xl shadow-m hover:sm hover:bg-[#ffc82f] hover:shadow-orange' ${
+            className={`w-[200px] h-[40px] text-xl shadow-m hover:sm hover:bg-[#ffc82f] hover:shadow-orange' ${
               actionStatus === PENDING_DELISTED && 'pointer-events-none'
             }`}
             label={
-              actionStatus === PENDING_DELISTED
-                ? 'Delisting in progress.'
-                : 'Unlist'
+              actionStatus === PENDING_DELISTED ? (
+                <div className="flex items-center justify-center">
+                  <div className="mr-2">
+                    <LoadingDots />
+                  </div>
+                  Unisting
+                </div>
+              ) : (
+                'Unlist'
+              )
             }
             variant={actionStatus === PENDING_DELISTED ? 'grey' : 'orange'}
             onClick={unlist}

@@ -13,20 +13,45 @@ const MobileMenu = ({
   triggerProps,
   disableAutoClose,
   title,
+  setCollapseTreasures,
 }) => {
   const [showMenu, setShowMenu] = useState(isOpen)
   const childrenContainerRef = useRef(null)
+
+  const showMenuWithCollapseTreasures = () => {
+    setCollapseTreasures(true)
+    setShowMenu(true)
+  }
+
+  const closeMenuWithCollapseTreasure = () => {
+    setCollapseTreasures(false)
+    setShowMenu(false)
+  }
+
+  const handleCloseMenuCallback = useCallback(closeMenuWithCollapseTreasure, [
+    setCollapseTreasures,
+  ])
 
   const handleChildrenClick = useCallback(() => {
     if (showMenu && !disableAutoClose) {
       childrenContainerRef.current.addEventListener('click', (e) => {
         const interactiveElements = ['a', 'button']
         if (interactiveElements.includes(e.target.tagName.toLowerCase())) {
-          setTimeout(() => setShowMenu(false), 250)
+          setTimeout(
+            setCollapseTreasures
+              ? handleCloseMenuCallback
+              : () => setShowMenu(false),
+            250
+          )
         }
       })
     }
-  }, [showMenu, disableAutoClose])
+  }, [
+    handleCloseMenuCallback,
+    disableAutoClose,
+    showMenu,
+    setCollapseTreasures,
+  ])
 
   useEffect(() => {
     handleChildrenClick()
@@ -34,21 +59,35 @@ const MobileMenu = ({
 
   if (!showMenu) {
     return (
-      <Button onClick={() => setShowMenu(true)} {...triggerProps}>
+      <Button
+        onClick={
+          setCollapseTreasures
+            ? showMenuWithCollapseTreasures
+            : () => setShowMenu(true)
+        }
+        {...triggerProps}
+      >
         {triggerContents}
       </Button>
     )
   }
 
   return createPortal(
-    <div className="mobile-menu" data-direction={direction}>
+    <div className="mobile-menu overflow-hidden" data-direction={direction}>
       <div
         className={`flex justify-${
           title ? 'between' : 'end'
         } items-center p-4 w-full`}
       >
         {title ? <div className="mobile-menu--title">{title}</div> : null}
-        <Button onClick={() => setShowMenu(false)}>
+        <Button
+          onClick={
+            setCollapseTreasures
+              ? handleCloseMenuCallback
+              : () => setShowMenu(false)
+          }
+          className="mr-2"
+        >
           <Icon name="close_x" color="#fff" />
         </Button>
       </div>
@@ -74,6 +113,7 @@ MobileMenu.propTypes = {
   disableAutoClose: PropTypes.bool,
   triggerProps: PropTypes.object,
   title: PropTypes.string,
+  setCollapseTreasures: () => {},
 }
 
 export default MobileMenu
