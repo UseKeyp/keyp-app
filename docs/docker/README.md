@@ -60,9 +60,17 @@ docker-compose up
 To run a single image, use the `run` command:
 
 ```bash
+# NOTE: your .env should only have ENCRYPTION_KEY you use for local development
+docker-compose up
+
+# Or
 docker run -it --rm \
        -p 8911:8911 \
         pi0neerpat/treasure-chess-api:latest
+
+docker run -it --rm \
+       -p 8911:8911 \
+        pi0neerpat/treasure-chess-web:latest
 ```
 
 ## Explore
