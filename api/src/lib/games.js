@@ -22,7 +22,9 @@ const getRarity = (score) => {
 }
 
 export const getTreasureCardColor = ({ game, username }) =>
-  game.whiteUsername === username ? 'white' : 'black'
+  game.whiteUsername.toLowerCase() === username.toLowerCase()
+    ? 'white'
+    : 'black'
 
 export const getTreasureId = ({
   moves, // String of moves from the PGN (without timestamps)
