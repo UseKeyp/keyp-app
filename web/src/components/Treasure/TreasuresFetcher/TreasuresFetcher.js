@@ -82,7 +82,14 @@ const TREASURES_WITH_FILTER_COUNT = gql`
   }
 `
 
-const TreasuresFetcher = ({ username, owner, filter, sort, limit }) => {
+const TreasuresFetcher = ({
+  username,
+  owner,
+  filter,
+  sort,
+  limit,
+  collapsedTreasures,
+}) => {
   const [treasures, setTreasures] = React.useState([])
   const [count, setCount] = React.useState()
   const [page, setPage] = React.useState(0)
@@ -125,11 +132,8 @@ const TreasuresFetcher = ({ username, owner, filter, sort, limit }) => {
     /* eslint-disable-next-line react-hooks/exhaustive-deps*/
   }, [username, filter])
 
-  // TODO: add button to scroll to top
-  // https://www.w3schools.com/howto/howto_js_scroll_to_top.asp
-
   if (error) return <h2 className="rw-text-center">Something went wrong</h2>
-  return (
+  return !collapsedTreasures ? (
     <Treasures
       treasures={treasures}
       count={count}
@@ -137,6 +141,8 @@ const TreasuresFetcher = ({ username, owner, filter, sort, limit }) => {
       page={page}
       loading={loading}
     />
+  ) : (
+    <></>
   )
 }
 
