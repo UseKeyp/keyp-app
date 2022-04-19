@@ -75,7 +75,7 @@ const MemberDetails = ({ member, isProfile }) => {
 
           <div className="mt-2 member-details--member-content">
             {member.masterTitle && (
-              <div className="bg-red px-[8px] py-[5px] rounded-[3px] mr-1">
+              <div className="bg-red px-[5px] py-[3px] rounded-[3px] mr-2">
                 <p className="font-bold">{member.masterTitle}</p>
               </div>
             )}
