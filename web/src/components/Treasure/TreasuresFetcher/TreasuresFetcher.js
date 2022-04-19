@@ -81,7 +81,14 @@ const TREASURES_WITH_FILTER_COUNT = gql`
   }
 `
 
-const TreasuresFetcher = ({ username, owner, filter, sort, limit }) => {
+const TreasuresFetcher = ({
+  username,
+  owner,
+  filter,
+  sort,
+  limit,
+  seeMore,
+}) => {
   const [treasures, setTreasures] = React.useState([])
   const [count, setCount] = React.useState()
   const [page, setPage] = React.useState(0)
@@ -132,9 +139,11 @@ const TreasuresFetcher = ({ username, owner, filter, sort, limit }) => {
     <Treasures
       treasures={treasures}
       count={count}
-      onLoadMore={!limit && onLoadMore}
+      onLoadMore={onLoadMore}
       page={page}
+      limit={limit}
       loading={loading}
+      seeMore={seeMore}
     />
   )
 }
