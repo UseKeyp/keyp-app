@@ -75,13 +75,28 @@ const UsernameSearchBar = ({ setValue: setParentValue }) => {
 
   return (
     <div className="relative">
-      <div className={'searchBarContainer'}>
-        <input
-          placeholder="Search"
-          className="searchInput"
-          onChange={onChange}
-          value={value}
-        />
+      <div className="flex flex-row space-x-2">
+        <div className={'searchBarContainer w-full'}>
+          <input
+            placeholder="Search"
+            className="searchInput"
+            onChange={onChange}
+            value={value}
+          />
+        </div>
+        <button
+          className="filterListItem hover:filterListItemSelected !leading-snug !my-0"
+          type="button"
+          onClick={() => {
+            update('')
+            setValue('')
+            setParentValue
+              ? setParentValue(undefined)
+              : setFilter('username', undefined)
+          }}
+        >
+          Clear
+        </button>
       </div>
       {dropdownOptions?.length > 0 && (
         <div className="dropdownContainer">
