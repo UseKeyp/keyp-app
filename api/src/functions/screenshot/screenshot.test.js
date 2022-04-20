@@ -47,7 +47,6 @@ describe('Screenshot function', () => {
       treasure,
       staticBase64: base64Image,
       isScreenshot: true,
-      gifUrl,
     })
     const httpEvent = mockHttpEvent({
       body: html,
