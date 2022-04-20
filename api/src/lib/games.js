@@ -152,8 +152,16 @@ export const getGamesWithFilter = async ({ username, filter, page = 0 }) => {
   logger.debug(
     `slice params ${page * GAMES_PER_PAGE}, ${(page + 1) * GAMES_PER_PAGE}`
   )
-  const fullGames = await Promise.all(
-    sortedGames.map((game) => getFullGameDetails({ game, username }))
+  let fullGames = []
+  await Promise.all(
+    sortedGames.map(async (game) => {
+      try {
+        const fullGame = await getFullGameDetails({ game, username })
+        fullGames.push(fullGame)
+      } catch {
+        // Do nothing
+      }
+    })
   )
   logger.debug(`fullGames: ${fullGames.length}`)
   return {
