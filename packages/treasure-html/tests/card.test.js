@@ -17,7 +17,6 @@ const test = async () => {
   treasure.black = members[1]
   const html = await getCardHtml({
     treasure,
-    staticBase64: base64Image,
     gifUrl,
   })
   fs.writeFile('card.deleteme.html', html, (e) => e && console.log(e))
@@ -39,6 +38,16 @@ const test = async () => {
   fs.writeFile(
     'screenshot.deleteme.html',
     htmlScreenshot,
+    (e) => e && console.log(e)
+  )
+  const htmlPrerenderResponse = await getCardHtml({
+    treasure,
+    openGraphImageSrc:
+      'https://chess.mypinata.cloud/ipfs/QmdU1A9WsS61Lu8ZY8ZNkcvVKU6MpzFydaNk8aod7CWf53',
+  })
+  fs.writeFile(
+    'htmlPrerenderResponse.deleteme.html',
+    htmlPrerenderResponse,
     (e) => e && console.log(e)
   )
 }

@@ -29,28 +29,21 @@ const Games = ({ games, count: queryCount, isLoading, error }) => {
 
   const onChangeTitle = (title) => {
     'title change!'
-    setGamesContext({ ...gamesContext, gameTitle: title })
+    setGamesContext((state) => ({ ...state, gameTitle: title }))
   }
 
   const onClickRow = (gameId) => {
     const game = games.find((game) => game.id === gameId)
-    setGamesContext({
-      ...gamesContext,
-      activeGame: game,
-      gameTitle: '',
-    })
+    setGamesContext((state) => ({ ...state, activeGame: game, gameTitle: '' }))
   }
 
   const onReset = () => {
     cancelMint({ gameId: activeGame.id, endTime: activeGame.endTime })
-    setGamesContext({
-      ...gamesContext,
-      gameTitle: '',
-    })
+    setGamesContext((state) => ({ ...state, gameTitle: '' }))
   }
 
   const onChangePage = (pageNumber) => {
-    setGamesContext({ ...gamesContext, page: pageNumber - 1 })
+    setGamesContext((state) => ({ ...state, page: pageNumber - 1 }))
   }
 
   const getItems = () =>
@@ -74,12 +67,12 @@ const Games = ({ games, count: queryCount, isLoading, error }) => {
     })
 
   React.useEffect(() => {
-    setGamesContext({ ...gamesContext, gameTitle: '' })
+    setGamesContext((state) => ({ ...state, gameTitle: '' }))
     /* eslint-disable react-hooks/exhaustive-deps */
   }, [])
   React.useEffect(() => {
     if (queryCount !== undefined && queryCount !== count)
-      setGamesContext({ ...gamesContext, count: queryCount })
+      setGamesContext((state) => ({ ...state, count: queryCount }))
   }, [queryCount])
 
   return (

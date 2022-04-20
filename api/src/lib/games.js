@@ -22,7 +22,9 @@ const getRarity = (score) => {
 }
 
 export const getTreasureCardColor = ({ game, username }) =>
-  game.whiteUsername === username ? 'white' : 'black'
+  game.whiteUsername.toLowerCase() === username.toLowerCase()
+    ? 'white'
+    : 'black'
 
 export const getTreasureId = ({
   moves, // String of moves from the PGN (without timestamps)
@@ -71,6 +73,7 @@ const getFullGameDetails = async ({
     let winnerId
     if (game.winnerUsername === game.whiteUsername) winnerId = white.id
     else if (game.winnerUsername === game.blackUsername) winnerId = black.id
+    if (includeAchievements && !game.tcn) throw new Error('No tcn for game!')
     return {
       ...game,
       treasureId,
@@ -149,8 +152,16 @@ export const getGamesWithFilter = async ({ username, filter, page = 0 }) => {
   logger.debug(
     `slice params ${page * GAMES_PER_PAGE}, ${(page + 1) * GAMES_PER_PAGE}`
   )
-  const fullGames = await Promise.all(
-    sortedGames.map((game) => getFullGameDetails({ game, username }))
+  let fullGames = []
+  await Promise.all(
+    sortedGames.map(async (game) => {
+      try {
+        const fullGame = await getFullGameDetails({ game, username })
+        fullGames.push(fullGame)
+      } catch {
+        // Do nothing
+      }
+    })
   )
   logger.debug(`fullGames: ${fullGames.length}`)
   return {

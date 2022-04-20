@@ -100,6 +100,7 @@ const RampProvider = ({ children }) => {
   }
 
   const connectWyre = async () => {
+    setShouldPoll(true)
     setWyre({ isLoading: true, error: null, ...wyre })
     const oAuthUrl = await getOAuthUrl(PLAID)
     if (errorOAuth)
@@ -195,15 +196,15 @@ const RampProvider = ({ children }) => {
         deposit: depositWyre,
         ramps: [
           {
-            ...coinbase,
-            onConnect: connectCoinbase,
-            onWithdraw: withdrawCoinbase,
-          },
-          {
             ...wyre,
             onConnect: connectWyre,
             onWithdraw: withdrawWyre,
             onDeposit: depositWyre,
+          },
+          {
+            ...coinbase,
+            onConnect: connectCoinbase,
+            onWithdraw: withdrawCoinbase,
           },
         ],
       }}

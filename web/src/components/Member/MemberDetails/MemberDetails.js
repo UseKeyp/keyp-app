@@ -75,7 +75,7 @@ const MemberDetails = ({ member, isProfile }) => {
 
           <div className="mt-2 member-details--member-content">
             {member.masterTitle && (
-              <div className="bg-red px-[8px] py-[5px] rounded-[3px] mr-1">
+              <div className="bg-red px-[5px] py-[3px] rounded-[3px] mr-2">
                 <p className="font-bold">{member.masterTitle}</p>
               </div>
             )}
@@ -134,7 +134,7 @@ const MemberDetails = ({ member, isProfile }) => {
               size="small"
               className="w-32 "
             >
-              Deposit
+              Add Funds
             </Button>
             <Button
               onClick={withdraw}
@@ -143,17 +143,8 @@ const MemberDetails = ({ member, isProfile }) => {
               size="small"
               className="w-32"
             >
-              Withdraw
+              Cash Out
             </Button>
-            <p className="mt-2">
-              <a
-                href={globalConfig.HOW_TO_BUY_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                How to buy and FAQ
-              </a>
-            </p>
           </div>
         )}
       </div>
