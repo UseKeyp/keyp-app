@@ -1,6 +1,7 @@
 import MemberDetails from 'src/components/Member/MemberDetails'
 import MemberActivityCell from 'src/components/Member/MemberActivityCell'
 import TreasuresFetcher from 'src/components/Treasure/TreasuresFetcher'
+import { routes } from '@redwoodjs/router'
 
 const Member = ({ member, isLoading }) => {
   //const twitchSrc = `https://player.twitch.tv/?channel=${member.twitchUsername}&parent=${process.env.APP_DOMAIN}&muted=true&autoplay=true`
@@ -36,7 +37,11 @@ const Member = ({ member, isLoading }) => {
       </div>
       <h1 className="mt-10">Treasures Owned</h1>
       <div className="flex mt-4">
-        <TreasuresFetcher owner={member.username} sort="Highest Level" />
+        <TreasuresFetcher
+          owner={member.username}
+          sort="Highest Level"
+          seeMore={routes.treasures({ username: member.username })}
+        />
       </div>
     </div>
   )
