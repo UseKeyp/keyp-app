@@ -28,11 +28,15 @@ const Member = ({ member, isLoading }) => {
 
       <h1 className="mt-10">Treasures Played</h1>
       <div className="flex mt-4">
-        <TreasuresFetcher limit username={member.username} sort="Most Rare" />
+        <TreasuresFetcher
+          limit
+          username={member.username}
+          sort="Highest Level"
+        />
       </div>
       <h1 className="mt-10">Treasures Owned</h1>
       <div className="flex mt-4">
-        <TreasuresFetcher owner={member.username} sort="Most Rare" />
+        <TreasuresFetcher owner={member.username} sort="Highest Level" />
       </div>
     </div>
   )
