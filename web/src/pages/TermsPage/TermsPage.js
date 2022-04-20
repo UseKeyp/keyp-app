@@ -5,12 +5,7 @@ const TermsPage = () => {
     <div style={{ maxWidth: '85%', margin: 'auto' }}>
       <MetaTags
         title="Terms of Service"
-        description="Terms of service page for Treasure Chess app."
-      />
-
-      <MetaTags
-        title="Terms of Service"
-        description="Treasure Chess Privacy Terms of Service"
+        description="Terms of service for Treasure Chess."
       />
       <iframe
         title="Treasure Chess Terms of Service"
