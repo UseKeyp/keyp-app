@@ -72,13 +72,14 @@ export const mintTreasureAndUpdatePurchase = async ({ mintPurchase }) => {
       minter: member,
     })
 
-    const { tokenUri, uriData } = await pinTreasure({
+    const { tokenUri, uriData, openGraphImageSrc } = await pinTreasure({
       treasure: {
         ...treasureData,
         black: { ...game.black }, // Inject the players manually
         white: { ...game.white },
       },
       tcn: game.tcn,
+      gameId,
     })
     // logger.debug({ custom: mintPurchase }, 'mintPurchase')
     if (mintPurchase.transaction?.id) {
@@ -99,15 +100,19 @@ export const mintTreasureAndUpdatePurchase = async ({ mintPurchase }) => {
                 tokenId,
                 uriData,
                 tokenUri,
+                openGraphImageSrc,
               },
             },
           },
         })
         return purchase
       }
-      if (status === SUBMITTED)
+      if (status === SUBMITTED) {
+        logger.debug(`Status is SUBMITTED for ${tx.hash}`)
         if (!isOlderThanResubmitTimeout(mintPurchase.transaction.updatedAt))
           return mintPurchase
+        logger.debug(`Tx is >2 hours old, so we will resubmit`)
+      }
       if (status === FAILED) {
         await db.transaction.update({
           where: { id: tx.hash },
@@ -126,10 +131,11 @@ export const mintTreasureAndUpdatePurchase = async ({ mintPurchase }) => {
 
     // Move existing transaction to staleTransactions
     if (mintPurchase.transaction) {
+      logger.debug(`Moving to staleTransactions ${mintPurchase.transaction.id}`)
       mintPurchase = await db.mintPurchase.update({
         where: { id: mintPurchase.id },
         data: {
-          staleTransactions: { connect: { id: mintPurchase.transaction.id } },
+          staleTransactions: { connect: [{ id: mintPurchase.transaction.id }] },
           transaction: { disconnect: true },
         },
       })
@@ -153,9 +159,12 @@ export const mintTreasureAndUpdatePurchase = async ({ mintPurchase }) => {
         // 5% boost per failed attempt
         gasMultiplier: 1 + mintPurchase.staleTransactions.length * 0.05,
       })
+      // TODO: dont fail the mint purchase here
       if (!tx || !tx.hash) throw 'Transaction could not be submitted.'
     } catch (error) {
-      return mintFailGracefully({ mintPurchase, errorMessage: error.message })
+      return mintPurchase
+      // TODO: If submitting a tx fails, what should happen? Should it be failure-type specific?
+      // return mintFailGracefully({ mintPurchase, errorMessage: error.message })
     }
     logger.debug(formatUnits(tx.gasLimit, 'gwei'))
     return await db.mintPurchase.update({
