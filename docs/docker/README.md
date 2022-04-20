@@ -65,11 +65,13 @@ docker-compose up
 
 # Or
 docker run -it --rm \
-       -p 8911:8911 \
-        pi0neerpat/treasure-chess-api:latest
+      -p 8911:8911 \
+      -e REDWOOD_API_URL=http://0.0.0.0:8911 \
+      --env-file .env \
+      pi0neerpat/treasure-chess-api:latest
 
 docker run -it --rm \
-       -p 8911:8911 \
+       -p 8910:8910 \
         pi0neerpat/treasure-chess-web:latest
 ```
 
