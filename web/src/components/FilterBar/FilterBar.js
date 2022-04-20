@@ -124,7 +124,7 @@ const FilterBar = ({
         </div>
         <div className="dropdownRowSpacing">
           <Dropdown
-            category={'Rarity'}
+            category={'Level'}
             options={filters.rarityList}
             queryFilterFunction={setRarity}
             queryFilter={rarity}
