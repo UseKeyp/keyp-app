@@ -14,9 +14,7 @@ const initialState = {
 const defaultParams = {
   opening: filters.openingList[0].name,
   outcome: filters.outcomeList,
-  sale: filters.saleList
-    .map((status) => status.name)
-    .filter((name) => name === 'For Sale'),
+  sale: filters.saleList.map((status) => status.name),
   termination: filters.terminationList[0].name,
   sort: filters.sortList[4],
 }
@@ -60,11 +58,7 @@ const FilterProvider = ({ children }) => {
       if (key === 'username' || key === 'sort') {
         newState[key] = value
       } else {
-        if (key === 'sale') {
-          newState.filter = { ...newState.filter, sale: [value] }
-        } else {
-          newState.filter = { ...newState.filter, [key]: value }
-        }
+        newState.filter = { ...newState.filter, [key]: value }
       }
     }
     setState({ ...state, ...newState, initialized: true })
