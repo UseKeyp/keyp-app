@@ -41,16 +41,17 @@ const update = async () => {
     console.log(`Total chunks: ${chunks.length}`)
     console.log(`Chunk size: ${chunks.length}`)
 
-    await chunks.map(async (chunk, i) => {
+    for (let i = 0; i < chunks.length; ++i) {
       console.log(`Starting chunk #${i}`)
       // Create all members in the db
       await Promise.all(
-        chunk.map(async (row) => {
+        chunks[i].map(async (row) => {
           await fetchMemberAndBlock(row[0])
         })
       )
       console.log(`Finished chunk #${i}`)
-    })
+    }
+
     const blockedMemberCount = await db.member.count({
       where: { blocked: true },
     })

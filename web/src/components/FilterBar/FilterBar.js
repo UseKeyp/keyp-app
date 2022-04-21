@@ -30,7 +30,7 @@ const FilterBar = ({
     filter.termination ?? defaultParams?.termination
   )
   const [rarity, setRarity] = useState(filter.rarity)
-  const [sale, setSale] = useState(defaultParams?.sale || filter.sale)
+  const [sale, setSale] = useState(filter.sale ?? defaultParams?.sale)
   const [outcome, setOutcome] = useState(
     filter.outcome ?? defaultParams?.outcome
   )
@@ -61,7 +61,7 @@ const FilterBar = ({
       ...(outcome?.length && outcome !== defaultParams?.outcome && { outcome }),
       ...(moveCount && { moveCount }),
       ...(rarity && { rarity }),
-      ...(sale?.length && sale !== defaultParams?.sale && { sale }),
+      ...(sale?.length && { sale }),
       ...(lowPrice && { lowPrice }),
       ...(highPrice && { highPrice }),
     })
