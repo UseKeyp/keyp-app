@@ -49,21 +49,21 @@ const LoginPortal = () => {
         </h1>
         <div className="mt-6">
           <div className="mb-2">
-            <h3 className="text-base font-bold color-grey-light">
-              Create an account to enable:
+            <h3 className="text-base font-bold color-grey-light text-center">
+              Create a Treasure Chess account
             </h3>
           </div>
           <ul className="ml-6">
             <li>
               <h4 className="-indent-6 ">
                 <span className="mr-2">✨</span>
-                Minting new Treasures
+                Mint new Treasures
               </h4>
             </li>
             <li>
               <h4 className="-indent-6 ">
                 <span className="mr-2">❤️</span>
-                Collecting Treasures from your favorite players
+                Collect Treasures from your favorite players
               </h4>
             </li>
             <li>
