@@ -9,11 +9,11 @@ import { fetchMemberAndBlock } from '../../api/src/lib/members'
 
 dotenv.config()
 
-const IS_TEST = true
+const IS_TEST = false
 
 const FILENAME = IS_TEST ? 'test-block.csv' : 'block.csv'
 const CHUNK_SIZE = IS_TEST ? 2 : 50
-
+const db = new PrismaClient()
 // Run command
 // $(node tasks/environment/setupEnv) && yarn rw exec updateBlockList/updateBlockList
 
@@ -23,6 +23,13 @@ function chunk(arr, chunkSize) {
   for (var i = 0; i < arr.length; i += chunkSize)
     R.push(arr.slice(i, i + chunkSize))
   return R
+}
+
+const check = async () => {
+    const blockedMemberCount = await db.member.count({
+      where: { blocked: true },
+    })
+    console.log(`Total blocked members: ${blockedMemberCount}`)
 }
 
 const update = async () => {
@@ -49,11 +56,7 @@ const update = async () => {
       )
       console.log(`Finished chunk #${i}`)
     }
-    const db = new PrismaClient()
-    const blockedMemberCount = await db.member.count({
-      where: { blocked: true },
-    })
-    console.log(`Total blocked members: ${blockedMemberCount}`)
+    await check()
     var endTime = performance.now()
     console.log(
       `Duration: ${((endTime - startTime) / 1000).toFixed(3)} seconds`
@@ -62,3 +65,4 @@ const update = async () => {
 }
 
 update()
+//check()
