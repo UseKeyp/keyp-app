@@ -85,7 +85,18 @@ export const processPendingPurchases = async () => {
         { custom: { ...mintPurchase, member: 'REDACTED' } },
         'mintPurchase'
       )
-      if (mintPurchase.orderStatus !== COMPLETE) return mintPurchase
+      if (mintPurchase.orderStatus !== COMPLETE) {
+        var FIFTEEN_MINUTES = 15 * 60 * 1000
+        const now = new Date()
+        if (now - new Date(mintPurchase.createdAt) > FIFTEEN_MINUTES) {
+          const updatedMintPurchase = await db.mintPurchase.update({
+            where: { id: mintPurchase.id },
+            data: { status: FAILED, orderStatus: COMPLETE },
+          })
+          return updatedMintPurchase
+        }
+        return mintPurchase
+      }
       if (![COMPLETE, FAILED].includes(mintPurchase.status)) {
         // Treasure not successfully minted. Proceed to mint!
         logger.debug(`Pending Purchase: #${mintPurchase.id}`)
