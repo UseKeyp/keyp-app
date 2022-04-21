@@ -64,5 +64,5 @@ const update = async () => {
   })
 }
 
-update()
-//check()
+//update()
+check()
