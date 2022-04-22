@@ -4,19 +4,13 @@ import { isHexAddress } from 'src/lib/helpers'
 import { fetchChessMember } from 'src/lib/chessCom/chessCom'
 import { logger } from 'src/lib/logger'
 
-export const fetchMemberAndBlock = async (username) => {
+export const fetchMemberAndBlock = async (username, shouldIgnoreAddress) => {
   try {
     const member = await db.member.findUnique({
       where: { username: username.toLowerCase() },
     })
-    if (member && member.address) {
-      // Member has not signed in yet, so proceed to block
-      await db.member.update({
-        where: { id: member.id },
-        data: { blocked: true },
-      })
-    } else if (member && !member.address && !member.blocked) {
-      // Member didn't get marked blocked correctly
+    if (member && (!member.address || shouldIgnoreAddress) && !member.blocked) {
+      // Member exist, but should be blocked
       await db.member.update({
         where: { id: member.id },
         data: { blocked: true },
