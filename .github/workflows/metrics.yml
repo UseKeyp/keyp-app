@@ -1,7 +1,7 @@
 name: fetch-metrics
 on:
-  schedule:
-    - cron: '0 * * * *'
+  # schedule:
+  #   - cron: '0 0/6 * * *'
   workflow_dispatch:
 jobs:
   fetch-metrics:
@@ -14,6 +14,7 @@ jobs:
         run: |
           WALLETS=$(curl -s 'https://treasure.chess.com/graphql' -X POST -H 'content-type: application/json' \
            --data '{"query": "{ metrics(password: \"${{ secrets.DATA_ACCESS_PASSWORD }}\") }"}' |jq -r .data.metrics.member.count.total)
+          echo WALLETS: $WALLETS
           echo "::set-output name=WALLETS::$WALLETS"
       - name: Discord notify complete
         env:
