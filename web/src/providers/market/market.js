@@ -89,7 +89,11 @@ const MarketProvider = ({ children }) => {
       const last = state?.marketSale || {}
       const current =
         [...treasureWithMarketSales.marketSales].sort(
+<<<<<<< Updated upstream
           (a, b) => b.id - a.id
+=======
+          (a, b) => a.id < b.id
+>>>>>>> Stashed changes
         )[0] || {}
       if (current.status === last.status) return
       const { status, isClosed, amount } = current
