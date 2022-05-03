@@ -3,8 +3,6 @@ import { logger } from 'src/lib/logger'
 
 const DISCORD_NO_DM_INVOCATION =
   'NOTE: Treasure Chess will never DM you! You can only use the bot in the server.'
-const DISCORD_INVALID_PERMISSIONS = `⛈️ Sorry, I'm powerless. Someone must have revoked my permission to manage roles.`
-const DISCORD_SERVER_ERROR = `⛈️ Sorry, something went terribly wrong with my circuits. If this keeps happening please contact us: https://discord.gg/rbx9AKAaPS`
 
 class DiscordBot {
   constructor({ clientId, token, commands }) {

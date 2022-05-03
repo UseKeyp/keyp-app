@@ -1,5 +1,7 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
-import { logger } from 'src/lib/logger'
+import { db } from 'src/lib/db'
+const { MessageEmbed } = require('discord.js')
+
 import {
   fetchMemberAndBlock,
   fetchMemberAndUpdateBan,
@@ -75,6 +77,61 @@ const commands = [
       interaction.editReply(
         `${username} got +${creditsToGive} mint credits, for a total of ${member.mintCredits}`
       )
+    },
+  },
+  {
+    data: new SlashCommandBuilder()
+      .setName('treasure')
+      .setDescription('Get data for a specific Treasure')
+      .addStringOption((option) =>
+        option
+          .setName('id')
+          .setDescription('tokenId or hash ID')
+          .setRequired(true)
+      ),
+    execute: async (interaction) => {
+      const tokenId = interaction.options.getString('id')
+      let id
+      if (tokenId.startsWith('0x')) id = tokenId
+      const treasure = await db.treasure.findUnique({
+        where: { ...(id ? { id } : { tokenId: Number(tokenId) }) },
+        select: {
+          title: true,
+          owner: { select: { username: true } },
+          minter: { select: { username: true } },
+          openGraphImageSrc: true,
+          marketSaleStatus: true,
+          externalUrl: true,
+          marketSales: { orderBy: { id: 'desc' }, take: 2 },
+        },
+      })
+      if (!treasure) throw 'Treasure not found'
+
+      const currentSale = treasure.marketSales[0]
+      const embed = new MessageEmbed()
+        .setColor('#0099ff')
+        .setTitle(treasure.title)
+        .setDescription(
+          `Market status: ${treasure.marketSaleStatus} ${
+            currentSale ? `for $${currentSale.amount}` : ''
+          }`
+        )
+        .setURL(`https://treasure.chess.com/treasures/${tokenId}`)
+        .addFields(
+          {
+            name: 'Owner',
+            value: treasure.owner.username,
+            inline: true,
+          },
+          {
+            name: 'Minter',
+            value: treasure.minter.username,
+            inline: true,
+          }
+        )
+        .setImage(treasure.openGraphImageSrc)
+      // interaction.editReply(JSON.stringify(treasure, undefined, 4))
+      interaction.editReply({ embeds: [embed] })
     },
   },
 ]

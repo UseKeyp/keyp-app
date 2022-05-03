@@ -19,6 +19,7 @@ const CHANNELS_PROD = {
   airdrop: '936402336899801088',
 }
 
+/* eslint-disable-next-line no-unused-vars*/
 const bot = new DiscordBot({
   clientId: process.env.DISCORD_ADMIN_CLIENT_ID,
   token: process.env.DISCORD_ADMIN_BOT_TOKEN,
