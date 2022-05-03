@@ -1,27 +1,9 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
+import DiscordBot from 'src/lib/discord/discord'
 
-const block = new SlashCommandBuilder()
-  .setName('block')
-  .setDescription(`Prevent a member's games from being minted`)
-  .addStringOption((option) => option.setName('username').setRequired(true))
-
-const credit = new SlashCommandBuilder()
-  .setName('credit')
-  .setDescription('Modify mint credits')
-  .addSubcommand((subcommand) =>
-    subcommand
-      .setName('increment')
-      .setDescription('Add a single credit')
-      .addUserOption((option) =>
-        option.setName('target').setDescription('The user')
-      )
-  )
-  .addSubcommand((subcommand) =>
-    subcommand
-      .setName('specify')
-      .addUserOption((option) =>
-        option
-          .setName('amount')
-          .setDescription('Set a specific amount of credits')
-      )
-  )
+const commands = []
+const bot = new DiscordBot({
+  clientId: process.env.DISCORD_PUBLIC_CLIENT_ID,
+  token: process.env.DISCORD_PUBLIC_BOT_TOKEN,
+  commands,
+})

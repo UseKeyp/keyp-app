@@ -1,6 +1,4 @@
 import { Client, Intents } from 'discord.js'
-const { REST } = require('@discordjs/rest')
-const { Routes } = require('discord-api-types/v9')
 import { logger } from 'src/lib/logger'
 
 const DISCORD_NO_DM_INVOCATION =
@@ -16,6 +14,7 @@ class DiscordBot {
     this.clientId = clientId
     this.token = token
     this.commands = commands
+
     try {
       const client = new Client({ intents: [] })
       client.once('ready', async () => {
@@ -57,12 +56,6 @@ class DiscordBot {
       logger.error(e)
       // Maybe we don't want to throw here if there are multiple instances.
     }
-  }
-  async init() {
-    const rest = new REST({ version: '9' }).setToken(this.token)
-    await rest.put(Routes.applicationCommands(this.clientId), {
-      body: this.commands,
-    })
   }
 }
 

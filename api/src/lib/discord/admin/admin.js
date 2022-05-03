@@ -1,6 +1,5 @@
 import fetch from 'node-fetch'
 import Sentry from 'src/lib/sentry'
-const { SlashCommandBuilder } = require('@discordjs/builders')
 
 import DiscordBot from 'src/lib/discord/discord'
 
@@ -19,18 +18,13 @@ const CHANNELS_PROD = {
   airdrop: '936402336899801088',
 }
 
-const block = new SlashCommandBuilder()
-  .setName('block')
-  .setDescription(`Prevent a member's games from being minted`)
-  .addStringOption((option) => option.setName('username').setRequired(true))
-
-const commands = [block]
 const bot = new DiscordBot({
   clientId: process.env.DISCORD_ADMIN_CLIENT_ID,
   token: process.env.DISCORD_ADMIN_BOT_TOKEN,
-  commands,
+  commands: [],
 })
 bot.init()
+
 const getChannelId = (channel) => {
   let id = CHANNELS_DEV[channel]
   // Sandbox shares with dev
