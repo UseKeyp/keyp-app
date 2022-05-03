@@ -2,6 +2,7 @@ import fetch from 'node-fetch'
 import Sentry from 'src/lib/sentry'
 
 import DiscordBot from 'src/lib/discord/discord'
+import commands from './commands'
 
 const DISCORD_API_URL = 'https://discord.com/api/v9'
 
@@ -21,9 +22,8 @@ const CHANNELS_PROD = {
 const bot = new DiscordBot({
   clientId: process.env.DISCORD_ADMIN_CLIENT_ID,
   token: process.env.DISCORD_ADMIN_BOT_TOKEN,
-  commands: [],
+  commands,
 })
-bot.init()
 
 const getChannelId = (channel) => {
   let id = CHANNELS_DEV[channel]

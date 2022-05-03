@@ -10,13 +10,8 @@ class DiscordBot {
   constructor({ clientId, token, commands }) {
     if (!token || !clientId || !commands)
       throw 'Invalid Discord params provided'
-
-    this.clientId = clientId
-    this.token = token
-    this.commands = commands
-
     try {
-      const client = new Client({ intents: [] })
+      const client = new Client({ intents: [Intents.FLAGS.DIRECT_MESSAGES] })
       client.once('ready', async () => {
         logger.debug(`Discord bot ready! ${clientId}`)
       })
@@ -28,7 +23,7 @@ class DiscordBot {
 
       client.on('interactionCreate', async (interaction) => {
         if (!interaction.isCommand()) return
-        if (interaction.channel.type == 'dm')
+        if (interaction.type == 'dm')
           return interaction.reply(DISCORD_NO_DM_INVOCATION)
 
         const command = commands.find(
@@ -39,19 +34,19 @@ class DiscordBot {
 
         try {
           // Extend response deadline from 3s to 15m
-          await interaction.deferReply({ ephemeral: true })
+          await interaction.deferReply({ ephemeral: false })
           await command.execute(interaction)
         } catch (e) {
+          logger.debug('Something wend wrong while executing this function')
           logger.error(e)
-          await interaction.reply({
-            content: 'There was an error while executing this command!',
-            ephemeral: true,
+          await interaction.editReply({
+            content: `Error: ${e}`,
+            ephemeral: false,
           })
         }
       })
 
       client.login(token)
-      this.client = client
     } catch (e) {
       logger.error(e)
       // Maybe we don't want to throw here if there are multiple instances.

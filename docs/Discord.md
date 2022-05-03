@@ -12,6 +12,13 @@ Add Bot here: https://discord.com/api/oauth2/authorize?client_id=898279187574558
 
 # Slash Commands
 
+If you add new commands, they must be registered with:
+
+```bash
+$(node tasks/environment/setupEnv) yarn rw exec --prisma=false discord
+```
+
 Notes:
 
-1. Global commands must be registered BEFORE the bot is added to a server. Otherwise, you must re-install the bot.
+- Global commands are cached for one hour. New global commands will fan out slowly across all guilds and will only be guaranteed to be updated after an hour. Guild commands update instantly. As such, we recommend you use guild-based commands during development and publish them to global commands when they're ready for public use.
+- Each option must have a description
