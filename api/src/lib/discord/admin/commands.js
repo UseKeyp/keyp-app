@@ -2,6 +2,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders')
 import { db } from 'src/lib/db'
 import { getBusinessMetrics } from 'src/lib/metrics'
 const { MessageEmbed } = require('discord.js')
+import { Buffer } from 'buffer'
 
 import {
   fetchMemberAndBlock,
@@ -138,10 +139,17 @@ const commands = [
   {
     data: new SlashCommandBuilder()
       .setName('metrics')
-      .setDescription('Get business metrics')
+      .setDescription('Get business metrics'),
     execute: async (interaction) => {
       const metrics = await getBusinessMetrics()
-      interaction.editReply(JSON.stringify(metrics, undefined, 4))
+      interaction.editReply({
+        files: [
+          {
+            name: `metrics_${new Date().toJSON().slice(0, 16)}.json`,
+            attachment: Buffer.from(JSON.stringify(metrics)),
+          },
+        ],
+      })
     },
   },
 ]
