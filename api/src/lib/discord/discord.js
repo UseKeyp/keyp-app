@@ -1,41 +1,69 @@
-import fetch from 'node-fetch'
-import Sentry from 'src/lib/sentry'
+import { Client, Intents } from 'discord.js'
+const { REST } = require('@discordjs/rest')
+const { Routes } = require('discord-api-types/v9')
+import { logger } from 'src/lib/logger'
 
-const DISCORD_API_URL = 'https://discord.com/api/v9'
+const DISCORD_NO_DM_INVOCATION =
+  'NOTE: Treasure Chess will never DM you! You can only use the bot in the server.'
+const DISCORD_INVALID_PERMISSIONS = `⛈️ Sorry, I'm powerless. Someone must have revoked my permission to manage roles.`
+const DISCORD_SERVER_ERROR = `⛈️ Sorry, something went terribly wrong with my circuits. If this keeps happening please contact us: https://discord.gg/rbx9AKAaPS`
 
-const CHANNELS_DEV = {
-  orders: '900524323238981703',
-  airdrop: '936402300954640394',
-}
-const CHANNELS_STAGING = {
-  orders: '936403586290683974',
-  airdrop: '936403830105587823',
-}
-const CHANNELS_PROD = {
-  orders: '900529491829460992',
-  airdrop: '936402336899801088',
-}
+class DiscordBot {
+  constructor({ clientId, token, commands }) {
+    if (!token || !clientId || !commands)
+      throw 'Invalid Discord params provided'
 
-const getChannelId = (channel) => {
-  let id = CHANNELS_DEV[channel]
-  // Sandbox shares with dev
-  if (process.env.ENVIRONMENT === 'staging') id = CHANNELS_STAGING[channel]
-  if (process.env.ENVIRONMENT === 'prod') id = CHANNELS_PROD[channel]
-  return id
-}
+    this.clientId = clientId
+    this.token = token
+    this.commands = commands
+    try {
+      const client = new Client({ intents: [] })
+      client.once('ready', async () => {
+        logger.debug(`Discord bot ready! ${clientId}`)
+      })
 
-export const sendDiscordAlert = async ({ message, embed, channelName }) => {
-  try {
-    const channelId = getChannelId(channelName)
-    await fetch(`${DISCORD_API_URL}/channels/${channelId}/messages`, {
-      method: 'POST',
-      body: message ? message : JSON.stringify({ embed }),
-      headers: {
-        Authorization: `Bot ${process.env.DISCORD_BOT_TOKEN}`,
-        'Content-Type': 'application/json',
-      },
-    }).then((res) => res.text())
-  } catch (e) {
-    Sentry.captureException(e)
+      client.on('message', async (message) => {
+        if (message.channel.type == 'dm')
+          return message.reply(DISCORD_NO_DM_INVOCATION)
+      })
+
+      client.on('interactionCreate', async (interaction) => {
+        if (!interaction.isCommand()) return
+        if (interaction.channel.type == 'dm')
+          return interaction.reply(DISCORD_NO_DM_INVOCATION)
+
+        const command = commands.find(
+          (cmd) => cmd.data.name === interaction.commandName
+        )
+
+        if (!command) return
+
+        try {
+          // Extend response deadline from 3s to 15m
+          await interaction.deferReply({ ephemeral: true })
+          await command.execute(interaction)
+        } catch (e) {
+          logger.error(e)
+          await interaction.reply({
+            content: 'There was an error while executing this command!',
+            ephemeral: true,
+          })
+        }
+      })
+
+      client.login(token)
+      this.client = client
+    } catch (e) {
+      logger.error(e)
+      // Maybe we don't want to throw here if there are multiple instances.
+    }
+  }
+  async init() {
+    const rest = new REST({ version: '9' }).setToken(this.token)
+    await rest.put(Routes.applicationCommands(this.clientId), {
+      body: this.commands,
+    })
   }
 }
+
+export default DiscordBot
