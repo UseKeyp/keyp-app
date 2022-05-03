@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders')
 import { db } from 'src/lib/db'
+import { getBusinessMetrics } from 'src/lib/metrics'
 const { MessageEmbed } = require('discord.js')
 
 import {
@@ -132,6 +133,15 @@ const commands = [
         .setImage(treasure.openGraphImageSrc)
       // interaction.editReply(JSON.stringify(treasure, undefined, 4))
       interaction.editReply({ embeds: [embed] })
+    },
+  },
+  {
+    data: new SlashCommandBuilder()
+      .setName('metrics')
+      .setDescription('Get business metrics')
+    execute: async (interaction) => {
+      const metrics = await getBusinessMetrics()
+      interaction.editReply(JSON.stringify(metrics, undefined, 4))
     },
   },
 ]
