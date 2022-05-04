@@ -1,4 +1,4 @@
-// Run with this command: $(node tasks/environment/setupEnv) yarn rw exec --prisma=false discord
+// Run with this command: $(node tasks/environment/setupEnv) && yarn rw exec --prisma=false discord
 
 const { Routes } = require('discord-api-types/v9')
 import adminCommands from '../api/src/lib/discord/admin/commands'
@@ -28,13 +28,13 @@ const method = 'PUT'
 // See https://discord.com/developers/docs/interactions/application-commands#updating-and-deleting-a-command
 // const method = "DELETE"
 
-let botName = 'chester'
+let botName = `chester ${process.env.ENVIRONMENT}`
 let botToken = adminBotToken
 let clientId = adminClientId
 let commands = adminCommands
 
 if (BOT === 'PUBLIC') {
-  botName = 'treasure-chess'
+  botName = `treasure-chess ${process.env.ENVIRONMENT}`
   botToken = publicBotToken
   let clientId = publicClientId
   commands = publicCommands
@@ -43,7 +43,7 @@ if (BOT === 'PUBLIC') {
 const registerCommands = async () => {
   try {
     console.log(
-      `Registering commands for bot "${botName}" - ${commands.map(
+      `Registering commands for bot "${botName}" ${clientId}- ${commands.map(
         (cmd) => cmd.data.name
       )}`
     )
@@ -56,12 +56,13 @@ const registerCommands = async () => {
         // Guild-specific commands update instantly
         Routes.applicationGuildCommands(clientId, GUILD_ID),
       ].map(async (path) => {
-        await fetchDiscord({
+        const response = await fetchDiscord({
           path,
           body,
           method,
           botToken,
         })
+        console.log(response)
       })
     )
   } catch (e) {
