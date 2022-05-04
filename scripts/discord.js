@@ -1,6 +1,8 @@
 // Run with this command: $(node tasks/environment/setupEnv) && yarn rw exec --prisma=false discord
 
 const { Routes } = require('discord-api-types/v9')
+const { REST } = require('@discordjs/rest')
+
 import adminCommands from '../api/src/lib/discord/admin/commands'
 import {
   botToken as adminBotToken,
@@ -13,8 +15,6 @@ import {
   clientId as publicClientId,
 } from '../api/src/lib/discord/public/config'
 
-import { fetchDiscord } from '../api/src/lib/discord/discord'
-
 const dotenv = require('dotenv')
 dotenv.config()
 
@@ -24,9 +24,8 @@ const BOT = 'ADMIN'
 const GUILD_ID = '874700997220515901' // Our internal treasure-chess server
 
 const method = 'PUT'
-// Use DELETE to remove old unwanted command. Unnecessary for updates to existing commands.
-// See https://discord.com/developers/docs/interactions/application-commands#updating-and-deleting-a-command
-// const method = "DELETE"
+// "PUT" for commands are always treated as an upsert
+// To remove old unwanted command See https://discord.com/developers/docs/interactions/application-commands#updating-and-deleting-a-command
 
 let botName = `chester ${process.env.ENVIRONMENT}`
 let botToken = adminBotToken
@@ -47,8 +46,7 @@ const registerCommands = async () => {
         (cmd) => cmd.data.name
       )}`
     )
-    const body = commands.map((cmd) => cmd.data)
-
+    const rest = new REST({ version: '9' }).setToken(botToken)
     await Promise.all(
       [
         // Global commands takes up to 1 hour to propagate
@@ -56,13 +54,9 @@ const registerCommands = async () => {
         // Guild-specific commands update instantly
         Routes.applicationGuildCommands(clientId, GUILD_ID),
       ].map(async (path) => {
-        const response = await fetchDiscord({
-          path,
-          body,
-          method,
-          botToken,
+        await rest.put(path, {
+          body: commands.map((cmd) => cmd.data),
         })
-        console.log(response)
       })
     )
   } catch (e) {
