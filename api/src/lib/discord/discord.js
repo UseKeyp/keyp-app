@@ -86,13 +86,11 @@ export const fetchDiscord = async ({
   try {
     let method = 'GET'
     if (methodArg) method = methodArg
-    console.log(method)
     if (!['POST', 'GET', 'DELETE', 'PUT', 'PATCH'].includes(method))
       throw 'Invalid method'
     if (!body) throw 'No body provided'
     if (!path) throw 'No path provided'
     const url = path.join(DISCORD_API_URL, pathArg)
-    console.log(url)
     return await fetch(url, {
       method,
       body,
