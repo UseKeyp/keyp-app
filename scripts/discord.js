@@ -5,13 +5,13 @@ import adminCommands from '../api/src/lib/discord/admin/commands'
 import {
   botToken as adminBotToken,
   clientId as adminClientId,
-} from '../api/src/lib/discord/admin'
+} from '../api/src/lib/discord/admin/config'
 
 import publicCommands from '../api/src/lib/discord/public/commands'
 import {
   botToken as publicBotToken,
   clientId as publicClientId,
-} from '../api/src/lib/discord/public'
+} from '../api/src/lib/discord/public/config'
 
 import { fetchDiscord } from '../api/src/lib/discord/discord'
 
