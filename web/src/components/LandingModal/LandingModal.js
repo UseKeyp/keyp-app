@@ -1,9 +1,8 @@
 import Banner from 'src/components/Banner'
-import Icon from 'src/components/Icon'
 import { useModal } from 'src/hooks/useModal'
 import { useEffect } from 'react'
 import { isBrowser } from '@redwoodjs/prerender/browserUtils'
-import aboutContent from 'src/pages/AboutPage/about'
+// import aboutContent from 'src/pages/AboutPage/about'
 // import FaqSection from 'src/components/FaqSection/FaqSection'
 
 // <FaqSection
@@ -53,7 +52,7 @@ const LandingModal = () => {
 
   return (
     <Banner
-      submitText="Accept required"
+      submitText="Accept"
       content={content}
       hideCancelButton={true}
       isVisible={isVisible}
