@@ -5,7 +5,7 @@ import DiscordBot, { postToChannel } from 'src/lib/discord/discord'
 import { botToken, clientId } from 'src/lib/discord/admin/config'
 import commands from 'src/lib/discord/admin/commands'
 
-logger.debug(
+logger.warn(
   {
     custom: {
       clientId,
@@ -17,7 +17,7 @@ logger.debug(
 )
 
 if (
-  process.env.ENABLE_DISCORD_BOTS && // Prevents multiple instances running
+  process.env.ENABLE_DISCORD_BOTS === 'true' && // Prevents multiple instances running during development
   clientId &&
   botToken
 )

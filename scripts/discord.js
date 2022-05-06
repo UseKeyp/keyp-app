@@ -1,4 +1,5 @@
 // Run with this command: $(node tasks/environment/setupEnv) && yarn rw exec --prisma=false discord
+// NOTE: You must set ENABLE_DISCORD_BOTS=false in your .env
 
 const { Routes } = require('discord-api-types/v9')
 const { REST } = require('@discordjs/rest')
@@ -22,8 +23,8 @@ dotenv.config()
 
 const BOT = 'ADMIN'
 // const BOT= "PUBLIC"
-const TYPE = 'GLOBAL'
-// const TYPE = 'GUILD'
+// const TYPE = 'GLOBAL'
+const TYPE = 'GUILD'
 
 const GUILD_ID = '874700997220515901' // Our internal treasure-chess server
 
@@ -82,7 +83,7 @@ const deleteCommands = async () => {
       method: 'DELETE',
       botToken,
     })
-    delay(2000)
+    await delay(2000)
   }
 }
 
