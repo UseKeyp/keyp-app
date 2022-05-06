@@ -40,7 +40,7 @@ class DiscordBot {
           await interaction.deferReply({ ephemeral: false })
           await command.execute(interaction)
         } catch (e) {
-          logger.debug('Something wend wrong while executing this function')
+          logger.debug('Something went wrong while executing this function')
           logger.error(e)
           await interaction.editReply({
             content: `Error: ${e}`,
@@ -88,7 +88,6 @@ export const fetchDiscord = async ({
     if (methodArg) method = methodArg
     if (!['POST', 'GET', 'DELETE', 'PUT', 'PATCH'].includes(method))
       throw 'Invalid method'
-    if (!body) throw 'No body provided'
     if (!path) throw 'No path provided'
     const url = path.join(DISCORD_API_URL, pathArg)
     return await fetch(url, {
