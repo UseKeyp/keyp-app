@@ -48,9 +48,6 @@ RUN yarn global add @redwoodjs/api-server@1.0.0 @redwoodjs/internal@1.0.0 lerna 
 # Helpful utilities for exploring your container
 # apk update && apk add --no-cache -y libnss3 nano ncdu
       apt-get update && apt install -y libnss3 nano ncdu
-RUN cd /app/node_modules/chrome-aws-lambda/bin && \
-      apt install brotli && brotli -d chromium.br -o /tmp/chromium && \
-      apt remove brotli -y
 
 # Unpack chromium to avoid disk filling up from repeated unpacking
 RUN cd /app/node_modules/chrome-aws-lambda/bin && \
