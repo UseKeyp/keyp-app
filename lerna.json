@@ -1,4 +1,8 @@
 {
-  "packages": ["packages/*", "web", "api"],
-  "version": "1.0.6-staging.4"
+  "packages": [
+    "packages/*",
+    "web",
+    "api"
+  ],
+  "version": "1.0.6-staging.5"
 }
