@@ -1,5 +1,6 @@
 import fetch from 'cross-fetch'
 import { logger } from 'src/lib/logger'
+import { getAccessToken } from 'src/lib/members'
 
 export const fetchChessMember = (username) => {
   try {
@@ -53,19 +54,20 @@ export const fetchChessGame = async ({ username, gameId, endTime }) => {
 
 export const fetchGameByIdOrUrl = async (gameIdOrUrl) => {
   try {
+    const accessToken = await getAccessToken()
     let id = gameIdOrUrl
     if (gameIdOrUrl.includes('chess.com')) id = gameIdOrUrl.split('live/')[1]
     let url = `${process.env.CHESS_API_URL}/v1/games/${id}/live`
     const response = await fetch(url, {
       headers: {
-        Authorization: `Bearer ${process.env.CHESS_API_ACCESS_TOKEN}`,
+        Authorization: `Bearer ${accessToken}`,
       },
     }).then((res) => {
-      // logger.debug({ custom: res }, 'fetchGameByIdOrUrl res')
+      logger.warn({ custom: res }, 'fetchGameByIdOrUrl res')
       return res.json()
     })
-    // logger.debug({ custom: response }, 'fetchGameByIdOrUrl response')
-    return response.data
+    logger.warn({ custom: response }, 'fetchGameByIdOrUrl response')
+    return { ...response.data, id }
   } catch (e) {
     throw new Error(`fetchGameByIdOrUrl() ${e}`)
   }
