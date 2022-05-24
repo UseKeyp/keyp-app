@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect } from 'react'
 import { routes, useLocation } from '@redwoodjs/router'
 import { useAuth } from '@redwoodjs/auth'
 import { useWallet } from 'src/providers/wallet'
@@ -13,6 +13,7 @@ import MobileMenu from 'src/components/MobileMenu/MobileMenu'
 import MemberBalance from 'src/components/Member/MemberBalance'
 
 import { trimAddress } from 'src/utils/helpers'
+import Tooltip from 'src/components/Tooltip/Tooltip'
 
 const WalletBalance = () => {
   const { deposit } = useWallet()
@@ -118,7 +119,6 @@ const Header = () => {
       logOut()
     }
   }, [profile, logOut])
-  const [isShowingTooltip, setIsShowingTooltip] = useState(false)
 
   useEffect(() => {
     handleUserStatus()
@@ -179,14 +179,16 @@ const Header = () => {
             </div>
             <WalletBalance />
             <div className="ml-4">
-              <Button
-                onClick={logOut}
-                onMouseEnter={() => setIsShowingTooltip(true)}
-                onMouseLeave={() => setIsShowingTooltip(false)}
-              >
-                <Icon name="logout" color="grey" />
+              <Button onClick={logOut}>
+                <Tooltip
+                  effect="solid"
+                  text="Log Out"
+                  position="bottom"
+                  bgColor="dark"
+                >
+                  <Icon name="logout" color="grey" />
+                </Tooltip>
               </Button>
-              {isShowingTooltip && <p className="header__tooltip">Log out</p>}
             </div>
           </div>
         ) : (
