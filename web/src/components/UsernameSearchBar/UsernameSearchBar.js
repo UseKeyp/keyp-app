@@ -1,12 +1,12 @@
 import { useState, useRef } from 'react'
 import { useLazyQuery } from '@apollo/client'
 import { debounce } from 'src/utils/helpers'
-
+import { sortBy } from 'lodash'
 import { useFilter } from 'src/providers/filters'
 
 const USERNAME_QUERY = gql`
-  query usernames($query: String!) {
-    usernames(query: $query)
+  query usernames($query: String!, $orderBy: UserNameOrderByInput) {
+    usernames(query: $query, orderBy: $orderBy)
   }
 `
 
@@ -28,7 +28,12 @@ const UsernameSearchBar = ({ setValue: setParentValue }) => {
     onCompleted: ({ usernames }) => {
       if (usernames.length === 0)
         return setDropdownOptions(['Username not found'])
-      setDropdownOptions(usernames.slice(0, 6))
+      setDropdownOptions(
+        sortBy(usernames, [(str) => str.indexOf(value), (str) => str]).slice(
+          0,
+          6
+        )
+      )
     },
   })
 
@@ -41,7 +46,14 @@ const UsernameSearchBar = ({ setValue: setParentValue }) => {
       // Prevents performing another query after selection
       return setDropdownOptions([])
     }
-    fetchUsernames({ variables: { query: value } })
+    fetchUsernames({
+      variables: {
+        query: value,
+        orderBy: {
+          username: 'asc',
+        },
+      },
+    })
   }
 
   const debounceUpdate = debounce(update, 1000)
