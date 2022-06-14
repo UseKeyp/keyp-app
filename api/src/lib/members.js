@@ -5,7 +5,6 @@ import { db } from 'src/lib/db'
 import { isHexAddress } from 'src/lib/helpers'
 import { fetchChessMember } from 'src/lib/chessCom/chessCom'
 import { logger } from 'src/lib/logger'
-
 import { refreshChessTokens } from 'src/lib/oAuth/providers/chess'
 
 import { web3Provider } from 'src/lib/web3/helpers'
@@ -286,7 +285,7 @@ export const getMemberRawData = async (username) => {
     refreshToken: 'REDACTED',
   }))
   return {
-    member,
+    member: { ...member, accessToken: 'REDACTED', refreshToken: 'REDACTED' },
     web3: { etherBalance, usdcBalance },
     ...details,
     ramps,
