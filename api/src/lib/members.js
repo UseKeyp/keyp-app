@@ -7,6 +7,8 @@ import { fetchChessMember } from 'src/lib/chessCom/chessCom'
 import { logger } from 'src/lib/logger'
 import { refreshChessTokens } from 'src/lib/oAuth/providers/chess'
 
+import { refreshChessTokens } from 'src/lib/oAuth/providers/chess'
+
 import { web3Provider } from 'src/lib/web3/helpers'
 import { getUsdcBalance } from 'src/lib/web3/tokens'
 
