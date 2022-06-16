@@ -1,5 +1,5 @@
 import * as Sentry from '@sentry/node'
-import '@sentry/tracing';
+import '@sentry/tracing'
 /* eslint-disable-next-line no-unused-vars */
 import * as Tracing from '@sentry/tracing'
 

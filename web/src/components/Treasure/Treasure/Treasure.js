@@ -1,5 +1,3 @@
-import { Link, routes } from '@redwoodjs/router'
-
 import GameCard from 'src/components/Game/GameCard/GameCard'
 import TreasureSocial from 'src/components/Treasure/TreasureSocial/TreasureSocial'
 import TreasureMoves from 'src/components/Treasure/TreasureMoves/TreasureMoves'
@@ -28,7 +26,7 @@ const Treasure = ({ treasure, isLoading }) => {
         </div>
         <TreasureMoves treasure={treasure} isLoading={isLoading} />
       </div>
-      <div className="how-to-mint justify-center mt-16 p-4 bg-chessBlack-200">
+      {/*<div className="how-to-mint justify-center mt-16 p-4 bg-chessBlack-200">
         <div className="mb-2">
           <div className="text-lg">🎁</div>
           <div className="flex justify-between">
@@ -53,7 +51,7 @@ const Treasure = ({ treasure, isLoading }) => {
             .
           </Trans>
         </p>
-      </div>
+      </div>*/}
       <h1 className="mt-16">{t('More by these users')}</h1>
       <div className="w-full mt-4">
         <TreasuresFetcher
