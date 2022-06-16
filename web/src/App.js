@@ -40,7 +40,7 @@ class AuthProviderExtended extends AuthProvider {
 
 const App = () => (
   <FatalErrorBoundary page={FatalErrorPage}>
-    <KonstaProvider theme="ios">
+    <KonstaProvider theme="ios" dark>
       <RedwoodProvider titleTemplate="%AppTitle | %PageTitle">
         <AuthProviderExtended
           type="dbAuth"
