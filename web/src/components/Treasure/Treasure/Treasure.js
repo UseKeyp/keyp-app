@@ -1,5 +1,3 @@
-import { Link, routes } from '@redwoodjs/router'
-
 import GameCard from 'src/components/Game/GameCard/GameCard'
 import TreasureSocial from 'src/components/Treasure/TreasureSocial/TreasureSocial'
 import TreasureMoves from 'src/components/Treasure/TreasureMoves/TreasureMoves'
