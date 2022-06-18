@@ -62,7 +62,7 @@ export const handler = async (event, context) => {
       HttpOnly: true,
       Path: '/',
       // SameSite: 'None',
-      SameSite: 'Strict',
+      SameSite: isProduction ? 'Strict' : 'None',
       Secure: isProduction,
       ...(isProduction && {
         Domain: process.env.APP_DOMAIN.split('://')[1],
