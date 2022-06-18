@@ -266,6 +266,7 @@ export const DepositModal = ({ isVisible, toggleModal }) => {
     {
       type: 'WERT',
       iconName: 'wert',
+      buttonText: 'Coming Soon',
       name: 'Wer.io',
       disabled: true,
       description: (

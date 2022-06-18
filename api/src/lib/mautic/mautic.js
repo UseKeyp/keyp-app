@@ -16,7 +16,7 @@ const getMauticToken = async () => {
     body: encodeBody(body),
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
   }).then(async (res) => {
-    logger.debug({ custom: res }, 'getMauticToken()')
+    // logger.debug({ custom: res }, 'getMauticToken()')
     if (res.status === 204) throw `No content returned by Mautic`
     const data = await res.json()
     if (data.errors || !data.access_token) {
@@ -36,7 +36,7 @@ const fetchMautic = async ({ body, method, path }) => {
       'Content-Type': 'application/x-www-form-urlencoded',
     },
   }).then(async (res) => {
-    logger.debug({ custom: res }, `fetchMautic() ${path}`)
+    // logger.debug({ custom: res }, `fetchMautic() ${path}`)
     if (res.status === 204) throw `No content returned by Mautic`
     const data = await res.json()
     if (data.errors) {
