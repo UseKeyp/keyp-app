@@ -156,31 +156,6 @@ export const DepositModal = ({ isVisible, toggleModal }) => {
 
   const onRamps = [
     {
-      type: 'WERT',
-      iconName: 'wert',
-      name: 'Wer.io',
-      description: (
-        <p className="mt-4">
-          <Trans i18nkey="web:RampOnRampDetails">
-            Regions: Most places (
-            <a
-              href="https://support.wert.io/en/articles/5194509-supported-countries"
-              target="_blank"
-              className="underline"
-              rel="noreferrer"
-            >
-              list
-            </a>
-            )
-            <br />
-            Limit: $1,000/week
-            <br />
-            Fee: 5%
-          </Trans>
-        </p>
-      ),
-    },
-    {
       type: 'RAMP_NETWORK',
       iconName: 'ramp_network',
       name: 'Ramp Network',
@@ -284,6 +259,32 @@ export const DepositModal = ({ isVisible, toggleModal }) => {
               details
             </a>
             )
+          </Trans>
+        </p>
+      ),
+    },
+    {
+      type: 'WERT',
+      iconName: 'wert',
+      name: 'Wer.io',
+      disabled: true,
+      description: (
+        <p className="mt-4">
+          <Trans i18nkey="web:RampOnRampDetails">
+            Regions: Most places (
+            <a
+              href="https://support.wert.io/en/articles/5194509-supported-countries"
+              target="_blank"
+              className="underline"
+              rel="noreferrer"
+            >
+              list
+            </a>
+            )
+            <br />
+            Limit: $1,000/week
+            <br />
+            Fee: 5%
           </Trans>
         </p>
       ),
