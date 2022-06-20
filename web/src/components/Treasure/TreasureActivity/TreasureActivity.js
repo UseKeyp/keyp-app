@@ -5,7 +5,7 @@ import { formatDate } from 'src/utils/helpers'
 import { useMarket } from 'src/providers/market'
 import LoadingDots from 'src/components/LoadingDots'
 
-const TITLE = 'Activity'
+const TITLE = t('Activity')
 
 const TreasureActivity = ({ treasure, isLoading }) => {
   const { marketStatus, amount: listAmount } = useMarket
@@ -38,7 +38,7 @@ const TreasureActivity = ({ treasure, isLoading }) => {
 
   return (
     <div>
-      <Table title={TITLE} isLoading={isLoading} height={150} data={list} />
+      <Table title={TITLE} isLoading={isLoading} height={275} data={list} />
     </div>
   )
 }

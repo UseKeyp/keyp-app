@@ -106,7 +106,7 @@ const getCardHtml = async ({
 
     const updateStyle = (id, property, content) => {
       const element = doc.getElementById(id)
-      if (!element) return // console.log(`No element with id ${id}`)
+      if (!element) return
       var replace = `${property}:(.+?);`
       var re = new RegExp(replace)
       const style = element
@@ -132,6 +132,10 @@ const getCardHtml = async ({
     // Header + SEO
     updateContent('title', treasure.title) // Card title text
     updateContent('page-title', treasure.title)
+    updateContent('tooltiptext', treasure.title)
+    if (treasure.title.length < 10) {
+      updateStyle('tooltiptext', 'display', 'none')
+    }
     const description = getDescription(treasure)
     updateTag('og:description', 'content', description)
     updateTag(

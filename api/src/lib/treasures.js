@@ -126,18 +126,20 @@ const getWhereQueryFromArgs = ({ username, filter, owner }) => {
     : null
 
   return {
-    ...(usernameQuery && usernameQuery),
-    ...(ownerQuery && ownerQuery),
-    ...(achievementQuery && achievementQuery),
-    ...(outcomeQuery && outcomeQuery),
-    ...(moveCountQuery && moveCountQuery),
-    ...(titleQuery && titleQuery),
-    ...(openingQuery && openingQuery),
-    ...(saleQuery && saleQuery),
-    ...(filterObj.color && { cardColor: filterObj.color }),
-    ...(filterObj.termination && { termination: filterObj.termination }),
-    ...(filterObj.timeControl && { timeControl: filterObj.timeControl }),
-    ...(filterObj.rarity && { rarity: filterObj.rarity }),
+    AND: [
+      usernameQuery,
+      ownerQuery,
+      achievementQuery,
+      outcomeQuery,
+      moveCountQuery,
+      titleQuery,
+      openingQuery,
+      saleQuery,
+      filterObj.color && { cardColor: filterObj.color },
+      filterObj.termination && { termination: filterObj.termination },
+      filterObj.timeControl && { timeControl: filterObj.timeControl },
+      filterObj.rarity && { rarity: filterObj.rarity },
+    ].filter((query) => query),
     // TODO:  implement sale, and price
     // lowPrice,
     // highPrice,
@@ -172,6 +174,54 @@ const getOrderByQueryFromArgs = ({ sort }) => {
   }
 }
 
+function matchTerminationFilterQueryToBackend(filter) {
+  if (filter) {
+    if (filter.includes('Draw+by+Agreement')) {
+      filter = filter.toString().replace('Draw+by+Agreement', 'Agreement')
+    }
+    if (filter.includes('Draw+by+Repetition')) {
+      filter = filter.toString().replace('Draw+by+Repetition', 'Repetition')
+    }
+    if (filter.includes('Insufficient+Material')) {
+      filter = filter
+        .toString()
+        .replace('Insufficient+Material', 'Insufficient')
+    }
+    if (filter.includes('Draw+by+50-Move+Rule')) {
+      filter = filter.toString().replace('Draw+by+50-Move+Rule', 'FiftyMove')
+    }
+    if (filter.includes('Opponent+King+Reached+the+Hill')) {
+      filter = filter
+        .toString()
+        .replace('Opponent+King+Reached+the+Hill', 'KingOfTheHill')
+    }
+    if (filter.includes('Checked+for+the+Third+Time')) {
+      filter = filter
+        .toString()
+        .replace('Checked+for+the+Third+Time', 'ThreeCheck')
+    }
+    if (filter.includes('Draw+by+Timeout+vs+Insufficient')) {
+      filter = filter
+        .toString()
+        .replace('Draw+by+Timeout+vs+Insufficient', 'TimeVsInsufficient')
+    }
+    if (filter.includes('Bughouse+Partner+Lost')) {
+      filter = filter
+        .toString()
+        .replace('Bughouse+Partner+Lost', 'BughousePartnerLose')
+    }
+    if (filter.includes('Losers+All+Captured')) {
+      filter = filter
+        .toString()
+        .replace('Losers+All+Captured', 'LosersAllCaptured')
+    }
+    if (filter.includes('Losers+Stalemate')) {
+      filter = filter.toString().replace('Losers+Stalemate', 'LosersStalemate')
+    }
+  }
+  return filter
+}
+
 export const getTreasuresWithFilter = async ({
   username,
   owner,
@@ -179,18 +229,16 @@ export const getTreasuresWithFilter = async ({
   sort,
   page = 0,
 }) => {
+  filter = matchTerminationFilterQueryToBackend(filter)
   const whereQuery = getWhereQueryFromArgs({ username, filter, owner, sort })
   const orderByQuery = getOrderByQueryFromArgs({ sort })
+  logger.debug(`filter: ${filter}`)
+  logger.debug(`owner: ${owner}`)
   // Cannot use cursor pagination, since custom sorting is needed
   const skip = page * TREASURES_PER_PAGE
   const treasures = await db.treasure.findMany({
     skip,
-    include: {
-      marketSales: {
-        orderBy: { updatedAt: 'desc' },
-        take: 1,
-      },
-    },
+    include: { marketSales: { orderBy: { updatedAt: 'desc' }, take: 1 } },
     // Taking 9 elements may cause issues if there's only <9 to take?
     take: TREASURES_PER_PAGE,
     // take: Math.min(count - skip, TREASURES_PER_PAGE),
@@ -198,7 +246,7 @@ export const getTreasuresWithFilter = async ({
     // TODO: add sorting, see https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#orderby
     orderBy: orderByQuery,
   })
-  logger.debug({ custom: treasures[0] }, 'one treasure')
+  // logger.debug({ custom: treasures[0] }, 'one treasure')
   return treasures
 }
 
@@ -207,6 +255,7 @@ export const getTreasuresWithFilterCount = async ({
   filter,
   owner,
 }) => {
+  filter = matchTerminationFilterQueryToBackend(filter)
   const whereQuery = getWhereQueryFromArgs({ username, filter, owner })
   // Note: count takes up to 2+ seconds to the query for large db (1M+ elements)
   return db.treasure.count({ where: whereQuery })

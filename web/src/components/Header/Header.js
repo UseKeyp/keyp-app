@@ -1,7 +1,11 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect } from 'react'
 import { routes, useLocation } from '@redwoodjs/router'
 import { useAuth } from '@redwoodjs/auth'
-import { useWallet } from 'src/providers/wallet'
+import { useRamp } from 'src/providers/ramp/ramp'
+
+import { useLocale } from 'src/providers/locale'
+
+import { Menu } from 'framework7-icons/react'
 
 import Icon from 'src/components/Icon/Icon'
 import Avatar from 'src/components/Avatar/Avatar'
@@ -11,9 +15,12 @@ import MobileMenu from 'src/components/MobileMenu/MobileMenu'
 import MemberBalance from 'src/components/Member/MemberBalance'
 
 import { trimAddress } from 'src/utils/helpers'
+import Tooltip from 'src/components/Tooltip/Tooltip'
+
+import SiteFooter from 'src/components/SiteFooter/SiteFooter'
 
 const WalletBalance = () => {
-  const { deposit } = useWallet()
+  const { deposit } = useRamp()
   return (
     <div className="flex flex-col flex-1 text-sm">
       <div className={'header__nav__balance'}>
@@ -25,7 +32,7 @@ const WalletBalance = () => {
           textColor="blue"
           className={'header__nav__fund-wallet'}
         >
-          Add Funds
+          {t('Add Funds')}
         </Button>
       </div>
     </div>
@@ -35,6 +42,7 @@ const WalletBalance = () => {
 const MobileNav = () => {
   const { isAuthenticated: isLoggedIn, logOut } = useAuth()
   const { pathname } = useLocation()
+  const { t } = useLocale()
 
   const isOnTreasuresPage = pathname === '/treasures'
   const isOnAboutPage = pathname === '/about'
@@ -43,19 +51,19 @@ const MobileNav = () => {
   const navAnchorClasses = 'text-center w-full font-bold'
 
   return (
-    <MobileMenu triggerContents="Menu">
+    <MobileMenu triggerContents={<Menu className="w-7 h-7" />}>
       <div className="flex-1 flex justify-center">
         <nav>
           <ul className="h-full relative grid place-items-center">
             <li className={navItemClasses}>
               <Button to={routes.home()}>
                 <Icon name="treasure_chess_full" height="35px" color="#fff" />
-                <span className="sr-only">home</span>
+                <span className="sr-only">{t('home')}</span>
               </Button>
             </li>
             <li className={navItemClasses}>
               <Button isSelected={isOnTreasuresPage} to={routes.treasures()}>
-                Treasures
+                {t('Treasures')}
               </Button>
             </li>
             <li className={navItemClasses}>
@@ -64,29 +72,32 @@ const MobileNav = () => {
                 to={routes.about()}
                 className={navAnchorClasses}
               >
-                About
+                {t('About')}
               </Button>
             </li>
             {!isLoggedIn ? (
               <li className={navItemClasses}>
                 <Button className={navAnchorClasses} to={routes.signin()}>
-                  Sign In
+                  {t('Sign In')}
                 </Button>
               </li>
             ) : (
               <>
                 <li className={navItemClasses}>
                   <Button className={navAnchorClasses} to={routes.profile()}>
-                    Profile
+                    {t('Profile')}
                   </Button>
                 </li>
                 <li className={navItemClasses}>
                   <Button className={navAnchorClasses} onClick={logOut}>
-                    Log Out
+                    {t('Log Out')}
                   </Button>
                 </li>
               </>
             )}
+            <div className="fixed bottom-0">
+              <SiteFooter />
+            </div>
           </ul>
         </nav>
       </div>
@@ -101,6 +112,7 @@ const Header = () => {
     logOut,
   } = useAuth()
   const { pathname } = useLocation()
+  const { t } = useLocale()
 
   const isOnTreasuresPage = pathname === '/treasures'
   const isOnAboutPage = pathname === '/about'
@@ -110,11 +122,12 @@ const Header = () => {
   const address = trimAddress(profile?.address) || 'No address set'
 
   const handleUserStatus = useCallback(() => {
-    if (profile !== null && profile?.banned) {
-      logOut()
+    if (profile) {
+      if (profile?.banned) {
+        logOut()
+      }
     }
   }, [profile, logOut])
-  const [isShowingTooltip, setIsShowingTooltip] = useState(false)
 
   useEffect(() => {
     handleUserStatus()
@@ -140,7 +153,7 @@ const Header = () => {
                 <div className="mr-2">
                   <Icon name="treasure_chess" color="#ffffff" height="16px" />
                 </div>
-                Treasures
+                {t('Treasures')}
               </div>
             </Button>
           </div>
@@ -151,7 +164,7 @@ const Header = () => {
                   {' '}
                   <Icon name="help" size="small" />{' '}
                 </div>
-                About
+                {t('About')}
               </div>
             </Button>
           </div>
@@ -175,18 +188,21 @@ const Header = () => {
             </div>
             <WalletBalance />
             <div className="ml-4">
-              <Button
-                onClick={logOut}
-                onMouseEnter={() => setIsShowingTooltip(true)}
-                onMouseLeave={() => setIsShowingTooltip(false)}
-              >
-                <Icon name="logout" color="grey" />
+              <Button onClick={logOut}>
+                <Tooltip
+                  id="logout-tooltip"
+                  effect="solid"
+                  text="Log Out"
+                  position="bottom"
+                  bgColor="dark"
+                >
+                  <Icon name="logout" color="grey" />
+                </Tooltip>
               </Button>
-              {isShowingTooltip && <p className="header__tooltip">Log out</p>}
             </div>
           </div>
         ) : (
-          <Button to={routes.signin()}>Sign In</Button>
+          <Button to={routes.signin()}>{t('Sign In')}</Button>
         )}
       </div>
     </div>
