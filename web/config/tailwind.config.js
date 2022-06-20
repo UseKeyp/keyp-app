@@ -12,7 +12,7 @@ module.exports = konstaConfig({
         // 'page-ios-light': '#fff',
         // 'page-ios-dark': '#000',
         primary: {
-          light: '#3d3a35',
+          light: '#fff',
           DEFAULT: '#272522',
           dark: '#11100f',
         },

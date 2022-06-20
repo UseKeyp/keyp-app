@@ -88,32 +88,32 @@ export const MintModal = ({ isVisible, toggleModal, onSubmit }) => {
   const { mintCreditBalance } = useWallet()
   const providers = [
     {
-      name: 'Credits',
+      name: 'Mint Credits',
       type: 'CREDIT',
       description: (
         <>
-          Pay with Mint Credits: <b>${mintCreditBalance}</b> available
+          Balance: <b>${mintCreditBalance}</b>
         </>
       ),
       helperText: '',
-      iconName: 'treasure_chess_full',
+      // iconName: 'treasure_chess_full',
       disabled: mintCreditBalance < 1,
-    },
-    {
-      name: 'Stripe',
-      type: 'STRIPE',
-      description: 'Pay by card',
-      helperText: '',
-      disabled: true,
-      iconName: 'stripe',
     },
     {
       name: 'Wyre',
       type: 'WYRE',
-      description: 'Pay by card',
+      description: 'Pay with card',
       helperText:
         'Tip: Do not use auto-complete, a password manager, or copy/paste. Try using a different email if your first attempt fails.',
       iconName: 'wyre',
+    },
+    {
+      name: 'Stripe',
+      type: 'STRIPE',
+      description: 'Pay with card',
+      helperText: '',
+      disabled: true,
+      iconName: 'stripe',
     },
   ]
   const onClick = (type) => {
@@ -129,7 +129,10 @@ export const MintModal = ({ isVisible, toggleModal, onSubmit }) => {
       cancelText="Back"
       content={
         <>
-          <p className="text-base">Choose a payment type and provider</p>
+          <p className="text-base">
+            Choose a payment method. The $5 minting fee helps keep the world
+            free from spam Treasures.
+          </p>
           {providers.map((provider) => (
             <CheckoutProvider
               key={provider.name}
