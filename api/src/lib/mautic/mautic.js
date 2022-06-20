@@ -27,6 +27,7 @@ const getMauticToken = async () => {
 }
 
 const fetchMautic = async ({ body, method, path }) => {
+  if (!process.env.MAUTIC_CLIENT_SECRET) return
   const authToken = await getMauticToken()
   return fetch(`${MAUTIC_API}${path}`, {
     method,
@@ -119,6 +120,7 @@ export const updateMauticContactMinted = async ({ member, purchase }) => {
 }
 
 export const sendEmail = async ({ emailId, tokens, contact }) => {
+  if (!process.env.MAUTIC_CLIENT_SECRET) return
   const authToken = await getMauticToken()
   return fetch(`${MAUTIC_API}/emails/${emailId}/contact/${contact.id}/send`, {
     method: 'POST',
