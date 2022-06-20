@@ -61,8 +61,7 @@ export const handler = async (event, context) => {
     cookie: {
       HttpOnly: true,
       Path: '/',
-      // SameSite: 'None',
-      SameSite: isProduction ? 'Strict' : 'None',
+      SameSite: 'Strict',
       Secure: isProduction,
       ...(isProduction && {
         Domain: process.env.APP_DOMAIN.split('://')[1],

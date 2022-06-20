@@ -100,20 +100,20 @@ export const MintModal = ({ isVisible, toggleModal, onSubmit }) => {
       disabled: mintCreditBalance < 1,
     },
     {
-      name: 'Stripe',
-      type: 'STRIPE',
-      description: 'Pay by card',
-      helperText: '',
-      disabled: true,
-      iconName: 'stripe',
-    },
-    {
       name: 'Wyre',
       type: 'WYRE',
-      description: 'Pay by card',
+      description: 'Pay with card',
       helperText:
         'Tip: Do not use auto-complete, a password manager, or copy/paste. Try using a different email if your first attempt fails.',
       iconName: 'wyre',
+    },
+    {
+      name: 'Stripe',
+      type: 'STRIPE',
+      description: 'Pay with card',
+      helperText: '',
+      disabled: true,
+      iconName: 'stripe',
     },
   ]
   const onClick = (type) => {
