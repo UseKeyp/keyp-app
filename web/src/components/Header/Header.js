@@ -98,6 +98,9 @@ const MobileNav = () => {
                 </div>
               </>
             )}
+            <div className="fixed bottom-0">
+              <SiteFooter />
+            </div>
           </ul>
         </nav>
       </div>

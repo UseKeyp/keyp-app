@@ -125,60 +125,9 @@ const MarketProvider = ({ children }) => {
     },
   })
 
-  // const [treasureWithMarketSalesLazyQuery] = useLazyQuery(
-  //   TREASURE_WITH_MARKET_SALES_QUERY
-  //   // { fetchPolicy: 'network-only' }
-  // )
   const [listTreasureMutation] = useMutation(LIST_MARKET_SALE_MUTATION)
   const [unlistTreasureMutation] = useMutation(UNLIST_MARKET_SALE_MUTATION)
   const [buyTreasureMutation] = useMutation(BUY_MARKET_SALE_MUTATION)
-
-  // const fetchData = async () => {
-  //   console.log(`fetchData ${state.marketLoading}`)
-  //   try {
-  //     const { data: { treasureWithMarketSales } = {}, error } =
-  //       await treasureWithMarketSalesLazyQuery({
-  //         variables: { tokenId: state.tokenId },
-  //       })
-  //     console.log(error)
-  //     console.log({ treasureWithMarketSales })
-  //
-  //     console.log(`treasureWithMarketSales ${state.marketLoading}`)
-  //     if (!treasureWithMarketSales?.marketSales?.length)
-  //       return setState({
-  //         ...state,
-  //         marketLoading: false,
-  //         marketStatus: null,
-  //         treasure: treasureWithMarketSales,
-  //       })
-  //     const marketSale = [...treasureWithMarketSales.marketSales]?.sort(
-  //       (a, b) => b.id - a.id
-  //     )[0] // Gets the most recent item
-  //     if (!marketSale)
-  //       return setState({
-  //         ...state,
-  //         marketLoading: false,
-  //         marketStatus: null,
-  //         treasure: treasureWithMarketSales,
-  //       })
-  //     const { status, isClosed, amount } = marketSale
-  //     let shouldPoll = false
-  //     if (status.includes('PENDING')) shouldPoll = true
-  //     setState({
-  //       ...state,
-  //       marketLoading: false,
-  //       treasure: treasureWithMarketSales,
-  //       marketSale,
-  //       marketStatus: status,
-  //       isClosed,
-  //       amount,
-  //       shouldPoll,
-  //     })
-  //   } catch (e) {
-  //     // Do nothing
-  //     console.log('error')
-  //   }
-  // }
 
   const onConfirmList = async () => {
     try {
