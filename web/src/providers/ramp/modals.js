@@ -1,4 +1,3 @@
-import { Trans, useTranslation } from 'react-i18next'
 import { useAuth } from '@redwoodjs/auth'
 import { Link, routes } from '@redwoodjs/router'
 
@@ -78,17 +77,17 @@ const OnRampProvider = ({ ramp, toggleModal, isLoading, onSubmit }) => {
   if (!ramp) return null
   let onClick = async () => {
     await onSubmit(ramp.type)
-    toggleModal()
+    toggleModal && toggleModal()
   }
   if (ramp.type === 'WALLET_DEPOSIT')
     onClick = () => {
       toggleModal()
-      getAddress(currentUser.address)
+      toggleModal && getAddress(currentUser.address)
     }
 
   return (
     <Provider
-      onSubmit={onClick}
+      onSubmit={async () => await onClick()}
       highlight={true}
       isLoading={isLoading === ramp.type}
       {...ramp}
@@ -149,11 +148,24 @@ const OffRampProvider = ({ ramp, amount }) => {
   )
 }
 
-export const DepositModal = ({ isVisible, toggleModal }) => {
-  const { getRampUrl, isLoading } = useRamp()
-  const onSubmit = (type) => getRampUrl({ direction: 'ON', type })
-  const { t } = useTranslation('web')
-
+export const getDepositOptions = ({ getRampUrl, isLoading, toggleModal }) => {
+  const onSubmit = async (type) => await getRampUrl({ direction: 'ON', type })
+  const feedbackSuggestionCta = {
+    name: 'Your favorite provider',
+    disabled: true,
+    highlight: false,
+    hideButton: true,
+    description: (
+      <p className="mt-4">
+        <Trans i18nkey="FaroviteOnRampDetails">
+          Have a suggestion?{' '}
+          <Link to={routes.settings()} className="underline">
+            Let us know!
+          </Link>
+        </Trans>
+      </p>
+    ),
+  }
   const onRamps = [
     {
       type: 'RAMP_NETWORK',
@@ -314,24 +326,17 @@ export const DepositModal = ({ isVisible, toggleModal }) => {
       ),
     },
   ]
-
-  const feedbackSuggestionCta = {
-    name: 'Your favorite provider',
-    disabled: true,
-    highlight: false,
-    hideButton: true,
-    description: (
-      <p className="mt-4">
-        <Trans i18nkey="FaroviteOnRampDetails">
-          Have a suggestion?{' '}
-          <Link to={routes.settings()} className="underline">
-            Let us know!
-          </Link>
-        </Trans>
-      </p>
-    ),
-  }
-
+  return [...onRamps, feedbackSuggestionCta].map((ramp) => (
+    <OnRampProvider
+      key={ramp.name}
+      ramp={ramp}
+      toggleModal={toggleModal}
+      isLoading={isLoading}
+      onSubmit={onSubmit}
+    />
+  ))
+}
+export const DepositModal = ({ isVisible, toggleModal }) => {
   return (
     <ModalContainer
       isVisible={isVisible}
@@ -340,15 +345,7 @@ export const DepositModal = ({ isVisible, toggleModal }) => {
       content={
         <>
           <p className="text-base">Choose a payment provider</p>
-          {[...onRamps, feedbackSuggestionCta].map((ramp) => (
-            <OnRampProvider
-              key={ramp.name}
-              ramp={ramp}
-              toggleModal={toggleModal}
-              isLoading={isLoading}
-              onSubmit={onSubmit}
-            />
-          ))}
+          {getDepositOptions(toggleModal)}
         </>
       }
     />

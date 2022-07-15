@@ -1,4 +1,4 @@
-import { useLazyQuery, useMutation, useQuery } from '@apollo/client'
+import { useMutation, useQuery } from '@apollo/client'
 import { useAuth } from '@redwoodjs/auth'
 import { isBrowser } from '@redwoodjs/prerender/browserUtils'
 import { routes, Link } from '@redwoodjs/router'
@@ -14,7 +14,7 @@ import { useModal } from 'src/hooks/useModal'
 import {
   MEMBER_RAMPS_QUERY,
   RAMP_WITHDRAW_MUTATION,
-  RAMP_URL_QUERY,
+  RAMP_URL_MUTATION,
 } from './graphql'
 
 const EXTERNAL_TRANSFER = 'EXTERNAL_TRANSFER'
@@ -128,7 +128,7 @@ const RampProvider = ({ children }) => {
     helperText: (
       <p className="italic">
         <Trans i18nkey="web:requestBetaAccess">
-          Beta feature. Request to be a Beta Tester in{' '}
+          <b>Beta feature</b>. Request to be a Beta Tester in{' '}
           <Link className="underline" to={routes.settings()}>
             Settings
           </Link>
@@ -150,6 +150,7 @@ const RampProvider = ({ children }) => {
     skip: !isAuthenticated || !shouldPoll,
     fetchPolicy: 'network-only',
   })
+
   const updateRamps = () => {
     const coinbaseRamp = ramps.find((ramp) => ramp.type === COINBASE)
     const wyreRamp = ramps.find((ramp) => ramp.type === WYRE)
@@ -166,31 +167,11 @@ const RampProvider = ({ children }) => {
     setShouldPoll(false)
   }
 
-  React.useEffect(() => {
-    if (errorOAuth != '' && errorOAuth != null) {
-      if (errorOAuth.includes('COINBASE')) {
-        coinbase.error = errorOAuth
-        setCoinbase({
-          ...coinbase,
-          error: errorOAuth,
-        })
-      } else if (errorOAuth.includes('WYRE')) {
-        wyre.error = errorOAuth
-        setWyre({
-          ...wyre,
-          error: errorOAuth,
-        })
-      }
-    }
-    if (!ramps) return
-    updateRamps()
-    /* eslint-disable-next-line react-hooks/exhaustive-deps */
-  }, [ramps, errorOAuth])
-
-  const [rampUrlQuery] = useLazyQuery(RAMP_URL_QUERY, {
+  const [rampUrlMutation] = useMutation(RAMP_URL_MUTATION, {
     fetchPolicy: 'network-only',
-    nextFetchPolicy: 'cache-first',
+    // nextFetchPolicy: 'cache-first',
   })
+
   const [rampWithdrawMutation] = useMutation(RAMP_WITHDRAW_MUTATION)
 
   const getRampUrl = async ({ type, direction }) => {
@@ -203,11 +184,13 @@ const RampProvider = ({ children }) => {
       )
       myWindow.document.write(popupLoadingHtml)
       setState({ ...state, isLoading: type, rampError: '' })
+      const { data, error } = await rampUrlMutation({
+        variables: { direction, type },
+      })
+      if (error) throw error
       const {
-        data: {
-          getRampUrl: { url },
-        },
-      } = await rampUrlQuery({ variables: { direction, type } })
+        getRampUrl: { url },
+      } = data
       if (isBrowser && url) {
         myWindow.location = url
         setState({ ...state, isLoading: false, rampError: '' })
@@ -221,7 +204,6 @@ const RampProvider = ({ children }) => {
         myWindow.close()
       }, 3000)
     }
-    toggleModalDep()
   }
 
   const connectWyre = async () => {
@@ -348,6 +330,27 @@ const RampProvider = ({ children }) => {
   //     setCoinbase({ isLoading: false, error: e.message, ...coinbase })
   //   }
   // }
+
+  React.useEffect(() => {
+    if (errorOAuth != '' && errorOAuth != null) {
+      if (errorOAuth.includes('COINBASE')) {
+        coinbase.error = errorOAuth
+        setCoinbase({
+          ...coinbase,
+          error: errorOAuth,
+        })
+      } else if (errorOAuth.includes('WYRE')) {
+        wyre.error = errorOAuth
+        setWyre({
+          ...wyre,
+          error: errorOAuth,
+        })
+      }
+    }
+    if (!ramps) return
+    updateRamps()
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+  }, [ramps, errorOAuth])
 
   return (
     <RampContext.Provider
