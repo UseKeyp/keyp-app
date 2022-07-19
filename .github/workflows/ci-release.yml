@@ -29,7 +29,7 @@ jobs:
   update-version:
     name: Update Version
     runs-on: ubuntu-latest
-    needs: [skip-release]
+    needs: skip-release
     if: needs.skip-release.outputs.SKIP_RELEASE == 0
     outputs:
       IS_PRERELEASE: ${{ steps.update_version.IS_PRERELEASE }}
