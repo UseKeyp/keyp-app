@@ -71,6 +71,12 @@ jobs:
     env:
       FORCE_COLOR: 1
     steps:
+      - name: Discord notify building
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_RELEASE }}
+        uses: Ilshidur/action-discord@0c4b27844ba47cb1c7bee539c8eead5284ce9fa9
+        with:
+          args: 🏭 Building... `${{  needs.update-version.outputs.VERSION }}`
       - name: Checkout Source
         uses: actions/checkout@v3
 
@@ -102,9 +108,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           draft: true
-          prerelease: ${{ steps.update-version.outputs.IS_PRERELEASE }}
-          release_name: ${{ steps.update-version.outputs.VERSION }}
-          tag_name: ${{ steps.update-version.outputs.VERSION }}
+          prerelease: ${{ needs.update-version.outputs.IS_PRERELEASE }}
+          release_name: ${{ needs.update-version.outputs.VERSION }}
+          tag_name: ${{ needs.update-version.outputs.VERSION }}
           body: |
             Changes in this Release
             ## Changed
@@ -117,4 +123,6 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_DEVOPS }}
         uses: Ilshidur/action-discord@0c4b27844ba47cb1c7bee539c8eead5284ce9fa9
         with:
-          args: 🗒️ Draft Release created for `${{ needs.update-version.outputs.VERSION }}` ${{ steps.create_release.outputs.html_url }}
+          args: |
+            🗒️ Draft Release created for `${{ needs.update-version.outputs.VERSION }}` ${{ steps.create_release.outputs.html_url }}
+            `docker pull ghcr.io/pi0neerpat/treasure-chess-api:${{ needs.update-version.outputs.VERSION }}`
