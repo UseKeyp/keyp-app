@@ -8,12 +8,12 @@ on:
 jobs:
   skip-release:
     name: Skip Release
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     outputs:
-      SKIP_RELEASE: ${{ steps.skip-release.SKIP_RELEASE }}
+      SKIP_RELEASE: ${{ steps.skip_release.outputs.SKIP_RELEASE }}
     steps:
       - name: Skip release
-        id: skip-release
+        id: skip_release
         run: |
           SKIP_RELEASE=0
           if grep -q '^v[0-9]' <<< "${{ github.event.head_commit.message }}" ; then
@@ -28,12 +28,12 @@ jobs:
 
   update-version:
     name: Update Version
-    runs-on: ubuntu-latest
-    needs: skip-release
-    if: needs.skip-release.outputs.SKIP_RELEASE == 0
+    runs-on: ubuntu-20.04
+    needs: skip_release
+    if: needs.skip_release.outputs.SKIP_RELEASE == 0
     outputs:
-      IS_PRERELEASE: ${{ steps.update-version.IS_PRERELEASE }}
-      VERSION: ${{ steps.update-version.VERSION }}
+      IS_PRERELEASE: ${{ steps.update_version.outputs.IS_PRERELEASE }}
+      VERSION: ${{ steps.update_version.outputs.VERSION }}
     steps:
       - name: Checkout Source
         uses: actions/checkout@v3
@@ -47,7 +47,7 @@ jobs:
           registry-url: https://registry.npmjs.org/
 
       - name: Update version
-        id: update-version
+        id: update_version
         env:
           GH_TOKEN: ${{ secrets.PAT_GITHUB }}
         run: |
@@ -66,8 +66,8 @@ jobs:
 
   build:
     name: Build and Push Images
-    needs: update-version
-    runs-on: ubuntu-latest
+    needs: update_version
+    runs-on: ubuntu-20.04
     env:
       FORCE_COLOR: 1
     steps:
@@ -85,27 +85,26 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push images
-        run: earthly --ci --push -P --VERSION=${{ needs.update-version.outputs.VERSION }} +docker
+        run: earthly --ci --push -P --VERSION=${{ needs.update_version.outputs.VERSION }} +docker
 
   create-release-draft:
     name: Create Release Draft
-    needs: [skip-release, update-version, build]
-    if: needs.skip-release.outputs.SKIP_RELEASE == 0
-    runs-on: ubuntu-latest
+    needs: build
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout Source
         uses: actions/checkout@v2
 
       - name: Create release draft
-        id: create-release
+        id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           draft: true
-          prerelease: ${{ steps.update-version.outputs.IS_PRERELEASE }}
-          release_name: ${{ steps.update-version.outputs.VERSION }}
-          tag_name: ${{ steps.update-version.outputs.VERSION }}
+          prerelease: ${{ steps.update_version.outputs.IS_PRERELEASE }}
+          release_name: ${{ steps.update_version.outputs.VERSION }}
+          tag_name: ${{ steps.update_version.outputs.VERSION }}
           body: |
             Changes in this Release
             ## Changed
@@ -118,4 +117,4 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_DEVOPS }}
         uses: Ilshidur/action-discord@0c4b27844ba47cb1c7bee539c8eead5284ce9fa9
         with:
-          args: 🗒️ Draft Release created for `${{ steps.update-version.outputs.VERSION }}` ${{ steps.create-release.outputs.html_url }}
+          args: 🗒️ Draft Release created for `${{ steps.update_version.outputs.VERSION }}` ${{ steps.create_release.outputs.html_url }}
