@@ -2,8 +2,8 @@
 name: CI - Release
 
 on:
- push:
-   branches: [main, staging, dev]
+  push:
+    branches: [main, staging, dev]
 
 jobs:
   skip-release:
@@ -16,9 +16,10 @@ jobs:
         id: skip_release
         run: |
           SKIP_RELEASE=0
-          if grep -q '^v[0-9]' <<< "${{ github.event.head_commit.message }}" ; then
-            SKIP_RELEASE=1
-          elif github.event_name == 'pull_request' ; then
+          # if grep -q '^v[0-9]' <<< "${{ github.event.head_commit.message }}" ; then
+            # SKIP_RELEASE=1
+          # elif github.event_name == 'pull_request' ; then
+          if github.event_name == 'pull_request' ; then
             SKIP_RELEASE=1
           elif ! grep -q 'staging\|main' <<< "${{ github.ref_name }}" ; then
             SKIP_RELEASE=1
