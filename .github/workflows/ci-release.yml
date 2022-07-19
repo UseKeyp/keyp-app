@@ -10,10 +10,10 @@ jobs:
     name: Skip Release
     runs-on: ubuntu-latest
     outputs:
-      SKIP_RELEASE: ${{ steps.skip_release.SKIP_RELEASE }}
+      SKIP_RELEASE: ${{ steps.skip-release.SKIP_RELEASE }}
     steps:
       - name: Skip release
-        id: skip_release
+        id: skip-release
         run: |
           SKIP_RELEASE=0
           if grep -q '^v[0-9]' <<< "${{ github.event.head_commit.message }}" ; then
@@ -32,8 +32,8 @@ jobs:
     needs: skip-release
     if: needs.skip-release.outputs.SKIP_RELEASE == 0
     outputs:
-      IS_PRERELEASE: ${{ steps.update_version.IS_PRERELEASE }}
-      VERSION: ${{ steps.update_version.VERSION }}
+      IS_PRERELEASE: ${{ steps.update-version.IS_PRERELEASE }}
+      VERSION: ${{ steps.update-version.VERSION }}
     steps:
       - name: Checkout Source
         uses: actions/checkout@v3
@@ -47,7 +47,7 @@ jobs:
           registry-url: https://registry.npmjs.org/
 
       - name: Update version
-        id: update_version
+        id: update-version
         env:
           GH_TOKEN: ${{ secrets.PAT_GITHUB }}
         run: |
@@ -66,7 +66,7 @@ jobs:
 
   build:
     name: Build and Push Images
-    needs: [update-version]
+    needs: update-version
     runs-on: ubuntu-latest
     env:
       FORCE_COLOR: 1
@@ -97,15 +97,15 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Create release draft
-        id: create_release
+        id: create-release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           draft: true
-          prerelease: ${{ steps.update_version.outputs.IS_PRERELEASE }}
-          release_name: ${{ steps.update_version.outputs.VERSION }}
-          tag_name: ${{ steps.update_version.outputs.VERSION }}
+          prerelease: ${{ steps.update-version.outputs.IS_PRERELEASE }}
+          release_name: ${{ steps.update-version.outputs.VERSION }}
+          tag_name: ${{ steps.update-version.outputs.VERSION }}
           body: |
             Changes in this Release
             ## Changed
@@ -118,4 +118,4 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_DEVOPS }}
         uses: Ilshidur/action-discord@0c4b27844ba47cb1c7bee539c8eead5284ce9fa9
         with:
-          args: 🗒️ Draft Release created for `${{ steps.update_version.outputs.VERSION }}` ${{ steps.create_release.outputs.html_url }}
+          args: 🗒️ Draft Release created for `${{ steps.update-version.outputs.VERSION }}` ${{ steps.create-release.outputs.html_url }}
