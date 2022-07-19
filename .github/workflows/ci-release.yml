@@ -85,7 +85,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push images
-        run: earthly --ci --push -P --VERSION=${{ needs.update-version.outputs.VERSION }} +docker
+        run: earthly --ci --push -P +docker --VERSION=${{ needs.update-version.outputs.VERSION }}
 
   create-release-draft:
     name: Create Release Draft
