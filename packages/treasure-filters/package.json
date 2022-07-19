@@ -1,6 +1,6 @@
 {
   "name": "@treasure-chess/treasure-filters",
-  "version": "1.0.7-staging.16",
+  "version": "1.0.7-staging.17",
   "description": "",
   "main": "dist/filters",
   "module": "src/filters",
