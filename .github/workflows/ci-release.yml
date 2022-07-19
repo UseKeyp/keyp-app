@@ -76,7 +76,7 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_RELEASE }}
         uses: Ilshidur/action-discord@0c4b27844ba47cb1c7bee539c8eead5284ce9fa9
         with:
-          args: 🏭 Building... `${{  needs.update-version.outputs.VERSION }}`
+          args: 🏭 Building draft image for GHCR... `${{  needs.update-version.outputs.VERSION }}`
       - name: Checkout Source
         uses: actions/checkout@v3
 
@@ -120,7 +120,7 @@ jobs:
 
       - name: Discord notify release draft
         env:
-          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_DEVOPS }}
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_RELEASE }}
         uses: Ilshidur/action-discord@0c4b27844ba47cb1c7bee539c8eead5284ce9fa9
         with:
           args: |

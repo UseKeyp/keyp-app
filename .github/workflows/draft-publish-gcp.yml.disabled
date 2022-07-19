@@ -1,3 +1,8 @@
+# The idea here is that the "draft" images on GHCR can just be re-tagged.
+# and pushed to the production registry, without building new ones.
+# The problem is that env variables in production won't allow testing locally
+# Such as the domain/origin stuff.
+
 name: 'GCP Publish Docker'
 on:
   release:
