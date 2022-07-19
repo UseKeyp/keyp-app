@@ -16,10 +16,9 @@ jobs:
         id: skip_release
         run: |
           SKIP_RELEASE=0
-          # if grep -q '^v[0-9]' <<< "${{ github.event.head_commit.message }}" ; then
-            # SKIP_RELEASE=1
-          # elif github.event_name == 'pull_request' ; then
-          if github.event_name == 'pull_request' ; then
+          if grep -q '^v[0-9]' <<< "${{ github.event.head_commit.message }}" ; then
+             SKIP_RELEASE=1
+          elif github.event_name == 'pull_request' ; then
             SKIP_RELEASE=1
           elif ! grep -q 'staging\|main' <<< "${{ github.ref_name }}" ; then
             SKIP_RELEASE=1
@@ -38,6 +37,8 @@ jobs:
     steps:
       - name: Checkout Source
         uses: actions/checkout@v3
+        with:
+          persist-credentials: false
 
       - name: Use Node.js 12.x
         uses: actions/setup-node@v1
