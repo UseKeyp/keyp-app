@@ -3,13 +3,11 @@ import { useAuth } from '@redwoodjs/auth'
 import { isBrowser } from '@redwoodjs/prerender/browserUtils'
 import { routes, Link } from '@redwoodjs/router'
 import popupLoadingHtml from 'src/utils/popupLoadingHtml'
-import { DepositModal, WithdrawModal } from 'src/providers/ramp/modals'
 import Icon from 'src/components/Icon/Icon'
 
 import { useToast } from 'src/providers/toast'
 import { TxToast } from 'src/providers/market/toasts'
 import { useOAuth } from 'src/providers/oAuth'
-import { useModal } from 'src/hooks/useModal'
 
 import {
   MEMBER_RAMPS_QUERY,
@@ -86,7 +84,8 @@ const RampProvider = ({ children }) => {
       <img
         src="/icons/wyre_plaid.png"
         alt="Wyre and Plaid logos"
-        className="h-12"
+        className="h-[38px]"
+        height="38px"
       />
     ),
     description: (
@@ -105,7 +104,9 @@ const RampProvider = ({ children }) => {
     type: EXTERNAL_TRANSFER,
     icon: (
       <div className="flex py-1 justify-center flex-row items-center">
-        <Icon name="metamask" className="w-6 h-6 m-4" />
+        <div className="w-6 h-6 m-4 min-w-6 min-h-6">
+          <Icon name="metamask" className="w-6 h-6 m-4" />
+        </div>
         <img
           alt="rainbow"
           src="/rainbow_wallet.png"
@@ -137,9 +138,6 @@ const RampProvider = ({ children }) => {
       </p>
     ),
   }
-
-  const { isVisible: isVisibleDep, toggleModal: toggleModalDep } = useModal()
-  const { isVisible: isVisibleWit, toggleModal: toggleModalWit } = useModal()
 
   const {
     data: { ramps } = {},
@@ -358,8 +356,6 @@ const RampProvider = ({ children }) => {
         isLoading: state.isLoading || rampsLoading,
         rampError: rampError || state.rampError,
         getRampUrl,
-        deposit: toggleModalDep,
-        withdraw: toggleModalWit,
         offRamps: [
           {
             ...wyre,
@@ -377,8 +373,6 @@ const RampProvider = ({ children }) => {
         ],
       }}
     >
-      <DepositModal isVisible={isVisibleDep} toggleModal={toggleModalDep} />
-      <WithdrawModal isVisible={isVisibleWit} toggleModal={toggleModalWit} />
       {children}
     </RampContext.Provider>
   )

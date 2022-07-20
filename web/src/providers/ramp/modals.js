@@ -1,14 +1,11 @@
 import { useAuth } from '@redwoodjs/auth'
 import { Link, routes } from '@redwoodjs/router'
 
-import ModalContainer from 'src/components/ModalContainer'
 import Icon from 'src/components/Icon'
-import FilterPriceInput from 'src/components/FilterPriceInput'
 import LoadingDots from 'src/components/LoadingDots'
 import Button from 'src/components/Button'
 
 import { trimAddress, getBlockExplorerUrl } from 'src/utils/helpers'
-import { useRamp } from 'src/providers/ramp/ramp'
 import { useWallet } from 'src/providers/wallet'
 
 const Provider = ({
@@ -28,7 +25,7 @@ const Provider = ({
 }) => {
   let backgroundColor =
     isLoading || disabled ? 'bg-chessBlack-200 pointer-events-none' : 'bg-green'
-  const buttonClassName = `mt-2 w-[272px] h-[40px] text-xl shadow-m hover:sm hover:bg-greenDark hover:shadow-greenDark ${backgroundColor}`
+  const buttonClassName = `mt-2 w-full h-[40px] text-xl shadow-m hover:sm hover:bg-greenDark hover:shadow-greenDark ${backgroundColor}`
   let errorText
   if (error != null && error != '' && error.length > 0) {
     errorText = error.substring(0, 200)
@@ -39,9 +36,11 @@ const Provider = ({
   let button = (
     <Button
       id="connection-button"
-      className={buttonClassName}
+      className={`w-32 ${buttonClassName}`}
       onClick={onSubmit}
       disabled={isLoading || disabled}
+      size="small"
+      variant="green"
     >
       {isLoading ? <LoadingDots /> : buttonText}
     </Button>
@@ -54,8 +53,8 @@ const Provider = ({
   if (icon) iconContent = icon
   return (
     <div
-      className={`align-center bg-chessBlack-100 mt-6 p-4 rounded-lg border-[1px] ${
-        highlight ? 'border-green' : 'border-chessBlack-100'
+      className={`align-center h-full bg-chessBlack-200 p-4 rounded-lg border-[1px] ${
+        highlight ? 'border-green' : 'border-chessBlack-200'
       }`}
     >
       <div className="flex align-center items-center">{iconContent}</div>
@@ -81,13 +80,13 @@ const OnRampProvider = ({ ramp, toggleModal, isLoading, onSubmit }) => {
   }
   if (ramp.type === 'WALLET_DEPOSIT')
     onClick = () => {
-      toggleModal()
-      toggleModal && getAddress(currentUser.address)
+      if (toggleModal) toggleModal()
+      getAddress(currentUser.address)
     }
 
   return (
     <Provider
-      onSubmit={async () => await onClick()}
+      onSubmit={onClick}
       highlight={true}
       isLoading={isLoading === ramp.type}
       {...ramp}
@@ -157,7 +156,7 @@ export const getDepositOptions = ({ getRampUrl, isLoading, toggleModal }) => {
     hideButton: true,
     description: (
       <p className="mt-4">
-        <Trans i18nkey="FaroviteOnRampDetails">
+        <Trans i18nkey="FavoriteOnRampDetails">
           Have a suggestion?{' '}
           <Link to={routes.settings()} className="underline">
             Let us know!
@@ -167,6 +166,31 @@ export const getDepositOptions = ({ getRampUrl, isLoading, toggleModal }) => {
     ),
   }
   const onRamps = [
+    {
+      type: 'WERT',
+      iconName: 'wert',
+      name: 'Wert.io',
+      description: (
+        <p className="mt-4">
+          <Trans i18nkey="web:RampOnRampDetails">
+            Regions: Most places (
+            <a
+              href="https://support.wert.io/en/articles/5194509-supported-countries"
+              target="_blank"
+              className="underline"
+              rel="noreferrer"
+            >
+              list
+            </a>
+            )
+            <br />
+            Limit: $1,000/week
+            <br />
+            Fee: 5%
+          </Trans>
+        </p>
+      ),
+    },
     {
       type: 'RAMP_NETWORK',
       iconName: 'ramp_network',
@@ -276,43 +300,18 @@ export const getDepositOptions = ({ getRampUrl, isLoading, toggleModal }) => {
       ),
     },
     {
-      type: 'WERT',
-      iconName: 'wert',
-      buttonText: 'Coming Soon',
-      name: 'Wer.io',
-      disabled: true,
-      description: (
-        <p className="mt-4">
-          <Trans i18nkey="web:RampOnRampDetails">
-            Regions: Most places (
-            <a
-              href="https://support.wert.io/en/articles/5194509-supported-countries"
-              target="_blank"
-              className="underline"
-              rel="noreferrer"
-            >
-              list
-            </a>
-            )
-            <br />
-            Limit: $1,000/week
-            <br />
-            Fee: 5%
-          </Trans>
-        </p>
-      ),
-    },
-    {
       icon: (
-        <div className="flex py-1 justify-center flex-row items-center">
-          <Icon name="metamask" className="w-6 h-6 m-4" />
-          <img
-            alt="rainbow"
-            src="/rainbow_wallet.png"
-            width="32px"
-            className="ml-2"
-          />
-          <h2 className="ml-2">{t('Web3 wallet')}</h2>
+        <div className="py-1 flex flex-row justify-center items-center">
+          <div className="flex flex-row flex-shrink-0">
+            <Icon name="metamask" className="w-6 m-4" />
+            <img
+              alt="rainbow"
+              src="/rainbow_wallet.png"
+              width="32px"
+              className="ml-2 h-[38px]"
+            />
+          </div>
+          <h2 className="ml-2 text-2xl">{t('Web3 wallet')}</h2>
         </div>
       ),
       name: 'Manual',
@@ -336,29 +335,13 @@ export const getDepositOptions = ({ getRampUrl, isLoading, toggleModal }) => {
     />
   ))
 }
-export const DepositModal = ({ isVisible, toggleModal }) => {
-  return (
-    <ModalContainer
-      isVisible={isVisible}
-      hideModal={toggleModal}
-      headerText="Funding Options"
-      content={
-        <>
-          <p className="text-base">Choose a payment provider</p>
-          {getDepositOptions(toggleModal)}
-        </>
-      }
-    />
-  )
-}
 
-export const WithdrawModal = ({ isVisible, toggleModal }) => {
-  const [amount, setAmount] = React.useState('0')
-  const { offRamps, isLoading } = useRamp()
-  const isConnected = offRamps
-    .map((ramp) => ramp.address && true)
-    .includes(true)
-
+export const getWithdrawalOptions = ({
+  getRampUrl,
+  isLoading,
+  toggleModal,
+}) => {
+  const onSubmit = async (type) => await getRampUrl({ direction: 'ON', type })
   const feedbackSuggestionCta = {
     name: 'Your favorite provider',
     disabled: true,
@@ -366,7 +349,7 @@ export const WithdrawModal = ({ isVisible, toggleModal }) => {
     hideButton: true,
     description: (
       <p className="mt-4">
-        <Trans i18nkey="FaroviteOnRampDetails">
+        <Trans i18nkey="FavoriteOnRampDetails">
           Have a suggestion?{' '}
           <Link to={routes.settings()} className="underline">
             Let us know!
@@ -375,37 +358,100 @@ export const WithdrawModal = ({ isVisible, toggleModal }) => {
       </p>
     ),
   }
-  return (
-    <ModalContainer
-      headerText="Cash Out Options"
-      isVisible={isVisible}
-      onSubmit={toggleModal}
-      hideModal={toggleModal}
-      content={
+  const offRampList = [
+    {
+      type: 'WYRE',
+      icon: (
+        <div className="flex justify-center">
+          <img
+            alt="Wyre and Plaid logos"
+            src="/icons/wyre_plaid.png"
+            className="h-[38px]"
+          />
+        </div>
+      ),
+      name: 'Wyre + Plaid',
+      description: (
         <>
-          <p className="text-base">Choose a payment provider</p>
-          {isConnected && (
-            <div className="bg-chessBlack-100 p-2 mt-4 rounded-lg ">
-              <h4 className="mb-2">Amount</h4>
-              <FilterPriceInput value={amount} setValue={setAmount} />
-            </div>
-          )}
-          {[...offRamps, feedbackSuggestionCta].map((ramp) => (
-            <OffRampProvider
-              key={ramp.name}
-              isLoading={isLoading}
-              amount={amount}
-              ramp={ramp}
-              toggleModal={toggleModal}
-            />
-          ))}
-          <p className="mt-4 italic">
-            For your protection, funds can only be sent one-way from your
-            Treasure Chess wallet to your bank. Funds can never be withdrawn
-            from your bank using this method.
+          <p className="mt-4">
+            Regions: US, MX, AU, EU, CN, BR
+            <br />
+            Fee: 0.2%
           </p>
         </>
-      }
+      ),
+    },
+    {
+      iconName: 'mt_pelerin',
+      buttonText: 'Coming Soon',
+      name: 'Mt Pelerin',
+      disabled: true,
+      type: 'MT_PELERIN',
+      description: (
+        <p className="mt-4">
+          <Trans i18nkey="MtPelerinOnRampDetails">
+            Regions: Most places excluding the US (
+            <a
+              href="https://developers.mtpelerin.com/service-information/supported-countries"
+              target="_blank"
+              className="underline"
+              rel="noreferrer"
+            >
+              list
+            </a>
+            )
+            <br />
+            Limit: CHF 200/purchase
+            <br />
+            Fee: 1.5% + CHF 1.2 (
+            <a
+              href="https://www.mtpelerin.com/pricing"
+              target="_blank"
+              className="underline"
+              rel="noreferrer"
+            >
+              details
+            </a>
+            )
+          </Trans>
+        </p>
+      ),
+    },
+    {
+      icon: (
+        <div className="py-1 flex flex-row justify-center items-center">
+          <div className="flex flex-row flex-shrink-0">
+            <Icon name="metamask" className="w-6 h-6 m-4" />
+            <img
+              alt="rainbow"
+              src="/rainbow_wallet.png"
+              width="32px"
+              className="ml-2"
+            />
+          </div>
+          <h2 className="ml-2 text-2xl">{t('Web3 wallet')}</h2>
+        </div>
+      ),
+      name: 'Manual',
+      type: 'WALLET_DEPOSIT',
+      disabled: true,
+      buttonText: 'Coming Soon',
+      description: (
+        <p className="mt-4">
+          Regions: All
+          <br />
+          Fee: none
+        </p>
+      ),
+    },
+  ]
+  return [...offRampList, feedbackSuggestionCta].map((ramp) => (
+    <OffRampProvider
+      key={ramp.name}
+      ramp={ramp}
+      toggleModal={toggleModal}
+      isLoading={isLoading}
+      onSubmit={onSubmit}
     />
-  )
+  ))
 }
