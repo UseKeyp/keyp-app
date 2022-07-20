@@ -173,6 +173,7 @@ export const getDepositOptions = ({ getRampUrl, isLoading, toggleModal }) => {
       description: (
         <p className="mt-4">
           <Trans i18nkey="web:RampOnRampDetails">
+            <b>Fee: 5%</b> <br />
             Regions: Most places (
             <a
               href="https://support.wert.io/en/articles/5194509-supported-countries"
@@ -185,8 +186,6 @@ export const getDepositOptions = ({ getRampUrl, isLoading, toggleModal }) => {
             )
             <br />
             Limit: $1,000/week
-            <br />
-            Fee: 5%
           </Trans>
         </p>
       ),
@@ -198,6 +197,17 @@ export const getDepositOptions = ({ getRampUrl, isLoading, toggleModal }) => {
       description: (
         <p className="mt-4">
           <Trans i18nkey="web:RampOnRampDetails">
+            <b>Fee: 2.9% </b>(
+            <a
+              href="https://support.ramp.network/en/articles/431-transaction-fees"
+              target="_blank"
+              className="underline"
+              rel="noreferrer"
+            >
+              details
+            </a>
+            )
+            <br />
             Regions: Most places (
             <a
               href="https://support.ramp.network/en/articles/433-supported-countries-and-territories"
@@ -210,17 +220,6 @@ export const getDepositOptions = ({ getRampUrl, isLoading, toggleModal }) => {
             )
             <br />
             Limit: €100/day
-            <br />
-            Fee: 2.9% (
-            <a
-              href="https://support.ramp.network/en/articles/431-transaction-fees"
-              target="_blank"
-              className="underline"
-              rel="noreferrer"
-            >
-              details
-            </a>
-            )
           </Trans>
         </p>
       ),
@@ -238,6 +237,17 @@ export const getDepositOptions = ({ getRampUrl, isLoading, toggleModal }) => {
       description: (
         <p className="mt-4">
           <Trans i18nkey="web:WyreOnRampDetails">
+            <b>Fee: 2.9% + $0.30</b> (
+            <a
+              href="https://support.sendwyre.com/hc/en-us/articles/360059565013-Wyre-card-processing-fees"
+              target="_blank"
+              className="underline"
+              rel="noreferrer"
+            >
+              details
+            </a>
+            )
+            <br />
             Regions: Most places (
             <a
               href="https://docs.sendwyre.com/reference/hosted-checkout#supported-states-and-countries"
@@ -250,17 +260,6 @@ export const getDepositOptions = ({ getRampUrl, isLoading, toggleModal }) => {
             )
             <br />
             Limit: $100/day
-            <br />
-            Fee: 2.9% + $0.30 (
-            <a
-              href="https://support.sendwyre.com/hc/en-us/articles/360059565013-Wyre-card-processing-fees"
-              target="_blank"
-              className="underline"
-              rel="noreferrer"
-            >
-              details
-            </a>
-            )
           </Trans>
         </p>
       ),
@@ -272,6 +271,17 @@ export const getDepositOptions = ({ getRampUrl, isLoading, toggleModal }) => {
       description: (
         <p className="mt-4">
           <Trans i18nkey="MtPelerinOnRampDetails">
+            <b>Fee: 1.5% + CHF 1.2</b> (
+            <a
+              href="https://www.mtpelerin.com/pricing"
+              target="_blank"
+              className="underline"
+              rel="noreferrer"
+            >
+              details
+            </a>
+            )
+            <br />
             Regions: Most places excluding the US (
             <a
               href="https://developers.mtpelerin.com/service-information/supported-countries"
@@ -284,17 +294,6 @@ export const getDepositOptions = ({ getRampUrl, isLoading, toggleModal }) => {
             )
             <br />
             Limit: CHF 200/purchase
-            <br />
-            Fee: 1.5% + CHF 1.2 (
-            <a
-              href="https://www.mtpelerin.com/pricing"
-              target="_blank"
-              className="underline"
-              rel="noreferrer"
-            >
-              details
-            </a>
-            )
           </Trans>
         </p>
       ),
@@ -318,9 +317,9 @@ export const getDepositOptions = ({ getRampUrl, isLoading, toggleModal }) => {
       type: 'WALLET_DEPOSIT',
       description: (
         <p className="mt-4">
+          <b>Fee: none</b>
           Regions: All
           <br />
-          Fee: none
         </p>
       ),
     },
