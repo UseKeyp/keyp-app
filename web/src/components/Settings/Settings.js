@@ -154,6 +154,28 @@ const Settings = () => {
           </div>
         }
       />
+      <div className="p-4 mt-6 rounded-lg bg-chessBlack-100">
+        <div className="flex flex-col">
+          <div className="text-sm">{t('Language')}</div>
+        </div>
+        <div className="mt-2">
+          <Dropdown
+            category={t('Change your preferred language')}
+            default={localeLanguage}
+            queryFilter={localeLanguage}
+            queryFilterFunction={setLocale}
+            arrayOfObjects={languageData.map((item) => {
+              return {
+                id: item.value,
+                value: item.id,
+              }
+            })}
+          />
+        </div>
+        <div className="text-errorYellow font-bold text-sm mt-2">
+          {localeError}
+        </div>
+      </div>
     </div>
   )
 }
