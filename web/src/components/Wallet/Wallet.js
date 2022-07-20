@@ -73,10 +73,10 @@ const Wallet = () => {
       subtitle: t('Send funds to your bank at any time.'),
       contents: (
         <Accordion toggle={cashOutToggle}>
-          <p className="pr-4 pb-2 italic">
-            For your protection, funds can only be sent one-way from your
-            Treasure Chess wallet to your bank. Funds can never be withdrawn
-            from your bank using this method.
+          <p className="pr-4 pb-4 italic">
+            {t(
+              'For your protection, funds can only be sent one-way from your Treasure Chess wallet to your bank. Funds can never be withdrawn from your bank using this method.'
+            )}
           </p>
           <div className="grid sm:grid-cols-2 gap-6 sm:grid-flow-row">
             {getWithdrawalOptions({ getRampUrl, isLoading }).map((item) => {
@@ -100,7 +100,7 @@ const Wallet = () => {
       ),
     },
     {
-      title: 'Send Tokens',
+      title: t('Send Tokens'),
       disabled: true,
       subtitle: t('Send ERC20 and ERC721 tokens to another web3 wallet.'),
       button: (
