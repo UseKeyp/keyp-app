@@ -23,7 +23,9 @@ const WertPage = () => {
                   origin: isProduction
                     ? 'https://widget.wert.io'
                     : 'https://sandbox.wert.io',
-                  partner_id: '01G5FDZZ2RY85QT8WY7AMN95P5',
+                  partner_id: isProduction
+                    ? '01G6BAFZZKJW8SN5P3FRCKGDHV'
+                    : '01G5FDZZ2RY85QT8WY7AMN95P5',
                   container_id: 'wert',
                   // width: 400,
                   height: 550,
