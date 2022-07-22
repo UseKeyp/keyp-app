@@ -1,12 +1,6 @@
-import { useAuth } from '@redwoodjs/auth'
-import { Link, routes } from '@redwoodjs/router'
-
 import Icon from 'src/components/Icon'
 import LoadingDots from 'src/components/LoadingDots'
 import Button from 'src/components/Button'
-
-import { trimAddress, getBlockExplorerUrl } from 'src/utils/helpers'
-import { useWallet } from 'src/providers/wallet'
 
 const RampProvider = ({
   error,

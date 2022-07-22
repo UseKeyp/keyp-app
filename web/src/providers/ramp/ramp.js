@@ -19,7 +19,6 @@ const EXTERNAL_TRANSFER = 'EXTERNAL_TRANSFER'
 const PLAID = 'PLAID'
 const COINBASE = 'COINBASE'
 const WYRE = 'WYRE'
-const PELERIN = 'PELERIN'
 
 const RampContext = React.createContext({
   isLoading: true,
@@ -43,7 +42,7 @@ const RampProvider = ({ children }) => {
     error: null,
   })
   const [coinbase, setCoinbase] = React.useState({})
-  const [pelerin, _setPelerin] = React.useState({})
+  const [pelerin] = React.useState({})
   const [wyre, setWyre] = React.useState({})
   const externalTransfer = {
     name: 'Web3 Wallet',

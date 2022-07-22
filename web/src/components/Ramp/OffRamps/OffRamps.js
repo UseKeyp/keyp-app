@@ -1,4 +1,3 @@
-import { useAuth } from '@redwoodjs/auth'
 import { Link, routes } from '@redwoodjs/router'
 
 import RampProvider from 'src/components/Ramp/RampProvider'
@@ -7,7 +6,6 @@ import Button from 'src/components/Button'
 import FilterPriceInput from 'src/components/FilterPriceInput'
 
 import { trimAddress, getBlockExplorerUrl } from 'src/utils/helpers'
-import { useWallet } from 'src/providers/wallet'
 import { useRamp } from 'src/providers/ramp/ramp'
 
 const OffRamps = () => {
@@ -152,76 +150,80 @@ const OffRamps = () => {
     return { ...ramp, ...rampData }
   })
 
+  const OffRamp = ({ ramp }) => {
+    const [amount, setAmount] = React.useState()
+    if (!ramp) return null
+    let onSubmit = ({ reconnect }) => {
+      submitRamp({ direction: 'OFF', type: ramp.type, amount, reconnect })
+    }
+    if (!ramp) return null
+    let status
+    if (ramp.address)
+      status = (
+        <div className="">
+          <div className="flex align-center justify-between">
+            <div>
+              <h4>
+                ✅{' '}
+                <i>
+                  Connected to{' '}
+                  <a
+                    href={getBlockExplorerUrl({ address: ramp.address })}
+                    rel="noreferrer"
+                    target="_blank"
+                  >
+                    {trimAddress(ramp.address)}
+                  </a>
+                </i>
+              </h4>
+              <h4>
+                <i>{ramp.accountNickname}</i>
+              </h4>
+            </div>
+            <div className="flex ml-4 align-center">
+              <Button
+                size="small"
+                onClick={() => onSubmit({ reconnect: true })}
+                disabled={ramp.isLoading || ramp.disabled}
+              >
+                <div className="flex flex-row items-center">
+                  <Icon name="circle_arrow" height="13" color="white" />
+                  <p className="ml-2">Change account</p>
+                </div>
+              </Button>
+            </div>
+          </div>
+          {ramp.address && (
+            <div className="">
+              <h4 className="mt-2 mb-2 w-[50%]">Amount</h4>
+              <FilterPriceInput value={amount} setValue={setAmount} />
+            </div>
+          )}
+        </div>
+      )
+    const getButtonText = () => {
+      if (ramp.disabled) return 'Coming soon'
+      else if (ramp.address) return 'Withdraw'
+      return 'Connect'
+    }
+    return (
+      <RampProvider
+        key={ramp.name}
+        onSubmit={onSubmit}
+        buttonText={getButtonText()}
+        highlightStatus={!!ramp.address}
+        status={status}
+        {...ramp}
+      />
+    )
+  }
+
   return (
     <div className="">
       <div className="grid sm:grid-cols-2 gap-6 sm:grid-flow-row">
-        {[...offRampsWithData, feedbackSuggestionCta].map((ramp) => {
-          const [amount, setAmount] = React.useState()
-          if (!ramp) return null
-          let onSubmit = ({ reconnect }) => {
-            submitRamp({ direction: 'OFF', type: ramp.type, amount, reconnect })
-          }
-          if (!ramp) return null
-          let status
-          if (ramp.address)
-            status = (
-              <div className="">
-                <div className="flex align-center justify-between">
-                  <div>
-                    <h4>
-                      ✅{' '}
-                      <i>
-                        Connected to{' '}
-                        <a
-                          href={getBlockExplorerUrl({ address: ramp.address })}
-                          rel="noreferrer"
-                          target="_blank"
-                        >
-                          {trimAddress(ramp.address)}
-                        </a>
-                      </i>
-                    </h4>
-                    <h4>
-                      <i>{ramp.accountNickname}</i>
-                    </h4>
-                  </div>
-                  <div className="flex ml-4 align-center">
-                    <Button
-                      size="small"
-                      onClick={() => onSubmit({ reconnect: true })}
-                      disabled={ramp.isLoading || ramp.disabled}
-                    >
-                      <div className="flex flex-row items-center">
-                        <Icon name="circle_arrow" height="13" color="white" />
-                        <p className="ml-2">Change account</p>
-                      </div>
-                    </Button>
-                  </div>
-                </div>
-                {ramp.address && (
-                  <div className="">
-                    <h4 className="mt-2 mb-2 w-[50%]">Amount</h4>
-                    <FilterPriceInput value={amount} setValue={setAmount} />
-                  </div>
-                )}
-              </div>
-            )
-          const getButtonText = () => {
-            if (ramp.disabled) return 'Coming soon'
-            else if (ramp.address) return 'Withdraw'
-            return 'Connect'
-          }
-          return (
-            <RampProvider
-              key={ramp.name}
-              onSubmit={onSubmit}
-              buttonText={getButtonText()}
-              highlightStatus={!!ramp.address}
-              status={status}
-              {...ramp}
-            />
-          )
-        })}
+        {[...offRampsWithData, feedbackSuggestionCta].map((ramp) => (
+          <OffRamp key={ramp.name} ramp={ramp} />
+        ))}
       </div>
     </div>
   )

@@ -3,16 +3,14 @@ import { Link, routes } from '@redwoodjs/router'
 
 import RampProvider from 'src/components/Ramp/RampProvider'
 import Icon from 'src/components/Icon'
-import Button from 'src/components/Button'
 
-import { trimAddress, getBlockExplorerUrl } from 'src/utils/helpers'
 import { useWallet } from 'src/providers/wallet'
 import { useRamp } from 'src/providers/ramp/ramp'
 
 const OnRamps = () => {
   const { getAddress } = useWallet()
   const { currentUser } = useAuth()
-  const { submitRamp, isLoading } = useRamp()
+  const { submitRamp } = useRamp()
 
   const feedbackSuggestionCta = {
     name: 'Your favorite provider',
