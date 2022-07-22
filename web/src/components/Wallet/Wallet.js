@@ -20,7 +20,7 @@ import {
 
 const Wallet = () => {
   const { currentUser } = useAuth()
-  const { getRampUrl, isLoading } = useRamp()
+  const { submitRamp, isLoading } = useRamp()
 
   const [addFundsToggle, setAddFundsToggle] = React.useState(false)
   const [cashOutToggle, setCashOutToggle] = React.useState(false)
@@ -48,7 +48,7 @@ const Wallet = () => {
       contents: (
         <Accordion toggle={addFundsToggle}>
           <div className="grid sm:grid-cols-2 gap-6 sm:grid-flow-row">
-            {getDepositOptions({ getRampUrl, isLoading }).map((item) => {
+            {getDepositOptions({ submitRamp, isLoading }).map((item) => {
               return <div key={item.key}>{item}</div>
             })}
           </div>
@@ -79,7 +79,7 @@ const Wallet = () => {
             )}
           </p>
           <div className="grid sm:grid-cols-2 gap-6 sm:grid-flow-row">
-            {getWithdrawalOptions({ getRampUrl, isLoading }).map((item) => {
+            {getWithdrawalOptions({ submitRamp, isLoading }).map((item) => {
               return <div key={item.key}>{item}</div>
             })}
           </div>

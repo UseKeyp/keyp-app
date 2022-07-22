@@ -29,8 +29,14 @@ const useRamp = () => React.useContext(RampContext)
 
 const RampProvider = ({ children }) => {
   const { isAuthenticated, currentUser } = useAuth()
+
   const { toast } = useToast()
-  const { getOAuthUrl, submitCodeGrant, error: errorOAuth } = useOAuth()
+  const {
+    getOAuthUrl,
+    openOAuthUrl,
+    submitCodeGrant,
+    error: errorOAuth,
+  } = useOAuth()
 
   const [state, setState] = React.useState({
     isLoading: false,
@@ -172,7 +178,21 @@ const RampProvider = ({ children }) => {
 
   const [rampWithdrawMutation] = useMutation(RAMP_WITHDRAW_MUTATION)
 
+  const submitRamp = async ({ type, direction, amount }) => {
+    if (direction === 'ON') return getRampUrl({ type, direction })
+    console.log(type, direction, amount)
+    if (direction === 'OFF') {
+      // if (ramp.address) {
+      //   if (type === 'COINBASE') return withdrawCoinbase(amount)
+      //   if (type === 'WYRE') return withdrawWyre(amount)
+      // }
+      if (type === 'WYRE') return connectWyre()
+      if (type === 'COINBASE') return connectCoinbase()
+    }
+  }
+
   const getRampUrl = async ({ type, direction }) => {
+    console.log(type, direction)
     let myWindow
     try {
       myWindow = window.open(
@@ -295,39 +315,40 @@ const RampProvider = ({ children }) => {
     }
   }
 
-  // const connectCoinbase = async () => {
-  //   document.getElementById('connection-button').disabled = true
-  //   setCoinbase({ isLoading: true, error: '', ...coinbase })
-  //   try {
-  //     await openOAuthUrl(COINBASE)
-  //     setShouldPoll(true)
-  //     document.getElementById('connection-button').disabled = false
-  //   } catch (error) {
-  //     coinbase.error = error
-  //     document.getElementById('connection-button').disabled = false
-  //     return setCoinbase({ isLoading: false, error: error, ...coinbase })
-  //   }
-  // }
+  const connectCoinbase = async () => {
+    console.log('connectCoinbase')
+    document.getElementById('connection-button').disabled = true
+    setCoinbase({ isLoading: true, error: '', ...coinbase })
+    try {
+      await openOAuthUrl(COINBASE)
+      setShouldPoll(true)
+      document.getElementById('connection-button').disabled = false
+    } catch (error) {
+      coinbase.error = error
+      document.getElementById('connection-button').disabled = false
+      return setCoinbase({ isLoading: false, error: error, ...coinbase })
+    }
+  }
 
-  // const withdrawCoinbase = async (amount) => {
-  //   try {
-  //     setCoinbase({ isLoading: true, error: null, ...coinbase })
-  //     const {
-  //       data: { rampWithdraw },
-  //     } = await rampWithdrawMutation({
-  //       variables: { type: COINBASE, amount },
-  //     })
-  //     toast.success(
-  //       <TxToast text="Withdraw submitted" txHash={rampWithdraw.id} />,
-  //       {
-  //         id: rampWithdraw.id,
-  //       }
-  //     )
-  //     setCoinbase({ isLoading: false, ...coinbase })
-  //   } catch (e) {
-  //     setCoinbase({ isLoading: false, error: e.message, ...coinbase })
-  //   }
-  // }
+  const withdrawCoinbase = async (amount) => {
+    try {
+      setCoinbase({ isLoading: true, error: null, ...coinbase })
+      const {
+        data: { rampWithdraw },
+      } = await rampWithdrawMutation({
+        variables: { type: COINBASE, amount },
+      })
+      toast.success(
+        <TxToast text="Withdraw submitted" txHash={rampWithdraw.id} />,
+        {
+          id: rampWithdraw.id,
+        }
+      )
+      setCoinbase({ isLoading: false, ...coinbase })
+    } catch (e) {
+      setCoinbase({ isLoading: false, error: e.message, ...coinbase })
+    }
+  }
 
   React.useEffect(() => {
     if (errorOAuth != '' && errorOAuth != null) {
@@ -355,22 +376,8 @@ const RampProvider = ({ children }) => {
       value={{
         isLoading: state.isLoading || rampsLoading,
         rampError: rampError || state.rampError,
-        getRampUrl,
-        offRamps: [
-          {
-            ...wyre,
-            onConnect: connectWyre,
-            onWithdraw: withdrawWyre,
-          },
-          // Disabled
-          // {
-          //   ...coinbase,
-          //   onConnect: connectCoinbase,
-          //   onWithdraw: withdrawCoinbase,
-          // },
-          { ...pelerin },
-          { ...externalTransfer },
-        ],
+        submitRamp,
+        offRamps: [wyre, coinbase, pelerin, externalTransfer],
       }}
     >
       {children}

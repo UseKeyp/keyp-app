@@ -94,10 +94,9 @@ const OnRampProvider = ({ ramp, toggleModal, isLoading, onSubmit }) => {
   )
 }
 
-const OffRampProvider = ({ ramp, amount }) => {
+const OffRampProvider = ({ onSubmit, ramp, amount }) => {
   if (!ramp) return null
-  let onSubmit = ramp.onConnect
-  if (ramp.address) onSubmit = () => ramp.onWithdraw(amount)
+
   let status
   if (ramp.address)
     status = (
@@ -136,7 +135,7 @@ const OffRampProvider = ({ ramp, amount }) => {
   }
   return (
     <Provider
-      onSubmit={onSubmit}
+      onSubmit={() => onSubmit({ type: ramp.type, amount })}
       isLoading={ramp.isLoading}
       disabled={ramp.disabled}
       buttonText={getButtonText()}
@@ -147,8 +146,8 @@ const OffRampProvider = ({ ramp, amount }) => {
   )
 }
 
-export const getDepositOptions = ({ getRampUrl, isLoading, toggleModal }) => {
-  const onSubmit = async (type) => await getRampUrl({ direction: 'ON', type })
+export const getDepositOptions = ({ submitRamp, isLoading, toggleModal }) => {
+  const onSubmit = (type) => submitRamp({ direction: 'ON', type })
   const feedbackSuggestionCta = {
     name: 'Your favorite provider',
     disabled: true,
@@ -174,7 +173,7 @@ export const getDepositOptions = ({ getRampUrl, isLoading, toggleModal }) => {
         <p className="mt-4">
           <Trans i18nkey="web:RampOnRampDetails">
             <b>Fee: 5%</b> <br />
-            Regions: Most places (
+            Available in most places (
             <a
               href="https://support.wert.io/en/articles/5194509-supported-countries"
               target="_blank"
@@ -208,7 +207,7 @@ export const getDepositOptions = ({ getRampUrl, isLoading, toggleModal }) => {
             </a>
             )
             <br />
-            Regions: Most places (
+            Available in most places (
             <a
               href="https://support.ramp.network/en/articles/433-supported-countries-and-territories"
               target="_blank"
@@ -248,7 +247,7 @@ export const getDepositOptions = ({ getRampUrl, isLoading, toggleModal }) => {
             </a>
             )
             <br />
-            Regions: Most places (
+            Available in most places (
             <a
               href="https://docs.sendwyre.com/reference/hosted-checkout#supported-states-and-countries"
               target="_blank"
@@ -282,7 +281,7 @@ export const getDepositOptions = ({ getRampUrl, isLoading, toggleModal }) => {
             </a>
             )
             <br />
-            Regions: Most places excluding the US (
+            Available in most places excluding the US (
             <a
               href="https://developers.mtpelerin.com/service-information/supported-countries"
               target="_blank"
@@ -317,9 +316,8 @@ export const getDepositOptions = ({ getRampUrl, isLoading, toggleModal }) => {
       type: 'WALLET_DEPOSIT',
       description: (
         <p className="mt-4">
-          <b>Fee: none</b>
-          Regions: All
-          <br />
+          <b>Fee: none</b> <br />
+          Available everywhere
         </p>
       ),
     },
@@ -336,11 +334,12 @@ export const getDepositOptions = ({ getRampUrl, isLoading, toggleModal }) => {
 }
 
 export const getWithdrawalOptions = ({
-  getRampUrl,
+  submitRamp,
   isLoading,
   toggleModal,
 }) => {
-  const onSubmit = async (type) => await getRampUrl({ direction: 'ON', type })
+  const onSubmit = ({ type, amount }) =>
+    submitRamp({ direction: 'OFF', type, amount })
   const feedbackSuggestionCta = {
     name: 'Your favorite provider',
     disabled: true,
@@ -373,9 +372,30 @@ export const getWithdrawalOptions = ({
       description: (
         <>
           <p className="mt-4">
-            Regions: US, MX, AU, EU, CN, BR
-            <br />
-            Fee: 0.2%
+            <b>Fee: 0.2%</b> <br />
+            Available in US, MX, AU, EU, CN, BR
+          </p>
+        </>
+      ),
+    },
+    {
+      type: 'COINBASE',
+      iconName: 'coinbase',
+      name: 'Coinbase',
+      description: (
+        <>
+          <p className="mt-4">
+            <b>Fee: none</b> <br />
+            Available in most places (
+            <a
+              href="https://www.coinbase.com/places"
+              target="_blank"
+              className="underline"
+              rel="noreferrer"
+            >
+              list
+            </a>
+            )
           </p>
         </>
       ),
@@ -389,7 +409,18 @@ export const getWithdrawalOptions = ({
       description: (
         <p className="mt-4">
           <Trans i18nkey="MtPelerinOnRampDetails">
-            Regions: Most places excluding the US (
+            <b>Fee: 1.5% + CHF 1.2</b> (
+            <a
+              href="https://www.mtpelerin.com/pricing"
+              target="_blank"
+              className="underline"
+              rel="noreferrer"
+            >
+              details
+            </a>
+            )
+            <br />
+            Available in most places excluding the US (
             <a
               href="https://developers.mtpelerin.com/service-information/supported-countries"
               target="_blank"
@@ -401,17 +432,6 @@ export const getWithdrawalOptions = ({
             )
             <br />
             Limit: CHF 200/purchase
-            <br />
-            Fee: 1.5% + CHF 1.2 (
-            <a
-              href="https://www.mtpelerin.com/pricing"
-              target="_blank"
-              className="underline"
-              rel="noreferrer"
-            >
-              details
-            </a>
-            )
           </Trans>
         </p>
       ),
@@ -437,9 +457,8 @@ export const getWithdrawalOptions = ({
       buttonText: 'Coming Soon',
       description: (
         <p className="mt-4">
-          Regions: All
-          <br />
-          Fee: none
+          <b>Fee: none</b> <br />
+          Available everywhere
         </p>
       ),
     },
