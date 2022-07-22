@@ -170,13 +170,20 @@ const RampProvider = ({ children }) => {
       ) {
         if (errorOAuth.contains('WYRE')) {
           wyre.error = errorOAuth
-          return setWyre({ ...wyre, isLoading: false, error: errorOAuth })
+          return setWyre({
+            ...wyre,
+            error: errorOAuth,
+          })
         }
       }
     } catch (error) {
       wyre.error = error
       return setWyre({ ...wyre, isLoading: false, error: error })
     }
+    setWyre({
+      ...wyre,
+      successText: t('Waiting for connection...'),
+    })
     /* eslint-disable-next-line no-undef */
     const linkHandler = Plaid.create({
       token: oAuthUrl.text,
@@ -194,9 +201,9 @@ const RampProvider = ({ children }) => {
           setWyre({
             ...wyre,
             isLoading: false,
+            successText: t('Connection successful!'),
             ...wyreRamp,
           })
-          toast.success('Wyre + Plaid connected!')
         } catch (e) {
           setWyre({
             ...wyre,
@@ -227,7 +234,7 @@ const RampProvider = ({ children }) => {
         return setWyre({
           ...wyre,
           isLoading: false,
-          error: 'Amount must be greater than 0',
+          error: t('Amount must be greater than 0'),
         })
       await setWyre({ isLoading: true, error: null, ...wyre })
       const {
@@ -259,7 +266,7 @@ const RampProvider = ({ children }) => {
         ...coinbase,
         isLoading: true,
         error: null,
-        successText: 'Connection pending...',
+        successText: t('Please refresh the page after connecting.'),
       })
       await openOAuthUrl(COINBASE)
     } catch (error) {
@@ -279,7 +286,7 @@ const RampProvider = ({ children }) => {
         return setCoinbase({
           ...coinbase,
           isLoading: false,
-          error: 'Amount must be greater than 0',
+          error: t('Amount must be greater than 0'),
           successText: null,
         })
       await setCoinbase({ isLoading: true, error: null, ...coinbase })
@@ -289,7 +296,7 @@ const RampProvider = ({ children }) => {
         variables: { type: COINBASE, amount },
       })
       toast.success(
-        <TxToast text="Withdraw submitted" txHash={rampWithdraw.id} />,
+        <TxToast text={t('Withdraw submitted')} txHash={rampWithdraw.id} />,
         { id: rampWithdraw.id }
       )
       await setCoinbase({
