@@ -6,11 +6,10 @@ import { useRamp } from 'src/providers/ramp/ramp'
 import MemberBalance from 'src/components/Member/MemberBalance'
 import MemberMintCredits from 'src/components/Member/MemberMintCredits'
 import Accordion from 'src/components/Accordion/Accordion'
+import OnRamps from 'src/components/ramp/OnRamps'
+import OffRamps from 'src/components/ramp/OffRamps'
+
 import { trimAddress } from 'src/utils/helpers'
-import {
-  getDepositOptions,
-  getWithdrawalOptions,
-} from 'src/providers/ramp/modals'
 
 import {
   ArrowUpSquareFill,
@@ -20,7 +19,6 @@ import {
 
 const Wallet = () => {
   const { currentUser } = useAuth()
-  const { submitRamp, isLoading } = useRamp()
 
   const [addFundsToggle, setAddFundsToggle] = React.useState(false)
   const [cashOutToggle, setCashOutToggle] = React.useState(false)
@@ -48,9 +46,7 @@ const Wallet = () => {
       contents: (
         <Accordion toggle={addFundsToggle}>
           <div className="grid sm:grid-cols-2 gap-6 sm:grid-flow-row">
-            {getDepositOptions({ submitRamp, isLoading }).map((item) => {
-              return <div key={item.key}>{item}</div>
-            })}
+            <OnRamps />
           </div>
         </Accordion>
       ),
@@ -79,9 +75,7 @@ const Wallet = () => {
             )}
           </p>
           <div className="grid sm:grid-cols-2 gap-6 sm:grid-flow-row">
-            {getWithdrawalOptions({ submitRamp, isLoading }).map((item) => {
-              return <div key={item.key}>{item}</div>
-            })}
+            <OffRamps />
           </div>
         </Accordion>
       ),
