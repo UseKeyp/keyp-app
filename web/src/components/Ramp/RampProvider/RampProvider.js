@@ -16,6 +16,7 @@ const RampProvider = ({
   disabled,
   status,
   highlight,
+  highlightStatus,
   description,
   helperText,
   hideButton,
@@ -25,7 +26,7 @@ const RampProvider = ({
 }) => {
   let backgroundColor =
     isLoading || disabled ? 'bg-chessBlack-200 pointer-events-none' : 'bg-green'
-  const buttonClassName = `mt-2 w-full h-[40px] text-xl shadow-m hover:sm hover:bg-greenDark hover:shadow-greenDark ${backgroundColor}`
+  const buttonClassName = `mt-4 w-32 h-[40px] text-xl shadow-m hover:sm hover:bg-greenDark hover:shadow-greenDark ${backgroundColor}`
   let errorText
   if (error != null && error != '' && error.length > 0) {
     errorText = error.substring(0, 200)
@@ -36,7 +37,7 @@ const RampProvider = ({
   let button = (
     <Button
       id="connection-button"
-      className={`w-32 ${buttonClassName}`}
+      className={buttonClassName}
       onClick={onSubmit}
       disabled={isLoading || disabled}
       size="small"
@@ -59,7 +60,15 @@ const RampProvider = ({
     >
       <div className="flex align-center items-center">{iconContent}</div>
       {description && <div className="mt-2">{description}</div>}
-      <h2 className="mt-2">{status}</h2>
+      {status && (
+        <h2
+          className={`mt-4 bg-chessBlack-100 p-2 rounded-lg ${
+            highlightStatus && 'border-green'
+          }`}
+        >
+          {status}
+        </h2>
+      )}
       {!hideButton && button}
       {errorText && (
         <div className="mt-4 font-bold text-errorYellow">{errorText}</div>

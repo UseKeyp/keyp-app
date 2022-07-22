@@ -1,12 +1,13 @@
 import { useAuth } from '@redwoodjs/auth'
 import { Link, routes } from '@redwoodjs/router'
 
-import RampProvider from 'src/components/ramp/RampProvider'
+import RampProvider from 'src/components/Ramp/RampProvider'
 import Icon from 'src/components/Icon'
 import Button from 'src/components/Button'
 
 import { trimAddress, getBlockExplorerUrl } from 'src/utils/helpers'
 import { useWallet } from 'src/providers/wallet'
+import { useRamp } from 'src/providers/ramp/ramp'
 
 const OnRamps = () => {
   const { getAddress } = useWallet()
@@ -190,7 +191,7 @@ const OnRamps = () => {
   ]
 
   return (
-    <>
+    <div className="grid sm:grid-cols-2 gap-6 sm:grid-flow-row">
       {[...onRampList, feedbackSuggestionCta].map((ramp) => {
         if (!ramp) return null
         let onSubmit = () => {
@@ -202,13 +203,12 @@ const OnRamps = () => {
           <RampProvider
             key={ramp.type}
             onSubmit={onSubmit}
-            highlight={true}
-            isLoading={isLoading === ramp.type}
+            isLoading={ramp.isLoading}
             {...ramp}
           />
         )
       })}
-    </>
+    </div>
   )
 }
 export default OnRamps
