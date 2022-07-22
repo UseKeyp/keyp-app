@@ -42,68 +42,9 @@ const RampProvider = ({ children }) => {
     isLoading: false,
     error: null,
   })
-  const [shouldPoll, setShouldPoll] = React.useState(true)
-  const [coinbase, setCoinbase] = React.useState({
-    isLoading: true,
-    name: 'Coinbase',
-    type: COINBASE,
-  })
-  const [pelerin, _setPelerin] = React.useState({
-    // isLoading: true,
-    name: 'Mt. Pelerin',
-    icon: <Icon name="mt_pelerin" />,
-    disabled: true,
-    type: PELERIN,
-    description: (
-      <>
-        <p>
-          Regions: Most places excluding the US (
-          <a
-            href="https://developers.mtpelerin.com/service-information/supported-countries"
-            target="_blank"
-            className="underline"
-            rel="noreferrer"
-          >
-            list
-          </a>
-          )
-          <br />
-          Fee: Free up to $499, then 1.3% (
-          <a
-            href="https://www.mtpelerin.com/pricing"
-            target="_blank"
-            className="underline"
-            rel="noreferrer"
-          >
-            details
-          </a>
-          )
-        </p>
-      </>
-    ),
-  })
-  const [wyre, setWyre] = React.useState({
-    isLoading: true,
-    type: WYRE,
-    name: 'Wyre + Plaid',
-    icon: (
-      <img
-        src="/icons/wyre_plaid.png"
-        alt="Wyre and Plaid logos"
-        className="h-[38px]"
-        height="38px"
-      />
-    ),
-    description: (
-      <>
-        <p>
-          Regions: US, MX, AU, EU, CN, BR
-          <br />
-          Fee: 0.2%
-        </p>
-      </>
-    ),
-  })
+  const [coinbase, setCoinbase] = React.useState({ isLoading: true })
+  const [pelerin, _setPelerin] = React.useState({})
+  const [wyre, setWyre] = React.useState({ isLoading: true })
   const externalTransfer = {
     name: 'Web3 Wallet',
     isLoading: false,
@@ -145,31 +86,26 @@ const RampProvider = ({ children }) => {
     ),
   }
 
-  const {
-    data: { ramps } = {},
-    error: rampError,
-    loading: rampsLoading,
-  } = useQuery(MEMBER_RAMPS_QUERY, {
-    pollInterval: 30000,
-    skip: !isAuthenticated || !shouldPoll,
-    fetchPolicy: 'network-only',
-  })
-
-  const updateRamps = () => {
-    const coinbaseRamp = ramps.find((ramp) => ramp.type === COINBASE)
-    const wyreRamp = ramps.find((ramp) => ramp.type === WYRE)
-    setCoinbase({
-      ...coinbase,
-      ...coinbaseRamp,
-      isLoading: false,
-    })
-    setWyre({
-      ...wyre,
-      ...wyreRamp,
-      isLoading: false,
-    })
-    setShouldPoll(false)
-  }
+  const { error: rampError, loading: rampsLoading } = useQuery(
+    MEMBER_RAMPS_QUERY,
+    {
+      pollInterval: 30000,
+      skip: !isAuthenticated,
+      fetchPolicy: 'network-only',
+      onError: () => {
+        setState({
+          error: 'Something went wrong loading cash out providers',
+          isLoading: false,
+        })
+      },
+      onCompleted: async ({ ramps } = {}) => {
+        const coinbaseRamp = ramps.find((ramp) => ramp.type === COINBASE)
+        const wyreRamp = ramps.find((ramp) => ramp.type === WYRE)
+        setCoinbase({ ...coinbaseRamp, isLoading: false })
+        setWyre({ ...wyreRamp, isLoading: false })
+      },
+    }
+  )
 
   const [rampUrlMutation] = useMutation(RAMP_URL_MUTATION, {
     fetchPolicy: 'network-only',
@@ -321,7 +257,6 @@ const RampProvider = ({ children }) => {
     setCoinbase({ isLoading: true, error: '', ...coinbase })
     try {
       await openOAuthUrl(COINBASE)
-      setShouldPoll(true)
       document.getElementById('connection-button').disabled = false
     } catch (error) {
       coinbase.error = error
@@ -349,27 +284,6 @@ const RampProvider = ({ children }) => {
       setCoinbase({ isLoading: false, error: e.message, ...coinbase })
     }
   }
-
-  React.useEffect(() => {
-    if (errorOAuth != '' && errorOAuth != null) {
-      if (errorOAuth.includes('COINBASE')) {
-        coinbase.error = errorOAuth
-        setCoinbase({
-          ...coinbase,
-          error: errorOAuth,
-        })
-      } else if (errorOAuth.includes('WYRE')) {
-        wyre.error = errorOAuth
-        setWyre({
-          ...wyre,
-          error: errorOAuth,
-        })
-      }
-    }
-    if (!ramps) return
-    updateRamps()
-    /* eslint-disable-next-line react-hooks/exhaustive-deps */
-  }, [ramps, errorOAuth])
 
   return (
     <RampContext.Provider
