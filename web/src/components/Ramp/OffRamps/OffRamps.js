@@ -11,7 +11,7 @@ import { useWallet } from 'src/providers/wallet'
 import { useRamp } from 'src/providers/ramp/ramp'
 
 const OffRamps = () => {
-  const { submitRamp, isLoading, offRamps } = useRamp()
+  const { submitRamp, offRamps } = useRamp()
   const feedbackSuggestionCta = {
     name: 'Your favorite provider',
     disabled: true,
@@ -73,11 +73,11 @@ const OffRamps = () => {
       ),
     },
     {
+      type: 'MT_PELERIN',
       iconName: 'mt_pelerin',
       buttonText: 'Coming Soon',
       name: 'Mt Pelerin',
       disabled: true,
-      type: 'MT_PELERIN',
       description: (
         <p className="mt-4">
           <Trans i18nkey="MtPelerinOnRampDetails">
@@ -109,6 +109,8 @@ const OffRamps = () => {
       ),
     },
     {
+      type: 'WALLET_DEPOSIT',
+      name: 'Manual',
       icon: (
         <div className="py-1 flex flex-row justify-center items-center">
           <div className="flex flex-row flex-shrink-0">
@@ -123,8 +125,6 @@ const OffRamps = () => {
           <h2 className="ml-2 text-2xl">{t('Web3 wallet')}</h2>
         </div>
       ),
-      name: 'Manual',
-      type: 'WALLET_DEPOSIT',
       disabled: true,
       buttonText: 'Coming Soon',
       description: (
@@ -133,32 +133,43 @@ const OffRamps = () => {
           Available everywhere
         </p>
       ),
+      helperText: (
+        <p className="italic">
+          <Trans i18nkey="web:requestBetaAccess">
+            <b>Beta feature</b>. Request to be a Beta Tester in{' '}
+            <Link className="underline" to={routes.settings()}>
+              Settings
+            </Link>
+            .
+          </Trans>
+        </p>
+      ),
     },
   ]
 
   const offRampsWithData = offRampList.map((ramp) => {
     const rampData = offRamps.find((data) => data.type === ramp.type)
-    return { ...rampData, ...ramp }
+    return { ...ramp, ...rampData }
   })
 
   return (
     <div className="">
       <div className="grid sm:grid-cols-2 gap-6 sm:grid-flow-row">
         {[...offRampsWithData, feedbackSuggestionCta].map((ramp) => {
-          const [amount, setAmount] = React.useState(0)
-
+          const [amount, setAmount] = React.useState()
           if (!ramp) return null
-          let onSubmit = () => {
-            submitRamp({ direction: 'OFF', type: ramp.type, amount })
+          let onSubmit = ({ reconnect }) => {
+            submitRamp({ direction: 'OFF', type: ramp.type, amount, reconnect })
           }
           if (!ramp) return null
           let status
           if (ramp.address)
             status = (
               <div className="">
-                <div className="flex align-center">
+                <div className="flex align-center justify-between">
                   <div>
                     <h4>
+                      ✅{' '}
                       <i>
                         Connected to{' '}
                         <a
@@ -176,12 +187,13 @@ const OffRamps = () => {
                   </div>
                   <div className="flex ml-4 align-center">
                     <Button
-                      onClick={onSubmit}
+                      size="small"
+                      onClick={() => onSubmit({ reconnect: true })}
                       disabled={ramp.isLoading || ramp.disabled}
                     >
                       <div className="flex flex-row items-center">
                         <Icon name="circle_arrow" height="13" color="white" />
-                        <p className="ml-2">Update</p>
+                        <p className="ml-2">Change account</p>
                       </div>
                     </Button>
                   </div>
@@ -201,10 +213,8 @@ const OffRamps = () => {
           }
           return (
             <RampProvider
-              key={ramp.type}
+              key={ramp.name}
               onSubmit={onSubmit}
-              isLoading={isLoading || ramp.isLoading}
-              disabled={ramp.disabled}
               buttonText={getButtonText()}
               highlightStatus={!!ramp.address}
               status={status}

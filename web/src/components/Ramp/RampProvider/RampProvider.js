@@ -23,6 +23,7 @@ const RampProvider = ({
   iconName,
   icon,
   name,
+  successText,
 }) => {
   let backgroundColor =
     isLoading || disabled ? 'bg-chessBlack-200 pointer-events-none' : 'bg-green'
@@ -33,7 +34,6 @@ const RampProvider = ({
   } else {
     errorText = ''
   }
-
   let button = (
     <Button
       id="connection-button"
@@ -63,7 +63,7 @@ const RampProvider = ({
       {status && (
         <h2
           className={`mt-4 bg-chessBlack-100 p-2 rounded-lg ${
-            highlightStatus && 'border-green'
+            highlightStatus ? 'border-green' : ''
           }`}
         >
           {status}
@@ -71,7 +71,10 @@ const RampProvider = ({
       )}
       {!hideButton && button}
       {errorText && (
-        <div className="mt-4 font-bold text-errorYellow">{errorText}</div>
+        <p className="mt-4 font-bold text-errorYellow">{errorText}</p>
+      )}
+      {successText && (
+        <p className="mt-4 font-bold text-green">{successText}</p>
       )}
       {helperText && <div className="mt-2">{helperText}</div>}
     </div>

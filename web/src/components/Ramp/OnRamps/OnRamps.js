@@ -201,7 +201,7 @@ const OnRamps = () => {
           onSubmit = () => getAddress(currentUser.address)
         return (
           <RampProvider
-            key={ramp.type}
+            key={ramp.name}
             onSubmit={onSubmit}
             isLoading={ramp.isLoading}
             {...ramp}
