@@ -160,7 +160,7 @@ const RampProvider = ({ children }) => {
   const connectWyre = async () => {
     let oAuthUrl
     try {
-      setWyre({ ...wyre, isLoading: true, error: '', successText: '' })
+      await setWyre({ ...wyre, isLoading: true, error: '', successText: '' })
       oAuthUrl = await getOAuthUrl(PLAID)
       if (
         (oAuthUrl == null || oAuthUrl == '') &&
@@ -169,20 +169,14 @@ const RampProvider = ({ children }) => {
       ) {
         if (errorOAuth.contains('WYRE')) {
           wyre.error = errorOAuth
-          return setWyre({
-            ...wyre,
-            error: errorOAuth,
-          })
+          return setWyre({ ...wyre, error: errorOAuth })
         }
       }
     } catch (error) {
       wyre.error = error
       return setWyre({ ...wyre, isLoading: false, error: error })
     }
-    setWyre({
-      ...wyre,
-      successText: t('Waiting for connection...'),
-    })
+    setWyre({ ...wyre, successText: t('Waiting for connection...') })
     /* eslint-disable-next-line no-undef */
     const linkHandler = Plaid.create({
       token: oAuthUrl.text,
