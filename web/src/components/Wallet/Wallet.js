@@ -2,15 +2,13 @@ import { useAuth } from '@redwoodjs/auth'
 import { routes, Link } from '@redwoodjs/router'
 import Button from 'src/components/Button'
 
-import { useRamp } from 'src/providers/ramp/ramp'
 import MemberBalance from 'src/components/Member/MemberBalance'
 import MemberMintCredits from 'src/components/Member/MemberMintCredits'
 import Accordion from 'src/components/Accordion/Accordion'
+import OnRamps from 'src/components/Ramp/OnRamps'
+import OffRamps from 'src/components/Ramp/OffRamps'
+
 import { trimAddress } from 'src/utils/helpers'
-import {
-  getDepositOptions,
-  getWithdrawalOptions,
-} from 'src/providers/ramp/modals'
 
 import {
   ArrowUpSquareFill,
@@ -20,7 +18,6 @@ import {
 
 const Wallet = () => {
   const { currentUser } = useAuth()
-  const { submitRamp, isLoading } = useRamp()
 
   const [addFundsToggle, setAddFundsToggle] = React.useState(false)
   const [cashOutToggle, setCashOutToggle] = React.useState(false)
@@ -47,11 +44,7 @@ const Wallet = () => {
       subtitle: t('Instantly add funds using a debit card.'),
       contents: (
         <Accordion toggle={addFundsToggle}>
-          <div className="grid sm:grid-cols-2 gap-6 sm:grid-flow-row">
-            {getDepositOptions({ submitRamp, isLoading }).map((item) => {
-              return <div key={item.key}>{item}</div>
-            })}
-          </div>
+          <OnRamps />
         </Accordion>
       ),
       button: (
@@ -78,11 +71,7 @@ const Wallet = () => {
               'For your protection, funds can only be sent one-way from your Treasure Chess wallet to your bank. Funds can never be withdrawn from your bank using this method.'
             )}
           </p>
-          <div className="grid sm:grid-cols-2 gap-6 sm:grid-flow-row">
-            {getWithdrawalOptions({ submitRamp, isLoading }).map((item) => {
-              return <div key={item.key}>{item}</div>
-            })}
-          </div>
+          <OffRamps />
         </Accordion>
       ),
       button: (
