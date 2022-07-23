@@ -153,7 +153,7 @@ const OffRamps = () => {
   const OffRamp = ({ ramp }) => {
     const [amount, setAmount] = React.useState()
     if (!ramp) return null
-    let onSubmit = ({ reconnect }) => {
+    let onSubmit = (reconnect) => {
       submitRamp({ direction: 'OFF', type: ramp.type, amount, reconnect })
     }
     if (!ramp) return null
@@ -183,7 +183,7 @@ const OffRamps = () => {
             <div className="flex ml-4 align-center">
               <Button
                 size="small"
-                onClick={() => onSubmit({ reconnect: true })}
+                onClick={() => onSubmit(true)}
                 disabled={ramp.isLoading || ramp.disabled}
               >
                 <div className="flex flex-row items-center">
