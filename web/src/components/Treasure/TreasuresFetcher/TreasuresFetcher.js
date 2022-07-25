@@ -154,7 +154,7 @@ const TreasuresFetcher = ({
           />
           {treasures.length === 0 && count === 0 && (
             <div className="flex justify-start sm:justify-center">
-              {t("That's everything")}
+              <h3>{t('Treasures you mint will appear here')}</h3>
             </div>
           )}
         </div>
