@@ -97,7 +97,6 @@ export const MintModal = ({ isVisible, toggleModal, onSubmit }) => {
           Credits: <b>${mintCreditBalance}</b>{' '}
         </>
       ),
-      helperText: '',
       // iconName: 'treasure_chess_full',
       disabled: mintCreditBalance < 5 ? 'Insufficient credits' : false,
       helperText: 'Earn more credits by completing tasks.',
