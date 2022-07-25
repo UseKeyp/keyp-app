@@ -53,6 +53,7 @@ const MintingProvider = ({ children }) => {
   })
 
   const toastPurchase = (purchase) => {
+    if (!purchase) return
     // TODO: "Remove toasts"
     // return
     // TODO: Add more data to toasts (links, etc.)
@@ -205,7 +206,7 @@ const MintingProvider = ({ children }) => {
       }
     } else {
       try {
-        const { data: { mintWithCredit: mintPurchase } = {} } =
+        const { data: { mintBalance: mintPurchase } = {} } =
           await mintBalanceMutation({
             variables: {
               title: state.title,

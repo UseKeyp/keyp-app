@@ -94,14 +94,12 @@ export const MintModal = ({ isVisible, toggleModal, onSubmit }) => {
       type: 'MINTCREDIT',
       description: (
         <>
-          Earn more credits by completing tasks.
-          <br />
           Credits: <b>${mintCreditBalance}</b>{' '}
         </>
       ),
-      helperText: '',
       // iconName: 'treasure_chess_full',
       disabled: mintCreditBalance < 5 ? 'Insufficient credits' : false,
+      helperText: 'Earn more credits by completing tasks.',
     },
     {
       name: 'Balance',
@@ -122,14 +120,14 @@ export const MintModal = ({ isVisible, toggleModal, onSubmit }) => {
         'Tip: Do not use auto-complete, a password manager, or copy/paste. Try using a different email if your first attempt fails.',
       iconName: 'wyre',
     },
-    {
-      name: 'Stripe',
-      type: 'STRIPE',
-      description: 'Pay with card',
-      helperText: '',
-      disabled: true,
-      iconName: 'stripe',
-    },
+    // {
+    //   name: 'Stripe',
+    //   type: 'STRIPE',
+    //   description: 'Pay with card',
+    //   helperText: '',
+    //   disabled: true,
+    //   iconName: 'stripe',
+    // },
   ]
   const onClick = (type) => {
     toggleModal()
