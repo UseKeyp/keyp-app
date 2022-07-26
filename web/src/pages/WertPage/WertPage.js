@@ -11,7 +11,7 @@ const WertPage = () => {
   return (
     <>
       <MetaTags title="Wert" description="Wert.io checkout" />
-      <div className="h-screen w-full flex justify-center items-center">
+      <div className="h-screen w-full flex justify-center items-center chess-background">
         <div className="w-full sm:w-[400px]">
           <div className="wert-container w-full sm:w-[400px]">
             <div className="flex justify-center items-center h-[60px]">
@@ -23,7 +23,9 @@ const WertPage = () => {
                   origin: isProduction
                     ? 'https://widget.wert.io'
                     : 'https://sandbox.wert.io',
-                  partner_id: '01G5FDZZ2RY85QT8WY7AMN95P5',
+                  partner_id: isProduction
+                    ? '01G6BAFZZKJW8SN5P3FRCKGDHV'
+                    : '01G5FDZZ2RY85QT8WY7AMN95P5',
                   container_id: 'wert',
                   // width: 400,
                   height: 550,

@@ -93,6 +93,9 @@ const MobileNav = () => {
                     {t('Log Out')}
                   </Button>
                 </li>
+                <div className="fixed bottom-0">
+                  <SiteFooter />
+                </div>
               </>
             )}
             <div className="fixed bottom-0">

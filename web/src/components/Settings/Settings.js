@@ -3,17 +3,22 @@ import ModalContainer from 'src/components/ModalContainer'
 import Button from 'src/components/Button'
 
 import { useModal } from 'src/hooks/useModal'
+import Dropdown from 'src/components/Dropdown/Dropdown'
+import { languageData } from '@treasure-chess/localization'
+import { useLocale } from 'src/providers/locale/locale'
 
 const Settings = () => {
   const { isVisible: isVisibleBeta, toggleModal: toggleModalBeta } = useModal()
   const { currentUser } = useAuth()
+  const { setLocale, localeError, localeLanguage } = useLocale()
+
   if (!currentUser) {
     return <></>
   }
 
   const items = [
     {
-      title: 'Subscribe to Updates',
+      title: t('Subscribe to Updates'),
       hideButton: true,
       description: (
         <div className="">
@@ -31,7 +36,7 @@ const Settings = () => {
       ),
     },
     {
-      title: 'Share Feedback',
+      title: t('Share Feedback'),
       hideButton: true,
       description: (
         <div className="flex align-start items-start justify-start">
@@ -49,10 +54,11 @@ const Settings = () => {
       ),
     },
     {
-      title: 'Beta Access',
+      title: t('Beta Access'),
       description: <p>Preview new features before they are released.</p>,
       button: (
         <Button
+          disabled={currentUser.betaAccess}
           variant="blue"
           size="small"
           className="w-32"
@@ -63,16 +69,40 @@ const Settings = () => {
       ),
       status: (
         <p>
-          <i>{currentUser.betaAccess ? 'Enabled' : 'Disabled'}</i>
+          <i>{currentUser.betaAccess ? t('Enabled') : t('Disabled')}</i>
         </p>
       ),
       highlight: currentUser.betaAccess,
+    },
+    {
+      title: t('Language'),
+      description: <p>{t('Change your preferred language')}</p>,
+      button: (
+        <div className="w-full">
+          <Dropdown
+            default={localeLanguage}
+            queryFilter={localeLanguage}
+            queryFilterFunction={setLocale}
+            arrayOfObjects={languageData.map((item) => {
+              return {
+                id: item.value,
+                value: item.id,
+              }
+            })}
+          />
+        </div>
+      ),
+      status: (
+        <div className="text-errorYellow font-bold text-sm mt-2">
+          {localeError}
+        </div>
+      ),
     },
   ]
 
   return (
     <div className="max-width-container">
-      <h1>{'Settings'}</h1>
+      <h1>{t('Settings')}</h1>
 
       <div className="">
         {items.map((item) => (
@@ -110,7 +140,7 @@ const Settings = () => {
       <ModalContainer
         isVisible={isVisibleBeta}
         hideModal={toggleModalBeta}
-        headerText="Request Beta Access"
+        headerText={t('Request Beta Access')}
         content={
           <div className="p-4 rounded-lg bg-chessBlack-100">
             <iframe
