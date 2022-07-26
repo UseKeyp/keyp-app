@@ -54,6 +54,7 @@ const MarketProvider = ({ children }) => {
   React.useEffect(() => {
     const tokenId = pathname.split('treasures/')[1]
     setState({ ...state, tokenId })
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */
   }, [pathname])
 
   const toastAction = (type, txHash) => {
