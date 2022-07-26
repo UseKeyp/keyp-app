@@ -47,6 +47,7 @@ const OffRamps = () => {
           </p>
         </>
       ),
+      helperText: <p className="italic">{t('Available on desktop-only')}</p>,
     },
     {
       type: 'COINBASE',
