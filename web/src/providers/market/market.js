@@ -48,8 +48,14 @@ const MarketProvider = ({ children }) => {
     amount: null,
     isOwner: false,
     actionData: {},
-    tokenId: pathname.split('treasures/')[1] || '1',
+    tokenId: pathname.split('treasures/')[1],
   })
+
+  React.useEffect(() => {
+    const tokenId = pathname.split('treasures/')[1]
+    setState({ ...state, tokenId })
+    /* eslint-disable-next-line react-hooks/exhaustive-deps */
+  }, [pathname])
 
   const toastAction = (type, txHash) => {
     // TODO: Add more data to toasts (links, etc.)
@@ -79,12 +85,13 @@ const MarketProvider = ({ children }) => {
   useQuery(TREASURE_WITH_MARKET_SALES_QUERY, {
     pollInterval: 10000,
     fetchPolicy: 'network-only',
-    skip: !!state.tokenId,
+    skip: !state.tokenId,
     variables: { tokenId: state.tokenId },
     onError: () => {
       setState({ ...state, marketLoading: false })
     },
     onCompleted: async ({ treasureWithMarketSales } = {}) => {
+      if (!treasureWithMarketSales) return
       const last = state?.marketSale || {}
       const current =
         [...treasureWithMarketSales.marketSales].sort(
