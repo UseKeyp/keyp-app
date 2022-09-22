@@ -2,7 +2,6 @@ import { useState } from 'react'
 
 import Header from 'src/components/Header'
 import SiteFooter from 'src/components/SiteFooter'
-import CampaignBanner from 'src/components/CampaignBanner/CampaignBanner'
 import Icon from 'src/components/Icon'
 
 import { Tabbar, TabbarLink, Icon as KonstaIcon } from 'konsta/react'
@@ -23,7 +22,7 @@ const DefaultLayout = ({ children, background }) => {
 
   React.useEffect(() => {
     const cleanedPath = pathname.split('/')[1] || 'home'
-    const tabs = ['wallet', 'treasures', 'profile', 'support']
+    const tabs = ['wallet', 'profile']
     if (tabs.includes(cleanedPath)) setActiveTab(cleanedPath)
   }, [pathname])
 
@@ -31,7 +30,6 @@ const DefaultLayout = ({ children, background }) => {
     <div className={background ? background : 'chess-background'}>
       <div className="flex flex-col min-h-screen">
         <div className="flex-grow">
-          <CampaignBanner />
           <div className="max-w-7xl mx-4 sm:mx-auto px-0 sm:px-4 sm:max-w-screen">
             <header className="relative mb-8 mt-4">
               <Header />

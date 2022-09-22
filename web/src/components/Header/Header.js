@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react'
-import { routes, useLocation } from '@redwoodjs/router'
+import { routes } from '@redwoodjs/router'
 import { useAuth } from '@redwoodjs/auth'
 import { useRamp } from 'src/providers/ramp/ramp'
 
@@ -41,11 +41,7 @@ const WalletBalance = () => {
 
 const MobileNav = () => {
   const { isAuthenticated: isLoggedIn, logOut } = useAuth()
-  const { pathname } = useLocation()
   const { t } = useLocale()
-
-  const isOnTreasuresPage = pathname === '/treasures'
-  const isOnAboutPage = pathname === '/about'
 
   const navItemClasses = 'block text-center mt-4 flex'
   const navAnchorClasses = 'text-center w-full font-bold'
@@ -59,20 +55,6 @@ const MobileNav = () => {
               <Button to={routes.home()}>
                 <Icon name="treasure_chess_full" height="35px" color="#fff" />
                 <span className="sr-only">{t('home')}</span>
-              </Button>
-            </li>
-            <li className={navItemClasses}>
-              <Button isSelected={isOnTreasuresPage} to={routes.treasures()}>
-                {t('Treasures')}
-              </Button>
-            </li>
-            <li className={navItemClasses}>
-              <Button
-                isSelected={isOnAboutPage}
-                to={routes.about()}
-                className={navAnchorClasses}
-              >
-                {t('About')}
               </Button>
             </li>
             {!isLoggedIn ? (
@@ -114,11 +96,7 @@ const Header = () => {
     currentUser: profile,
     logOut,
   } = useAuth()
-  const { pathname } = useLocation()
   const { t } = useLocale()
-
-  const isOnTreasuresPage = pathname === '/treasures'
-  const isOnAboutPage = pathname === '/about'
 
   const imageSrc = profile?.imageSrc || null
 
@@ -138,40 +116,10 @@ const Header = () => {
 
   return (
     <div className={'header'}>
-      <Button to={routes.home()} className="mr-4 align-center">
-        <Icon name="treasure_chess_full" height="35px" color="#fff" />
-      </Button>
       <div className="flex flex-1 items-center justify-end lg:hidden">
         <MobileNav />
       </div>
       <div className={'header__nav hidden lg:flex'}>
-        <div className="flex-1 flex items-center">
-          <div className="mr-4">
-            <Button
-              to={routes.treasures()}
-              size="large"
-              isSelected={isOnTreasuresPage}
-            >
-              <div className="flex items-center">
-                <div className="mr-2">
-                  <Icon name="treasure_chess" color="#ffffff" height="16px" />
-                </div>
-                {t('Treasures')}
-              </div>
-            </Button>
-          </div>
-          <div className="mr-4">
-            <Button to={routes.about()} size="large" isSelected={isOnAboutPage}>
-              <div className="flex items-center">
-                <div className="mr-2">
-                  {' '}
-                  <Icon name="help" size="small" />{' '}
-                </div>
-                {t('About')}
-              </div>
-            </Button>
-          </div>
-        </div>
         {isLoggedIn ? (
           <div className="flex items-center">
             <div className="mr-4 w-8 h-8 flex items-center justify-center">
