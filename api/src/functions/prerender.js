@@ -1,6 +1,5 @@
 import { db } from 'src/lib/db'
 import { logger } from 'src/lib/logger'
-import { getCardHtml } from '@treasure-chess/treasure-html'
 
 import Sentry from 'src/lib/sentry'
 
@@ -15,19 +14,10 @@ export const handler = async (event, _context) => {
     })
     if (!treasure) return { statusCode: 404 }
 
-    let openGraphImageSrc = 'https://treasure.chess.com/seo.png'
-    if (treasure.openGraphImageSrc)
-      openGraphImageSrc = treasure.openGraphImageSrc
-
-    const htmlString = await getCardHtml({
-      treasure,
-      openGraphImageSrc,
-    })
-
     return {
       statusCode: 200,
       headers: { 'Content-Type': 'text/html' },
-      body: htmlString,
+      body: '',
     }
   } catch (error) {
     /* eslint-disable no-console */

@@ -1,5 +1,3 @@
-import { TREASURES_PER_PAGE } from '@treasure-chess/treasure-filters'
-
 import CardsListWrapper from 'src/components/CardsListWrapper'
 import GameCard from 'src/components/Game/GameCard'
 import InfiniteScroll from 'src/components/InfiniteScroll'
@@ -46,24 +44,14 @@ const TreasuresList = ({
         {!treasures?.length && loading ? (
           loader
         ) : (
-          <InfiniteScroll
-            onLoadMore={onLoadMore}
-            count={count}
-            perPage={TREASURES_PER_PAGE}
-            page={page}
-            limit={limit}
-            loader={loader}
-            dataLength={treasures?.length}
-          >
-            <div className="mb-4">
-              <CardsListWrapper>
-                {treasures.map((treasure, index) => (
-                  <GameCard key={treasure.id + index} game={treasure} />
-                ))}
-                {limit && <SeeMore to={seeMore} />}
-              </CardsListWrapper>
-            </div>
-          </InfiniteScroll>
+          <div className="mb-4">
+            <CardsListWrapper>
+              {treasures.map((treasure, index) => (
+                <GameCard key={treasure.id + index} game={treasure} />
+              ))}
+              {limit && <SeeMore to={seeMore} />}
+            </CardsListWrapper>
+          </div>
         )}
       </div>
     </div>

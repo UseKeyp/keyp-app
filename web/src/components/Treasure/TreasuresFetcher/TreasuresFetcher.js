@@ -1,5 +1,4 @@
 import { useLazyQuery } from '@apollo/client'
-import { TREASURES_PER_PAGE } from '@treasure-chess/treasure-filters'
 
 import Carousel from 'src/components/Carousel'
 import SeeMore from 'src/components/SeeMore'
@@ -113,11 +112,6 @@ const TreasuresFetcher = ({
   const [getTreasuresCount] = useLazyQuery(TREASURES_WITH_FILTER_COUNT, {
     variables: { username, owner, filter },
     fetchPolicy: 'network-only',
-    onCompleted: ({ count: newCount }) => {
-      setCount(
-        limit && newCount > TREASURES_PER_PAGE ? TREASURES_PER_PAGE : newCount
-      )
-    },
   })
 
   const onLoadMore = () => {

@@ -6,9 +6,6 @@ const {
   getBoardLayout,
   getBoardBase64,
 } = require('@treasure-chess/chess-image-generator')
-import { getCardHtml } from '@treasure-chess/treasure-html'
-import { getAchievementNamesFromValues } from '@treasure-chess/treasure-filters'
-import placeholderGame from './placeholderGameData'
 import { useSpring, animated } from '@react-spring/web'
 import { CardSkeleton } from 'src/components/LoadingSkeleton'
 import { isMobile } from 'src/utils/helpers'
@@ -39,30 +36,6 @@ const GameCard = ({
   }))
   const [imageSrc, setImageSrc] = React.useState('/loading-board.png') // Use loading image
   const ref = React.useRef(null)
-  const update = async () => {
-    if (isMinting && !game) {
-      const rawHtml = await getCardHtml({
-        treasure: { ...placeholderGame },
-        gifUrl: game.gifUrl,
-      })
-
-      ref.current && setCardHtml(rawHtml)
-    } else {
-      const achievements = game.achievements
-        ? getAchievementNamesFromValues(game.achievements)
-        : undefined
-      const rawHtml = await getCardHtml({
-        treasure: {
-          ...game,
-          achievements,
-          title: title || game.title || 'Add a title',
-          tooltiptext: title || game.title || 'Add a title',
-        },
-        gifUrl: showGif ? game.gifUrl : imageSrc,
-      })
-      ref.current && setCardHtml(rawHtml)
-    }
-  }
 
   const fetchImageAndUpdate = async () => {
     if (!game) return
@@ -93,7 +66,6 @@ const GameCard = ({
 
   React.useEffect(() => {
     if (!game) return
-    update()
     /* eslint-disable react-hooks/exhaustive-deps */
   }, [game, title, isMinting, imageSrc])
 

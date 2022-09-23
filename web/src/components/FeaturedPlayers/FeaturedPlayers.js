@@ -1,13 +1,10 @@
 import { Link, routes } from '@redwoodjs/router'
 import HeadingBar from '../HeadingBar/HeadingBar'
-import { getFlagBase64 } from '@treasure-chess/treasure-html'
 import { featuredPlayers } from 'src/global.config'
 import Icon from 'src/components/Icon/Icon'
 
 const FeaturedPlayers = () => {
   const playerIcons = featuredPlayers?.map((player, i) => {
-    const flagImageSrc = getFlagBase64(player.country)
-
     return (
       <Link
         to={routes.treasures({ username: player.username })}
@@ -21,7 +18,6 @@ const FeaturedPlayers = () => {
             {player.name}
           </h3>
           <div className="flex items-center">
-            <img className="h-3 mr-1" src={flagImageSrc} alt="" />
             <p className="mr-1 text-[10px]">{player.rating}</p>
             {player.masterTitle === '' ? null : (
               <p className="bg-red py-0.5 px-[0.15rem] leading-none rounded-sm font-bold text-[7px] font-sans">

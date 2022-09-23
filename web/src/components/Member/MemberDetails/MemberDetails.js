@@ -12,8 +12,6 @@ import MemberMintCredits from 'src/components/Member/MemberMintCredits'
 
 import globalConfig from 'src/global.config'
 
-import { getFlagBase64 } from '@treasure-chess/treasure-html'
-
 import { useWallet } from 'src/providers/wallet'
 
 import Tooltip from 'src/components/Tooltip/Tooltip'
@@ -100,10 +98,6 @@ const MemberDetails = ({ member, isProfile }) => {
                 <p className="font-bold">{member.masterTitle}</p>
               </div>
             )}
-            <img
-              alt={`Flag of ${member.country}`}
-              src={getFlagBase64(member.country)}
-            />
             <TwitchLink
               username={member.twitchUsername}
               isProfile={isProfile}

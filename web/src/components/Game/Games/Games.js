@@ -5,7 +5,6 @@ import Table from 'src/components/Table'
 import { getOutcomeText } from 'src/utils/helpers'
 import { useMinting } from 'src/providers/minting'
 import Pagination from 'src/components/Pagination/Pagination'
-import { GAMES_PER_PAGE } from '@treasure-chess/treasure-filters'
 import LoadingDots from 'src/components/LoadingDots'
 
 import { GamesContext } from 'src/providers/games'
@@ -89,13 +88,6 @@ const Games = ({ games, count: queryCount, isLoading, error }) => {
               {count !== undefined ? <h3>{count}</h3> : <LoadingDots />}
               <h3>{t('Games')}</h3>
             </div>
-            <Pagination
-              count={count}
-              page={page + 1 || 1}
-              perPage={GAMES_PER_PAGE}
-              onChangePage={onChangePage}
-              isLoading={count === undefined}
-            />
           </div>
         }
         // rowHeight={80}
