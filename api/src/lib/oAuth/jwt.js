@@ -48,6 +48,7 @@ export const verifyChessJwt = async (jwt) => {
   return { decoded, newJwt: idToken }
 }
 
+// TODO: update this to only refresh the Discord token
 export const getNewIdToken = async (userId) => {
   try {
     const { refreshToken } = await db.member.findUnique({

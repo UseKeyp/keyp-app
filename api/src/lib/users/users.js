@@ -7,7 +7,9 @@ export const fetchUser = async (idOrAddress, creationData) => {
     let user
     let id
     let address
-    isHexAddress(idOrAddress) ? (address = idOrAddress) : (id = idOrAddress)
+    isHexAddress(idOrAddress)
+      ? (address = idOrAddress.toLowerCase())
+      : (id = idOrAddress.toLowerCase())
     user = await db.user.findUnique({
       where: {
         ...(address && { address }),
@@ -15,19 +17,21 @@ export const fetchUser = async (idOrAddress, creationData) => {
       },
     })
     if (!user) {
+      if (!creationData) throw "Couldn't create user. No creationData"
       user = await db.user.create({
         data: { id, ...creationData },
       })
     } else if (address) {
       // Not in our db, but we have id - Create external wallet user
-      user = await db.user.create({
-        data: {
-          id: address.toLowerCase(),
-          username: address.toLowerCase(),
-          address: address.toLowerCase(),
-          country: 'ETHER',
-        },
-      })
+      // TODO DECIDE if we need this
+      // user = await db.user.create({
+      //   data: {
+      //     id: address.toLowerCase(),
+      //     username: address.toLowerCase(),
+      //     address: address.toLowerCase(),
+      //     country: 'ETHER',
+      //   },
+      // })
     }
     return {
       ...user,

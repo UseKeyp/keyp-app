@@ -10,6 +10,8 @@ import { encodeBody, getExpiration } from 'src/lib/oAuth/helpers'
 import { fetchUser } from 'src/lib/users'
 import { getTorusPublicAddress } from 'src/lib/torus/torus'
 
+import { fetchDiscord } from 'src/lib/discord'
+
 export const DISCORD = 'DISCORD'
 export const DISCORD_OAUTH_URL_AUTHORIZE =
   'https://discord.com/oauth2/authorize'
@@ -24,7 +26,7 @@ export const params = {
   redirect_uri: DISCORD_REDIRECT_URI,
 }
 
-export const onSubmitCode = async (code, { codeVerifier, userId }) => {
+export const onSubmitCode = async (code, { codeVerifier }) => {
   try {
     const body = {
       grant_type: 'authorization_code',
@@ -51,25 +53,15 @@ export const onSubmitCode = async (code, { codeVerifier, userId }) => {
       access_token: accessToken,
       refresh_token: refreshToken,
       expires_in: expiration,
-      id_token: idToken, // JWT that contains identity information about user
     } = response
 
     // Use to get your own DISCORD_ACCESS_TOKEN for testing purposes
     accessToken && logger.debug(`DISCORD_API_ACCESS_TOKEN ${accessToken}`)
 
-    if (!response.id_token) throw 'Failed to get id_token from Discord.com'
-    const decoded = await decodeJwt(idToken)
-
-    if (new Date() - new Date(decoded.iat * 1000) > 60 * 1000)
-      throw 'Discord.com token was not issued recently. It must be <1 minute old.'
     return {
       accessToken,
       accessTokenExpiration: getExpiration(expiration),
       refreshToken,
-      idToken,
-      decoded,
-      idTokenExpiration: new Date(decoded.exp * 1000),
-      userId,
     }
   } catch (e) {
     throw `onSubmitCode() ${e}`
@@ -101,52 +93,56 @@ export const refreshDiscordTokens = async (refreshToken) => {
       access_token: newAccessToken,
       refresh_token: newRefreshToken,
       expires_in: newExpiration,
-      id_token: newIdToken, // JWT that contains identity information about user
     } = response
-    if (!newAccessToken || !newRefreshToken || !newIdToken)
+    if (!newAccessToken || !newRefreshToken)
       throw 'Failed to refresh tokens from Discord.com'
     const newExpirationDate = getExpiration(newExpiration)
-    const decoded = decodeJwt(newIdToken)
-    const idTokenExpiration = new Date(decoded.exp * 1000)
     return {
       accessToken: newAccessToken,
       accessTokenExpiration: newExpirationDate,
       refreshToken: newRefreshToken,
-      idToken: newIdToken,
-      idTokenExpiration,
     }
   } catch (e) {
     throw `refreshDiscordTokens() ${e}`
   }
 }
 
-export const onConnected = async ({ refreshToken, accessToken, decoded }) => {
+export const onConnected = async ({ refreshToken, accessToken }) => {
   try {
-    if (!decoded) return null
-    logger.debug({ custom: decoded }, 'onConnected() decoded')
-    const { preferred_username, user_id, email } = decoded
+    // TODO: fetch user details
+    const userDetails = await fetchDiscord({ path: `users/@me`, accessToken })
+    logger.debug({ custom: userDetails }, 'userDetails')
+    if (!userDetails.verified)
+      throw new AuthenticationError(
+        `Verify your email with Discord and try again.`
+      )
+
+    // eslint-disable-next-line camelcase
+    const { id, username, locale, avatar, mfa_enabled, email } = userDetails
+
     // Create user if needed, and get current avatar
-    const user = await fetchUser(preferred_username, true)
+    const user = await fetchUser(id, { username })
     if (user.banned) {
       throw new AuthenticationError('user is banned')
     }
-
-    if (user_id !== user.id)
-      throw new AuthenticationError(
-        `user_id in JWT doesn't match player_id from API`
-      )
+    logger.debug({ custom: user }, 'user')
 
     await db.user.update({
       where: { id: user.id },
       data: {
         refreshToken,
-        // NOTE: Updates user with their current avatar and country
-        imageSrc: user.imageSrc,
-        country: user.country,
+        accessToken,
+        // NOTE: Updates current avatar and locale
+        email,
+        imageSrc: `https://cdn.discordapp.com/avatars/${id}/${avatar}.png`,
+        locale,
+        // eslint-disable-next-line camelcase
+        mfa_enabled,
       },
     })
 
     // NOTE: Get Torus wallet address if needed.
+    // Don't place this in users.js (spam wallet generation prevention)
     if (!user.address) {
       try {
         const publicAddress = await getTorusPublicAddress(user.id)

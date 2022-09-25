@@ -33,12 +33,10 @@ const torusUtils = new TorusUtils(
 
 export const getTorusPublicAddress = async (userId) => {
   try {
-    const idToken = await getNewIdToken(userId)
     /* eslint-disable camelcase */
-    const { user_id: verifierId } = decodeJwt(idToken)
     const verifierDetails = {
       verifier: process.env.TORUS_VERIFIER,
-      verifierId: verifierId,
+      verifierId: userId,
     }
     const { torusNodeEndpoints, torusNodePub } =
       await fetchNodeDetails.getNodeDetails(verifierDetails)
