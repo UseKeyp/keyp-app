@@ -4,6 +4,7 @@ import { routes, navigate, useParams } from '@redwoodjs/router'
 import { useToast } from 'src/providers/toast'
 import { saveRedirectTo } from 'src/utils/auth/helpers'
 import Button from 'src/components/Button'
+import Icon from 'src/components/Icon'
 
 import globalConfig from 'src/global.config.js'
 
@@ -50,22 +51,22 @@ const LoginPortal = () => {
         <div className="mt-6">
           <div className="mb-2">
             <h3 className="text-base font-bold color-grey-light text-center">
-              {t('Create a Treasure Chess wallet')}
+              {t('Create a Feather wallet')}
             </h3>
           </div>
         </div>
 
         <div className="login-portal-container--button-wrapper">
           <Button
-            onClick={() => onSubmitSignUp('CHESS')}
+            onClick={() => onSubmitSignUp('DISCORD')}
             variant="white"
             textColor="black"
             className="login-button"
             size="small"
           >
             <div className="flex justify-center align-center items-center m-1">
-              <img src="/icons/chess.png" alt="chess" className="icon-logo" />
-              <span className="mr-2">{t('Sign in with Chess.com')}</span>
+              <Icon name="discord" color="black" />
+              <span className="mr-2">{t('Sign in with Discord')}</span>
             </div>
           </Button>
           {errorText && <div className="mt-2 rw-cell-error">{errorText}</div>}
