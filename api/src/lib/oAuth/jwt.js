@@ -1,4 +1,8 @@
-import { verify as verifyJwt, decode as decodeJwt } from 'jsonwebtoken'
+import {
+  verify as verifyJwt,
+  decode as decodeJwt,
+  sign as signJwt,
+} from 'jsonwebtoken'
 import jwksClient from 'jwks-rsa'
 import { promisify } from 'util'
 import { AuthenticationError } from '@redwoodjs/graphql-server'
@@ -10,6 +14,7 @@ import {
   refreshChessTokens,
   CHESS_OAUTH_URL,
 } from 'src/lib/oAuth/providers/chess'
+import fs from 'fs'
 
 const getKey = async (header) => {
   const client = jwksClient({
@@ -69,4 +74,26 @@ export const getNewIdToken = async (userId) => {
     console.log(e)
     throw new AuthenticationError('getNewIdToken() Unable to refresh session')
   }
+}
+
+var privateKey = fs.readFileSync('./privateKey.pem')
+var publicKey = fs.readFileSync('./publicKey.pem')
+
+export const generateIdToken = ({ name, email }) => {
+  var token = signJwt(
+    {
+      sub: 'Custom JWT for Web3Auth Custom Auth',
+      name: 'Bob Smith',
+      email: 'shahbaz@web3auth.io',
+      aud: 'urn:feather-collabland-demo',
+      iss: 'https://api.feather.niftychess.com',
+      iat: Math.floor(Date.now() / 1000),
+      exp: Math.floor(Date.now() / 1000) + 60 * 60,
+    },
+    privateKey,
+    { algorithm: 'RS256', kid: '1bb9605c36e69386830202b2d' }
+  )
+
+  var decoded = verifyJwt(token, publicKey)
+  return decoded
 }

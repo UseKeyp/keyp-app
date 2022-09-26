@@ -8,6 +8,49 @@ import Icon from 'src/components/Icon'
 
 import globalConfig from 'src/global.config.js'
 
+// import { Web3AuthCore } from '@web3auth/core'
+// import { CHAIN_NAMESPACES } from '@web3auth/base'
+// import { OpenloginAdapter } from '@web3auth/openlogin-adapter'
+
+// const clientId =
+//   'BLNqDC2RlgdIYg_1rrsLfZGR_B8MQH_qaSQr2KnYc0wwDXi0XluALaFHD61uKPi22d1NZyxWGpFvRzTZoQtAKBU'
+// const web3authCore = new Web3AuthCore({
+//   clientId,
+//   chainConfig: {
+//     // this is ethereum chain config, change if other chain(Solana, Polygon)
+//     chainNamespace: CHAIN_NAMESPACES.EIP155,
+//     chainId: '0x13881',
+//     rpcTarget: 'https://rpc.ankr.com/polygon_mumbai',
+//     blockExplorer: 'https://mumbai.polygonscan.com/',
+//     ticker: 'MATIC',
+//     tickerName: 'Matic',
+//   },
+// })
+// const adapter = new OpenloginAdapter({
+//   adapterSettings: {
+//     network: 'testnet',
+//     uxMode: 'redirect', // other option: popup
+//     loginConfig: {
+//       discord: {
+//         name: 'any name',
+//         verifier: 'feather-collabland-demo',
+//         typeOfLogin: 'discord',
+//         clientId: '1023392742707044492',
+//       },
+//     },
+//   },
+// })
+// web3authCore.configureAdapter(adapter)
+
+// const onLoginWeb3Auth = async () => {
+//   await web3authCore.init()
+//   // call below code when user clicks on login button
+//   // it will use discord login with openlogin's authentication
+//   await web3authCore.connectTo(adapter.name, { loginProvider: 'discord' })
+//   const user = await web3authCore.getUserInfo()
+//   console.log('User info', user)
+// }
+
 const LoginPortal = () => {
   const { signUp, isAuthenticated, reauthenticate } = useAuth()
   const { error, redirectTo } = useParams()
@@ -59,6 +102,7 @@ const LoginPortal = () => {
         <div className="login-portal-container--button-wrapper">
           <Button
             onClick={() => onSubmitSignUp('DISCORD')}
+            // onClick={onLoginWeb3Auth}
             variant="white"
             textColor="black"
             className="login-button"
@@ -84,12 +128,12 @@ const LoginPortal = () => {
                 <span className="mr-2">🪂</span>
                 {t('Send and receive')}
               </h4>
-              <li>
-                <h4 className="-indent-6">
-                  <span className="mr-2">🎁</span>
-                  {t('Make purchases')}
-                </h4>
-              </li>
+            </li>
+            <li>
+              <h4 className="-indent-6">
+                <span className="mr-2">🎁</span>
+                {t('Make purchases')}
+              </h4>
             </li>
           </ul>
         </div>

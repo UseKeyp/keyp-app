@@ -7,6 +7,7 @@ import Sentry from 'src/lib/sentry'
 import { decode as decodeJwt } from 'jsonwebtoken'
 
 import { encodeBody, getExpiration } from 'src/lib/oAuth/helpers'
+import { generateIdToken } from 'src/lib/oAuth/jwt'
 import { fetchUser } from 'src/lib/users'
 import { getTorusPublicAddress } from 'src/lib/torus/torus'
 
@@ -144,18 +145,21 @@ export const onConnected = async ({ refreshToken, accessToken }) => {
     // NOTE: Get Torus wallet address if needed.
     // Don't place this in users.js (spam wallet generation prevention)
     if (!user.address) {
-      try {
-        const publicAddress = await getTorusPublicAddress(user.id)
-        await db.user.update({
-          where: { id: user.id },
-          data: { address: publicAddress },
-        })
-      } catch (e) {
-        /* eslint-disable no-console */
-        console.log("Error fetching user's wallet from Torus")
-        console.log(e)
-        /* eslint-enable no-console */
-      }
+      const decoded = generateIdToken()
+      console.log(decoded)
+      logger.debug({ custom: decoded }, 'decoded')
+      // try {
+      //   const publicAddress = await getTorusPublicAddress(user.id)
+      //   await db.user.update({
+      //     where: { id: user.id },
+      //     data: { address: publicAddress },
+      //   })
+      // } catch (e) {
+      //   /* eslint-disable no-console */
+      //   console.log("Error fetching user's wallet from Torus")
+      //   console.log(e)
+      //   /* eslint-enable no-console */
+      // }
     }
     return user
   } catch (e) {
