@@ -14,7 +14,6 @@ import {
   refreshChessTokens,
   CHESS_OAUTH_URL,
 } from 'src/lib/oAuth/providers/chess'
-import fs from 'fs'
 
 const getKey = async (header) => {
   const client = jwksClient({
@@ -76,10 +75,14 @@ export const getNewIdToken = async (userId) => {
   }
 }
 
-var privateKey = fs.readFileSync('./privateKey.pem')
-var publicKey = fs.readFileSync('./publicKey.pem')
+// var privateKey = fs.readFileSync('privateKey.pem', 'utf8')
+const privateKey =
+  'MIIBOwIBAAJBAP0Y031X+gi8WxJj3DbwntatZ6ZO4kBwJarwwK3quyPloPCE1zov4o/3TfniniTEGiyfxOVFvA6+gBHRtlZo3JkCAwEAAQJBAImGouy6EFAM4UO15WQpDXZDVU3mEUTIa39eQKSAJt4ShObViahfHmZLb4Kw8y8TmCtNCAEpWCY9mI2yyhSiqH0CIQD/I5bqlgQHgCWAkKy6y/6fV6S7uJ34lxfg3ociwOrkfwIhAP3zePdnUAgGUweLuk51pKdulQDOJ/sGfJyweXTIvFLnAiAZ0ZgsFRJDUAx7fih8nrgdl9jrxjr2NRQNhXdXZP5gMQIhAPb/27VO0CGt/Q4G0qPDeu26+cQ5v9tBeOxyHQAAymMbAiBad9U6yvT/so9O2mCJPcqHThgA14syR9Nq4Ccq0Zw+jw=='
+const publicKey =
+  'MFwwDQYJKoZIhvcNAQEBBQADSwAwSAJBAP0Y031X+gi8WxJj3DbwntatZ6ZO4kBwJarwwK3quyPloPCE1zov4o/3TfniniTEGiyfxOVFvA6+gBHRtlZo3JkCAwEAAQ=='
+// fs.readFileSync('publicKey.pem', 'utf8')
 
-export const generateIdToken = ({ name, email }) => {
+export const generateIdToken = () => {
   var token = signJwt(
     {
       sub: 'Custom JWT for Web3Auth Custom Auth',
@@ -91,7 +94,11 @@ export const generateIdToken = ({ name, email }) => {
       exp: Math.floor(Date.now() / 1000) + 60 * 60,
     },
     privateKey,
-    { algorithm: 'RS256', kid: '1bb9605c36e69386830202b2d' }
+    {
+      algorithm: 'RS256',
+      // NOTE get kid with openssl rand -hex 12
+      header: { alg: 'RS256', kid: '75d809beae4c8e9212a83874b' },
+    }
   )
 
   var decoded = verifyJwt(token, publicKey)
