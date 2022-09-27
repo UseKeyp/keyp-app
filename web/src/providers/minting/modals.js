@@ -1,7 +1,6 @@
 import { routes, navigate } from '@redwoodjs/router'
 
 import ModalContainer from 'src/components/ModalContainer/ModalContainer'
-import TreasureCardCell from 'src/components/Treasure/TreasureCardCell'
 import Icon from 'src/components/Icon'
 import Button from 'src/components/Button'
 import LoadingDots from 'src/components/LoadingDots'
@@ -217,9 +216,7 @@ export const SuccessModal = ({
         submitText="View"
         cancelText="Back"
         content={
-          <div className="flex justify-center align-center h-full w-full">
-            <TreasureCardCell disableAnimation tokenId={tokenId.toString()} />
-          </div>
+          <div className="flex justify-center align-center h-full w-full"></div>
         }
       />
       <Confetti />

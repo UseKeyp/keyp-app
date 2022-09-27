@@ -4180,6 +4180,18 @@
   resolved "https://registry.yarnpkg.com/@open-draft/until/-/until-1.0.3.tgz#db9cc719191a62e7d9200f6e7bab21c5b848adca"
   integrity sha512-Aq58f5HiWdyDlFffbbSjAlv596h/cOnt2DO1w3DOC7OJ5EHs0hd/nycJfiu9RJbT6Yk6F1knnRRXNSpxoIVZ9Q==
 
+"@opengsn/contracts@^2.2.2":
+  version "2.2.6"
+  resolved "https://registry.yarnpkg.com/@opengsn/contracts/-/contracts-2.2.6.tgz#1784326bc243be2f33cd0171550d3a7f35aa412f"
+  integrity sha512-NraQgKZZUp7/ipLzpe2wd6lqX6w5PbLtHaKOFirm+zJYeCDoG9d6xrVc2VlDwjapMTJyWlYxuXSwOZQhHEMrAg==
+  dependencies:
+    "@openzeppelin/contracts" "^4.2.0"
+
+"@openzeppelin/contracts@^4.2.0", "@openzeppelin/contracts@^4.3.1":
+  version "4.7.3"
+  resolved "https://registry.yarnpkg.com/@openzeppelin/contracts/-/contracts-4.7.3.tgz#939534757a81f8d69cc854c7692805684ff3111e"
+  integrity sha512-dGRS0agJzu8ybo44pCIf3xBaPQN/65AIXNgK8+4gzKd5kbvlqyxryUYVLJv7fK98Seyd2hDZzVEHSWAh0Bt1Yw==
+
 "@panva/asn1.js@^1.0.0":
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/@panva/asn1.js/-/asn1.js-1.0.0.tgz#dd55ae7b8129e02049f009408b97c61ccf9032f6"
@@ -6528,6 +6540,14 @@
     json-stable-stringify "^1.0.1"
     loglevel "^1.8.0"
     web3-utils "^1.7.0"
+
+"@treasure-chess/treasure-contracts@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@treasure-chess/treasure-contracts/-/treasure-contracts-0.1.0.tgz#4eb59e87ad73be94f279ff0b94f58b538e6ad221"
+  integrity sha512-ysnFyATxT5IsbeKHJGsaHwPer19o9J06enkHx4daX17y2/AjFqVUt/3VOpJBYPCflK2yy2q+SEL1/W+rcgGKBQ==
+  dependencies:
+    "@opengsn/contracts" "^2.2.2"
+    "@openzeppelin/contracts" "^4.3.1"
 
 "@trysound/sax@0.2.0":
   version "0.2.0"

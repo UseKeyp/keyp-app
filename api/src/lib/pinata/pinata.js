@@ -3,8 +3,6 @@ import fetch from 'cross-fetch'
 import { logger } from 'src/lib/logger'
 import { isProduction } from 'src/lib/helpers'
 
-import { getAchievementNamesFromValues } from '@treasure-chess/treasure-filters'
-
 import { getDescription, getAttributes } from 'src/lib/pinata/helpers'
 import { getGifBase64 } from 'src/lib/chessCom/gifGetter'
 import placeholderImage from './logo'
@@ -119,10 +117,7 @@ export const pinTreasure = async ({ treasure, tcn, gameId }) => {
       tcn,
       playerColor: treasure.cardColor,
     })
-    const achievementNames = getAchievementNamesFromValues(
-      treasure.achievements
-    )
-    const attributes = getAttributes({ ...treasure, achievementNames })
+    const attributes = getAttributes({ ...treasure })
 
     // Image processing
     const boardBuffer = await fetchBoardBase64Buffer({

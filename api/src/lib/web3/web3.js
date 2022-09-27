@@ -1,7 +1,7 @@
 import { db } from 'src/lib/db'
 import Sentry from 'src/lib/sentry'
 
-import { fetchMember } from 'src/lib/members'
+import { fetchUser } from 'src/lib/members'
 import { fetchGame } from 'src/lib/games'
 import { pinTreasure } from 'src/lib/pinata/pinata'
 import { formatUnits, formatEther } from '@ethersproject/units'
@@ -344,7 +344,7 @@ export const transferTreasure = async ({ recipient, _treasureId }) => {
     const member = await db.member.findUnique({
       where: { id: context.currentUser.id },
     })
-    const recipientMember = await fetchMember(recipient)
+    const recipientMember = await fetchUser(recipient)
     if (!member.address) throw 'Sender does not have a wallet address'
     if (!recipientMember.address)
       throw 'Recipient does not have a wallet address'

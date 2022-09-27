@@ -1,8 +1,6 @@
 const treasureArtifact = require('@treasure-chess/treasure-contracts/artifacts/contracts/Treasure.sol/Treasure.json')
 import { Contract } from '@ethersproject/contracts'
 
-import achievementsList from '@treasure-chess/chess-achievements/src/achievementsList'
-
 import { adminSendTransaction } from 'src/lib/web3/wallets'
 import { web3Provider } from 'src/lib/web3/helpers'
 import { logger } from 'src/lib/logger'
@@ -38,10 +36,7 @@ export const mint = async ({
 
     // Lookup the number of each achievement
     let chievScore = [0, 0, 0]
-    treasure.achievements.map((chiev, index) => {
-      const match = achievementsList.find((item) => item.name == chiev)
-      if (match) chievScore[index] = match.number
-    })
+
     let unsignedTx
     try {
       unsignedTx = await treasureContract.populateTransaction.mint(
