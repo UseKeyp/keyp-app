@@ -16,7 +16,7 @@ export const handler = async (event, context) => {
   const authHandler = new DbAuthHandler(event, context, {
     db: db,
     cors,
-    authModelAccessor: 'member',
+    authModelAccessor: 'user',
     authFields: {
       id: 'id',
       username: 'username',

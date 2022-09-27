@@ -82,6 +82,7 @@ export const fetchDiscord = async ({
   body,
   method: methodArg,
   botToken,
+  accessToken,
 }) => {
   try {
     let method = 'GET'
@@ -94,12 +95,14 @@ export const fetchDiscord = async ({
       method,
       body,
       headers: {
-        Authorization: `Bot ${botToken}`,
+        ...(botToken && { Authorization: `Bot ${botToken}` }),
+        ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
         'Content-Type': 'application/json',
       },
     }).then((res) => {
+      logger.debug({ custom: res }, 'fetchDiscord res')
       if (res.status !== 200) throw res
-      return res
+      return res.json()
     })
   } catch (e) {
     const errorMessage = `fetchDiscord() ${e}`

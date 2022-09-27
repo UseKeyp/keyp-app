@@ -4,15 +4,14 @@ import Sentry from 'src/lib/sentry'
 import { db } from 'src/lib/db'
 
 export const getCurrentUser = async (session) => {
-  let member
+  let user
   if (process.env.IMPERSONATE_USERNAME) {
-    member = await db.member.findUnique({
+    user = await db.user.findUnique({
       where: { username: process.env.IMPERSONATE_USERNAME },
       // Warning: don't send any confidential data here
       select: {
         id: true,
         username: true,
-        twitchUsername: true,
         address: true,
         imageSrc: true,
         locale: true,
@@ -23,13 +22,12 @@ export const getCurrentUser = async (session) => {
       },
     })
   } else {
-    member = await db.member.findUnique({
+    user = await db.user.findUnique({
       where: { id: session.id },
       // Warning: don't send any confidential data here
       select: {
         id: true,
         username: true,
-        twitchUsername: true,
         address: true,
         imageSrc: true,
         locale: true,
@@ -40,16 +38,16 @@ export const getCurrentUser = async (session) => {
       },
     })
   }
-  if (!member) return null
+  if (!user) return null
   // WARNING: Returned values here are exposed to the FE
   // Don't include any Chess.com access tokens here
 
-  if (member.banned) {
+  if (user.banned) {
     throw new Error('user is banned')
   }
 
-  Sentry.setUser(member)
-  return member
+  Sentry.setUser(user)
+  return user
 }
 
 export const isAuthenticated = () => {
@@ -106,9 +104,9 @@ export const requireAuth = ({ roles } = {}) => {
 }
 
 /**
- * Checks if currentUser is a member of the beta program and will throw an error if not
+ * Checks if currentUser is a user of the beta program and will throw an error if not
  *
- * @throws {ForbiddenError} If the currentUser is not a member of the beta program
+ * @throws {ForbiddenError} If the currentUser is not a user of the beta program
  */
 export const betaAccess = () => {
   if (!context.currentUser.betaAccess) {
