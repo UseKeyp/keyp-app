@@ -10,25 +10,6 @@ export const QUERY = gql`
       imageSrc
       country
       masterTitle
-      twitchUsername
-      treasuresPlayedWhite {
-        id
-        endTime
-        moveCount
-        outcome
-        winner {
-          id
-        }
-      }
-      treasuresPlayedBlack {
-        id
-        endTime
-        outcome
-        moveCount
-        winner {
-          id
-        }
-      }
     }
   }
 `

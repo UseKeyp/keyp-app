@@ -25,11 +25,7 @@ const WalletFormTransfer721 = () => {
           listClassName="rw-form-error-list"
         />
 
-        <Label
-          name="tokenAddress"
-          className="rw-label"
-          errorClassName="rw-label rw-label-error"
-        >
+        <Label name="tokenAddress" errorClassName="rw-label rw-label-error">
           Token Address
         </Label>
         <TextField
@@ -45,11 +41,7 @@ const WalletFormTransfer721 = () => {
         />
         <FieldError name="tokenAddress" className="rw-field-error" />
 
-        <Label
-          name="tokenId"
-          className="rw-label"
-          errorClassName="rw-label rw-label-error"
-        >
+        <Label name="tokenId" errorClassName="rw-label rw-label-error">
           tokenId
         </Label>
         <NumberField
@@ -64,11 +56,7 @@ const WalletFormTransfer721 = () => {
         />
         <FieldError name="tokenId" className="rw-field-error" />
 
-        <Label
-          name="toAddress"
-          className="rw-label"
-          errorClassName="rw-label rw-label-error"
-        >
+        <Label name="toAddress" errorClassName="rw-label rw-label-error">
           Recipient Address
         </Label>
         <TextField
@@ -88,10 +76,11 @@ const WalletFormTransfer721 = () => {
           <Button
             disabled={transferErc721Loading}
             type="submit"
-            className={`rw-button rw-button-blue w-[200px] h-[40px] text-xl shadow-m hover:sm items-center ${
+            className={`rw-button rw-button-blue w-32 text-xl shadow-m hover:sm items-center ${
               transferErc721Loading && 'cursor-not-allowed'
             }`}
-            variant={transferErc721Loading ? 'grey' : 'transparent'}
+            size="small"
+            variant={transferErc721Loading ? 'grey' : 'blue'}
             label={transferErc721Loading ? <LoadingDots /> : 'Transfer'}
           />
         </div>

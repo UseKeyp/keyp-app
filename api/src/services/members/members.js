@@ -1,18 +1,18 @@
 import { db } from 'src/lib/db'
 import { logger } from 'src/lib/logger'
-import { fetchMember } from 'src/lib/users'
+import { fetchUser } from 'src/lib/users'
 import { getUsdcBalance as getUsdcBal } from 'src/lib/web3/tokens.js'
 
 export const user = ({ usernameOrAddress }) => {
   try {
-    return fetchMember(usernameOrAddress)
+    return fetchUser(usernameOrAddress)
   } catch (e) {
     logger.error(e)
     return null
   }
 }
 
-export const profile = () => fetchMember(context.currentUser.username)
+export const profile = () => fetchUser(context.currentUser.username)
 
 export const usernames = async ({ query, orderBy }) => {
   const users = await db.user.findMany({

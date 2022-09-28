@@ -115,7 +115,7 @@ const UserDetails = ({ user, isProfile }) => {
           {isProfile && (
             <div className="mt-4 grid  gap-4  user-details--user-content">
               <p>
-                <Link to={routes.user({ usernameOrAddress: user.username })}>
+                <Link to={routes.user({ usernameOrAddress: user.id })}>
                   {t('Public Profile')}
                 </Link>
               </p>

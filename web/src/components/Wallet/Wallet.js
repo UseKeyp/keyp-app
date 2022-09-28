@@ -7,7 +7,6 @@ import UserMintCredits from 'src/components/User/UserMintCredits'
 import Accordion from 'src/components/Accordion/Accordion'
 import OnRamps from 'src/components/Ramp/OnRamps'
 import OffRamps from 'src/components/Ramp/OffRamps'
-
 import { trimAddress } from 'src/utils/helpers'
 
 import {

@@ -1,15 +1,12 @@
 import { useAuth } from '@redwoodjs/auth'
-import { routes } from '@redwoodjs/router'
 
 import UserDetails from 'src/components/User/UserDetails'
 import UserActivityCell from 'src/components/User/UserActivityCell'
-import SortingDropdown from 'src/components/SortingDropdown/SortingDropdown'
-import FilterBar from 'src/components/FilterBar/FilterBar'
-import { useFilter } from 'src/providers/filters'
+import WalletFormTransfer20 from 'src/components/Wallet/WalletFormTransfer20'
+import WalletFormTransfer721 from 'src/components/Wallet/WalletFormTransfer721'
 
 const Profile = () => {
   const { currentUser } = useAuth()
-  const { filter, sort, defaultParams } = useFilter()
 
   if (!currentUser) {
     return <></>
@@ -22,8 +19,14 @@ const Profile = () => {
           <UserActivityCell usernameOrAddress={currentUser?.username} />
         </div>
       </div>
-      {/* <h1 className="mt-10">{t('Treasures Played')}</h1> */}
-      <div className="flex mt-4 h-[476px]"></div>
+      <h1 className="mt-10">{t('External Transfer - ERC20')}</h1>
+      <div className="flex mt-4 ">
+        <WalletFormTransfer20 />
+      </div>
+      <h1 className="mt-10">{t('External Transfer - ERC721')}</h1>
+      <div className="flex mt-4 h-[476px]">
+        <WalletFormTransfer721 />
+      </div>
     </div>
   )
 }
