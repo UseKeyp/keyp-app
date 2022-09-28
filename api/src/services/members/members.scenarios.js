@@ -1,5 +1,5 @@
 export const standard = defineScenario({
-  member: {
+  user: {
     one: {
       data: {
         id: 'String',

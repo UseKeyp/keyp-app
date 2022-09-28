@@ -1,4 +1,3 @@
-import achievementsCalculator from '@treasure-chess/chess-achievements'
 const { id: sha3 } = require('@ethersproject/hash')
 
 import { db } from 'src/lib/db'
@@ -13,13 +12,9 @@ import { parseGameFromChessDotCom } from 'src/lib/chessCom/gameParsing'
 import { getGifUrl } from 'src/lib/chessCom/gifGetter'
 import { getBoardLayout } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
-import filters, { GAMES_PER_PAGE } from '@treasure-chess/treasure-filters'
 
-const getRarity = (score) => {
-  if (score < 6) return filters.rarityList[0]
-  if (score < 11) return filters.rarityList[1]
-  if (score < 14) return filters.rarityList[2]
-  return filters.rarityList[3]
+const getRarity = () => {
+  return null
 }
 
 export const getTreasureCardColor = ({ game, username }) =>
@@ -64,10 +59,7 @@ const getFullGameDetails = async ({
       },
     })
     if (treasure) return treasure
-    const { openingValue, score, achievements } = achievementsCalculator(
-      game.pgn,
-      cardColor
-    )
+
     const achievementsList = achievements.map((item) => item.value)
     const white = await fetchMember(game.whiteUsername, true) // Get latest data
     const black = await fetchMember(game.blackUsername, true)

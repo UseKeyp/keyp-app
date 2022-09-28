@@ -1,5 +1,4 @@
 import { db } from 'src/lib/db'
-import achievementsList from '@treasure-chess/chess-achievements/src/achievementsList'
 
 import { logger } from 'src/lib/logger'
 
@@ -92,14 +91,6 @@ const getTreasureData = async () => {
   const Mythic = await db.treasure.count({ where: { rarity: 'Mythic' } })
 
   const achievements = {}
-  await Promise.all(
-    achievementsList.map(async (chiev) => {
-      const count = await db.treasure.count({
-        where: { achievements: { has: chiev.value } },
-      })
-      achievements[chiev.name] = count
-    })
-  )
 
   return {
     count: {
@@ -143,25 +134,6 @@ const getMarketSaleData = async () => {
   })
   const achievementsCount = {}
   const achievementsSales = {}
-  await Promise.all(
-    achievementsList.map(async (chiev) => {
-      const {
-        _sum: { amount: total },
-        _count: count,
-        _avg: { amount: average },
-      } = await db.marketSale.aggregate({
-        where: {
-          status: 'SOLD',
-          treasure: { achievements: { has: chiev.value } },
-        },
-        _avg: { amount: true },
-        _sum: { amount: true },
-        _count: true,
-      })
-      achievementsSales[chiev.name] = { total, average }
-      achievementsCount[chiev.name] = count
-    })
-  )
 
   const rarities = ['Good', 'Great', 'Ultra', 'Mythic']
   const raritySales = {}

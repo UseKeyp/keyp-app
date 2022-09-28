@@ -2,12 +2,12 @@ import { generateRandomMembers } from '../../../../scripts/seed/helpers'
 
 const generatedMembers = generateRandomMembers(4, 0)
 
-const member = {}
+const user = {}
 const names = ['alice', 'bob', 'carol', 'dan', 'eve']
 generatedMembers.map((item, index) => {
-  member[names[index]] = { data: item }
+  user[names[index]] = { data: item }
 })
 
 export const standard = defineScenario({
-  member,
+  user,
 })

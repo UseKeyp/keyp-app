@@ -1,6 +1,5 @@
 import { isBrowser } from '@redwoodjs/prerender/browserUtils'
 import { gHistory } from '@redwoodjs/router/dist/history'
-import filters from '@treasure-chess/treasure-filters'
 
 const FilterContext = React.createContext({})
 
@@ -9,14 +8,6 @@ const initialState = {
   username: '',
   filter: {},
   initialized: false,
-}
-
-const defaultParams = {
-  opening: filters.openingList[0].name,
-  outcome: filters.outcomeList,
-  sale: filters.saleList.map((status) => status.name),
-  termination: filters.terminationList[0].name,
-  sort: filters.sortList[4],
 }
 
 const FilterProvider = ({ children }) => {
@@ -35,7 +26,6 @@ const FilterProvider = ({ children }) => {
   const updateUrl = () => {
     const searchParams = new URLSearchParams(filter)
     username && searchParams.append('username', username)
-    sort && sort !== defaultParams.sort && searchParams.append('sort', sort)
 
     searchParams.sort()
     if (isBrowser) {
@@ -83,7 +73,6 @@ const FilterProvider = ({ children }) => {
         filter,
         sort,
         username,
-        defaultParams,
         setFilter: updateFilter,
         resetFilter,
       }}

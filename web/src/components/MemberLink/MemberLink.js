@@ -17,7 +17,7 @@ const MemberLink = ({ member = {} }) => {
       <p className="">
         <Link
           className="text-blueLink font-bold"
-          to={routes.member({ usernameOrAddress: linkText })}
+          to={routes.user({ usernameOrAddress: linkText })}
         >
           {linkText}
         </Link>

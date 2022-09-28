@@ -5,7 +5,7 @@ import { getRampOffUrl, getRampOnUrl } from 'src/lib/ramps'
 
 export const ramps = async () => {
   const ramps = await db.ramp.findMany({
-    where: { memberId: context.currentUser.id },
+    where: { userId: context.currentUser.id },
     orderBy: { createdAt: 'desc' },
   })
   // Get only the most recent for each type
@@ -32,7 +32,7 @@ export const rampWithdraw = async ({ type, amount }) => {
       toAddress: ramp.address,
       amount: Number(amount),
       transaction: { create: { id: tx.hash } },
-      member: { connect: { id: context.currentUser.id } },
+      user: { connect: { id: context.currentUser.id } },
       ramp: { connect: { id: ramp.id } },
     },
   })

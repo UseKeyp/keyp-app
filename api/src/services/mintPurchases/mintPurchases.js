@@ -12,21 +12,19 @@ import { createCheckoutSession } from 'src/lib/stripe'
 
 export const mintPurchases = () => {
   return db.mintPurchase.findMany({
-    where: { member: { id: context.currentUser.id } },
+    where: { user: { id: context.currentUser.id } },
     orderBy: [{ updatedAt: 'desc' }],
-    include: { treasure: true },
   })
 }
 
 export const pendingMintPurchases = () => processPendingPurchases()
 
 export const cancelMintingPurchase = async ({ id }) => {
-  const { memberId } = await db.mintPurchase.findFirst({
+  const { userId } = await db.mintPurchase.findFirst({
     where: { id },
   })
 
-  if (memberId !== context.currentUser.id)
-    throw new EnvelopError('Unauthorized')
+  if (userId !== context.currentUser.id) throw new EnvelopError('Unauthorized')
   return await db.mintPurchase.delete({ where: { id } })
 }
 
@@ -46,7 +44,7 @@ export const mintCheckoutUrl = async ({
   await validateMintRequest({ gameId, endTime, title, paymentType })
   const { username, address, id: userId } = context.currentUser
 
-  const { email } = db.member.findFirst({
+  const { email } = db.user.findFirst({
     where: { id: userId },
   })
 
@@ -71,7 +69,7 @@ export const mintCheckoutUrl = async ({
   }
   await db.mintPurchase.create({
     data: {
-      member: { connect: { id: userId } },
+      user: { connect: { id: userId } },
       reservation,
       gameId,
       // If Stripe, then we can set the payment intent now
@@ -86,8 +84,8 @@ export const mintCheckoutUrl = async ({
 }
 
 export const MintPurchase = {
-  member: (_obj, { root }) =>
-    db.mintPurchase.findUnique({ where: { id: root.id } }).member(),
+  user: (_obj, { root }) =>
+    db.mintPurchase.findUnique({ where: { id: root.id } }).user(),
   treasure: (_obj, { root }) =>
     db.mintPurchase.findUnique({ where: { id: root.id } }).treasure(),
 }

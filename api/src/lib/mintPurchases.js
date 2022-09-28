@@ -29,7 +29,7 @@ export const processMintPurchaseOrder = async ({ mintPurchase, orderId }) => {
     embed: {
       color: 3066993,
       title: `✨💳 ${mintPurchase.paymentType} card mint success!`,
-      description: `member: ${mintPurchase.member.username}
+      description: `user: ${mintPurchase.user.username}
     mintPurchase: ${mintPurchase.id}`,
       footer: { text: new Date().toString() },
     },
@@ -40,29 +40,27 @@ export const processMintPurchaseOrder = async ({ mintPurchase, orderId }) => {
 const fetchPendingMintPurchases = () => {
   return db.mintPurchase.findMany({
     where: {
-      member: { id: context.currentUser.id },
+      user: { id: context.currentUser.id },
       status: PENDING,
     },
     orderBy: [{ updatedAt: 'desc' }],
     include: {
-      treasure: true,
-      member: true,
       transaction: true,
       staleTransactions: true,
     },
   })
 }
 
-export const fetchMintPurchase = async ({ gameId, endTime, memberId }) => {
+export const fetchMintPurchase = async ({ gameId, endTime, userId }) => {
   const mintPurchases = await db.mintPurchase.findMany({
     where: {
       gameId,
       gameEndTime: endTime,
-      memberId,
+      userId,
     },
   })
   // TODO: Need a better way for identifying unique purchases.
-  // Maybe some string gameId-endTime-memberId ?
+  // Maybe some string gameId-endTime-userId ?
   if (mintPurchases?.length > 1)
     /* eslint-disable-next-line no-console */
     logger.warn('Multiple mintPurchases for the same game')
@@ -81,7 +79,7 @@ export const validateMintRequest = async ({
   const existingPurchase = await fetchMintPurchase({
     gameId,
     gameEndTime: endTime,
-    memberId: context.currentUser.id,
+    userId: context.currentUser.id,
   })
   if (existingPurchase && !existingPurchase.status === FAILED)
     throw new EnvelopError(`Minting already in progress.`)
@@ -115,15 +113,15 @@ export const processMintBalanceRequest = async ({
   paymentType,
 }) => {
   try {
-    await checkGasAndAirdrop({ member: context.currentUser })
-    await checkAndSetMarketApprovals({ member: context.currentUser })
+    await checkGasAndAirdrop({ user: context.currentUser })
+    await checkAndSetMarketApprovals({ user: context.currentUser })
   } catch {
     // Do nothing
   }
   if (paymentType === 'MINTCREDIT') {
     if (context.currentUser.mintCredits < 1)
       throw new EnvelopError(`Insufficient mint credits`)
-    await db.member.update({
+    await db.user.update({
       where: { id: context.currentUser.id },
       data: { mintCredits: { decrement: 1 } },
     })
@@ -142,7 +140,7 @@ export const processMintBalanceRequest = async ({
   }
   const mintPurchase = await db.mintPurchase.create({
     data: {
-      member: { connect: { id: context.currentUser.id } },
+      user: { connect: { id: context.currentUser.id } },
       gameId,
       paymentType,
       orderStatus: 'COMPLETE',
@@ -159,7 +157,7 @@ export const processPendingPurchases = async () => {
   pendingPurchases = await Promise.all(
     pendingPurchases.map(async (mintPurchase) => {
       // logger.debug(
-      //   { custom: { ...mintPurchase, member: 'REDACTED' } },
+      //   { custom: { ...mintPurchase, user: 'REDACTED' } },
       //   'mintPurchase'
       // )
       if (mintPurchase.orderStatus !== COMPLETE) {
@@ -184,7 +182,7 @@ export const processPendingPurchases = async () => {
   )
   // pendingPurchases[0] &&
   //   logger.debug(
-  //     { custom: { ...pendingPurchases[0], member: 'REDACTED' } },
+  //     { custom: { ...pendingPurchases[0], user: 'REDACTED' } },
   //     'pendingPurchases[0]'
   //   )
   // logger.debug({ custom: pendingPurchases.length })

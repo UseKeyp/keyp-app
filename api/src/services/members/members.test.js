@@ -1,25 +1,19 @@
-import {
-  members,
-  member,
-  createMember,
-  updateMember,
-  deleteMember,
-} from './members'
+import { users, user, createMember, updateMember, deleteMember } from './users'
 
-describe('members', () => {
-  scenario('returns all members', async (scenario) => {
-    const result = await members()
+describe('users', () => {
+  scenario('returns all users', async (scenario) => {
+    const result = await users()
 
-    expect(result.length).toEqual(Object.keys(scenario.member).length)
+    expect(result.length).toEqual(Object.keys(scenario.user).length)
   })
 
-  scenario('returns a single member', async (scenario) => {
-    const result = await member({ id: scenario.member.one.id })
+  scenario('returns a single user', async (scenario) => {
+    const result = await user({ id: scenario.user.one.id })
 
-    expect(result).toEqual(scenario.member.one)
+    expect(result).toEqual(scenario.user.one)
   })
 
-  scenario('creates a member', async () => {
+  scenario('creates a user', async () => {
     const result = await createMember({
       input: {
         id: 'String',
@@ -37,8 +31,8 @@ describe('members', () => {
     expect(result.country).toEqual('String')
   })
 
-  scenario('updates a member', async (scenario) => {
-    const original = await member({ id: scenario.member.one.id })
+  scenario('updates a user', async (scenario) => {
+    const original = await user({ id: scenario.user.one.id })
     const result = await updateMember({
       id: original.id,
       input: { id: 'String2' },
@@ -47,9 +41,9 @@ describe('members', () => {
     expect(result.id).toEqual('String2')
   })
 
-  scenario('deletes a member', async (scenario) => {
-    const original = await deleteMember({ id: scenario.member.one.id })
-    const result = await member({ id: original.id })
+  scenario('deletes a user', async (scenario) => {
+    const original = await deleteMember({ id: scenario.user.one.id })
+    const result = await user({ id: original.id })
 
     expect(result).toEqual(null)
   })

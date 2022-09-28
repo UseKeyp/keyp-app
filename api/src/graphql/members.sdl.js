@@ -38,11 +38,11 @@ export const schema = gql`
   }
 
   type Query {
-    member(usernameOrAddress: String!): Member @skipAuth
+    user(usernameOrAddress: String!): Member @skipAuth
     usernames(query: String!, orderBy: UserNameOrderByInput): [String]!
       @skipAuth
     profile: Profile! @requireAuth
-    memberBalance: MemberBalance! @requireAuth
+    userBalance: MemberBalance! @requireAuth
   }
 
   type Mutation {

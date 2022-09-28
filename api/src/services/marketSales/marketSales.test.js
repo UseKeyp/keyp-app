@@ -15,9 +15,9 @@ jest.mock('../../lib/web3/airdrop/airdrop', () => {
     airdropGasTransaction: jest.fn(() => null),
   }
 })
-jest.mock('../../lib/web3/member', () => {
+jest.mock('../../lib/web3/user', () => {
   return {
-    memberSendTransaction: jest.fn(() => ({
+    userSendTransaction: jest.fn(() => ({
       hash: `0x56570de287d73cd1cb6092bb8fdee6173974955fdef345ae579ee9f475ea${Math.floor(
         Math.random() * (9999 - 1000 + 1) + 1000
       )}`,
@@ -38,7 +38,7 @@ describe('listTreasure', () => {
   scenario('Invalid amount', async (scenario) => {
     mockCurrentUser({
       id: scenario.treasure[0].ownerId,
-      address: scenario.member.alice.address,
+      address: scenario.user.alice.address,
     })
     try {
       await listTreasure({
@@ -50,7 +50,7 @@ describe('listTreasure', () => {
     }
   })
   scenario('Not owner', async (scenario) => {
-    mockCurrentUser({ id: 1111, address: scenario.member.alice.address })
+    mockCurrentUser({ id: 1111, address: scenario.user.alice.address })
     try {
       await listTreasure({
         treasureId: scenario.treasure[0].id,
@@ -170,8 +170,8 @@ describe('buyTreasure', () => {
   })
   scenario('Not enough funds', async (scenario) => {
     mockCurrentUser({
-      id: scenario.member.carol.id,
-      address: scenario.member.carol.address,
+      id: scenario.user.carol.id,
+      address: scenario.user.carol.address,
     })
     try {
       await buyTreasure({
@@ -187,7 +187,7 @@ describe('buyTreasure', () => {
   })
   scenario('Happy case', async (scenario) => {
     mockCurrentUser({
-      id: scenario.member.carol.id,
+      id: scenario.user.carol.id,
       address: process.env.TEST_USER_PUBLIC_ADDRESS,
     })
     const response = await buyTreasure({

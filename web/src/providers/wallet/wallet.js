@@ -5,7 +5,7 @@ import { useModal } from 'src/hooks/useModal'
 
 import { AddressModal } from './modals'
 import {
-  MEMBER_BALANCE_QUERY,
+  USER_BALANCE_QUERY,
   TRANSFER_ERC721_MUTATION,
   TRANSFER_ERC20_MUTATION,
 } from './graphql'
@@ -36,10 +36,10 @@ const WalletProvider = ({ children }) => {
   const { isVisible: isVisibleAdd, toggleModal: toggleModalAdd } = useModal()
 
   const {
-    data: { memberBalance } = {},
+    data: { userBalance } = {},
     error: balanceError,
     loading: balanceLoading,
-  } = useQuery(MEMBER_BALANCE_QUERY, {
+  } = useQuery(USER_BALANCE_QUERY, {
     pollInterval: 30000,
     skip: !isAuthenticated,
     fetchPolicy: 'network-only',
@@ -94,10 +94,10 @@ const WalletProvider = ({ children }) => {
   React.useEffect(() => {
     setState({
       ...state,
-      ...memberBalance,
+      ...userBalance,
     })
     /* eslint-disable-next-line react-hooks/exhaustive-deps */
-  }, [memberBalance])
+  }, [userBalance])
   return (
     <WalletContext.Provider
       value={{

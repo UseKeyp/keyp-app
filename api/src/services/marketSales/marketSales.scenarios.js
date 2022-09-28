@@ -15,17 +15,17 @@ generatedTreasures.map((item, index) => {
   treasure[index] = { data: item }
 })
 
-const member = {}
+const user = {}
 const names = ['alice', 'bob', 'carol', 'dan', 'eve']
 generatedMembers.map((item, index) => {
-  member[names[index]] = { data: item }
+  user[names[index]] = { data: item }
 })
 
 treasure[1].data.marketSales = {
   create: {
     seller: {
       connect: {
-        id: member.alice.data.id,
+        id: user.alice.data.id,
       },
     },
     status: 'LISTED',
@@ -42,6 +42,6 @@ treasure[1].data.marketSales = {
 }
 
 export const standard = defineScenario({
-  member,
+  user,
   treasure,
 })

@@ -7,15 +7,15 @@ export const schema = gql`
     type: PromotionType!
     mintCredits: Int
     enabled: Boolean!
-    members: [PromotionsOnMembers]!
+    users: [PromotionsOnMembers]!
   }
 
   type PromotionsOnMembers {
     id: String!
     createdAt: DateTime!
     updatedAt: DateTime!
-    member: Member!
-    memberId: String!
+    user: Member!
+    userId: String!
     promotion: Promotion!
     promotionId: Int!
   }

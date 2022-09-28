@@ -1,5 +1,3 @@
-import { Link, routes } from '@redwoodjs/router'
-
 import Icon from 'src/components/Icon'
 import globalConfig from 'src/global.config.js'
 
@@ -26,15 +24,6 @@ const SiteFooter = () => {
           <a className="underline" href={globalConfig.BLOG_URL}>
             Blog
           </a>
-          <Link className="underline" to={routes.terms()}>
-            Terms
-          </Link>
-          <Link className="underline" to={routes.privacy()}>
-            Privacy
-          </Link>
-          <Link className="underline" to={routes.support()}>
-            Support
-          </Link>
         </div>
         <div className="flex items-center  space-x-4">
           <a href={globalConfig.CHESS_COM_BASE_URL}>

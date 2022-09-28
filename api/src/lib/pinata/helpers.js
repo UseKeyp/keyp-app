@@ -1,5 +1,3 @@
-import { ecoCodes } from '@treasure-chess/chess-achievements'
-
 export const getDescription = ({ _opening }) => {
   return `A chess game collectible. One of the players of this game created this Treasure. Create your own at https://treasure.chess.com`
 }
@@ -8,9 +6,6 @@ export const getAttributes = (treasure) => {
   try {
     const [achieve1, achieve2, achieve3] = treasure.achievementNames
     let openingText = ''
-    ecoCodes.find((code) => {
-      if (code.value === treasure.opening) openingText = code.name
-    })
     if (!openingText) throw `Opening not found for enum: ${treasure.opening}`
     const attributes = [{ trait_type: 'Rarity', value: treasure.rarity }]
     if (achieve1)

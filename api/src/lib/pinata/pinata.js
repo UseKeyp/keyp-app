@@ -3,9 +3,6 @@ import fetch from 'cross-fetch'
 import { logger } from 'src/lib/logger'
 import { isProduction } from 'src/lib/helpers'
 
-import { getCardHtml } from '@treasure-chess/treasure-html'
-import { getAchievementNamesFromValues } from '@treasure-chess/treasure-filters'
-
 import { getDescription, getAttributes } from 'src/lib/pinata/helpers'
 import { getGifBase64 } from 'src/lib/chessCom/gifGetter'
 import placeholderImage from './logo'
@@ -120,10 +117,7 @@ export const pinTreasure = async ({ treasure, tcn, gameId }) => {
       tcn,
       playerColor: treasure.cardColor,
     })
-    const achievementNames = getAchievementNamesFromValues(
-      treasure.achievements
-    )
-    const attributes = getAttributes({ ...treasure, achievementNames })
+    const attributes = getAttributes({ ...treasure })
 
     // Image processing
     const boardBuffer = await fetchBoardBase64Buffer({
@@ -131,21 +125,6 @@ export const pinTreasure = async ({ treasure, tcn, gameId }) => {
       playerColor: treasure.winner,
     })
 
-    const htmlStringScreenshot = await getCardHtml({
-      treasure: { ...treasure, achievements: achievementNames },
-      staticBase64: boardBuffer,
-      isScreenshot: true,
-    })
-    const screenshotBuffer = await fetchScreenshotBase64Buffer(
-      htmlStringScreenshot
-    )
-    const image = await pinFile(screenshotBuffer, `${treasure.id}.png`)
-
-    const htmlStringPrerender = await getCardHtml({
-      treasure: { ...treasure, achievements: achievementNames },
-      staticBase64: boardBuffer,
-      isPrerender: true,
-    })
     const prerenderImageBuffer = await fetchScreenshotBase64Buffer(
       htmlStringPrerender
     )
@@ -154,13 +133,6 @@ export const pinTreasure = async ({ treasure, tcn, gameId }) => {
       `${treasure.id}-prerender.png`
     )
     openGraphImageSrc = ipfsUrlToPinata(openGraphImageSrc)
-
-    const htmlString = await getCardHtml({
-      treasure: { ...treasure, achievements: achievementNames },
-      gifBase64,
-      staticBase64: boardBuffer,
-      openGraphImageSrc,
-    })
 
     /* eslint-disable camelcase */
     const animation_url = await pinFile(htmlString, `${treasure.id}.html`)

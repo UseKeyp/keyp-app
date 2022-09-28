@@ -1,5 +1,3 @@
-const filters = require('@treasure-chess/treasure-filters').default
-
 const countMoves = (moves) => {
   return Math.round(moves.trim().split(' ').length / 2)
 }
@@ -43,19 +41,7 @@ const getGameRuleVariant = (game) => {
   return game.rules.replace(/^\w/, (c) => c.toUpperCase())
 }
 
-const getTermination = (game, outcome) => {
-  let code
-  if (outcome === 'draw') {
-    code = game.white.result // Same for both players on draw
-  } else {
-    // Code is on the loser
-    if (outcome === 'white') code = game.black.result
-    else code = game.white.result
-  }
-  const result = filters.terminationList.find((trm) => {
-    return code === trm.code
-  })
-  if (result && result.value) return result.value
+const getTermination = () => {
   return 'Unknown'
 }
 
