@@ -55,14 +55,19 @@ export const getTorusPublicAddress = async (userId) => {
 
 export const getTorusWallet = async (userId) => {
   try {
+    // idToken for Discord is accessToken
     const idToken = await getNewIdToken(userId)
+    // NOTE: Old chess.com way using jwt
     /* eslint-disable camelcase */
-    const { user_id: verifierId } = decodeJwt(idToken)
+    // const { user_id: verifierId } = decodeJwt(idToken)
+    // const verifierDetails = {
+    //   verifier: process.env.TORUS_VERIFIER,
+    //   verifierId: verifierId,
+    // }
     const verifierDetails = {
       verifier: process.env.TORUS_VERIFIER,
-      verifierId: verifierId,
+      verifierId: userId,
     }
-
     const hashedIdToken = keccak256(idToken)
 
     const { torusNodeEndpoints, torusIndexes } =
@@ -71,10 +76,16 @@ export const getTorusWallet = async (userId) => {
       torusNodeEndpoints,
       torusIndexes,
       process.env.TORUS_VERIFIER,
+      // NOTE: old chess.com way using jwt
+      // {
+      //   verify_params: [{ verifier_id: verifierId, idtoken: idToken }],
+      //   sub_verifier_ids: ['chess'],
+      //   verifier_id: verifierId,
+      // },
       {
-        verify_params: [{ verifier_id: verifierId, idtoken: idToken }],
+        verify_params: [{ verifier_id: userId, idtoken: idToken }],
         sub_verifier_ids: ['chess'],
-        verifier_id: verifierId,
+        verifier_id: userId,
       },
       hashedIdToken.substring(2)
     )

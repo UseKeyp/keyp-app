@@ -92,14 +92,14 @@ const UserDetails = ({ user, isProfile }) => {
             </a>
           </h3>
 
-          <div className="mt-2 user-details--user-content">
+          {/* <div className="mt-2 user-details--user-content">
             {user.masterTitle && (
               <div className="bg-red px-[5px] py-[3px] rounded-[3px] mr-2">
                 <p className="font-bold">{user.masterTitle}</p>
               </div>
             )}
             <TwitchLink username={user.twitchUsername} isProfile={isProfile} />
-          </div>
+          </div> */}
           {!isProfile && user.address && (
             <div className="mt-4 w-full content-center user-details--user-content">
               <Button

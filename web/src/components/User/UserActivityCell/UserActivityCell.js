@@ -54,7 +54,7 @@ export const QUERY = gql`
 
 export const Loading = () => <UserActivity isLoading />
 
-export const Empty = () => <div>Empty</div>
+export const Empty = () => <UserActivity user={[]} />
 
 export const Failure = () => <UserActivity user={[]} />
 export const Success = ({ user, refetch }) => {

@@ -22,19 +22,8 @@ const Profile = () => {
           <UserActivityCell usernameOrAddress={currentUser?.username} />
         </div>
       </div>
-      <h1 className="mt-10">{t('Treasures Played')}</h1>
+      {/* <h1 className="mt-10">{t('Treasures Played')}</h1> */}
       <div className="flex mt-4 h-[476px]"></div>
-      <h1 className="mt-10">{t('Mint new Treasures')}</h1>
-      <div className="mt-4"></div>
-      <h1 className="mt-10">{t('Treasures Owned')}</h1>
-      <div className="flex mt-4">
-        <div className="md:mr-4 w-full">
-          <div className="flex w-full justify-end relative mb-4">
-            <SortingDropdown />
-          </div>
-        </div>
-        <FilterBar defaultParams={defaultParams} hideOnMobile disableUsername />
-      </div>
     </div>
   )
 }
