@@ -1,10 +1,4 @@
-import {
-  users,
-  user,
-  createMember,
-  updateMember,
-  deleteMember,
-} from './users'
+import { users, user, createMember, updateMember, deleteMember } from './users'
 
 describe('users', () => {
   scenario('returns all users', async (scenario) => {
