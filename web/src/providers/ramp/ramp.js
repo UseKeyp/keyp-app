@@ -10,7 +10,7 @@ import { TxToast } from 'src/providers/market/toasts'
 import { useOAuth } from 'src/providers/oAuth'
 
 import {
-  MEMBER_RAMPS_QUERY,
+  USER_RAMPS_QUERY,
   RAMP_WITHDRAW_MUTATION,
   RAMP_URL_MUTATION,
 } from './graphql'
@@ -86,7 +86,7 @@ const RampProvider = ({ children }) => {
   }
 
   const { error: rampError, loading: rampsLoading } = useQuery(
-    MEMBER_RAMPS_QUERY,
+    USER_RAMPS_QUERY,
     {
       pollInterval: 30000,
       skip: !isAuthenticated,

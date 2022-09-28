@@ -10,6 +10,7 @@ const Routes = () => {
     <Router>
       <AllContextProviders>
         <AppUrlListener />
+        <Route path="/wert" page={WertPage} name="wert" />
         <Route path="/restricted" page={RestrictedPage} name="restricted" />
         <Route path="/redirect/{type}" page={RedirectPage} name="redirect" />
         <Route path="/redirect/{type}/{error}" page={RedirectPage} name="redirect" />
@@ -20,10 +21,15 @@ const Routes = () => {
           <Private unauthenticated="signin">
             <Route path="/profile" page={ProfilePage} name="profile" />
           </Private>
+          <Route path="/users/{usernameOrAddress}" page={UserPage} name="user" />
         </Set>
         <Set wrap={DefaultLayout}>
           <Route path="/signin" page={SignInPage} name="signin" />
           <Route notfound page={NotFoundPage} />
+          <Route path="/terms" page={TermsPage} name="terms" />
+          <Route path="/privacy" page={PrivacyPage} name="privacy" />
+          <Route path="/about" page={AboutPage} name="about" />
+          <Route path="/support" page={SupportPage} name="support" />
           <Private unauthenticated="signin">
             <Route path="/wallet" page={WalletPage} name="wallet" />
             <Route path="/settings" page={SettingsPage} name="settings" />

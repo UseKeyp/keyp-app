@@ -6,7 +6,7 @@ jest.setTimeout(60000)
 /* eslint-disable no-console */
 describe('coinbaseLoginUrl', () => {
   scenario('Happy case', async (scenario) => {
-    mockCurrentUser(scenario.member.alice)
+    mockCurrentUser(scenario.user.alice)
     const { url } = await oAuthUrl({ type: COINBASE })
     // console.log(url)
     // console.log(url.split('&'))
@@ -16,12 +16,12 @@ describe('coinbaseLoginUrl', () => {
 
 describe('plaidConnection', () => {
   scenario('Get plaid link code', async (scenario) => {
-    mockCurrentUser(scenario.member.alice)
+    mockCurrentUser(scenario.user.alice)
     const { text } = await oAuthUrl({ type: PLAID })
     expect(typeof text === 'string').toBe(true)
   })
   scenario('Connect to wyre', async (scenario) => {
-    mockCurrentUser(scenario.member.alice)
+    mockCurrentUser(scenario.user.alice)
     const { code, accountId } = await getSandboxPublicToken()
     // console.log(code)
     // console.log(accountId)

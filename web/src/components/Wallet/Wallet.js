@@ -2,8 +2,8 @@ import { useAuth } from '@redwoodjs/auth'
 import { routes, Link } from '@redwoodjs/router'
 import Button from 'src/components/Button'
 
-import MemberBalance from 'src/components/Member/MemberBalance'
-import MemberMintCredits from 'src/components/Member/MemberMintCredits'
+import UserBalance from 'src/components/User/UserBalance'
+import UserMintCredits from 'src/components/User/UserMintCredits'
 import Accordion from 'src/components/Accordion/Accordion'
 import OnRamps from 'src/components/Ramp/OnRamps'
 import OffRamps from 'src/components/Ramp/OffRamps'
@@ -32,9 +32,9 @@ const Wallet = () => {
       subtitle: `Address ${trimAddress(currentUser.address)}`,
       button: (
         <>
-          <MemberBalance />
+          <UserBalance />
           <div className="mt-2 pb-4">
-            <MemberMintCredits />
+            <UserMintCredits />
           </div>
         </>
       ),

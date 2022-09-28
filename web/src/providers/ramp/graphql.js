@@ -1,5 +1,5 @@
-export const MEMBER_RAMPS_QUERY = gql`
-  query FindMemberRampsQuery {
+export const USER_RAMPS_QUERY = gql`
+  query FindUserRampsQuery {
     ramps {
       id
       address

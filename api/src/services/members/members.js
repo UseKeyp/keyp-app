@@ -1,9 +1,9 @@
 import { db } from 'src/lib/db'
 import { logger } from 'src/lib/logger'
-import { fetchMember } from 'src/lib/members'
+import { fetchMember } from 'src/lib/users'
 import { getUsdcBalance as getUsdcBal } from 'src/lib/web3/tokens.js'
 
-export const member = ({ usernameOrAddress }) => {
+export const user = ({ usernameOrAddress }) => {
   try {
     return fetchMember(usernameOrAddress)
   } catch (e) {
@@ -15,7 +15,7 @@ export const member = ({ usernameOrAddress }) => {
 export const profile = () => fetchMember(context.currentUser.username)
 
 export const usernames = async ({ query, orderBy }) => {
-  const members = await db.member.findMany({
+  const users = await db.user.findMany({
     take: 6,
     where: {
       username: {
@@ -24,22 +24,22 @@ export const usernames = async ({ query, orderBy }) => {
     },
     orderBy,
   })
-  return members.map((member) => member.username)
+  return users.map((user) => user.username)
 }
 
 export const userLocale = async ({ locale }) => {
   try {
-    const member = await db.member.update({
+    const user = await db.user.update({
       where: { id: context.currentUser.id },
       data: { locale: locale },
     })
-    return member
+    return user
   } catch (e) {
     throw `userLocale() ${e}`
   }
 }
 
-export const memberBalance = async () => {
+export const userBalance = async () => {
   const usdcBalance = await getUsdcBal(context.currentUser.address)
   return {
     usdcBalance,
@@ -51,17 +51,17 @@ export const memberBalance = async () => {
 
 export const Member = {
   treasuresOwned: (_obj, { root }) =>
-    db.member.findUnique({ where: { id: root.id } }).treasuresOwned(),
+    db.user.findUnique({ where: { id: root.id } }).treasuresOwned(),
   treasuresMinted: (_obj, { root }) =>
-    db.member.findUnique({ where: { id: root.id } }).treasuresMinted(),
+    db.user.findUnique({ where: { id: root.id } }).treasuresMinted(),
   treasuresPlayedWhite: (_obj, { root }) =>
-    db.member.findUnique({ where: { id: root.id } }).treasuresPlayedWhite(),
+    db.user.findUnique({ where: { id: root.id } }).treasuresPlayedWhite(),
   treasuresPlayedBlack: (_obj, { root }) =>
-    db.member.findUnique({ where: { id: root.id } }).treasuresPlayedBlack(),
+    db.user.findUnique({ where: { id: root.id } }).treasuresPlayedBlack(),
   treasuresWon: (_obj, { root }) =>
-    db.member.findUnique({ where: { id: root.id } }).treasuresWon(),
+    db.user.findUnique({ where: { id: root.id } }).treasuresWon(),
   marketSalesSold: (_obj, { root }) =>
-    db.member.findUnique({ where: { id: root.id } }).marketSalesSold(),
+    db.user.findUnique({ where: { id: root.id } }).marketSalesSold(),
   marketSalesPurchased: (_obj, { root }) =>
-    db.member.findUnique({ where: { id: root.id } }).marketSalesPurchased(),
+    db.user.findUnique({ where: { id: root.id } }).marketSalesPurchased(),
 }

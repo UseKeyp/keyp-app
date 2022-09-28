@@ -12,7 +12,7 @@ import Avatar from 'src/components/Avatar/Avatar'
 import Button from 'src/components/Button/Button'
 import MobileMenu from 'src/components/MobileMenu/MobileMenu'
 
-import MemberBalance from 'src/components/Member/MemberBalance'
+import UserBalance from 'src/components/User/UserBalance'
 
 import { trimAddress } from 'src/utils/helpers'
 import Tooltip from 'src/components/Tooltip/Tooltip'
@@ -24,7 +24,7 @@ const WalletBalance = () => {
   return (
     <div className="flex flex-col flex-1 text-sm">
       <div className={'header__nav__balance'}>
-        <MemberBalance />
+        <UserBalance />
       </div>
       <div>
         <Button

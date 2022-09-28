@@ -65,12 +65,12 @@ jest.mock('../../lib/treasures', () => ({
 describe('Minting', () => {
   scenario('mintWithCredit', async (scenario) => {
     mockCurrentUser({
-      ...scenario.member.alice,
+      ...scenario.user.alice,
       mintCredits: 1,
     })
     const game = generateRandomTreasures(1, 1, [
-      scenario.member.alice,
-      scenario.member.bob,
+      scenario.user.alice,
+      scenario.user.bob,
     ])[0]
 
     const { endTime, title } = game
@@ -83,7 +83,7 @@ describe('Minting', () => {
     expect(result.status).toBe(PENDING)
   })
   scenario('pendingMintPurchases', async (scenario) => {
-    mockCurrentUser(scenario.member.alice)
+    mockCurrentUser(scenario.user.alice)
     const result = await pendingMintPurchases()
     expect(result.status).toBe(scenario.mintPurchase.one.status)
   })

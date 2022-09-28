@@ -1,0 +1,42 @@
+.user-details {
+  background-color: theme('colors.chessBlack.200');
+  border-radius: 12px;
+
+  &--inner {
+    @apply flex flex-col lg:flex-row items-center lg:items-start;
+  }
+
+  &--avatar {
+    @apply lg:mr-4;
+  }
+
+  &--user-info {
+    @apply flex flex-col mt-4 text-center w-full lg:mt-0 lg:text-left;
+
+    img {
+      @apply lg:m-0;
+    }
+  }
+
+  &--user-content {
+    @apply flex justify-center items-center lg:justify-start;
+  }
+
+  &--funds-actions {
+    @apply lg:ml-4 mt-4 flex flex-col items-center justify-center text-center lg:mt-0 lg:text-right lg:block;
+
+    button {
+      @apply mt-4 lg:mt-2;
+    }
+  }
+}
+
+.modals {
+  &__matic-warning {
+    @apply text-errorYellow;
+  }
+
+  &__copy-address {
+    @apply text-lg py-1 bg-blueDark font-bold rounded shadow w-60;
+  }
+}
