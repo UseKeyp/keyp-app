@@ -80,7 +80,8 @@ export const transferErc20 = async ({
   try {
     let sender = context.currentUser
     if (fromUserId) sender = await fetchUser(fromUserId)
-    const receiver = await fetchUser(toUserId)
+    let receiver = { address: toAddress }
+    if (!toAddress) receiver = await fetchUser(toUserId)
 
     const gettingGas = await checkGasAndAirdrop({ user: sender })
     if (gettingGas)

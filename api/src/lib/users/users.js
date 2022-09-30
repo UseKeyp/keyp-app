@@ -1,5 +1,7 @@
 import Sentry from 'src/lib/sentry'
 import { db } from 'src/lib/db'
+import { logger } from 'src/lib/logger'
+
 import { isHexAddress } from 'src/lib/helpers'
 import { getTorusPublicAddress } from 'src/lib/torus'
 
@@ -8,6 +10,7 @@ export const fetchUser = async (idOrAddress, creationData) => {
     let user
     let id
     let address
+    logger.debug(`fetchUser ${idOrAddress}`)
     isHexAddress(idOrAddress)
       ? (address = idOrAddress.toLowerCase())
       : (id = idOrAddress.toLowerCase())

@@ -7,7 +7,6 @@ import NodeManager from '@toruslabs/fetch-node-details/dist/fetchNodeDetails-nod
 import TorusUtils from '@toruslabs/torus.js/dist/torusUtils-node'
 
 import { getNewIdToken } from 'src/lib/oAuth/jwt'
-import { keccak256 } from 'web3-utils'
 import { isProduction } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
 

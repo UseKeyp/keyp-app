@@ -22,7 +22,6 @@ export const transferErc20 = async ({ tokenAddress, amount, toAddress }) => {
     tokenAddress,
     amount,
     toAddress,
-    memberId: context.currentUser.id,
   })
 }
 
@@ -36,6 +35,5 @@ export const transferErc721 = async ({ tokenAddress, tokenId, toAddress }) => {
     tokenAddress,
     tokenId,
     toAddress,
-    user: context.currentUser,
   })
 }
