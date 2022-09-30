@@ -1,10 +1,9 @@
 import { web3Provider } from 'src/lib/web3/helpers'
 import { Contract } from '@ethersproject/contracts'
-import { formatUnits, parseUnits } from '@ethersproject/units'
+import { formatUnits } from '@ethersproject/units'
 import { EnvelopError } from '@envelop/core'
 import { logger } from 'src/lib/logger'
-import { checkGasAndAirdrop } from 'src/lib/web3/airdrop'
-import { memberSendTransaction } from 'src/lib/web3/wallets'
+import { transferErc20 } from 'src/lib/web3/erc20'
 
 export const getTokenContract = () => {
   try {
@@ -26,6 +25,7 @@ export const getTokenContract = () => {
 
 export const getUsdcBalance = async (address) => {
   if (!address) throw 'No address provided'
+  logger.debug(`getUsdcBalance() address: ${address}`)
   let contract
   try {
     contract = getTokenContract()
@@ -44,37 +44,10 @@ export const getUsdcBalance = async (address) => {
 }
 
 // NOTE: amount is in whole dollars
-export const transferUsdc = async ({ to, amount }) => {
-  if (!to) throw 'No to address provided'
-  let contract
-  try {
-    const gettingGas = await checkGasAndAirdrop({ member: context.currentUser })
-    if (gettingGas)
-      throw "Try again in a few minutes, we're sending some gas to your wallet."
-
-    contract = getTokenContract()
-    const bal = await contract.balanceOf(context.currentUser.address)
-
-    const amountBn = parseUnits(amount, process.env.DECIMALS_PAYMENT_TOKEN)
-    const balance = formatUnits(bal, process.env.DECIMALS_PAYMENT_TOKEN)
-    if (bal.lt(amountBn))
-      throw `Amount exceeds your current balance of $${
-        Number(balance) > 0
-          ? Number(balance).toLocaleString(undefined, {
-              minimumFractionDigits: 2,
-              maximumFractionDigits: 2,
-            })
-          : 0
-      }`
-
-    const unsignedTx = await contract.populateTransaction.transfer(to, amountBn)
-    const tx = await memberSendTransaction({
-      memberId: context.currentUser.id,
-      unsignedTx,
-    })
-    return tx
-  } catch (e) {
-    logger.error(e)
-    throw new EnvelopError(`Request failed - ${e?.message || e}`)
-  }
-}
+export const transferUsdc = async ({ toAddress, amount }) =>
+  transferErc20({
+    fromUserId: context.currentUser.id,
+    toAddress,
+    amount,
+    tokenAddress: process.env.CONTRACT_ADDRESS_PAYMENT_TOKEN,
+  })

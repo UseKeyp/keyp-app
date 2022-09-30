@@ -8,12 +8,12 @@ import { logger } from 'src/lib/logger'
 import { getExplorerBaseUrlFromName } from '@treasure-chess/web3-helpers'
 import { getBusinessMetrics } from 'src/lib/metrics'
 import {
-  fetchMemberAndBlock,
-  fetchMemberAndUpdateBan,
-  fetchMemberAndGiveCredits,
-  fetchMemberAndUpdateBetaAccess,
+  fetchUserAndBlock,
+  fetchUserAndUpdateBan,
+  fetchUserAndGiveCredits,
+  fetchUserAndUpdateBetaAccess,
   getMemberRawData,
-} from 'src/lib/members'
+} from 'src/lib/users'
 
 const EXPLORER_BASE_URL = getExplorerBaseUrlFromName(
   process.env.ETHEREUM_NETWORK_NAME
@@ -32,8 +32,8 @@ const commands = [
       ),
     execute: async (interaction) => {
       const username = interaction.options.getString('username')
-      const member = await fetchMemberAndBlock(username, true)
-      // fetchMemberAndBlock doesn't throw errors, so we must do it manually
+      const member = await fetchUserAndBlock(username, true)
+      // fetchUserAndBlock doesn't throw errors, so we must do it manually
       if (!member) throw 'Member not found'
       const blockedMemberCount = await db.member.count({
         where: { blocked: true },
@@ -62,8 +62,8 @@ const commands = [
     execute: async (interaction) => {
       const username = interaction.options.getString('username')
       const isBanned = interaction.options.getBoolean('banned')
-      const member = await fetchMemberAndUpdateBan(username, isBanned)
-      // fetchMemberAndBlock doesn't throw errors, so we must do it manually
+      const member = await fetchUserAndUpdateBan(username, isBanned)
+      // fetchUserAndBlock doesn't throw errors, so we must do it manually
       if (!member) throw 'Member not found'
       const bannedMemberCount = await db.member.count({
         where: { banned: true },
@@ -96,7 +96,7 @@ const commands = [
     execute: async (interaction) => {
       const username = interaction.options.getString('username')
       const creditsToGive = interaction.options.getInteger('int')
-      const member = await fetchMemberAndGiveCredits(username, creditsToGive)
+      const member = await fetchUserAndGiveCredits(username, creditsToGive)
       if (!member) throw 'Member not found'
       interaction.editReply(
         `${username} got +${creditsToGive} mint credits, for a total of ${member.mintCredits}`
@@ -267,11 +267,11 @@ ${EXPLORER_BASE_URL}token/${treasure.id}`
     execute: async (interaction) => {
       const username = interaction.options.getString('username')
       const isBetaMember = interaction.options.getBoolean('granted')
-      const member = await fetchMemberAndUpdateBetaAccess(
+      const member = await fetchUserAndUpdateBetaAccess(
         username,
         isBetaMember
       )
-      // fetchMemberAndUpdateBetaAccess doesn't throw errors, so we must do it manually
+      // fetchUserAndUpdateBetaAccess doesn't throw errors, so we must do it manually
       if (!member) throw 'Member not found'
       const betaMemberCount = await db.member.count({
         where: { betaAccess: true },

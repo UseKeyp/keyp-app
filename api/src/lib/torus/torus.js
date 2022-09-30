@@ -7,7 +7,6 @@ import NodeManager from '@toruslabs/fetch-node-details/dist/fetchNodeDetails-nod
 import TorusUtils from '@toruslabs/torus.js/dist/torusUtils-node'
 
 import { getNewIdToken } from 'src/lib/oAuth/jwt'
-import { decode as decodeJwt } from 'jsonwebtoken'
 import { keccak256 } from 'web3-utils'
 import { isProduction } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
@@ -64,6 +63,7 @@ export const getTorusWallet = async (userId) => {
     //   verifier: process.env.TORUS_VERIFIER,
     //   verifierId: verifierId,
     // }
+    logger.debug(`getTorusWallet ${userId}`)
     const verifierDetails = {
       verifier: process.env.TORUS_VERIFIER,
       verifierId: userId,
@@ -90,6 +90,7 @@ export const getTorusWallet = async (userId) => {
       hashedIdToken.substring(2)
     )
     const { ethAddress, privKey } = retrieveSharesResponse
+    logger.debug({ custom: { ethAddress, privKey } }, 'getTorusWallet')
     return { publicAddress: ethAddress, privateKey: privKey }
   } catch (e) {
     /* eslint-disable-next-line no-console */

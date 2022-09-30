@@ -8,12 +8,14 @@ export const schema = gql`
       tokenAddress: String!
       tokenId: Int!
       toAddress: String!
-    ): TransferResponse! @requireAuth @betaAccess
+    ): TransferResponse! @requireAuth
     transferErc20(
       tokenAddress: String!
       amount: String!
       toAddress: String!
-    ): TransferResponse! @requireAuth @betaAccess
+    ): TransferResponse! @requireAuth
+    transferUsdc(amount: String!, toAddress: String!): TransferResponse!
+      @requireAuth
   }
   enum TransferStatus {
     SUCCESS

@@ -4,7 +4,7 @@ import { db } from 'src/lib/db'
 import { checkGasAndAirdrop } from 'src/lib/web3/airdrop'
 import { getUsdcBalance } from 'src/lib/web3/tokens'
 import { getTxStatus, getSaleTxStatus } from 'src/lib/web3'
-import { fetchMember } from 'src/lib/members'
+import { fetchUser } from 'src/lib/users'
 import { list, unlist, buy } from 'src/lib/web3/treasureMarket'
 import { logger } from 'src/lib/logger'
 
@@ -150,7 +150,7 @@ export const processPendingMarketTransactions = async ({ treasure }) => {
         if (newStatus?.status && newStatus.status !== tx.status) {
           if (newStatus.status === COMPLETE) {
             if (treasure.tokenId !== newStatus.tokenId) return // Could happen in weird edge case?
-            const buyer = await fetchMember(newStatus.buyerAddress)
+            const buyer = await fetchUser(newStatus.buyerAddress)
             newMarketSale = await db.marketSale.update({
               where: { id: currentMarketSale.id },
               data: {

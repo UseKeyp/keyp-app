@@ -1,6 +1,7 @@
 import Sentry from 'src/lib/sentry'
 import { db } from 'src/lib/db'
 import { isHexAddress } from 'src/lib/helpers'
+import { getTorusPublicAddress } from 'src/lib/torus'
 
 export const fetchUser = async (idOrAddress, creationData) => {
   try {
@@ -17,24 +18,30 @@ export const fetchUser = async (idOrAddress, creationData) => {
       },
     })
     if (!user) {
-      if (!creationData) throw "Couldn't create user. No creationData"
-      user = await db.user.create({
-        data: { id, ...creationData },
-      })
-    } else if (address) {
-      // Not in our db, but we have id - Create external wallet user
-      // TODO DECIDE if we need this
-      // user = await db.user.create({
-      //   data: {
-      //     id: address.toLowerCase(),
-      //     username: address.toLowerCase(),
-      //     address: address.toLowerCase(),
-      //     country: 'ETHER',
-      //   },
-      // })
+      if (creationData) {
+        user = await db.user.create({
+          data: { id, ...creationData },
+        })
+      } else if (address) {
+        // Frontend query: Not in our db, but we have address, so create external wallet.
+        user = await db.user.create({
+          data: {
+            id: address,
+            username: address,
+            address: address,
+            country: 'ETHER',
+          },
+        })
+      } else {
+        // TODO: prevent this from happening on the frontend to avoid spamming new wallets
+        // API query: Create a new user, who has not signed in yet.
+        const newAddress = await getTorusPublicAddress(id)
+        user = await db.user.create({ data: { id, address: newAddress } })
+      }
     }
     return {
       ...user,
+      accessToken: 'REDACTED',
       refreshToken: 'REDACTED',
     }
   } catch (e) {

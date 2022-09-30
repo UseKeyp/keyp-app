@@ -1,7 +1,7 @@
 import { sendDiscordAdminAlert } from 'src/lib/discord/admin'
 import Sentry from 'src/lib/sentry'
 import { logger } from 'src/lib/logger'
-import { fetchMember } from 'src/lib/members'
+import { fetchUser } from 'src/lib/users'
 
 const WERT_SUCCESS_TYPES = ['order_complete']
 
@@ -9,7 +9,7 @@ export const processWertWebhook = async ({ body }) => {
   const { order, type } = body
   try {
     if (order && WERT_SUCCESS_TYPES.includes(type)) {
-      const member = await fetchMember(order.address)
+      const member = await fetchUser(order.address)
       member && Sentry.setUser({ username: member.username })
       await sendDiscordAdminAlert({
         embed: {

@@ -1,7 +1,7 @@
 import { db } from 'src/lib/db'
 import Sentry from 'src/lib/sentry'
 
-import { fetchUser } from 'src/lib/members'
+import { fetchUser } from 'src/lib/users'
 import { fetchGame } from 'src/lib/games'
 import { pinTreasure } from 'src/lib/pinata/pinata'
 import { formatUnits, formatEther } from '@ethersproject/units'

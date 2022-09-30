@@ -38,3 +38,12 @@ export const TRANSFER_ERC20_MUTATION = gql`
     }
   }
 `
+
+export const TRANSFER_USDC_MUTATION = gql`
+  mutation transferUsdc($amount: String!, $toAddress: String!) {
+    transferUsdc(amount: $amount, toAddress: $toAddress) {
+      status
+      hash
+    }
+  }
+`

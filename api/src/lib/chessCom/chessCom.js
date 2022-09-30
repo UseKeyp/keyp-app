@@ -1,6 +1,6 @@
 import fetch from 'cross-fetch'
 import { logger } from 'src/lib/logger'
-import { getAccessToken } from 'src/lib/members'
+import { getAccessToken } from 'src/lib/users'
 
 export const fetchChessMember = (username) => {
   try {

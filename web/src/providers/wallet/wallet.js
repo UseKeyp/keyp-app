@@ -8,6 +8,7 @@ import {
   USER_BALANCE_QUERY,
   TRANSFER_ERC721_MUTATION,
   TRANSFER_ERC20_MUTATION,
+  TRANSFER_USDC_MUTATION,
 } from './graphql'
 import { useMutation } from '@redwoodjs/web'
 import { useToast } from 'src/providers/toast'
@@ -33,6 +34,9 @@ const WalletProvider = ({ children }) => {
     React.useState(false)
   const [transferErc721Error, setTransferErc721Error] = React.useState()
 
+  const [transferUsdcLoading, setTransferUsdcLoading] = React.useState(false)
+  const [transferUsdcError, setTransferUsdcError] = React.useState()
+
   const { isVisible: isVisibleAdd, toggleModal: toggleModalAdd } = useModal()
 
   const {
@@ -46,6 +50,7 @@ const WalletProvider = ({ children }) => {
   })
   const [transferErc20Mutation] = useMutation(TRANSFER_ERC20_MUTATION)
   const [transferErc721Mutation] = useMutation(TRANSFER_ERC721_MUTATION)
+  const [transferUsdcMutation] = useMutation(TRANSFER_USDC_MUTATION)
 
   const getAddress = (address) => {
     // Set the correct address here before opening the modal
@@ -91,6 +96,25 @@ const WalletProvider = ({ children }) => {
     }
   }
 
+  const transferUsdc = async (args) => {
+    try {
+      setTransferUsdcLoading(true)
+      setTransferUsdcError(false)
+
+      const { error, data } = await transferUsdcMutation({ variables: args })
+      if (error) {
+        if (error.error.error['code'] === -32000)
+          throw 'Things are a bit congested now, please try again in a few minutes'
+        else throw error
+      }
+      return data
+    } catch (e) {
+      toast.error(e?.message)
+      setTransferUsdcError(e?.message)
+      setTransferUsdcLoading(false)
+    }
+  }
+
   React.useEffect(() => {
     setState({
       ...state,
@@ -112,6 +136,9 @@ const WalletProvider = ({ children }) => {
         transferErc20,
         transferErc20Error,
         transferErc20Loading,
+        transferUsdc,
+        transferUsdcError,
+        transferUsdcLoading,
       }}
     >
       <AddressModal

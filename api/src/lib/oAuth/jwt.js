@@ -1,8 +1,4 @@
-import {
-  verify as verifyJwt,
-  decode as decodeJwt,
-  sign as signJwt,
-} from 'jsonwebtoken'
+import { verify as verifyJwt, decode as decodeJwt } from 'jsonwebtoken'
 import jwksClient from 'jwks-rsa'
 import { promisify } from 'util'
 import { AuthenticationError } from '@redwoodjs/graphql-server'
@@ -13,16 +9,16 @@ import {
   getChessBasicAuth,
   CHESS_OAUTH_URL,
 } from 'src/lib/oAuth/providers/chess'
-import { refreshDiscordTokens } from 'src/lib/oAuth/providers/chess'
+import { refreshDiscordTokens } from 'src/lib/oAuth/providers/discord'
 
 export const getNewIdToken = async (userId) => {
   try {
-    const { refreshToken } = await db.member.findUnique({
+    const { refreshToken } = await db.user.findUnique({
       where: { id: userId },
     })
     const { refreshToken: newRefreshToken, accessToken: newAccessToken } =
       await refreshDiscordTokens(refreshToken)
-    await db.member.update({
+    await db.user.update({
       where: { id: userId },
       data: { refreshToken: newRefreshToken, accessToken: newAccessToken },
     })

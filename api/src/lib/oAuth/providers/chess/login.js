@@ -4,7 +4,7 @@ import { db } from 'src/lib/db'
 import { EnvelopError } from '@envelop/core'
 
 import { createMauticContact } from 'src/lib/mautic'
-import { fetchMember } from 'src/lib/members'
+import { fetchUser } from 'src/lib/users'
 import { getTorusPublicAddress } from 'src/lib/torus/torus'
 import { logger } from 'src/lib/logger'
 
@@ -15,7 +15,7 @@ export const onConnected = async ({ refreshToken, accessToken, decoded }) => {
     const { preferred_username, user_id, email } = decoded
     logger.debug({ custom: decoded }, 'onConnected() decoded')
     // Create member if needed, and get current avatar
-    const member = await fetchMember(preferred_username, true)
+    const member = await fetchUser(preferred_username, true)
     if (member.banned) {
       throw new AuthenticationError('user is banned')
     }
@@ -26,7 +26,7 @@ export const onConnected = async ({ refreshToken, accessToken, decoded }) => {
 
     if (!email)
       throw new EnvelopError(
-        `Couldn't fetch email for user ${preferred_username} in fetchMember function`
+        `Couldn't fetch email for user ${preferred_username} in fetchUser function`
       )
 
     await createMauticContact({

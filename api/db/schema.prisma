@@ -11,7 +11,7 @@ generator client {
 
 model User {
   id               String              @id // Chess.com id
-  username         String              @unique // platform username
+  username         String?             @unique // platform username
   address          String?             @unique // Torus wallet address
   locale           String?
   email            String?             @unique // Email address

@@ -1,10 +1,10 @@
 import { adminSendTransaction } from './admin'
-import { memberSendTransaction, memberSignMesage } from './member'
+import { userSendTransaction, userSignMesage } from './user'
 import { payerSendTransaction } from './payer'
 
 export {
   adminSendTransaction,
   payerSendTransaction,
-  memberSendTransaction,
-  memberSignMesage,
+  userSendTransaction,
+  userSignMesage,
 }

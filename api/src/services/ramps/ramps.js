@@ -24,7 +24,7 @@ export const rampWithdraw = async ({ type, amount }) => {
   const ramp = availableRamps.find((ramp) => ramp.type == type)
   if (!ramp)
     throw new EnvelopError(`You don't have a ramp connected yet for ${type}`)
-  const tx = await transferUsdc({ to: ramp.address, amount })
+  const tx = await transferUsdc({ toAddress: ramp.address, amount })
   // TODO: create ramp withdraw tx
   // TODO: Send email receipts
   await db.rampWithdraw.create({

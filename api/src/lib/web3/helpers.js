@@ -10,6 +10,16 @@ export const DEFAULT_GAS_MAX_PRIORITY_FEE_PER_GAS = parseUnits('2', 'gwei')
 export const DEFAULT_GAS_MAX_FEE_PER_GAS = parseUnits('10', 'gwei')
 
 export const getProviderByChainId = (chainId) => {
+  logger.debug(
+    {
+      custom: {
+        chainId,
+        CHAIN_ID,
+        ETHEREUM_NETWORK_NAME: process.env.ETHEREUM_NETWORK_NAME,
+      },
+    },
+    'getProviderByChainId()'
+  )
   try {
     if (chainId == 100) return new JsonRpcProvider(process.env.XDAI_RPC)
     if (chainId == 137) return new JsonRpcProvider(process.env.MATIC_RPC)

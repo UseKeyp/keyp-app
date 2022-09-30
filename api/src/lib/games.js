@@ -1,7 +1,7 @@
 const { id: sha3 } = require('@ethersproject/hash')
 
 import { db } from 'src/lib/db'
-import { fetchMember } from 'src/lib/members'
+import { fetchUser } from 'src/lib/users'
 import {
   fetchChessGames,
   fetchChessGame,
@@ -61,8 +61,8 @@ const getFullGameDetails = async ({
     if (treasure) return treasure
 
     const achievementsList = achievements.map((item) => item.value)
-    const white = await fetchMember(game.whiteUsername, true) // Get latest data
-    const black = await fetchMember(game.blackUsername, true)
+    const white = await fetchUser(game.whiteUsername, true) // Get latest data
+    const black = await fetchUser(game.blackUsername, true)
     let winnerId
     if (game.winnerUsername === game.whiteUsername) winnerId = white.id
     else if (game.winnerUsername === game.blackUsername) winnerId = black.id

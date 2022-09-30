@@ -11,7 +11,7 @@ import { refreshChessTokens } from 'src/lib/oAuth/providers/chess'
 import { web3Provider } from 'src/lib/web3/helpers'
 import { getUsdcBalance } from 'src/lib/web3/tokens'
 
-export const fetchMemberAndGiveCredits = async (username, creditsToGive) => {
+export const fetchUserAndGiveCredits = async (username, creditsToGive) => {
   const member = await db.member.findUnique({
     where: { username: username.toLowerCase() },
   })
@@ -48,7 +48,7 @@ export const fetchMemberAndGiveCredits = async (username, creditsToGive) => {
   }
 }
 
-export const fetchMemberAndUpdateBetaAccess = async (
+export const fetchUserAndUpdateBetaAccess = async (
   username,
   shouldGrantAccess
 ) => {
@@ -87,7 +87,7 @@ export const fetchMemberAndUpdateBetaAccess = async (
   }
 }
 
-export const fetchMemberAndUpdateBan = async (username, shouldBan) => {
+export const fetchUserAndUpdateBan = async (username, shouldBan) => {
   const member = await db.member.findUnique({
     where: { username: username.toLowerCase() },
   })
@@ -123,7 +123,7 @@ export const fetchMemberAndUpdateBan = async (username, shouldBan) => {
   }
 }
 
-export const fetchMemberAndBlock = async (username, shouldIgnoreAddress) => {
+export const fetchUserAndBlock = async (username, shouldIgnoreAddress) => {
   try {
     const member = await db.member.findUnique({
       where: { username: username.toLowerCase() },
@@ -177,7 +177,7 @@ export const fetchMemberAndBlock = async (username, shouldIgnoreAddress) => {
   }
 }
 
-export const fetchMember = async (
+export const fetchUser = async (
   usernameOrAddress,
   includeChessData,
   attempts = 0
@@ -240,7 +240,7 @@ export const fetchMember = async (
             throw `Error fetching member ${username} ${JSON.stringify(
               chessData
             )} ${e}`
-          return fetchMember(usernameOrAddress, includeChessData, attempts + 1)
+          return fetchUser(usernameOrAddress, includeChessData, attempts + 1)
         }
       }
       return {
@@ -273,7 +273,7 @@ export const fetchMember = async (
   } catch (e) {
     logger.error(e)
     Sentry.captureException(e)
-    throw `fetchMember() ${e}`
+    throw `fetchUser() ${e}`
   }
 }
 

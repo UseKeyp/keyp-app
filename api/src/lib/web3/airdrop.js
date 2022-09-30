@@ -25,21 +25,33 @@ const airdropGasTransaction = async ({ address, amount }) => {
   }
 }
 
-const getEtherBalance = async ({ address }) => {
-  return web3Provider.getBalance(address)
+const getEtherBalance = async (address) => {
+  const balanceBn = await web3Provider.getBalance(address)
+  return {
+    balance: balanceBn.toString(),
+    balanceBn: balanceBn,
+    formatted: formatEther(balanceBn),
+    decimals: 18,
+    symbol: 'ETH',
+    name: 'Ethereum',
+    tokenAddress: null,
+    network: process.env.ETHEREUM_NETWORK_NAME,
+    chainId: web3Provider._network.chainId,
+  }
 }
 
-const checkGasAndAirdrop = async ({ member, amount = DEFAULT_DROP_AMOUNT }) => {
+const checkGasAndAirdrop = async ({ user, amount = DEFAULT_DROP_AMOUNT }) => {
   try {
-    const balance = await getEtherBalance({ address: member.address })
-    const payerBalance = await getEtherBalance({ address: payerAddress })
+    if (user.country === 'ETHER') return false // Don't airdrop to Extrernal wallets
+    const { balanceBn: balance } = await getEtherBalance(user.address)
+    const { balanceBn: payerBalance } = await getEtherBalance(payerAddress)
     if (balance.lte(parseEther(MINIMUM_GAS_THRESHOLD))) {
       const tx = await airdropGasTransaction({
-        address: member.address,
+        address: user.address,
         amount,
       })
       await notifyDiscord({
-        member,
+        user,
         txHash: tx.hash,
         gasPrice: tx.gasPrice,
         gasLimit: tx.gasLimit,
@@ -55,7 +67,7 @@ const checkGasAndAirdrop = async ({ member, amount = DEFAULT_DROP_AMOUNT }) => {
 }
 
 const notifyDiscord = async ({
-  member,
+  user,
   txHash,
   payerBalance,
   gasPrice,
@@ -66,8 +78,8 @@ const notifyDiscord = async ({
       embed: {
         color: 16740982,
         title: `✅  Airdrop Submitted!`,
-        description: `Username: ${member.username}
-Address: ${member.address}
+        description: `Username: ${user.username}
+Address: ${user.address}
 Gas Price: ${gasPrice}
 Gas Limit: ${gasLimit}
 ${getExplorerBaseUrlFromName(process.env.ETHEREUM_NETWORK_NAME)}tx/${txHash}
