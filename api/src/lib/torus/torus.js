@@ -68,7 +68,6 @@ export const getTorusWallet = async (userId) => {
       verifier: process.env.TORUS_VERIFIER,
       verifierId: userId,
     }
-    const hashedIdToken = keccak256(idToken)
 
     const { torusNodeEndpoints, torusIndexes } =
       await fetchNodeDetails.getNodeDetails(verifierDetails)
@@ -82,12 +81,8 @@ export const getTorusWallet = async (userId) => {
       //   sub_verifier_ids: ['chess'],
       //   verifier_id: verifierId,
       // },
-      {
-        verify_params: [{ verifier_id: userId, idtoken: idToken }],
-        sub_verifier_ids: ['chess'],
-        verifier_id: userId,
-      },
-      hashedIdToken.substring(2)
+      { verifier_id: userId },
+      idToken
     )
     const { ethAddress, privKey } = retrieveSharesResponse
     logger.debug({ custom: { ethAddress, privKey } }, 'getTorusWallet')
