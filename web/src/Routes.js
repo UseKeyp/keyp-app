@@ -25,6 +25,7 @@ const Routes = () => {
         </Set>
         <Set wrap={DefaultLayout}>
           <Route path="/signin" page={SignInPage} name="signin" />
+          <Route path="/featherwallet" page={FeatherWalletPage} name="featherwallet" />
           <Route notfound page={NotFoundPage} />
           <Route path="/terms" page={TermsPage} name="terms" />
           <Route path="/privacy" page={PrivacyPage} name="privacy" />
