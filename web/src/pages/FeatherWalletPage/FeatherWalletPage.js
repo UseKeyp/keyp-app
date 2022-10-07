@@ -1,5 +1,6 @@
 import { MetaTags } from '@redwoodjs/web'
 import FeatherWallet from 'src/components/FeatherWallet/FeatherWallet'
+import AssetCard from 'src/components/AssetCard/AssetCard'
 
 const FeatherWalletPage = () => {
   return (
@@ -24,6 +25,23 @@ const FeatherWalletPage = () => {
           title="Rainbow Wallet"
           src="/rainbow_wallet.png"
           description="Rainbow is a fun, simple, and secure Ethereum wallet that makes managing your assets a joy."
+        />
+      </div>
+      <div className="text-left font-bold mb-4 mt-4">Assets</div>
+      <div className="flex bg-chessBlack-100 gap-2 p-2 rounded-xl flex-col">
+        <AssetCard
+          asset="Chess coin"
+          src="/icons/WK.svg"
+          balance="500"
+          acronym="CC"
+          description="Chess coin is an ERC20 token brought to you by Magnus Carlsen"
+        />
+        <AssetCard
+          asset="Discoin"
+          src="/icons/discord.svg"
+          balance="220"
+          acronym="DC"
+          description="Discoin is an ERC20 token"
         />
       </div>
     </>

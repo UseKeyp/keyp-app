@@ -1,7 +1,6 @@
 import * as React from 'react'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
-import Typography from '@mui/material/Typography'
 import { Button, CardActionArea, CardActions } from '@mui/material'
 
 const FeatherWallet = (props) => {
@@ -9,23 +8,18 @@ const FeatherWallet = (props) => {
 
   return (
     <div className="max-width-container">
-      <Card sx={{ maxWidth: 300, borderRadius: 4, background: '#21201D' }}>
+      <Card sx={{ maxWidth: 240, borderRadius: 4, background: '#21201D' }}>
         <CardActionArea>
-          <Typography
-            className="text-center text-white pt-2"
-            gutterBottom
-            variant="h5"
-            component="div"
-          >
+          <div className="text-center text-2xl font-bold text-white pt-2 pb-2">
             {props.title}
-          </Typography>
+          </div>
           <div className="flex shrink justify-center">
             <img src={props.src} alt="rainbow-wallet" />
           </div>
           <CardContent>
-            <Typography className="text-center" variant="body2" color="#FFFFFF">
+            <div className="text-center text-white text-sm">
               {props.description}
-            </Typography>
+            </div>
           </CardContent>
         </CardActionArea>
         <div className="flex justify-center text-center">
