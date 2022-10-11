@@ -1,6 +1,7 @@
 import { MetaTags } from '@redwoodjs/web'
 import FeatherWallet from 'src/components/FeatherWallet/FeatherWallet'
 import AssetCard from 'src/components/AssetCard/AssetCard'
+import ProfileCard from 'src/components/ProfileCard/ProfileCard'
 
 const FeatherWalletPage = () => {
   return (
@@ -9,6 +10,16 @@ const FeatherWalletPage = () => {
         title="Feather Wallet"
         description="Access all your wallet resources here."
       />
+      <div className="text-left font-bold mb-4">User</div>
+      <div className="mb-4">
+        <ProfileCard
+          name="Name (Optional)"
+          username="@username"
+          src="/icons/WK.svg"
+          description="User is a web3 developer and is learning how to use the app to create her own applications"
+          address="0x0000000000000000000000000000000000000000"
+        />
+      </div>
       <div className="text-left font-bold mb-4">Available Connections</div>
       <div className="flex bg-chessBlack-100 gap-2 p-2 rounded-xl flex-row">
         <FeatherWallet

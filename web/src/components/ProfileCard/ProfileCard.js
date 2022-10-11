@@ -1,0 +1,31 @@
+import * as React from 'react'
+import Card from '@mui/material/Card'
+import { trimAddress } from 'src/utils/helpers'
+
+const ProfileCard = (props) => {
+  const address = trimAddress(props.address) || 'No address set'
+
+  return (
+    <div className="max-width-container">
+      <Card sx={{ maxWidth: 480, borderRadius: 4, background: '#21201D' }}>
+        <div className="flex shrink justify-left ml-4 mt-4">
+          <img src={props.src} width="100px" />
+          <div className="flex flex-col text-left">
+            <div className="text-xl text-white ml-2">{props.name}</div>
+            <div className="text-xl font-bold text-white ml-2 pb-2">
+              {props.username}
+            </div>
+            <div className="text-left text-white text-sm pl-2 pt-2 pr-4">
+              {props.description}
+            </div>
+          </div>
+        </div>
+        <div className="text-left pb-2 pl-6 text-white text-xs italic">
+          {address}
+        </div>
+      </Card>
+    </div>
+  )
+}
+
+export default ProfileCard
