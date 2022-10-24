@@ -1,5 +1,4 @@
 import * as React from 'react'
-import Card from '@mui/material/Card'
 import { trimAddress } from 'src/utils/helpers'
 
 const ProfileCard = (props) => {
@@ -7,7 +6,7 @@ const ProfileCard = (props) => {
 
   return (
     <div className="max-width-container">
-      <Card sx={{ maxWidth: 480, borderRadius: 4, background: '#21201D' }}>
+      <div className="max-w-[480px] rounded-xl bg-chessBlack-300 p-2">
         <div className="flex shrink justify-left ml-4 mt-4">
           <img src={props.src} width="100px" />
           <div className="flex flex-col text-left">
@@ -23,7 +22,7 @@ const ProfileCard = (props) => {
         <div className="text-left pb-2 pl-6 text-white text-xs italic">
           {address}
         </div>
-      </Card>
+      </div>
     </div>
   )
 }

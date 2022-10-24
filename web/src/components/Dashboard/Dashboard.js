@@ -19,7 +19,9 @@ const Dashboard = (props) => {
                       <td className="p-2 align-middle bg-transparent border-b w-3/10 whitespace-nowrap dark:border-white/40">
                         <div className="flex items-center px-2 py-1">
                           <div>
-                            <div className="text-lg">{val.title}#{key}</div>
+                            <div className="text-lg">
+                              {val.title}#{key}
+                            </div>
                           </div>
                           <div className="ml-6">
                             <p className="mb-0 text-xs font-semibold leading-tight dark:opacity-60">
