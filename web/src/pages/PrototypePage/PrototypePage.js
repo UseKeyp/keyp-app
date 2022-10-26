@@ -1,10 +1,12 @@
 import { MetaTags } from '@redwoodjs/web'
-import FeatherWallet from 'src/components/FeatherWallet/FeatherWallet'
+import AvailableConnections from 'src/components/FeatherWallet/AvailableConnections'
 import AssetCard from 'src/components/AssetCard/AssetCard'
 import ProfileCard from 'src/components/ProfileCard/ProfileCard'
 import Dashboard from 'src/components/Dashboard/Dashboard'
+import FeatherSignInModal from 'src/components/FeatherSignInModal/FeatherSignInModal'
+import FeatherSimpleSignInModal from 'src/components/FeatherSimpleSignInModal/FeatherSimpleSignInModal'
 
-const FeatherWalletPage = () => {
+const PrototypePage = () => {
   const tableData = [
     {
       title: 'Row title',
@@ -35,6 +37,19 @@ const FeatherWalletPage = () => {
         title="Feather Wallet"
         description="Access all your wallet resources here."
       />
+      <FeatherSimpleSignInModal
+        discord={true}
+        facebook={true}
+        twitter={true}
+        chess={true}
+      />
+      <div className="p-2"></div>
+      <FeatherSignInModal
+        discord={true}
+        facebook={true}
+        twitter={true}
+        chess={true}
+      />
       <Dashboard data={tableData} />
       <div className="text-left font-bold mb-4">User</div>
       <div className="mb-4">
@@ -48,17 +63,17 @@ const FeatherWalletPage = () => {
       </div>
       <div className="text-left font-bold mb-4">Available Connections</div>
       <div className="flex bg-chessBlack-100 gap-2 p-2 rounded-xl flex-row">
-        <FeatherWallet
+        <AvailableConnections
           title="Rainbow Wallet"
           src="/rainbow_wallet.png"
           description="Rainbow is a fun, simple, and secure Ethereum wallet that makes managing your assets a joy."
         />
-        <FeatherWallet
+        <AvailableConnections
           title="Rainbow Wallet"
           src="/rainbow_wallet.png"
           description="Rainbow is a fun, simple, and secure Ethereum wallet that makes managing your assets a joy."
         />
-        <FeatherWallet
+        <AvailableConnections
           title="Rainbow Wallet"
           src="/rainbow_wallet.png"
           description="Rainbow is a fun, simple, and secure Ethereum wallet that makes managing your assets a joy."
@@ -85,4 +100,4 @@ const FeatherWalletPage = () => {
   )
 }
 
-export default FeatherWalletPage
+export default PrototypePage
