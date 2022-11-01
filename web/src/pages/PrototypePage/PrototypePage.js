@@ -5,6 +5,7 @@ import ProfileCard from 'src/components/ProfileCard/ProfileCard'
 import Dashboard from 'src/components/Dashboard/Dashboard'
 import FeatherSignInModal from 'src/components/FeatherSignInModal/FeatherSignInModal'
 import FeatherSimpleSignInModal from 'src/components/FeatherSimpleSignInModal/FeatherSimpleSignInModal'
+import {SampleComponent} from '@nifty-chess/components-soft-ui'
 
 const PrototypePage = () => {
   const tableData = [
@@ -37,6 +38,10 @@ const PrototypePage = () => {
         title="Feather Wallet"
         description="Access all your wallet resources here."
       />
+      <SampleComponent />
+      <span
+        className="py-2.2 px-3.6 text-xs rounded-1.8 inline-block whitespace-nowrap text-center bg-pink-300 text-fuchsia-700 align-baseline font-bold uppercase leading-none">pink</span>
+      <div className="text-fuscia">hey</div>
       <FeatherSimpleSignInModal
         discord={true}
         facebook={true}
