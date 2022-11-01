@@ -32,6 +32,6 @@ export const userSendTransaction = async ({ userId, unsignedTx }) => {
   } catch (e) {
     // TODO: Better logging for why tx submission failed
     logger.error(e)
-    throw new Error('userSendTransaction() ', e)
+    throw new Error(`userSendTransaction() ${e?.message || e}`)
   }
 }

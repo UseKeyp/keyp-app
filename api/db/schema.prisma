@@ -35,6 +35,8 @@ model User {
   OAuth            OAuth[]
   promotions       PromotionsOnUsers[]
   betaAccess       Boolean             @default(false)
+  TransferFrom     Transfer[]          @relation(name: "fromUser")
+  TransferReceived              Transfer[]        @relation(name: "toUser", fields:
 }
 
 model Ramp {
@@ -158,6 +160,25 @@ model Transaction {
   rampWithdraw         RampWithdraw?
   MintPurchase         MintPurchase? @relation("staleMintTransactions", fields: [mintPurchaseId], references: [id])
   mintPurchaseId       Int?
+  collection           Collection[]
+  Transfer             Transfer[]
+}
+
+model Transfer {
+  id               String      @id
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+  collection       Collection  @relation(fields: [collectionId], references: [id])
+  transaction      Transaction @relation(fields: [transactionId], references: [id])
+  facilitator      Studio      @relation(fields: [studioId], references: [id])
+  externalTransfer Boolean
+  from             User        @relation(name: "fromUser", fields: [fromUserId], references: [id])
+  to               User        @relation(name: "toUser", fields: [toUserId], references: [id])
+  collectionId     String
+  transactionId    String
+  studioId         String
+  fromUserId       String
+  toUserId         String
 }
 
 model Promotion {
@@ -180,6 +201,60 @@ model PromotionsOnUsers {
   promotionId Int
 
   @@id([userId, promotionId])
+}
+
+model StudiosOnDevelopers {
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  developer   Developer         @relation(fields: [developerId], references: [id])
+  studio      Studio            @relation(fields: [studioId], references: [id])
+  developerId String
+  studioId    String
+  accessLevel StudioPermissions
+
+  @@id([developerId, studioId])
+}
+
+model Studio {
+  id         String                @id
+  createdAt  DateTime              @default(now())
+  updatedAt  DateTime              @updatedAt
+  collection Collection[]
+  developers StudiosOnDevelopers[]
+  Transfer   Transfer[]
+}
+
+model Developer {
+  id        String                @id
+  createdAt DateTime              @default(now())
+  updatedAt DateTime              @updatedAt
+  studios   StudiosOnDevelopers[]
+}
+
+enum StudioPermissions {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+model Collection {
+  id                      String         @id // Contract address
+  createdAt               DateTime       @default(now())
+  updatedAt               DateTime       @updatedAt
+  type                    CollectionType
+  studio                  Studio         @relation(fields: [studioId], references: [id])
+  studioId                String
+  facilitatorAccess       Boolean
+  externalTransferEnabled Boolean
+  deploymentTransaction   Transaction?   @relation(fields: [deploymentTransactionId], references: [id]) // Null if contract added manually
+  deploymentTransactionId String?
+  Transfer                Transfer[]
+}
+
+enum CollectionType {
+  ERC1155
+  ERC721
+  ERC20
 }
 
 enum RampType {
