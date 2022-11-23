@@ -13,10 +13,6 @@ import { getGifUrl } from 'src/lib/chessCom/gifGetter'
 import { getBoardLayout } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
 
-const getRarity = () => {
-  return null
-}
-
 export const getTreasureCardColor = ({ game, username }) =>
   game.whiteUsername.toLowerCase() === username.toLowerCase()
     ? 'white'
@@ -60,7 +56,6 @@ const getFullGameDetails = async ({
     })
     if (treasure) return treasure
 
-    const achievementsList = achievements.map((item) => item.value)
     const white = await fetchUser(game.whiteUsername, true) // Get latest data
     const black = await fetchUser(game.blackUsername, true)
     let winnerId
@@ -76,12 +71,12 @@ const getFullGameDetails = async ({
       whiteId: white.id,
       winnerId,
       cardColor,
-      opening: openingValue,
+      opening: '',
       boardLayout: JSON.stringify(getBoardLayout(game.moves)),
       gifUrl: getGifUrl({ tcn: game.tcn, playerColor: cardColor }),
-      ...(includeAchievements && { achievements: achievementsList }),
-      ...(includeAchievements && { rarity: getRarity(score) }),
-      ...(includeAchievements && { achievementScore: score }),
+      ...includeAchievements,
+      ...includeAchievements,
+      ...includeAchievements,
     }
   } catch (e) {
     throw new Error(`getFullGameDetails() ${e.message}`)
@@ -162,10 +157,8 @@ export const getGamesWithFilter = async ({ username, filter, page = 0 }) => {
   const count = filteredGames.length
   const sortedGames = filteredGames
     .sort((a, b) => b.end_time - a.end_time)
-    .slice(page * GAMES_PER_PAGE, (page + 1) * GAMES_PER_PAGE)
-  logger.debug(
-    `slice params ${page * GAMES_PER_PAGE}, ${(page + 1) * GAMES_PER_PAGE}`
-  )
+    .slice(page, page + 1)
+  logger.debug(`slice params ${page}, ${page + 1}`)
   let fullGames = []
   await Promise.all(
     sortedGames.map(async (game) => {

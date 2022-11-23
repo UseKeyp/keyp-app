@@ -4,16 +4,7 @@ import { logger } from 'src/lib/logger'
 export const handler = async (event) => {
   logger.debug('Invoked /image')
   try {
-    const { moves, playerColor, options, dataOnly, boardLayout } = JSON.parse(
-      event.body
-    )
-    let config = {
-      size: 640,
-      dark: 'rgb(181, 137, 98)',
-      light: 'rgb(241, 216, 180)',
-      style: 'neo',
-    }
-    if (options) config = options
+    const { moves, dataOnly, boardLayout } = JSON.parse(event.body)
 
     let layout = boardLayout
     if (!layout) {
@@ -22,16 +13,16 @@ export const handler = async (event) => {
     if (dataOnly) {
       return {
         statusCode: 200,
-        body: buffer,
+        body: '',
       }
     }
     return {
       statusCode: 200,
       headers: {
         'Content-Type': 'image/jpeg',
-        'Content-Length': buffer.byteLength.toString(),
+        'Content-Length': '',
       },
-      body: buffer,
+      body: '',
     }
   } catch (e) {
     /* eslint-disable-next-line no-console */

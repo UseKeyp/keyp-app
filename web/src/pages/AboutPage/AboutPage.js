@@ -221,13 +221,6 @@ const FaqPage = () => {
         </div>
         <h2 className="text-4xl mt-12  font-black">🎯 {t('Achievements')}</h2>
         <div className="mt-4">
-          <AchievementList
-            title=""
-            bgColor="#312E2B"
-            fgColor="rgb(255 255 255 / 0.05)"
-          />
-        </div>
-        <div className="mt-4">
           <FaqSection
             questionList={[
               [

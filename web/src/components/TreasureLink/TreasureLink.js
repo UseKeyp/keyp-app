@@ -1,6 +1,3 @@
-import { P } from 'src/components/Typography'
-import Icon from 'src/components/Icon'
-import { trimString } from 'src/utils/helpers'
 import { routes, Link } from '@redwoodjs/router'
 
 const TreasureLink = ({ treasure }) => {

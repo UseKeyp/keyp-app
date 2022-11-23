@@ -267,10 +267,7 @@ ${EXPLORER_BASE_URL}token/${treasure.id}`
     execute: async (interaction) => {
       const username = interaction.options.getString('username')
       const isBetaMember = interaction.options.getBoolean('granted')
-      const member = await fetchUserAndUpdateBetaAccess(
-        username,
-        isBetaMember
-      )
+      const member = await fetchUserAndUpdateBetaAccess(username, isBetaMember)
       // fetchUserAndUpdateBetaAccess doesn't throw errors, so we must do it manually
       if (!member) throw 'Member not found'
       const betaMemberCount = await db.member.count({

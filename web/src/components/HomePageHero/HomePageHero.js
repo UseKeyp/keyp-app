@@ -4,28 +4,8 @@ import { routes } from '@redwoodjs/router'
 import { CardSkeleton } from 'src/components/LoadingSkeleton/LoadingSkeleton'
 
 const HomePageHero = () => {
-  const [card, setCard] = React.useState()
-  const [loading, setLoading] = React.useState(true)
-
-  const update = async () => {
-    const replacement =
-      raw
-        .match(/href=".+?(?=treasures)\S*(\S+)"/g)[0]
-        .split('/')
-        .slice(0, 3)
-        .join('/') + '/treasures"'
-
-    const replacedRaw = raw.replaceAll(
-      /href=".+?(?=members|treasures)\S*(\S+)"/g,
-      replacement
-    )
-
-    setCard(replacedRaw)
-    setLoading(false)
-  }
-  React.useEffect(() => {
-    update()
-  }, [])
+  const [card] = React.useState()
+  const [loading] = React.useState(true)
 
   return (
     <div className="homePageWrapper">
