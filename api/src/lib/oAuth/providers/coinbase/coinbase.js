@@ -14,6 +14,7 @@ const COINBASE_SCOPE =
   'wallet:accounts:read,wallet:addresses:read,wallet:user:email'
 const COINBASE_REDIRECT_URI = process.env.APP_DOMAIN + '/redirect/coinbase'
 
+const responseType = 'code'
 const params = {
   client_id: process.env.COINBASE_CLIENT_ID,
   scope: COINBASE_SCOPE,
@@ -114,4 +115,5 @@ export const provider = {
   params,
   onSubmitCode,
   onConnected,
+  responseType,
 }

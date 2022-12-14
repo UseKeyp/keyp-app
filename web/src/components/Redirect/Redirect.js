@@ -4,19 +4,11 @@ import { useRedirection } from 'src/providers/redirection'
 import Icon from 'src/components/Icon'
 import Button from 'src/components/Button'
 import SiteFooter from 'src/components/SiteFooter'
-import { useTheme } from 'src/providers/theme'
 
 import LoadingCards from 'src/components/LoadingCards'
 
 const Redirect = ({ type }) => {
-  const { toggleFaqTheme } = useTheme()
   const { errorMessage, successMessage, isLoading } = useRedirection()
-  React.useEffect(() => {
-    toggleFaqTheme(true)
-    return function cleanup() {
-      toggleFaqTheme(false)
-    }
-  })
   if (isLoading)
     return (
       <div className="min-w-full min-h-screen flex items-center justify-center">
@@ -26,7 +18,7 @@ const Redirect = ({ type }) => {
 
   let callToAction
   let iconName = type
-  if (type === 'chess') {
+  if (['chess', 'node_oidc', 'discord'].includes(type)) {
     iconName = 'chess_com'
     if (successMessage) {
       callToAction = (

@@ -1,21 +1,19 @@
-import { AuthenticationError } from '@redwoodjs/graphql-server'
-import { v4 as uuidv4 } from 'uuid'
 import pkceChallenge from 'pkce-challenge'
+import { v4 as uuidv4 } from 'uuid'
+
+import { AuthenticationError } from '@redwoodjs/graphql-server'
 import Sentry from 'src/lib/sentry'
 
 import { db } from 'src/lib/db'
 import { logger } from 'src/lib/logger'
-
 import { providers, types } from 'src/lib/oAuth/providers'
-import { createPlaidLink, PLAID } from 'src/lib/oAuth/providers/plaid'
 
 export const oAuthUrl = async (type) => {
   try {
     if (!Object.values(types).includes(type))
       throw `OAuth Provider ${type} is not enabled.`
-    if (type === PLAID) return createPlaidLink()
 
-    const { params, urlAuthorize } = providers[type]
+    const { params, urlAuthorize, responseType } = providers[type]
     const url = new URL(urlAuthorize)
     const pkce = pkceChallenge()
     url.searchParams.set('code_challenge', pkce.code_challenge) // eg. 3uWDl1fX2ioAqf38eSOFlKnxVEl_VyfaYKG2GyLndKs
@@ -37,7 +35,7 @@ export const oAuthUrl = async (type) => {
       },
     })
 
-    url.searchParams.set('response_type', 'code')
+    url.searchParams.set('response_type', responseType)
     url.searchParams.set('state', state)
     return {
       text: 'success',
@@ -50,18 +48,12 @@ export const oAuthUrl = async (type) => {
   }
 }
 
-export const processCodeGrant = async ({ state, code, type, accountId }) => {
+export const processCodeGrant = async ({ state, code, type, _accountId }) => {
   try {
     logger.debug(`code grant - ${type}`)
     if (!types.includes(type)) throw `Unknown OAuth Provider - ${type}`
 
-    let tokens
-    if (type === PLAID) {
-      // Skip the normal OAuth db checking
-      tokens = await providers[PLAID].onSubmitCode({ code, accountId })
-    } else {
-      tokens = await submitCodeGrant({ state, code, type })
-    }
+    const tokens = await submitCodeGrant({ state, code, type })
     logger.debug({ custom: tokens }, 'onSubmitCode() response')
     return providers[type].onConnected(tokens)
   } catch (e) {

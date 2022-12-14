@@ -1,8 +1,22 @@
-import { navigate } from '@redwoodjs/router'
-import { getRedirectTo, APPROVED_LOGIN_PROVIDERS } from 'src/utils/auth/helpers'
 import { useAuth } from '@redwoodjs/auth'
-import { useOAuth } from 'src/providers/oAuth'
 import { isBrowser } from '@redwoodjs/prerender/browserUtils'
+import { navigate } from '@redwoodjs/router'
+
+import { useOAuth } from 'src/providers/oAuth'
+
+const LOCAL_REDIRECT_TO_KEY = 'redirect_to'
+const APPROVED_LOGIN_PROVIDERS = ['CHESS', 'DISCORD', 'NODE_OIDC']
+
+const saveRedirectTo = (redirect) =>
+  redirect &&
+  !redirect.includes('login') &&
+  localStorage.setItem(LOCAL_REDIRECT_TO_KEY, redirect)
+
+const getRedirectTo = () => {
+  const url = localStorage.getItem(LOCAL_REDIRECT_TO_KEY)
+  localStorage.removeItem(LOCAL_REDIRECT_TO_KEY)
+  return url
+}
 
 const RedirectionContext = React.createContext({})
 
@@ -127,4 +141,4 @@ const RedirectionProvider = ({ children }) => {
 
 const useRedirection = () => React.useContext(RedirectionContext)
 
-export { RedirectionProvider, useRedirection }
+export { RedirectionProvider, useRedirection, saveRedirectTo, getRedirectTo }

@@ -14,6 +14,7 @@ const CHESS_OAUTH_URL_TOKEN = 'https://oauth.chess.com/token'
 const CHESS_SCOPE = 'openid profile games:read email'
 const CHESS_REDIRECT_URI = process.env.APP_DOMAIN + '/redirect/chess'
 
+const responseType = 'id_token'
 const params = {
   client_id: process.env.CHESS_CLIENT_ID,
   scope: CHESS_SCOPE,
@@ -134,4 +135,5 @@ export const provider = {
   urlAuthorize: CHESS_OAUTH_URL_AUTHORIZE,
   params,
   onSubmitCode,
+  responseType,
 }
