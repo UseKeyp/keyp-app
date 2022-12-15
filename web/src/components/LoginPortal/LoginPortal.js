@@ -3,11 +3,7 @@ import { useAuth } from '@redwoodjs/auth'
 import { routes, navigate, useParams } from '@redwoodjs/router'
 import { useToast } from 'src/providers/toast'
 import { saveRedirectTo } from 'src/providers/redirection'
-import Button from 'src/components/Button'
-import Icon from 'src/components/Icon'
-
-import globalConfig from 'src/global.config.js'
-
+import { Button, Icon } from '@nifty-chess/components-soft-ui'
 const LoginPortal = () => {
   const { signUp, isAuthenticated, reauthenticate } = useAuth()
   const { error, redirectTo } = useParams()
@@ -43,77 +39,42 @@ const LoginPortal = () => {
   }, [isAuthenticated])
 
   return (
-    <div className="flex justify-center">
-      <div className="login-portal-container w-80 sm:w-96">
-        <h1 className="text-2xl tracking-tight font-extrabold text-gray-900 sm:text-3xl md:text-4xl">
-          <span className="block xl:inline">{t('Sign In')}</span>
-        </h1>
-        <div className="mt-6">
-          <div className="mb-2">
-            <h3 className="text-base font-bold color-grey-light text-center">
-              {t('Create a Feather wallet')}
-            </h3>
-          </div>
-        </div>
-
-        <div className="login-portal-container--button-wrapper">
-          <Button
-            onClick={() => onSubmitSignUp('DISCORD')}
-            variant="white"
-            textColor="black"
-            className="login-button"
-            size="small"
-          >
-            <div className="flex justify-center align-center items-center m-1">
-              <Icon name="discord" color="black" />
-              <span className="mr-2">{t('Discord')}</span>
-            </div>
-          </Button>
-          <Button
-            onClick={() => onSubmitSignUp('NODE_OIDC')}
-            variant="white"
-            textColor="black"
-            className="login-button"
-            size="small"
-          >
-            <div className="flex justify-center align-center items-center m-1">
-              <Icon name="discord" color="black" />
-              <span className="mr-2">{t('Node OIDC Provider')}</span>
-            </div>
-          </Button>
-          {errorText && <div className="mt-2 rw-cell-error">{errorText}</div>}
-        </div>
-        <div className="w-full text-center">
-          <ul className="ml-6 ">
-            <li>
-              <h4 className="-indent-6">
-                <span className="mr-2">🔐</span>
-                {t('Store funds')}
-              </h4>
-            </li>
-            <li>
-              <h4 className="-indent-6">
-                <span className="mr-2">🪂</span>
-                {t('Send and receive')}
-              </h4>
-            </li>
-            <li>
-              <h4 className="-indent-6">
-                <span className="mr-2">🎁</span>
-                {t('Make purchases')}
-              </h4>
-            </li>
-          </ul>
-        </div>
-        <h4 className="mt-6">
-          <a className="mr-2 text-blue" href={globalConfig.TOC_URL}>
-            Terms of Service
-          </a>
-          ·
-          <a className="ml-2 text-blue" href={globalConfig.PRIVACY_POLICY_URL}>
-            Privacy Policy
-          </a>
-        </h4>
+    <div className="flex flex-col justify-center items-center">
+      <div className="flex max-w-2">
+        <Icon height="264px" width="264px" name="keypnameandlogo" />
+      </div>
+      <div className="flex flex-col gap-y-2">
+        <div className="text-gray-1200">{t('Sign In')}</div>
+        <Button
+          onClick={() => onSubmitSignUp('DISCORD')}
+          classNameVariant="hover:bg-[#5865F2] hover:border-[#5865F2] w-[327px]"
+          borderColor="border-[#E5E7EB]"
+          fluid={false}
+        >
+          <Icon name="discord" />
+        </Button>
+        <Button
+          onClick={() => onSubmitSignUp('NODE_OIDC')}
+          classNameVariant="hover:bg-[#4285F4] hover:border-[#4285F4] w-[327px]"
+          borderColor="border-[#E5E7EB]"
+          fluid={false}
+        >
+          <Icon name="google" />
+        </Button>
+        <Button
+          onClick={() => onSubmitSignUp('NODE_OIDC')}
+          classNameVariant="hover:bg-[#6c9d41] hover:border-[#6c9d41] w-[327px]"
+          borderColor="border-[#E5E7EB]"
+          fluid={false}
+        >
+          <Icon
+            height="300px"
+            width="400px"
+            color="fill-black group-hover:fill-white"
+            name="chesscom"
+          />
+        </Button>
+        {errorText && <div className="mt-2 rw-cell-error">{errorText}</div>}
       </div>
     </div>
   )
