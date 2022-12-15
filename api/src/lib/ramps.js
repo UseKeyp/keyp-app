@@ -3,7 +3,7 @@ import { EnvelopError } from '@envelop/core'
 import { createDepositReservation } from 'src/lib/wyre'
 import { encodeBody } from 'src/lib/oAuth/helpers'
 import { logger } from 'src/lib/logger'
-import { memberSignMesage } from 'src/lib/web3/wallets'
+import { userSignMesage } from 'src/lib/web3/wallets'
 const MT_PELERIN = 'MT_PELERIN'
 const WYRE = 'WYRE'
 const RAMP_NETWORK = 'RAMP_NETWORK'
@@ -27,8 +27,8 @@ export const getRampOnUrl = async ({ type }) => {
     if (type === MT_PELERIN) {
       const code = Math.floor(Math.random() * 9999)
       const message = `MtPelerin-${code}`
-      const signature = await memberSignMesage({
-        memberId: context.currentUser.id,
+      const signature = await userSignMesage({
+        userId: context.currentUser.id,
         message,
       })
       const hash = Buffer.from(signature.replace('0x', ''), 'hex').toString(
