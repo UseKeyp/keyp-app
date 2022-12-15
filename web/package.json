@@ -20,6 +20,8 @@
     "@capacitor/android": "^3.5.1",
     "@capacitor/app": "^1.1.1",
     "@capacitor/core": "^3.5.1",
+    "@nifty-chess/components-soft-ui": "0.1.0",
+    "@nifty-chess/tailwind-presets":"0.1.0",
     "@redwoodjs/auth": "^1.0.0",
     "@redwoodjs/forms": "^1.0.0",
     "@redwoodjs/router": "^1.0.0",
