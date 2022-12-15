@@ -4,7 +4,6 @@ import AppUrlListener from './utils/AppUrlListener'
 import AllContextProviders from 'src/providers'
 import HomepageLayout from 'src/layouts/HomepageLayout/HomepageLayout'
 import NoBackgroundLayout from 'src/layouts/NoBackgroundLayout/NoBackgroundLayout'
-import PrototypePage from 'src/pages/PrototypePage/PrototypePage'
 
 const Routes = () => {
   return (
@@ -26,7 +25,6 @@ const Routes = () => {
         </Set>
         <Set wrap={DefaultLayout}>
           <Route path="/signin" page={SignInPage} name="signin" />
-          <Route path="/prototypepage" page={PrototypePage} name="featherwallet" />
           <Route notfound page={NotFoundPage} />
           <Route path="/terms" page={TermsPage} name="terms" />
           <Route path="/privacy" page={PrivacyPage} name="privacy" />

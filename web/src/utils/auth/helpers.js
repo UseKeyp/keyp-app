@@ -1,18 +1,3 @@
-const LOCAL_REDIRECT_TO_KEY = 'redirect_to'
-
-export const APPROVED_LOGIN_PROVIDERS = ['CHESS', 'DISCORD']
-
-export const saveRedirectTo = (redirect) =>
-  redirect &&
-  !redirect.includes('login') &&
-  localStorage.setItem(LOCAL_REDIRECT_TO_KEY, redirect)
-
-export const getRedirectTo = () => {
-  const url = localStorage.getItem(LOCAL_REDIRECT_TO_KEY)
-  localStorage.removeItem(LOCAL_REDIRECT_TO_KEY)
-  return url
-}
-
 export const getErrorResponse = (error, functionName) => {
   const errorText = typeof error === 'string' ? error : error.message
   const res = {

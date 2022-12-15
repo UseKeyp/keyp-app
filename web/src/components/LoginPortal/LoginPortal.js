@@ -2,7 +2,7 @@ import { useEffect } from 'react'
 import { useAuth } from '@redwoodjs/auth'
 import { routes, navigate, useParams } from '@redwoodjs/router'
 import { useToast } from 'src/providers/toast'
-import { saveRedirectTo } from 'src/utils/auth/helpers'
+import { saveRedirectTo } from 'src/providers/redirection'
 import Button from 'src/components/Button'
 import Icon from 'src/components/Icon'
 
@@ -66,7 +66,19 @@ const LoginPortal = () => {
           >
             <div className="flex justify-center align-center items-center m-1">
               <Icon name="discord" color="black" />
-              <span className="mr-2">{t('Sign in with Discord')}</span>
+              <span className="mr-2">{t('Discord')}</span>
+            </div>
+          </Button>
+          <Button
+            onClick={() => onSubmitSignUp('NODE_OIDC')}
+            variant="white"
+            textColor="black"
+            className="login-button"
+            size="small"
+          >
+            <div className="flex justify-center align-center items-center m-1">
+              <Icon name="discord" color="black" />
+              <span className="mr-2">{t('Node OIDC Provider')}</span>
             </div>
           </Button>
           {errorText && <div className="mt-2 rw-cell-error">{errorText}</div>}

@@ -1,12 +1,8 @@
 import UserDetails from 'src/components/User/UserDetails'
 import UserActivityCell from 'src/components/User/UserActivityCell'
-import { routes } from '@redwoodjs/router'
-import { useFilter } from 'src/providers/filters'
-import SortingDropdown from 'src/components/SortingDropdown/SortingDropdown'
 import { MetaTags } from '@redwoodjs/web'
 
 const User = ({ user, isLoading }) => {
-  const { filter, sort, defaultParams } = useFilter()
   //const twitchSrc = `https://player.twitch.tv/?channel=${user.twitchUsername}&parent=${process.env.APP_DOMAIN}&muted=true&autoplay=true`
   // To test locally, uncomment and use domain "localhost"
   // const twitchSrc = `https://player.twitch.tv/?channel=jpegjames&parent=localhost&muted=true&autoplay=true`

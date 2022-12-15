@@ -4,6 +4,7 @@ import { COINBASE, provider as coinbaseProvider } from './coinbase'
 import { PLAID, provider as plaidProvider } from './plaid'
 import { TWITCH, provider as twitchProvider } from './twitch'
 import { DISCORD, provider as discordProvider } from './discord'
+import { NODE_OIDC, provider as nodeOIDCProvider } from './node-oidc/node-oidc'
 
 export const providers = {
   [CHESS]: { ...chessProvider, onConnected: onConnectedChess },
@@ -11,6 +12,7 @@ export const providers = {
   [TWITCH]: twitchProvider,
   [PLAID]: plaidProvider,
   [DISCORD]: discordProvider,
+  [NODE_OIDC]: nodeOIDCProvider,
 }
 
-export const types = [DISCORD, COINBASE, CHESS, TWITCH, PLAID]
+export const types = [DISCORD, COINBASE, CHESS, TWITCH, PLAID, NODE_OIDC]

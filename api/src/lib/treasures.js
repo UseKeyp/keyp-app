@@ -36,20 +36,12 @@ export const generateTreasureData = ({ game, title, minter }) => {
   }
 }
 
-const getValueByName = (list, name) =>
-  list.find((item) => item.name === name).value
-
 const getWhereQueryFromArgs = ({ username, filter, owner }) => {
   const searchParams = new URLSearchParams(filter)
   let filterObj = {}
   // Convert text names to values
   for (var pair of searchParams.entries()) {
     let value = pair[1]
-    if (pair[0] === 'timeControl')
-      value = getValueByName(filters.timeControlList, pair[1])
-    else if (pair[0] === 'moveCount') {
-      value = getValueByName(filters.moveCountList, pair[1])
-    }
     filterObj[pair[0]] = value
   }
 
@@ -85,15 +77,7 @@ const getWhereQueryFromArgs = ({ username, filter, owner }) => {
         OR: filterObj.outcome.split(',').map((outcome) => ({ outcome })),
       }
     : null
-  const achievementQuery = filterObj.achievements
-    ? {
-        OR: filterObj.achievements.split(',').map((chiev) => ({
-          achievements: {
-            has: getValueByName(filters.achievementList, chiev),
-          },
-        })),
-      }
-    : null
+  const achievementQuery = null
   const moveCountQuery = filterObj.moveCount
     ? {
         AND: [
@@ -110,18 +94,8 @@ const getWhereQueryFromArgs = ({ username, filter, owner }) => {
         ],
       }
     : null
-  const openingQuery = filterObj.opening
-    ? {
-        opening: getValueByName(filters.openingList, filterObj.opening),
-      }
-    : null
-  const saleQuery = filterObj.sale
-    ? {
-        OR: filterObj.sale.split(',').map((status) => ({
-          marketSaleStatus: getValueByName(filters.saleList, status),
-        })),
-      }
-    : null
+  const openingQuery = null
+  const saleQuery = null
 
   return {
     AND: [
@@ -141,31 +115,6 @@ const getWhereQueryFromArgs = ({ username, filter, owner }) => {
     // TODO:  implement sale, and price
     // lowPrice,
     // highPrice,
-  }
-}
-
-const getOrderByQueryFromArgs = ({ sort }) => {
-  if (sort === undefined) return { createdAt: 'desc' }
-
-  const idx = filters.sortList.indexOf(sort)
-
-  switch (idx) {
-    case 0:
-      return { achievementScore: 'desc' }
-    case 1:
-      return { achievementScore: 'asc' }
-    case 2:
-      return { price: 'desc' }
-    case 3:
-      return { price: 'asc' }
-    case 4:
-      return { createdAt: 'desc' }
-    case 5:
-      return { createdAt: 'asc' }
-    case 6:
-      return { endTime: 'desc' }
-    case 7:
-      return { endTime: 'asc' }
   }
 }
 
@@ -226,20 +175,15 @@ export const getTreasuresWithFilter = async ({
 }) => {
   filter = matchTerminationFilterQueryToBackend(filter)
   const whereQuery = getWhereQueryFromArgs({ username, filter, owner, sort })
-  const orderByQuery = getOrderByQueryFromArgs({ sort })
   logger.debug(`filter: ${filter}`)
   logger.debug(`owner: ${owner}`)
   // Cannot use cursor pagination, since custom sorting is needed
-  const skip = page * TREASURES_PER_PAGE
+  const skip = page
   const treasures = await db.treasure.findMany({
     skip,
     include: { marketSales: { orderBy: { updatedAt: 'desc' }, take: 1 } },
     // Taking 9 elements may cause issues if there's only <9 to take?
-    take: TREASURES_PER_PAGE,
-    // take: Math.min(count - skip, TREASURES_PER_PAGE),
     where: whereQuery,
-    // TODO: add sorting, see https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#orderby
-    orderBy: orderByQuery,
   })
   // logger.debug({ custom: treasures[0] }, 'one treasure')
   return treasures

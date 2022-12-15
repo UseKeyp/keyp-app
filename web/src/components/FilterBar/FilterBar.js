@@ -1,6 +1,5 @@
 import { useState } from 'react'
 
-import { anyValues } from './Logic'
 import UsernameSearchBar from 'src/components/UsernameSearchBar'
 
 import { useFilter } from 'src/providers/filters'
