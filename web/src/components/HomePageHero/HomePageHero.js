@@ -26,7 +26,7 @@ const HomePageHero = () => {
             <Button
               size="large"
               className="bg-greenLight mt-4"
-              to={routes.signin()}
+              to={routes.login()}
             >
               {t('Get Started!')}
             </Button>
