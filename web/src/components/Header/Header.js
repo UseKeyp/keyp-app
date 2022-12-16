@@ -59,7 +59,7 @@ const MobileNav = () => {
             </li>
             {!isLoggedIn ? (
               <li className={navItemClasses}>
-                <Button className={navAnchorClasses} to={routes.signin()}>
+                <Button className={navAnchorClasses} to={routes.login()}>
                   {t('Sign In')}
                 </Button>
               </li>
@@ -153,7 +153,7 @@ const Header = () => {
             </div>
           </div>
         ) : (
-          <Button to={routes.signin()}>{t('Sign In')}</Button>
+          <Button to={routes.login()}>{t('Sign In')}</Button>
         )}
       </div>
     </div>

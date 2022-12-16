@@ -16,7 +16,7 @@ const SignInPage = () => {
 
   return (
     <>
-      <MetaTags title="Sign In" description="Join to start collecting." />
+      <MetaTags title="Login" description="Log into Keyp!" />
       <LoginPortal />
     </>
   )

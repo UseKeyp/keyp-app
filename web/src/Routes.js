@@ -24,13 +24,13 @@ const Routes = () => {
           <Route path="/users/{usernameOrAddress}" page={UserPage} name="user" />
         </Set>
         <Set wrap={DefaultLayout}>
-          <Route path="/signin" page={SignInPage} name="signin" />
+          <Route path="/login" page={SignInPage} name="login" />
           <Route notfound page={NotFoundPage} />
           <Route path="/terms" page={TermsPage} name="terms" />
           <Route path="/privacy" page={PrivacyPage} name="privacy" />
           <Route path="/about" page={AboutPage} name="about" />
           <Route path="/support" page={SupportPage} name="support" />
-          <Private unauthenticated="signin">
+          <Private unauthenticated="login">
             <Route path="/wallet" page={WalletPage} name="wallet" />
             <Route path="/settings" page={SettingsPage} name="settings" />
           </Private>
