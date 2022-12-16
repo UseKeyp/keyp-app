@@ -3,7 +3,7 @@ import { useAuth } from '@redwoodjs/auth'
 import { routes, navigate, useParams } from '@redwoodjs/router'
 import { useToast } from 'src/providers/toast'
 import { saveRedirectTo } from 'src/providers/redirection'
-import { Button, Icon } from '@nifty-chess/components-soft-ui'
+import { Button, Icon } from '@usekeyp/components-soft-ui'
 const LoginPortal = () => {
   const { signUp, isAuthenticated, reauthenticate } = useAuth()
   const { error, redirectTo } = useParams()
@@ -71,7 +71,7 @@ const LoginPortal = () => {
             height="300px"
             width="400px"
             color="fill-black group-hover:fill-white"
-            name="chesscom"
+            name="chess_com"
           />
         </Button>
         {errorText && <div className="mt-2 rw-cell-error">{errorText}</div>}

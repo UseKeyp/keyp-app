@@ -1,10 +1,10 @@
 /** @type {import('tailwindcss').Config} */
-const { softUi } = require('@nifty-chess/tailwind-presets')
+const { softUi } = require('@usekeyp/tailwind-presets')
 
 module.exports = {
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
-    "./node_modules/@nifty-chess/components-soft-ui/**/*.js",
+    "./node_modules/@usekeyp/components-soft-ui/**/*.js",
   ],
   presets: [softUi],
   theme: {
