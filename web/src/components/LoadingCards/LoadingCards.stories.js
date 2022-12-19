@@ -1,7 +1,7 @@
-import LoadingCards from './LoadingCards'
+import LoadingScreen from './LoadingScreen'
 
 export const generated = () => {
-  return <LoadingCards />
+  return <LoadingScreen />
 }
 
-export default { title: 'Components/LoadingCards' }
+export default { title: 'Components/LoadingScreen' }
