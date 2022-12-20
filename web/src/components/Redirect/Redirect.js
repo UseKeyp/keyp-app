@@ -2,18 +2,11 @@ import { routes, Link } from '@redwoodjs/router'
 import { useRedirection } from 'src/providers/redirection'
 
 import { Icon, Button } from '@usekeyp/components-soft-ui'
-import SiteFooter from 'src/components/SiteFooter'
-
-import LoadingCards from 'src/components/LoadingCards'
+import LoadingScreen from 'src/components/LoadingCards/LoadingScreen'
 
 const Redirect = ({ type }) => {
   const { errorMessage, successMessage, isLoading } = useRedirection()
-  if (isLoading)
-    return (
-      <div className="min-w-full min-h-screen flex items-center justify-center">
-        <LoadingCards />
-      </div>
-    )
+  if (isLoading) return <LoadingScreen />
 
   let callToAction
   let iconName = type
@@ -108,7 +101,6 @@ const Redirect = ({ type }) => {
           </div>
         </div>
       </div>
-      <SiteFooter className="fixed inset-x-0 bottom-0 mx-4" />
     </div>
   )
 }
