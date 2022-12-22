@@ -22,6 +22,7 @@ const Routes = () => {
             <Route path="/profile" page={ProfilePage} name="profile" />
           </Private>
           <Route path="/users/{usernameOrAddress}" page={UserPage} name="user" />
+          <Route path="/authorize" page={AuthorizePage} name="authorize" />
         </Set>
         <Set wrap={DefaultLayout}>
           <Route path="/login" page={SignInPage} name="login" />
