@@ -10,7 +10,7 @@ generator client {
 }
 
 model User {
-  id               String              @id // Chess.com id
+  id               String              @id
   username         String?             @unique // platform username
   address          String?             @unique // Torus wallet address
   locale           String?
@@ -29,10 +29,10 @@ model User {
   mintCredits      Int                 @default(3) // Mint for free!
   banned           Boolean             @default(false)
   blocked          Boolean? // Prevents others from interacting with this person
-  refreshToken     String? // Discord.com Oauth
-  accessToken      String? // Discord.com Oauth
+  refreshToken     String?
+  accessToken      String?
   ramps            Ramp[]
-  OAuth            OAuth[]
+  oauth            OAuth[]
   promotions       PromotionsOnUsers[]
   betaAccess       Boolean             @default(false)
   TransferFrom     Transfer[]          @relation(name: "fromUser")
@@ -156,11 +156,9 @@ model Transaction {
   gasLimit             Int           @default(0)
   maxPriorityFeePerGas Int           @default(0)
   maxFeePerGas         Int           @default(0)
-  mintPurchase         MintPurchase?
   rampWithdraw         RampWithdraw?
-  MintPurchase         MintPurchase? @relation("staleMintTransactions", fields: [mintPurchaseId], references: [id])
+  mintPurchase         MintPurchase? @relation("staleMintTransactions", fields: [mintPurchaseId], references: [id])
   mintPurchaseId       Int?
-  collection           Collection[]
   Transfer             Transfer[]
 }
 
@@ -168,9 +166,8 @@ model Transfer {
   id               String      @id
   createdAt        DateTime    @default(now())
   updatedAt        DateTime    @updatedAt
-  collection       Collection  @relation(fields: [collectionId], references: [id])
   transaction      Transaction @relation(fields: [transactionId], references: [id])
-  facilitator      Studio      @relation(fields: [studioId], references: [id])
+  facilitator      Client      @relation(fields: [studioId], references: [id])
   externalTransfer Boolean
   from             User        @relation(name: "fromUser", fields: [fromUserId], references: [id])
   to               User        @relation(name: "toUser", fields: [toUserId], references: [id])
@@ -201,60 +198,6 @@ model PromotionsOnUsers {
   promotionId Int
 
   @@id([userId, promotionId])
-}
-
-model StudiosOnDevelopers {
-  createdAt   DateTime          @default(now())
-  updatedAt   DateTime          @updatedAt
-  developer   Developer         @relation(fields: [developerId], references: [id])
-  studio      Studio            @relation(fields: [studioId], references: [id])
-  developerId String
-  studioId    String
-  accessLevel StudioPermissions
-
-  @@id([developerId, studioId])
-}
-
-model Studio {
-  id         String                @id
-  createdAt  DateTime              @default(now())
-  updatedAt  DateTime              @updatedAt
-  collection Collection[]
-  developers StudiosOnDevelopers[]
-  Transfer   Transfer[]
-}
-
-model Developer {
-  id        String                @id
-  createdAt DateTime              @default(now())
-  updatedAt DateTime              @updatedAt
-  studios   StudiosOnDevelopers[]
-}
-
-enum StudioPermissions {
-  OWNER
-  ADMIN
-  MEMBER
-}
-
-model Collection {
-  id                      String         @id // Contract address
-  createdAt               DateTime       @default(now())
-  updatedAt               DateTime       @updatedAt
-  type                    CollectionType
-  studio                  Studio         @relation(fields: [studioId], references: [id])
-  studioId                String
-  facilitatorAccess       Boolean
-  externalTransferEnabled Boolean
-  deploymentTransaction   Transaction?   @relation(fields: [deploymentTransactionId], references: [id]) // Null if contract added manually
-  deploymentTransactionId String?
-  Transfer                Transfer[]
-}
-
-enum CollectionType {
-  ERC1155
-  ERC721
-  ERC20
 }
 
 enum RampType {
