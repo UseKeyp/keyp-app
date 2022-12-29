@@ -1,12 +1,10 @@
 import { MetaTags } from '@redwoodjs/web'
-import Authorize from "src/pages/AuthorizePage/Authorize";
+import Authorize from 'src/pages/AuthorizePage/Authorize'
 
 const AuthorizePage = () => {
-  const handleConsent = () => {
-  };
+  const handleConsent = () => {}
 
-  const handleAbort = () => {
-  };
+  const handleAbort = () => {}
 
   return (
     <>

@@ -22,7 +22,6 @@ const Routes = () => {
             <Route path="/profile" page={ProfilePage} name="profile" />
           </Private>
           <Route path="/users/{usernameOrAddress}" page={UserPage} name="user" />
-          <Route path="/authorize" page={AuthorizePage} name="authorize" />
         </Set>
         <Set wrap={DefaultLayout}>
           <Route path="/login" page={SignInPage} name="login" />
@@ -32,6 +31,7 @@ const Routes = () => {
           <Route path="/about" page={AboutPage} name="about" />
           <Route path="/support" page={SupportPage} name="support" />
           <Private unauthenticated="login">
+            <Route path="/authorize" page={AuthorizePage} name="authorize" />
             <Route path="/wallet" page={WalletPage} name="wallet" />
             <Route path="/settings" page={SettingsPage} name="settings" />
           </Private>
