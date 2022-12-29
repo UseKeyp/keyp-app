@@ -26,7 +26,7 @@ const HomePage = () => {
             </a>
             <div className="border border-blue-1200 p-4 rounded-md w-85">
               <a
-                href="https://calendly.com/joseph-keyp/onboaring"
+                href="https://schedule.usekeyp.com"
                 target="_blank"
                 className="flex font-bold hover:underline"
                 rel="noreferrer"
