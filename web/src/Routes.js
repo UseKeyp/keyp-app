@@ -2,7 +2,6 @@ import { Set, Router, Route, Private } from '@redwoodjs/router'
 import DefaultLayout from 'src/layouts/DefaultLayout'
 import AppUrlListener from './utils/AppUrlListener'
 import AllContextProviders from 'src/providers'
-import HomepageLayout from 'src/layouts/HomepageLayout/HomepageLayout'
 import NoBackgroundLayout from 'src/layouts/NoBackgroundLayout/NoBackgroundLayout'
 
 const Routes = () => {
@@ -14,9 +13,6 @@ const Routes = () => {
         <Route path="/restricted" page={RestrictedPage} name="restricted" />
         <Route path="/redirect/{type}" page={RedirectPage} name="redirect" />
         <Route path="/redirect/{type}/{error}" page={RedirectPage} name="redirect" />
-        <Set wrap={HomepageLayout}>
-          <Route path="/" page={HomePage} name="home" />
-        </Set>
         <Set wrap={NoBackgroundLayout}>
           <Private unauthenticated="signin">
             <Route path="/profile" page={ProfilePage} name="profile" />
@@ -24,6 +20,7 @@ const Routes = () => {
           <Route path="/users/{usernameOrAddress}" page={UserPage} name="user" />
         </Set>
         <Set wrap={DefaultLayout}>
+          <Route path="/" page={HomePage} name="home" />
           <Route path="/login" page={SignInPage} name="login" />
           <Route notfound page={NotFoundPage} />
           <Route path="/terms" page={TermsPage} name="terms" />

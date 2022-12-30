@@ -11,7 +11,6 @@ module.exports = {
     extend: {
       colors: {
         black: '#000000',
-        blue: '#47A7FF',
         rarity: {
           good: '#8a8886',
           great: '#7ea650',
