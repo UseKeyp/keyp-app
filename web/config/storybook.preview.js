@@ -1,6 +1,8 @@
 import React from 'react'
-import AllContextProviders from '../src/providers'
+
 import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
+
+import AllContextProviders from '../src/providers'
 
 export const decorators = [
   (Story) => (

@@ -1,14 +1,14 @@
 import fetch from 'cross-fetch'
-import { logger } from 'src/lib/logger'
-import { db } from 'src/lib/db'
+
 import { AuthenticationError } from '@redwoodjs/graphql-server'
-import Sentry from 'src/lib/sentry'
 
-import { encodeBody, getExpiration } from 'src/lib/oAuth/helpers'
-import { fetchUser } from 'src/lib/users'
-import { getTorusPublicAddress } from 'src/lib/torus/torus'
-
+import { db } from 'src/lib/db'
 import { fetchDiscord } from 'src/lib/discord'
+import { logger } from 'src/lib/logger'
+import { encodeBody, getExpiration } from 'src/lib/oAuth/helpers'
+import Sentry from 'src/lib/sentry'
+import { getTorusPublicAddress } from 'src/lib/torus/torus'
+import { fetchUser } from 'src/lib/users'
 
 export const DISCORD = 'DISCORD'
 export const DISCORD_OAUTH_URL_AUTHORIZE =

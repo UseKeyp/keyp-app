@@ -1,8 +1,9 @@
-import FaqSection from 'src/components/FaqSection/FaqSection'
-import { MetaTags } from '@redwoodjs/web'
 import { isBrowser } from '@redwoodjs/prerender/browserUtils'
-import globalConfig from 'src/global.config'
+import { MetaTags } from '@redwoodjs/web'
+
+import FaqSection from 'src/components/FaqSection/FaqSection'
 import Icon from 'src/components/Icon'
+import globalConfig from 'src/global.config'
 
 const SupportPage = () => {
   React.useEffect(() => {

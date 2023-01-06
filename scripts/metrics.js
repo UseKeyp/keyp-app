@@ -1,10 +1,11 @@
-const fs = require('fs-extra')
-const path = require('path')
-const dotenv = require('dotenv')
-var { parse } = require('csv-parse')
-const { PrismaClient } = require('@prisma/client')
-
 import { getBusinessMetrics } from '../api/src/lib/metrics/metrics'
+
+const path = require('path')
+
+const { PrismaClient } = require('@prisma/client')
+var { parse } = require('csv-parse')
+const dotenv = require('dotenv')
+const fs = require('fs-extra')
 
 dotenv.config()
 

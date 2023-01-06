@@ -1,9 +1,10 @@
-const treasureArtifact = require('@treasure-chess/treasure-contracts/artifacts/contracts/Treasure.sol/Treasure.json')
 import { Contract } from '@ethersproject/contracts'
 
-import { adminSendTransaction } from 'src/lib/web3/wallets'
-import { web3Provider } from 'src/lib/web3/helpers'
 import { logger } from 'src/lib/logger'
+import { web3Provider } from 'src/lib/web3/helpers'
+import { adminSendTransaction } from 'src/lib/web3/wallets'
+
+const treasureArtifact = require('@treasure-chess/treasure-contracts/artifacts/contracts/Treasure.sol/Treasure.json')
 
 const treasureAbi = treasureArtifact.abi
 

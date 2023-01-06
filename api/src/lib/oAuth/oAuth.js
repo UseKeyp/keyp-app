@@ -2,11 +2,11 @@ import pkceChallenge from 'pkce-challenge'
 import { v4 as uuidv4 } from 'uuid'
 
 import { AuthenticationError } from '@redwoodjs/graphql-server'
-import Sentry from 'src/lib/sentry'
 
 import { db } from 'src/lib/db'
 import { logger } from 'src/lib/logger'
 import { providers, types } from 'src/lib/oAuth/providers'
+import Sentry from 'src/lib/sentry'
 
 export const oAuthUrl = async (type) => {
   try {
