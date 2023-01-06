@@ -16,12 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: size-label
-        uses: 'pascalgn/size-label-action@ee2c1d869559066f4c5242f20c658e402e937e73'
+        uses: 'pascalgn/size-label-action@v0.4.3'
         env:
           GITHUB_TOKEN: '${{ secrets.GITHUB_TOKEN }}'
-  link-your-issues:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions-automation/link-your-issues@main
-        with:
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          IGNORED: '!.gitignore\nyarn.lock'
