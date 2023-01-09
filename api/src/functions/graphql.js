@@ -1,4 +1,4 @@
-import { useSentry } from '@envelop/sentry'
+// import { useSentry } from '@envelop/sentry'
 
 import { createGraphQLHandler } from '@redwoodjs/graphql-server'
 /* eslint-disable-next-line no-unused-vars */
@@ -11,7 +11,7 @@ import { getCurrentUser } from 'src/lib/auth'
 import { db } from 'src/lib/db'
 import { cors } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
-import Sentry from 'src/lib/sentry'
+// import Sentry from 'src/lib/sentry'
 
 // import { useRateLimiter } from '@envelop/rate-limiter'
 
@@ -19,38 +19,39 @@ import Sentry from 'src/lib/sentry'
 
 export const handler = createGraphQLHandler({
   getCurrentUser,
-  loggerConfig: {
-    logger,
-    options: {
-      tracing: false,
-      operationName: false,
-      query: false,
-      data: false,
-      excludeOperations: ['gamesWithFilter'],
-    },
-  },
+  loggerConfig: { logger, options: {} },
+  // loggerConfig: {
+  //   logger,
+  //   options: {
+  //     tracing: false,
+  //     operationName: false,
+  //     query: false,
+  //     data: false,
+  //     excludeOperations: ['gamesWithFilter'],
+  //   },
+  // },
   directives,
   sdls,
   services,
   cors,
-  extraPlugins: [
-    // useRateLimiter({
-    //   // https://www.envelop.dev/plugins/use-rate-limiter
-    //   identifyFn,
-    //   // store: new RedisStore(redis.createClient())
-    // }),
-    useSentry({
-      includeRawResult: false, // set to `true` in order to include the execution result in the metadata collected
-      includeResolverArgs: false, // set to `true` in order to include the args passed to resolvers
-      includeExecuteVariables: false, // set to `true` in order to include the operation variables values
-      // appendTags: (args) => { return { ... }} // if you wish to add custom "tags" to the Sentry transaction created per operation
-    }),
-  ],
-  depthLimitOptions: {
-    // https://www.envelop.dev/plugins/use-depth-limit
-    maxDepth: 4,
-    ignore: [],
-  },
+  // extraPlugins: [
+  //   // useRateLimiter({
+  //   //   // https://www.envelop.dev/plugins/use-rate-limiter
+  //   //   identifyFn,
+  //   //   // store: new RedisStore(redis.createClient())
+  //   // }),
+  //   useSentry({
+  //     includeRawResult: false, // set to `true` in order to include the execution result in the metadata collected
+  //     includeResolverArgs: false, // set to `true` in order to include the args passed to resolvers
+  //     includeExecuteVariables: false, // set to `true` in order to include the operation variables values
+  //     // appendTags: (args) => { return { ... }} // if you wish to add custom "tags" to the Sentry transaction created per operation
+  //   }),
+  // ],
+  // depthLimitOptions: {
+  //   // https://www.envelop.dev/plugins/use-depth-limit
+  //   maxDepth: 4,
+  //   ignore: [],
+  // },
   onException: () => {
     // Disconnect from your database with an unhandled exception.
     db.$disconnect()

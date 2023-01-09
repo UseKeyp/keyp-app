@@ -20,7 +20,7 @@
     "seed": "yarn rw exec seed"
   },
   "dependencies": {
-    "dotenv": "^16.0.0"
+    "dotenv": "^16.0.3"
   },
   "devDependencies": {
     "@capacitor/cli": "^3.5.1",
@@ -48,10 +48,8 @@
     }
   },
   "engines": {
-    "node": ">=14.17 <=16.x",
-    "yarn": ">=1.15 <2"
+    "node": ">=14.19 <=16.x",
+    "yarn": ">=1.15"
   },
-  "resolutions": {
-    "oauth2-server-redwood": "portal:/home/dev/repos/oauth2-server-redwood/packages/oauth2-server"
-  }
+  "packageManager": "yarn@3.3.0"
 }

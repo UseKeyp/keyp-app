@@ -5,9 +5,9 @@ import { db } from 'src/lib/db'
 
 export const handler = serverless(
   oauth2Server(db, {
-    SECURE_KEY: process.env.OAUTH_SECRET_KEY,
-    APP_DOMAIN: process.env.APP_DOMAIN,
-    INTROSPECTION_SECRET: process.env.INTROSPECTION_SECRET,
+    SECURE_KEY:"boo,foo",// process.env.OAUTH_SECRET_KEY,
+    APP_DOMAIN: "http://localhost",//process.env.APP_DOMAIN,
+    INTROSPECTION_SECRET: "foo",//process.env.INTROSPECTION_SECRET,
     routes: { login: '/login', authorize: '/authorize' },
     config: {
       // OIDC-Provider config, see https://github.com/panva/node-oidc-provider

@@ -23,9 +23,9 @@
   "devDependencies": {
     "@babel/cli": "^7.20.7",
     "@babel/core": "^7.20.12",
-    "@crowdin/cli": "^3.7.8",
-    "chalk": "^4.1.0",
-    "i18next-scanner": "^3.1.0",
-    "locize-cli": "^7.6.7"
+    "@crowdin/cli": "^3.9.1",
+    "chalk": "^4.1.2",
+    "i18next-scanner": "^3.3.0",
+    "locize-cli": "^7.13.1"
   }
 }
