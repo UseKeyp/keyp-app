@@ -6,11 +6,12 @@
 # https://redwoodjs.com/docs/app-configuration-redwood-toml
 
 [web]
+  title = "Keyp"
   port = 3000
   host = "0.0.0.0"
-  title = "Keyp"
+  apiUrl = "/api"
   # apiProxyPort = 8911
-  apiUrl = "${REDWOOD_API_URL:/api}"
+  # apiUrl = "${REDWOOD_API_URL:/api}"
   includeEnvironmentVariables = [
     "ENVIRONMENT",
     "VERSION",

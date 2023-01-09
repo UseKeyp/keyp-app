@@ -50,5 +50,8 @@
   "engines": {
     "node": ">=14.17 <=16.x",
     "yarn": ">=1.15 <2"
+  },
+  "resolutions": {
+    "oauth2-server-redwood": "portal:/home/dev/repos/oauth2-server-redwood/packages/oauth2-server"
   }
 }
