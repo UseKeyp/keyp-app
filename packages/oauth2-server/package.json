@@ -1,0 +1,30 @@
+{
+  "name": "oauth2-server-redwood",
+  "version": "0.1.1",
+  "description": "",
+  "main": "dist/index",
+  "include": "dist/views",
+  "scripts": {
+    "build": "babel src -d dist --copy-files",
+    "build:watch": "nodemon --watch src --ext \"js,ts,tsx\" --ignore dist --exec \"yarn build\""
+  },
+  "dependencies": {
+    "deepmerge": "^4.2.2",
+    "express": "^4.18.2",
+    "oidc-provider": "^7.14.3"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.20.7",
+    "@babel/core": "^7.20.12",
+    "@babel/node": "^7.20.7",
+    "@babel/preset-env": "^7.20.2",
+    "@babel/preset-typescript": "^7.18.6",
+    "nodemon": "^2.0.20"
+  },
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/usekeyp/oauth2-server-redwood.git"
+  }
+}
