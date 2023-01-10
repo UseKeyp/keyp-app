@@ -12,6 +12,7 @@ import { RampProvider } from './ramp'
 import { RedirectionProvider } from './redirection'
 import { RestrictedProvider } from './restricted'
 import { TrackingProvider } from './tracking'
+import { OAuthAuthorityProvider} from "./oAuthAuthority"
 
 const AllContextProviders = ({ children }) => {
   // Add additional context providers here
@@ -26,17 +27,19 @@ const AllContextProviders = ({ children }) => {
             <FilterProvider>
               <ToastProvider>
                 <OAuthProvider>
-                  <RedirectionProvider>
-                    <WalletProvider>
-                      <RampProvider>
-                        <GamesContextProvider>
-                          <MintingProvider>
-                            <MarketProvider>{children}</MarketProvider>
-                          </MintingProvider>
-                        </GamesContextProvider>
-                      </RampProvider>
-                    </WalletProvider>
-                  </RedirectionProvider>
+                  <OAuthAuthorityProvider>
+                    <RedirectionProvider>
+                      <WalletProvider>
+                        <RampProvider>
+                          <GamesContextProvider>
+                            <MintingProvider>
+                              <MarketProvider>{children}</MarketProvider>
+                            </MintingProvider>
+                          </GamesContextProvider>
+                        </RampProvider>
+                      </WalletProvider>
+                    </RedirectionProvider>
+                  </OAuthAuthorityProvider>
                 </OAuthProvider>
               </ToastProvider>
             </FilterProvider>

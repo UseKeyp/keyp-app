@@ -14,6 +14,7 @@ const Routes = () => {
         <Route path="/wert" page={WertPage} name="wert" />
         <Route path="/restricted" page={RestrictedPage} name="restricted" />
         <Route path="/redirect/{type}/{error}" page={RedirectPage} name="redirect" />
+        <Route path="/redirect/{type}" page={RedirectPage} name="redirect" />
         <Set wrap={NoBackgroundLayout}>
           <Private unauthenticated="login">
             <Route path="/profile" page={ProfilePage} name="profile" />
