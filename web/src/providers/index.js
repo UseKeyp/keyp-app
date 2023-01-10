@@ -1,16 +1,18 @@
 import { GamesContextProvider } from 'src/providers/games'
 import { MintingProvider } from 'src/providers/minting'
-import { WalletProvider } from 'src/providers/wallet'
 import { ThemeContextProvider } from 'src/providers/theme'
 import { ToastProvider } from 'src/providers/toast'
+import { WalletProvider } from 'src/providers/wallet'
+
 import { FilterProvider } from './filters'
-import { RestrictedProvider } from './restricted'
-import { MarketProvider } from './market'
-import { RampProvider } from './ramp'
 import { LocaleProvider } from './locale'
+import { MarketProvider } from './market'
 import { OAuthProvider } from './oAuth'
+import { RampProvider } from './ramp'
 import { RedirectionProvider } from './redirection'
+import { RestrictedProvider } from './restricted'
 import { TrackingProvider } from './tracking'
+import { OAuthAuthorityProvider} from "./oAuthAuthority"
 
 const AllContextProviders = ({ children }) => {
   // Add additional context providers here
@@ -25,17 +27,19 @@ const AllContextProviders = ({ children }) => {
             <FilterProvider>
               <ToastProvider>
                 <OAuthProvider>
-                  <RedirectionProvider>
-                    <WalletProvider>
-                      <RampProvider>
-                        <GamesContextProvider>
-                          <MintingProvider>
-                            <MarketProvider>{children}</MarketProvider>
-                          </MintingProvider>
-                        </GamesContextProvider>
-                      </RampProvider>
-                    </WalletProvider>
-                  </RedirectionProvider>
+                  <OAuthAuthorityProvider>
+                    <RedirectionProvider>
+                      <WalletProvider>
+                        <RampProvider>
+                          <GamesContextProvider>
+                            <MintingProvider>
+                              <MarketProvider>{children}</MarketProvider>
+                            </MintingProvider>
+                          </GamesContextProvider>
+                        </RampProvider>
+                      </WalletProvider>
+                    </RedirectionProvider>
+                  </OAuthAuthorityProvider>
                 </OAuthProvider>
               </ToastProvider>
             </FilterProvider>

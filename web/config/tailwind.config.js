@@ -3,15 +3,14 @@ const { softUi } = require('@usekeyp/tailwind-presets')
 
 module.exports = {
   content: [
-    "./src/**/*.{js,jsx,ts,tsx}",
-    "./node_modules/@usekeyp/components-soft-ui/**/*.js",
+    './src/**/*.{js,jsx,ts,tsx}',
+    './node_modules/@usekeyp/components-soft-ui/**/*.js',
   ],
   presets: [softUi],
   theme: {
     extend: {
       colors: {
         black: '#000000',
-        blue: '#47A7FF',
         rarity: {
           good: '#8a8886',
           great: '#7ea650',
@@ -40,9 +39,7 @@ module.exports = {
         },
       },
     },
-    colors: {
-
-    },
+    colors: {},
   },
   plugins: [],
 }

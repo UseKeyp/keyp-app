@@ -1,5 +1,6 @@
-import UserCell from 'src/components/User/UserCell'
 import { MetaTags } from '@redwoodjs/web'
+
+import UserCell from 'src/components/User/UserCell'
 
 const UserPage = ({ usernameOrAddress }) => {
   return (

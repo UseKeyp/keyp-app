@@ -1,9 +1,11 @@
 /* eslint-disable no-console */
-const { PrismaClient } = require('@prisma/client')
-const dotenv = require('dotenv')
+import testBoard from './testBoard'
+
 const { performance } = require('perf_hooks')
 const readline = require('readline')
-import testBoard from './testBoard'
+
+const { PrismaClient } = require('@prisma/client')
+const dotenv = require('dotenv')
 
 dotenv.config()
 const db = new PrismaClient()

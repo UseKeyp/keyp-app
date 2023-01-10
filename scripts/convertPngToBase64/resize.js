@@ -1,5 +1,6 @@
-const fs = require('fs-extra')
 const path = require('path')
+
+const fs = require('fs-extra')
 const sharp = require('sharp')
 
 const directoryPath = path.join(__dirname, './placeImagesHere')

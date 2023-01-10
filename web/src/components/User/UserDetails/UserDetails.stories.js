@@ -1,6 +1,6 @@
-import UserDetails from './UserDetails'
-
 import users from '../../../../../scripts/seed/user'
+
+import UserDetails from './UserDetails'
 
 export const userTwitchConnected = () => {
   mockCurrentUser({

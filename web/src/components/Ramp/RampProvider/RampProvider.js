@@ -1,6 +1,6 @@
+import Button from 'src/components/Button'
 import Icon from 'src/components/Icon'
 import LoadingDots from 'src/components/LoadingDots'
-import Button from 'src/components/Button'
 
 const RampProvider = ({
   error,

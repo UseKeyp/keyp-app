@@ -1,19 +1,20 @@
 const rug = require('random-username-generator')
-const { Wallet: EthersWallet } = require('@ethersproject/wallet')
 const { id: sha3 } = require('@ethersproject/hash')
+const { Wallet: EthersWallet } = require('@ethersproject/wallet')
 const filters = require('@treasure-chess/treasure-filters').default
 const achievementsCalculator = require('@treasure-chess/chess-achievements')
+const { Chess } = require('chess.js')
+
 const {
   parseGameFromChessDotCom,
 } = require('../../api/src/lib/chessCom/gameParsing')
 const { getGifUrl } = require('../../api/src/lib/chessCom/gifGetter')
-const { Chess } = require('chess.js')
 
-const realGames = require('./data/realGames.json')
-const randomTitles = require('./data/randomTitles.json')
-const randomAvatarsBase64 = require('./data/randomAvatarsBase64.js')
 const countries = require('./data/countries')
 const deltaRating = require('./data/deltaData.json')
+const randomAvatarsBase64 = require('./data/randomAvatarsBase64.js')
+const randomTitles = require('./data/randomTitles.json')
+const realGames = require('./data/realGames.json')
 
 const getBoardLayout = (pgn) => {
   const chess = new Chess()

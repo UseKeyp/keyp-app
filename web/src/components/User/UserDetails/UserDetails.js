@@ -1,11 +1,11 @@
-import Avatar from 'src/components/Avatar'
-import Button from 'src/components/Button/Button'
-import { Link, routes } from '@redwoodjs/router'
 import { WalletFill, Gear } from 'framework7-icons/react'
 
+import { Link, routes } from '@redwoodjs/router'
+
+import Avatar from 'src/components/Avatar'
+import Button from 'src/components/Button/Button'
 import UserBalance from 'src/components/User/UserBalance'
 import UserMintCredits from 'src/components/User/UserMintCredits'
-
 import globalConfig from 'src/global.config'
 
 const UserDetails = ({ user, isProfile }) => {

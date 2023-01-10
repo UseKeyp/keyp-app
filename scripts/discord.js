@@ -1,22 +1,19 @@
 // See Discord.md
 
-const { Routes } = require('discord-api-types/v9')
-const { REST } = require('@discordjs/rest')
-
-import { fetchDiscord } from '../api/src/lib/discord/discord'
-
 import adminCommands from '../api/src/lib/discord/admin/commands'
 import {
   botToken as adminBotToken,
   clientId as adminClientId,
 } from '../api/src/lib/discord/admin/config'
-
+import { fetchDiscord } from '../api/src/lib/discord/discord'
 import publicCommands from '../api/src/lib/discord/public/commands'
 import {
   botToken as publicBotToken,
   clientId as publicClientId,
 } from '../api/src/lib/discord/public/config'
 
+const { REST } = require('@discordjs/rest')
+const { Routes } = require('discord-api-types/v9')
 const dotenv = require('dotenv')
 dotenv.config()
 

@@ -1,19 +1,19 @@
-import { useAuth } from '@redwoodjs/auth'
-import { routes, Link } from '@redwoodjs/router'
-import Button from 'src/components/Button'
-
-import UserBalance from 'src/components/User/UserBalance'
-import UserMintCredits from 'src/components/User/UserMintCredits'
-import Accordion from 'src/components/Accordion/Accordion'
-import OnRamps from 'src/components/Ramp/OnRamps'
-import OffRamps from 'src/components/Ramp/OffRamps'
-import { trimAddress } from 'src/utils/helpers'
-
 import {
   ArrowUpSquareFill,
   ArrowDownSquareFill,
   PaperplaneFill,
 } from 'framework7-icons/react'
+
+import { useAuth } from '@redwoodjs/auth'
+import { routes, Link } from '@redwoodjs/router'
+
+import Accordion from 'src/components/Accordion/Accordion'
+import Button from 'src/components/Button'
+import OffRamps from 'src/components/Ramp/OffRamps'
+import OnRamps from 'src/components/Ramp/OnRamps'
+import UserBalance from 'src/components/User/UserBalance'
+import UserMintCredits from 'src/components/User/UserMintCredits'
+import { trimAddress } from 'src/utils/helpers'
 
 const Wallet = () => {
   const { currentUser } = useAuth()
