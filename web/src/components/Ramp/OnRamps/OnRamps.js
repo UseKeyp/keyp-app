@@ -1,11 +1,10 @@
 import { useAuth } from '@redwoodjs/auth'
 import { Link, routes } from '@redwoodjs/router'
 
-import RampProvider from 'src/components/Ramp/RampProvider'
 import Icon from 'src/components/Icon'
-
-import { useWallet } from 'src/providers/wallet'
+import RampProvider from 'src/components/Ramp/RampProvider'
 import { useRamp } from 'src/providers/ramp/ramp'
+import { useWallet } from 'src/providers/wallet'
 
 const OnRamps = () => {
   const { getAddress } = useWallet()

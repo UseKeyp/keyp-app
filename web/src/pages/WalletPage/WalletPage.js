@@ -1,4 +1,5 @@
 import { MetaTags } from '@redwoodjs/web'
+
 import Wallet from 'src/components/Wallet/Wallet'
 
 const WalletPage = () => {

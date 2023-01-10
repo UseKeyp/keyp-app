@@ -1,9 +1,13 @@
 import { useEffect } from 'react'
+
+import { Button, Icon } from '@usekeyp/components-soft-ui-testing'
+
 import { useAuth } from '@redwoodjs/auth'
 import { routes, navigate, useParams } from '@redwoodjs/router'
-import { useToast } from 'src/providers/toast'
+
 import { saveRedirectTo } from 'src/providers/redirection'
-import { Button, Icon } from '@usekeyp/components-soft-ui'
+import { useToast } from 'src/providers/toast'
+
 const LoginPortal = () => {
   const { signUp, isAuthenticated, reauthenticate } = useAuth()
   const { error, redirectTo } = useParams()
@@ -49,7 +53,7 @@ const LoginPortal = () => {
           onClick={() => onSubmitSignUp('DISCORD')}
           classNameVariant="hover:bg-[#5865F2] hover:border-[#5865F2] w-[327px]"
           borderColor="border-[#E5E7EB]"
-          fluid={false}
+          fluid={true}
         >
           <Icon name="discord" />
         </Button>
@@ -57,7 +61,7 @@ const LoginPortal = () => {
           onClick={() => onSubmitSignUp('NODE_OIDC')}
           classNameVariant="hover:bg-[#4285F4] hover:border-[#4285F4] w-[327px]"
           borderColor="border-[#E5E7EB]"
-          fluid={false}
+          fluid={true}
         >
           <Icon name="google" />
         </Button>

@@ -1,13 +1,11 @@
 import { useState } from 'react'
 
-import SiteFooter from 'src/components/SiteFooter'
-import Icon from 'src/components/Icon'
-
+import { Person, WalletFill, QuestionCircle } from 'framework7-icons/react'
 import { Tabbar, TabbarLink, Icon as KonstaIcon } from 'konsta/react'
+
 import { navigate, routes, useLocation } from '@redwoodjs/router'
 
-import { Person, WalletFill, QuestionCircle } from 'framework7-icons/react'
-
+import Icon from 'src/components/Icon'
 import { isMobile } from 'src/utils/helpers'
 
 const DefaultLayout = ({ children, background }) => {
@@ -33,72 +31,6 @@ const DefaultLayout = ({ children, background }) => {
             <div className="mx-4 min-h-screen mb-15 md:mb-0">{children}</div>
           </div>
         </div>
-        {!isMobile && <SiteFooter />}
-        {isMobile && (
-          <Tabbar labels={true} className="left-0 bottom-0 fixed">
-            <TabbarLink
-              active={activeTab === 'support'}
-              onClick={() => onClick('support')}
-              icon={
-                <KonstaIcon
-                  ios={<QuestionCircle className="w-7 h-7" />}
-                  material={<QuestionCircle className="w-6 h-6" />}
-                />
-              }
-              label={t('Support')}
-            />
-            <TabbarLink
-              active={activeTab === 'wallet'}
-              onClick={() => onClick('wallet')}
-              icon={
-                <KonstaIcon
-                  ios={<WalletFill className="w-7 h-7" />}
-                  material={<WalletFill className="w-6 h-6" />}
-                />
-              }
-              label={t('Wallet')}
-            />
-            <TabbarLink
-              active={activeTab === 'treasures'}
-              onClick={() => onClick('treasures')}
-              icon={
-                <KonstaIcon
-                  ios={
-                    <div className="mt-[9px] w-7 h-7 ">
-                      <Icon
-                        name="treasure_chess"
-                        color={
-                          activeTab === 'treasures' ? '#272522' : '#8e8e8e'
-                        }
-                        height={22}
-                      />
-                    </div>
-                  }
-                  material={
-                    <Icon
-                      className="w-6 h-6"
-                      name="treasure_chess"
-                      color={activeTab === 'treasures' ? '#272522' : '#8e8e8e'}
-                      height={22}
-                    />
-                  }
-                />
-              }
-              label={t('Treasures')}
-            />
-            <TabbarLink
-              active={activeTab === 'profile'}
-              onClick={() => onClick('profile')}
-              icon={
-                <KonstaIcon
-                  ios={<Person className="w-7 h-7" />}
-                  material={<Person className="w-6 h-6" />}
-                />
-              }
-              label={t('Profile')}
-            />
-          </Tabbar>
-        )}
       </div>
     </div>
   )

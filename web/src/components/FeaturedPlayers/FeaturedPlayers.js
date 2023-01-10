@@ -1,7 +1,9 @@
 import { Link, routes } from '@redwoodjs/router'
-import HeadingBar from '../HeadingBar/HeadingBar'
-import { featuredPlayers } from 'src/global.config'
+
 import Icon from 'src/components/Icon/Icon'
+import { featuredPlayers } from 'src/global.config'
+
+import HeadingBar from '../HeadingBar/HeadingBar'
 
 const FeaturedPlayers = () => {
   const playerIcons = featuredPlayers?.map((player, i) => {

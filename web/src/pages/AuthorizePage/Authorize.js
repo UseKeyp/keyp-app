@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import { Button, Icon } from '@usekeyp/components-soft-ui'
+
+import { Button, Icon } from '@usekeyp/components-soft-ui-testing'
+
 import { useAuth } from '@redwoodjs/auth'
 
 function Authorize({ consent, abort }) {
@@ -11,12 +13,12 @@ function Authorize({ consent, abort }) {
     // const searchParams = new URLSearchParams(window.location.search);
     // const searchParams = new URLSearchParams("https://example.com/authorize?clientName=My%20App&client_logo_uri=https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/48px-Google_%22G%22_Logo.svg.png?20221203181234&scopes=name%2Cemail");
     let url =
-      'https://example.com/authorize?client_name=Gmail&client_logo_uri=https://e7.pngegg.com/pngimages/63/1016/png-clipart-google-logo-google-logo-g-suite-chrome-text-logo.png&scopes=email%2CtransferToken'
+      'https://example.com/authorize?client_name=Gmail&logoUri=https://e7.pngegg.com/pngimages/63/1016/png-clipart-google-logo-google-logo-g-suite-chrome-text-logo.png&scopes=email%2CtransferToken'
     const queryString = url.split('?')[1]
     const searchParams = new URLSearchParams(queryString)
     setClient({
       name: searchParams.get('client_name'),
-      logoUri: searchParams.get('client_logo_uri'),
+      logoUri: searchParams.get('logoUri'),
     })
     setScopes(searchParams.get('scopes').split(','))
   }, [])
@@ -30,8 +32,8 @@ function Authorize({ consent, abort }) {
           </div>
           <div className="text-gray-400">{currentUser?.username}</div>
         </div>
-        <div className="flex flex-row w-full justify-between">
-          <div className="flex text-2xl text-gray-2400 w-72 break-words items-center">
+        <div className="flex flex-row">
+          <div className="flex text-3xl text-gray-2400 items-center">
             This app wants the following permissions
           </div>
           <div className="flex flex-row text-4xl">
@@ -50,17 +52,17 @@ function Authorize({ consent, abort }) {
             </div>
           </div>
         </div>
-        <div className="flex flex-col text-lg text-black mb-4">
+        <div className="flex flex-col text-2xl text-black mb-4">
           Scopes:
           <ul className="font-sans">
             {scopes.map((scope) => (
-              <li key={scope} className="flex flex-row">
+              <li key={scope} className="flex flex-row text-2xl">
                 - {scope}
               </li>
             ))}
           </ul>
         </div>
-        <div className="flex w-full justify-between mt-8">
+        <div className="flex w-full justify-between gap-x-2 mt-8">
           <Button onClick={abort} classNameVariant="bg-red-100">
             <div className="text-red-1200 font-light">Cancel</div>
           </Button>

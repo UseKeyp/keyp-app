@@ -1,6 +1,7 @@
-import UserDetails from 'src/components/User/UserDetails'
-import UserActivityCell from 'src/components/User/UserActivityCell'
 import { MetaTags } from '@redwoodjs/web'
+
+import UserActivityCell from 'src/components/User/UserActivityCell'
+import UserDetails from 'src/components/User/UserDetails'
 
 const User = ({ user, isLoading }) => {
   //const twitchSrc = `https://player.twitch.tv/?channel=${user.twitchUsername}&parent=${process.env.APP_DOMAIN}&muted=true&autoplay=true`

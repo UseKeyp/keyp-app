@@ -1,12 +1,11 @@
 import { Link, routes } from '@redwoodjs/router'
 
-import RampProvider from 'src/components/Ramp/RampProvider'
-import Icon from 'src/components/Icon'
 import Button from 'src/components/Button'
 import FilterPriceInput from 'src/components/FilterPriceInput'
-
-import { trimAddress, getBlockExplorerUrl } from 'src/utils/helpers'
+import Icon from 'src/components/Icon'
+import RampProvider from 'src/components/Ramp/RampProvider'
 import { useRamp } from 'src/providers/ramp/ramp'
+import { trimAddress, getBlockExplorerUrl } from 'src/utils/helpers'
 
 const OffRamps = () => {
   const { submitRamp, offRamps } = useRamp()

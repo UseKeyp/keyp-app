@@ -1,4 +1,5 @@
 import { MetaTags } from '@redwoodjs/web'
+
 import Authorize from 'src/pages/AuthorizePage/Authorize'
 
 const AuthorizePage = () => {

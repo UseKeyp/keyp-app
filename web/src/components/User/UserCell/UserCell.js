@@ -1,5 +1,5 @@
-import User from 'src/components/User/User'
 import Loader from 'src/components/Loader'
+import User from 'src/components/User/User'
 
 export const QUERY = gql`
   query FindUserByUsernameOrAddress($usernameOrAddress: String!) {

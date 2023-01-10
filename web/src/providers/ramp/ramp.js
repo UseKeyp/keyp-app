@@ -1,13 +1,14 @@
 import { useMutation, useQuery } from '@apollo/client'
+
 import { useAuth } from '@redwoodjs/auth'
 import { isBrowser } from '@redwoodjs/prerender/browserUtils'
 import { routes, Link } from '@redwoodjs/router'
-import popupLoadingHtml from 'src/utils/popupLoadingHtml'
-import Icon from 'src/components/Icon/Icon'
 
-import { useToast } from 'src/providers/toast'
+import Icon from 'src/components/Icon/Icon'
 import { TxToast } from 'src/providers/market/toasts'
 import { useOAuth } from 'src/providers/oAuth'
+import { useToast } from 'src/providers/toast'
+import popupLoadingHtml from 'src/utils/popupLoadingHtml'
 
 import {
   USER_RAMPS_QUERY,

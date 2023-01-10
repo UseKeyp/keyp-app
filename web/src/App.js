@@ -1,17 +1,17 @@
-import { FatalErrorBoundary, RedwoodProvider } from '@redwoodjs/web'
-import { AuthProvider } from '@redwoodjs/auth'
-import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
 import { KonstaProvider } from 'konsta/react'
 
+import { AuthProvider } from '@redwoodjs/auth'
+import { FatalErrorBoundary, RedwoodProvider } from '@redwoodjs/web'
+import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
+
 import LandingModal from 'src/components/LandingModal'
-import { logIn, logOut } from 'src/utils/auth/client'
 import FatalErrorPage from 'src/pages/FatalErrorPage'
 import Routes from 'src/Routes'
+import { logIn, logOut } from 'src/utils/auth/client'
 
 import 'src/i18n'
 
-import './scaffold.css'
-import './index.scss'
+import './index.css'
 
 /* eslint-disable no-console */
 /* eslint-disable no-irregular-whitespace */

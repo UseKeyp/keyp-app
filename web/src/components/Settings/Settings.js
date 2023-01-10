@@ -1,10 +1,11 @@
-import { useAuth } from '@redwoodjs/auth'
-import ModalContainer from 'src/components/ModalContainer'
-import Button from 'src/components/Button'
-
-import { useModal } from 'src/hooks/useModal'
-import Dropdown from 'src/components/Dropdown/Dropdown'
 import { languageData } from '@treasure-chess/localization'
+
+import { useAuth } from '@redwoodjs/auth'
+
+import Button from 'src/components/Button'
+import Dropdown from 'src/components/Dropdown/Dropdown'
+import ModalContainer from 'src/components/ModalContainer'
+import { useModal } from 'src/hooks/useModal'
 import { useLocale } from 'src/providers/locale/locale'
 
 const Settings = () => {

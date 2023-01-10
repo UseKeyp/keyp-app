@@ -43,7 +43,15 @@ module.exports = (config, { mode }) => {
     resolve: {
       fullySpecified: false,
     },
-  })
+  }),
+    config.module.rules.push({
+      test: /\.(js|jsx)$/,
+      loader: 'babel-loader',
+      options: { presets: ['@babel/preset-env',['@babel/preset-react', {"runtime": "automatic"}]]},
+      resolve: {
+        fullySpecified: false,
+      },
+    })
   config.plugins.push(
     new webpack.ProvidePlugin({
       process: 'process/browser',

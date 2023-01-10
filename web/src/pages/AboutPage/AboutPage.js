@@ -1,6 +1,7 @@
+import { MetaTags } from '@redwoodjs/web'
+
 import FaqSection from 'src/components/FaqSection/FaqSection'
 import Table from 'src/components/Table'
-import { MetaTags } from '@redwoodjs/web'
 import config from 'src/global.config'
 
 const FaqPage = () => {

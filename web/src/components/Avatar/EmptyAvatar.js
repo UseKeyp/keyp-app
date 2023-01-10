@@ -6,7 +6,7 @@ const EmptyAvatar = ({ className }) => (
     x="0"
     y="0"
     viewBox="0 0 400 400"
-    xml-space="preserve"
+    xmlSpace="preserve"
     style={{ width: '100%', height: 'auto' }}
     className={className}
   >
