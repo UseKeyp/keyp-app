@@ -1,11 +1,12 @@
 /* eslint-disable no-console */
-const { PrismaClient } = require('@prisma/client')
-const dotenv = require('dotenv')
 const { performance } = require('perf_hooks')
 
+const { PrismaClient } = require('@prisma/client')
+const dotenv = require('dotenv')
+
+const { generateRandomMembers, generateRandomTreasures } = require('./helpers')
 const exampleMembers = require('./member')
 const exampleTreasures = require('./treasure')
-const { generateRandomMembers, generateRandomTreasures } = require('./helpers')
 
 dotenv.config()
 const db = new PrismaClient()

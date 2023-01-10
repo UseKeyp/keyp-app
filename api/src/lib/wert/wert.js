@@ -1,6 +1,6 @@
 import { sendDiscordAdminAlert } from 'src/lib/discord/admin'
-import Sentry from 'src/lib/sentry'
 import { logger } from 'src/lib/logger'
+import Sentry from 'src/lib/sentry'
 import { fetchUser } from 'src/lib/users'
 
 const WERT_SUCCESS_TYPES = ['order_complete']

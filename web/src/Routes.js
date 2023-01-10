@@ -1,8 +1,10 @@
 import { Set, Router, Route, Private } from '@redwoodjs/router'
+
 import DefaultLayout from 'src/layouts/DefaultLayout'
-import AppUrlListener from './utils/AppUrlListener'
-import AllContextProviders from 'src/providers'
 import NoBackgroundLayout from 'src/layouts/NoBackgroundLayout/NoBackgroundLayout'
+import AllContextProviders from 'src/providers'
+
+import AppUrlListener from './utils/AppUrlListener'
 
 const Routes = () => {
   return (
@@ -11,10 +13,10 @@ const Routes = () => {
         <AppUrlListener />
         <Route path="/wert" page={WertPage} name="wert" />
         <Route path="/restricted" page={RestrictedPage} name="restricted" />
-        <Route path="/redirect/{type}" page={RedirectPage} name="redirect" />
         <Route path="/redirect/{type}/{error}" page={RedirectPage} name="redirect" />
+        <Route path="/redirect/{type}" page={RedirectPage} name="redirect" />
         <Set wrap={NoBackgroundLayout}>
-          <Private unauthenticated="signin">
+          <Private unauthenticated="login">
             <Route path="/profile" page={ProfilePage} name="profile" />
           </Private>
           <Route path="/users/{usernameOrAddress}" page={UserPage} name="user" />

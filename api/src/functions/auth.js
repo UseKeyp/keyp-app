@@ -1,15 +1,15 @@
 /* eslint-disable-next-line no-unused-vars */
-import Sentry from 'src/lib/sentry'
 
 import { DbAuthHandler } from '@redwoodjs/api'
 import { InputError } from '@redwoodjs/graphql-server'
 
+import { validateLoginRequest } from 'src/lib/auth/validation'
 import { db } from 'src/lib/db'
+import { isProduction, cors } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
 import { oAuthUrl, submitCodeGrant } from 'src/lib/oAuth'
 import { providers } from 'src/lib/oAuth/providers'
-import { validateLoginRequest } from 'src/lib/auth/validation'
-import { isProduction, cors } from 'src/lib/helpers'
+import Sentry from 'src/lib/sentry'
 
 export const handler = async (event, context) => {
   logger.debug('Invoked /auth ')
@@ -101,10 +101,10 @@ export const handler = async (event, context) => {
 
   authHandler.signup = async () => {
     try {
-      const { type } = authHandler.params
-      logger.debug(`authHandler.signup type: ${type}`)
+      const { type, stateExtraData } = authHandler.params
+      logger.debug(`authHandler.signup type: ${type} ${stateExtraData}`)
       validateLoginRequest({ type })
-      const { url } = await oAuthUrl(type)
+      const { url } = await oAuthUrl(type, stateExtraData)
       return [JSON.stringify({ url }), {}, { statusCode: 201 }]
     } catch (e) {
       logger.error(e)

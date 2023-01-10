@@ -1,7 +1,6 @@
 import { useState } from 'react'
 
 import UsernameSearchBar from 'src/components/UsernameSearchBar'
-
 import { useFilter } from 'src/providers/filters'
 
 const FilterBar = ({

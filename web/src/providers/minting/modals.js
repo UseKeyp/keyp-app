@@ -1,13 +1,14 @@
+import { useEffect } from 'react'
+
 import { routes, navigate } from '@redwoodjs/router'
 
-import ModalContainer from 'src/components/ModalContainer/ModalContainer'
-import Icon from 'src/components/Icon'
 import Button from 'src/components/Button'
-import LoadingDots from 'src/components/LoadingDots'
 import Confetti from 'src/components/Confetti'
-import { isBrowser } from 'src/utils/helpers'
-import { useEffect } from 'react'
+import Icon from 'src/components/Icon'
+import LoadingDots from 'src/components/LoadingDots'
+import ModalContainer from 'src/components/ModalContainer/ModalContainer'
 import { useWallet } from 'src/providers/wallet'
+import { isBrowser } from 'src/utils/helpers'
 
 const CheckoutProvider = ({ provider, onSubmit }) => {
   const [isLoading, setIsLoading] = React.useState(false)

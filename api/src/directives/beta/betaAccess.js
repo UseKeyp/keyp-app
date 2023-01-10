@@ -1,4 +1,5 @@
 import { createValidatorDirective } from '@redwoodjs/graphql-server'
+
 import { betaAccess as applicationRequireBetaAccess } from 'src/lib/auth'
 
 export const schema = gql`

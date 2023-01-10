@@ -1,6 +1,6 @@
 import fetch from 'cross-fetch'
-import { logger } from 'src/lib/logger'
 
+import { logger } from 'src/lib/logger'
 import { getDescription, getAttributes } from 'src/lib/pinata/helpers'
 
 const PINATA_API_URL = 'https://api.pinata.cloud'

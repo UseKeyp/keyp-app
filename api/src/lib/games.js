@@ -1,7 +1,3 @@
-const { id: sha3 } = require('@ethersproject/hash')
-
-import { db } from 'src/lib/db'
-import { fetchUser } from 'src/lib/users'
 import {
   fetchChessGames,
   fetchChessGame,
@@ -10,8 +6,11 @@ import {
 } from 'src/lib/chessCom/chessCom'
 import { parseGameFromChessDotCom } from 'src/lib/chessCom/gameParsing'
 import { getGifUrl } from 'src/lib/chessCom/gifGetter'
-import { getBoardLayout } from 'src/lib/helpers'
+import { db } from 'src/lib/db'
 import { logger } from 'src/lib/logger'
+import { fetchUser } from 'src/lib/users'
+
+const { id: sha3 } = require('@ethersproject/hash')
 
 export const getTreasureCardColor = ({ game, username }) =>
   game.whiteUsername.toLowerCase() === username.toLowerCase()
@@ -72,7 +71,6 @@ const getFullGameDetails = async ({
       winnerId,
       cardColor,
       opening: '',
-      boardLayout: JSON.stringify(getBoardLayout(game.moves)),
       gifUrl: getGifUrl({ tcn: game.tcn, playerColor: cardColor }),
       ...includeAchievements,
       ...includeAchievements,

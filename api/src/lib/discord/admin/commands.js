@@ -1,11 +1,9 @@
-const { SlashCommandBuilder } = require('@discordjs/builders')
-const { MessageEmbed } = require('discord.js')
 import { Buffer } from 'buffer'
+
+import { getExplorerBaseUrlFromName } from '@treasure-chess/web3-helpers'
 
 import { db } from 'src/lib/db'
 import { logger } from 'src/lib/logger'
-
-import { getExplorerBaseUrlFromName } from '@treasure-chess/web3-helpers'
 import { getBusinessMetrics } from 'src/lib/metrics'
 import {
   fetchUserAndBlock,
@@ -14,6 +12,9 @@ import {
   fetchUserAndUpdateBetaAccess,
   getMemberRawData,
 } from 'src/lib/users'
+
+const { SlashCommandBuilder } = require('@discordjs/builders')
+const { MessageEmbed } = require('discord.js')
 
 const EXPLORER_BASE_URL = getExplorerBaseUrlFromName(
   process.env.ETHEREUM_NETWORK_NAME

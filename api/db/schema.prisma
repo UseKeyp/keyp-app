@@ -10,33 +10,34 @@ generator client {
 }
 
 model User {
-  id               String              @id // Chess.com id
-  username         String?             @unique // platform username
-  address          String?             @unique // Torus wallet address
+  id               String                @id
+  username         String?               @unique // platform username
+  address          String?               @unique // Torus wallet address
   locale           String?
-  email            String?             @unique // Email address
+  email            String?               @unique // Email address
   // --------------- LINKS --------------
-  mintPurchases    MintPurchase[]      @relation("mintPurchases")
-  rampWithdraws    RampWithdraw[]      @relation("rampWithdraws")
-  depositOrders    DepositOrder[]      @relation("depositOrders")
-  oAuthConnections OAuthConnection[]   @relation("oAuthConnections")
+  mintPurchases    MintPurchase[]        @relation("mintPurchases")
+  rampWithdraws    RampWithdraw[]        @relation("rampWithdraws")
+  depositOrders    DepositOrder[]        @relation("depositOrders")
+  oAuthConnections OAuthConnection[]     @relation("oAuthConnections")
   // --------------- STATE --------------
-  createdAt        DateTime            @default(now())
-  updatedAt        DateTime            @updatedAt
+  createdAt        DateTime              @default(now())
+  updatedAt        DateTime              @updatedAt
   mfa_enabled      Boolean?
   imageSrc         String? // Avatar URL
   country          String? // Player's country  eg. US, DE
-  mintCredits      Int                 @default(3) // Mint for free!
-  banned           Boolean             @default(false)
+  mintCredits      Int                   @default(3) // Mint for free!
+  banned           Boolean               @default(false)
   blocked          Boolean? // Prevents others from interacting with this person
-  refreshToken     String? // Discord.com Oauth
-  accessToken      String? // Discord.com Oauth
+  refreshToken     String?
+  accessToken      String?
   ramps            Ramp[]
-  OAuth            OAuth[]
+  oAuth            OAuth[]
+  clients          ClientsOnDevelopers[]
   promotions       PromotionsOnUsers[]
-  betaAccess       Boolean             @default(false)
-  TransferFrom     Transfer[]          @relation(name: "fromUser")
-  TransferReceived Transfer[]          @relation(name: "toUser")
+  betaAccess       Boolean               @default(false)
+  TransferFrom     Transfer[]            @relation(name: "fromUser")
+  TransferReceived Transfer[]            @relation(name: "toUser")
 }
 
 model Ramp {
@@ -119,6 +120,38 @@ model OAuth {
   userId        String?
 }
 
+model ClientsOnDevelopers {
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  user        User              @relation(fields: [userId], references: [id])
+  userId      String
+  oidc        Oidc              @relation(fields: [oidcId, oidcType], references: [id, type])
+  oidcId      String
+  oidcType    Int               @default(7)
+  accessLevel ClientAccessLevel
+
+  @@id([userId, oidcId])
+}
+
+model Oidc {
+  id         String    @default(cuid())
+  type       Int
+  grantId    String?
+  userCode   String?
+  uid        String?   @unique
+  expiresAt  DateTime?
+  payload    Json
+  disabled   Boolean? // Allow developers to disable "delete" clients
+  consumedAt DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  developers ClientsOnDevelopers[]
+  Transfer   Transfer[]
+
+  @@id([id, type])
+}
+
 model OAuthConnection {
   id           String              @id @default(uuid())
   createdAt    DateTime            @default(now())
@@ -156,27 +189,26 @@ model Transaction {
   gasLimit             Int           @default(0)
   maxPriorityFeePerGas Int           @default(0)
   maxFeePerGas         Int           @default(0)
-  mintPurchase         MintPurchase?
   rampWithdraw         RampWithdraw?
-  MintPurchase         MintPurchase? @relation("staleMintTransactions", fields: [mintPurchaseId], references: [id])
+  mintPurchase         MintPurchase? @relation("staleMintTransactions", fields: [mintPurchaseId], references: [id])
   mintPurchaseId       Int?
-  collection           Collection[]
   Transfer             Transfer[]
+  MintPurchase         MintPurchase?
 }
 
 model Transfer {
   id               String      @id
   createdAt        DateTime    @default(now())
   updatedAt        DateTime    @updatedAt
-  collection       Collection  @relation(fields: [collectionId], references: [id])
   transaction      Transaction @relation(fields: [transactionId], references: [id])
-  facilitator      Studio      @relation(fields: [studioId], references: [id])
+  facilitator      Oidc        @relation(fields: [oidcId, oidcType], references: [id, type])
+  oidcId           String
+  oidcType         Int         @default(7)
   externalTransfer Boolean
   from             User        @relation(name: "fromUser", fields: [fromUserId], references: [id])
   to               User        @relation(name: "toUser", fields: [toUserId], references: [id])
   collectionId     String
   transactionId    String
-  studioId         String
   fromUserId       String
   toUserId         String
 }
@@ -203,58 +235,9 @@ model PromotionsOnUsers {
   @@id([userId, promotionId])
 }
 
-model StudiosOnDevelopers {
-  createdAt   DateTime          @default(now())
-  updatedAt   DateTime          @updatedAt
-  developer   Developer         @relation(fields: [developerId], references: [id])
-  studio      Studio            @relation(fields: [studioId], references: [id])
-  developerId String
-  studioId    String
-  accessLevel StudioPermissions
-
-  @@id([developerId, studioId])
-}
-
-model Studio {
-  id         String                @id
-  createdAt  DateTime              @default(now())
-  updatedAt  DateTime              @updatedAt
-  collection Collection[]
-  developers StudiosOnDevelopers[]
-  Transfer   Transfer[]
-}
-
-model Developer {
-  id        String                @id
-  createdAt DateTime              @default(now())
-  updatedAt DateTime              @updatedAt
-  studios   StudiosOnDevelopers[]
-}
-
-enum StudioPermissions {
-  OWNER
-  ADMIN
-  MEMBER
-}
-
-model Collection {
-  id                      String         @id // Contract address
-  createdAt               DateTime       @default(now())
-  updatedAt               DateTime       @updatedAt
-  type                    CollectionType
-  studio                  Studio         @relation(fields: [studioId], references: [id])
-  studioId                String
-  facilitatorAccess       Boolean
-  externalTransferEnabled Boolean
-  deploymentTransaction   Transaction?   @relation(fields: [deploymentTransactionId], references: [id]) // Null if contract added manually
-  deploymentTransactionId String?
-  Transfer                Transfer[]
-}
-
-enum CollectionType {
-  ERC1155
-  ERC721
-  ERC20
+enum ClientAccessLevel {
+  OWNER // Can disable client
+  EDITOR // Can update redirect urls
 }
 
 enum RampType {

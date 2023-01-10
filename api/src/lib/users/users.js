@@ -1,8 +1,7 @@
-import Sentry from 'src/lib/sentry'
 import { db } from 'src/lib/db'
-import { logger } from 'src/lib/logger'
-
 import { isHexAddress } from 'src/lib/helpers'
+import { logger } from 'src/lib/logger'
+import Sentry from 'src/lib/sentry'
 import { getTorusPublicAddress } from 'src/lib/torus'
 
 export const fetchUser = async (idOrAddress, creationData) => {

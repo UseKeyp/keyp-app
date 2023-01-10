@@ -1,7 +1,7 @@
 import { useAuth } from '@redwoodjs/auth'
 
-import UserDetails from 'src/components/User/UserDetails'
 import UserActivityCell from 'src/components/User/UserActivityCell'
+import UserDetails from 'src/components/User/UserDetails'
 import WalletFormTransfer20 from 'src/components/Wallet/WalletFormTransfer20'
 import WalletFormTransfer721 from 'src/components/Wallet/WalletFormTransfer721'
 import WalletFormTransferUsdc from 'src/components/Wallet/WalletFormTransferUsdc'

@@ -1,6 +1,6 @@
 /** @returns {import('webpack').Configuration} Webpack Configuration */
-const webpack = require('webpack')
 const globImporter = require('node-sass-glob-importer')
+const webpack = require('webpack')
 
 module.exports = (config, { mode }) => {
   const rules = config.module.rules[0].oneOf
@@ -50,5 +50,19 @@ module.exports = (config, { mode }) => {
       Buffer: ['buffer', 'Buffer'],
     })
   )
+  config.module.rules.push({
+    test: /\.(js|jsx)$/,
+    loader: 'babel-loader',
+    options: {
+      presets: [
+        '@babel/preset-env',
+        ['@babel/preset-react', { runtime: 'automatic' }],
+      ],
+    },
+    resolve: {
+      fullySpecified: false,
+    },
+  })
+
   return config
 }

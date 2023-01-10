@@ -3,6 +3,7 @@ import { isBrowser } from '@redwoodjs/prerender/browserUtils'
 import { routes } from '@redwoodjs/router'
 
 import { useOAuth } from 'src/providers/oAuth'
+import { useOAuthAuthority } from 'src/providers/oAuthAuthority'
 
 const LOCAL_REDIRECT_TO_KEY = 'redirect_to'
 const APPROVED_LOGIN_PROVIDERS = ['CHESS', 'DISCORD', 'NODE_OIDC']
@@ -24,6 +25,7 @@ const RedirectionProvider = ({ children }) => {
   const [state, setState] = React.useState({ isLoading: true })
 
   const { logIn, reauthenticate } = useAuth()
+  const { continueInteraction } = useOAuthAuthority()
   const { submitCodeGrant } = useOAuth()
 
   let url
@@ -52,20 +54,27 @@ const RedirectionProvider = ({ children }) => {
       type: type.toUpperCase(),
       method: 'login',
     })
-    if (response.error || !response)
-      return setState({
-        isLoading: false,
-        errorMessage: response.error || 'Something went wrong',
+    if (response.error || !response || !response.id)
+    return setState({
+      isLoading: false,
+      errorMessage: response.error || 'Something went wrong',
+    })
+    const uid = grantState.split(':')[1]
+    console.log({uid})
+    if (uid) {
+      console.log({uid})
+      const { error } = await continueInteraction({
+        type: 'login',
+        userId: response.id,
+        uid, // Pull out the interaction uid from the state param
       })
-    if (response.id) {
-      await reauthenticate()
-      setState({
-        isLoading: false,
-        successMessage: "Great - You're signed in!",
-      })
-      setTimeout(() => {
-        window.location = routes.profile()
-      }, [3000])
+      if (error)
+        return setState({
+          isLoading: false,
+          errorMessage: error || 'Something went wrong',
+        })
+    } else {
+      window.location = routes.profile()
     }
   }
 

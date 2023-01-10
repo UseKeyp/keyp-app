@@ -1,8 +1,9 @@
-import { routes, Link } from '@redwoodjs/router'
-import { useRedirection } from 'src/providers/redirection'
-
 import { Icon, Button } from '@usekeyp/components-soft-ui'
+
+import { routes, Link } from '@redwoodjs/router'
+
 import LoadingScreen from 'src/components/LoadingCards/LoadingScreen'
+import { useRedirection } from 'src/providers/redirection'
 
 const Redirect = ({ type }) => {
   const { errorMessage, successMessage, isLoading } = useRedirection()

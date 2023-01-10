@@ -10,11 +10,10 @@
     "@ethersproject/providers": "^5.4.5",
     "@ethersproject/units": "^5.5.0",
     "@ethersproject/wallet": "^5.4.0",
-    "@napi-rs/canvas": "^0.1.19",
-    "@redwoodjs/api": "^1.0.0",
-    "@redwoodjs/graphql-server": "^1.0.0",
-    "@sentry/node": "6.18.1",
-    "@sentry/tracing": "6.18.1",
+    "@redwoodjs/api": "^3.8.0",
+    "@redwoodjs/graphql-server": "^3.8.0",
+    "@sentry/node": "^7.24.2",
+    "@sentry/tracing": "^7.24.2",
     "@toruslabs/fetch-node-details": "^5.0.0",
     "@toruslabs/torus.js": "^5.0.1",
     "@treasure-chess/treasure-contracts": "^0.1.0",
@@ -22,27 +21,21 @@
     "atob": "^2.1.2",
     "bad-words": "^3.0.4",
     "chess.js": "^0.12.1",
-    "chrome-aws-lambda": "^10.1.0",
-    "core-js": "^3.19.1",
     "email-templates": "^9.0.0",
     "form-data": "^4.0.0",
     "jwks-rsa": "^2.0.4",
-    "pkce-challenge": "^2.2.0",
+    "oauth2-server-redwood": "0.1.1",
+    "pkce-challenge": "^3.0.0",
     "plaid": "^10.2.0",
-    "playwright-core": "^1.21.1",
-    "prom-client": "^14.0.1",
-    "pug": "^3.0.2",
-    "puppeteer-core": "^13.5.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "serverless-http": "^3.1.1",
     "stripe": "^9.6.0"
   },
   "optionalDependencies": {
     "discord.js": "^13.6.0"
   },
   "devDependencies": {
-    "@redwoodjs/cli": "^1.0.0",
-    "prisma": "^3.6.0",
-    "puppeteer": "^13.2.0"
+    "@redwoodjs/cli": "^3.8.0"
   }
 }

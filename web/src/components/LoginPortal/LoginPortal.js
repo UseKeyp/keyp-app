@@ -1,9 +1,12 @@
 import { useEffect } from 'react'
+
+import { Button, Icon } from '@usekeyp/components-soft-ui'
+
 import { useAuth } from '@redwoodjs/auth'
 import { routes, navigate, useParams } from '@redwoodjs/router'
-import { useToast } from 'src/providers/toast'
+
 import { saveRedirectTo } from 'src/providers/redirection'
-import { Button, Icon } from '@usekeyp/components-soft-ui'
+import { useToast } from 'src/providers/toast'
 const LoginPortal = () => {
   const { signUp, isAuthenticated, reauthenticate } = useAuth()
   const { error, redirectTo } = useParams()

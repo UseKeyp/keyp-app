@@ -1,12 +1,14 @@
 import { useAuth } from '@redwoodjs/auth'
-import { useMutation } from '@redwoodjs/web'
-import { USER_LOCALE_MUTATION } from './graphql'
 import { isBrowser } from '@redwoodjs/prerender/browserUtils'
+import { useMutation } from '@redwoodjs/web'
+
+import { USER_LOCALE_MUTATION } from './graphql'
 
 const LocaleContext = React.createContext({})
 const LOCALE_LOCAL_KEY = 'i18nextLng'
 import { useTranslation, Trans } from 'react-i18next'
 import { languageData } from '@treasure-chess/localization'
+
 import { toast } from '@redwoodjs/web/toast'
 
 const getLocaleCode = () => {
