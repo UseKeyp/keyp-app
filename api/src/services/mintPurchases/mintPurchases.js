@@ -7,8 +7,8 @@ import {
   processPendingPurchases,
   processMintBalanceRequest,
 } from 'src/lib/mintPurchases'
-import { createMintReservation } from 'src/lib/wyre'
 import { createCheckoutSession } from 'src/lib/stripe'
+import { createMintReservation } from 'src/lib/wyre'
 
 export const mintPurchases = () => {
   return db.mintPurchase.findMany({

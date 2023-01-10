@@ -1,10 +1,10 @@
 import { EnvelopError } from '@envelop/core'
 
-import { transferUsdc as _transferUsdc } from 'src/lib/web3/tokens'
-import { transferERC721 } from 'src/lib/web3/erc721'
-import { transferERC20 } from 'src/lib/web3/erc20'
 import { logger } from 'src/lib/logger'
 import { fetchUser } from 'src/lib/users'
+import { transferERC20 } from 'src/lib/web3/erc20'
+import { transferERC721 } from 'src/lib/web3/erc721'
+import { transferUsdc as _transferUsdc } from 'src/lib/web3/tokens'
 
 // TODO: Add back validation for checking if token is approved for external transfer
 const validateTransfer = async ({ toAddress, tokenAddress }) => {

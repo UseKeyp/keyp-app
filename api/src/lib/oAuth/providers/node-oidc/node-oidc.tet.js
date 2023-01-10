@@ -1,5 +1,6 @@
-import { handleCoinbaseLogin } from './node-oidc'
 import { jest } from '@jest/globals'
+
+import { handleCoinbaseLogin } from './node-oidc'
 
 jest.setTimeout(20000)
 

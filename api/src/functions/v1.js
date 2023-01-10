@@ -1,10 +1,10 @@
 import { logger } from 'src/lib/logger'
 import Sentry from 'src/lib/sentry'
 import { fetchUser } from 'src/lib/users'
-import { transferErc20 } from 'src/lib/web3/erc20'
-import { transferERC721 } from 'src/lib/web3/erc721'
 import { getEtherBalance } from 'src/lib/web3/airdrop.js'
+import { transferErc20 } from 'src/lib/web3/erc20'
 import { getErc20Balance } from 'src/lib/web3/erc20'
+import { transferERC721 } from 'src/lib/web3/erc721'
 export const handler = async (event, _context) => {
   logger.debug('Invoked /v1 ')
   try {
