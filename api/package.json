@@ -10,7 +10,6 @@
     "@ethersproject/providers": "^5.4.5",
     "@ethersproject/units": "^5.5.0",
     "@ethersproject/wallet": "^5.4.0",
-    "@napi-rs/canvas": "^0.1.19",
     "@redwoodjs/api": "^1.0.0",
     "@redwoodjs/graphql-server": "^1.0.0",
     "@sentry/node": "6.18.1",
@@ -21,18 +20,14 @@
     "@treasure-chess/web3-helpers": "^1.1.0-staging.0",
     "atob": "^2.1.2",
     "bad-words": "^3.0.4",
-    "chess.js": "^0.12.1",
-    "chrome-aws-lambda": "^10.1.0",
-    "core-js": "^3.19.1",
     "email-templates": "^9.0.0",
     "form-data": "^4.0.0",
     "jwks-rsa": "^2.0.4",
-    "pkce-challenge": "^2.2.0",
+    "oauth2-server-redwood": "0.2.0",
+    "pkce-challenge": "^3.0.0",
     "plaid": "^10.2.0",
-    "playwright-core": "^1.21.1",
     "prom-client": "^14.0.1",
     "pug": "^3.0.2",
-    "puppeteer-core": "^13.5.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "stripe": "^9.6.0"
@@ -41,8 +36,6 @@
     "discord.js": "^13.6.0"
   },
   "devDependencies": {
-    "@redwoodjs/cli": "^1.0.0",
-    "prisma": "^3.6.0",
-    "puppeteer": "^13.2.0"
+    "@redwoodjs/cli": "^1.0.0"
   }
 }
