@@ -4620,9 +4620,9 @@ __metadata:
   linkType: hard
 
 "@kurkle/color@npm:^0.3.0":
-  version: 0.3.1
-  resolution: "@kurkle/color@npm:0.3.1"
-  checksum: 007abdba53a903de93dcc02a41ba1d77ba4baacd47227f4a5bb9605c2f4da6d75225ab7d767a32533a80360130502d82cdeca0f06924096f3a7aeb279902fdd6
+  version: 0.3.2
+  resolution: "@kurkle/color@npm:0.3.2"
+  checksum: a9e8e3e35dcd59dec4dd4f0105919c05e24823a96347bcf152965c29e48d6290b66d5fb96c071875db752e10930724c48ce6d338fefbd65e0ce5082d5c78970e
   languageName: node
   linkType: hard
 
@@ -6164,7 +6164,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@prisma/client@npm:4.7.1":
+"@prisma/client@npm:4.7.1, @prisma/client@npm:^4.7.1":
   version: 4.7.1
   resolution: "@prisma/client@npm:4.7.1"
   dependencies:
@@ -7113,14 +7113,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/core@npm:7.29.0":
-  version: 7.29.0
-  resolution: "@sentry/core@npm:7.29.0"
+"@sentry/core@npm:7.30.0":
+  version: 7.30.0
+  resolution: "@sentry/core@npm:7.30.0"
   dependencies:
-    "@sentry/types": 7.29.0
-    "@sentry/utils": 7.29.0
+    "@sentry/types": 7.30.0
+    "@sentry/utils": 7.30.0
     tslib: ^1.9.3
-  checksum: ffb33e465ad9b64f3c5e0137499acd35bb81e968708aa9626d24b1e5cfbe5c41b4439459860f88faf6f12fec1e6cf0f5b91ab6b2a40a9b3a4af4cf9af1a2e100
+  checksum: af585275905ee8824189bb394851b1c127a1b632df976ea9118194744c907c9322a55546eda37d76e22e932830445ffa73290d76bdcbe15b4cd9947cd4c42eac
   languageName: node
   linkType: hard
 
@@ -7147,29 +7147,29 @@ __metadata:
   linkType: hard
 
 "@sentry/node@npm:^7.24.2":
-  version: 7.29.0
-  resolution: "@sentry/node@npm:7.29.0"
+  version: 7.30.0
+  resolution: "@sentry/node@npm:7.30.0"
   dependencies:
-    "@sentry/core": 7.29.0
-    "@sentry/types": 7.29.0
-    "@sentry/utils": 7.29.0
+    "@sentry/core": 7.30.0
+    "@sentry/types": 7.30.0
+    "@sentry/utils": 7.30.0
     cookie: ^0.4.1
     https-proxy-agent: ^5.0.0
     lru_map: ^0.3.3
     tslib: ^1.9.3
-  checksum: 5c566eb8e54fb76f67e259a8057fc3c66e74f505a263766f3d08e6712def886ac3a591ca49b389ef3a9edbe3022b0e88f28da0483def8e90a4cd8a2d548d4196
+  checksum: 8396a2a98898a091bd9bdb41e73fefecfbac9946cc08f31791bce7d319b1eb43d17411615163839dc6ccca4101b2f9cec0597f2e6242398d6b38c399175b67e5
   languageName: node
   linkType: hard
 
 "@sentry/tracing@npm:^7.24.2":
-  version: 7.29.0
-  resolution: "@sentry/tracing@npm:7.29.0"
+  version: 7.30.0
+  resolution: "@sentry/tracing@npm:7.30.0"
   dependencies:
-    "@sentry/core": 7.29.0
-    "@sentry/types": 7.29.0
-    "@sentry/utils": 7.29.0
+    "@sentry/core": 7.30.0
+    "@sentry/types": 7.30.0
+    "@sentry/utils": 7.30.0
     tslib: ^1.9.3
-  checksum: fd943a5ab98be924d3f341be9a25b94f37465a4e16dc96f211488d7781affbc6b8c6fe705daf4190bdc70336278af471fdd2b5ace56d79f4a21bd1224e6fc127
+  checksum: 19a0b82847f99131c7e226eb5d29db7baa6c48f2dd1b487420389698116a322f2cca90dc1f15afbc42e21b8df0e972a1e8b32fcd66b41896d26a212fb9c86b9a
   languageName: node
   linkType: hard
 
@@ -7180,10 +7180,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/types@npm:7.29.0":
-  version: 7.29.0
-  resolution: "@sentry/types@npm:7.29.0"
-  checksum: 8d2542381c3e7c5be4965511c7e0efa241dc8feaa33efa125c77506021cea43b24e08a32d8b4126ac2a331f0291e84231426184993a7b983d857c1e6f8a1ca59
+"@sentry/types@npm:7.30.0":
+  version: 7.30.0
+  resolution: "@sentry/types@npm:7.30.0"
+  checksum: 6b6861dd79b8e315d75f5336af2d78e953b08a27fc5acd2bb8436ba92dc0f9c0f547477eae6d0e761a3405f0f57bc4d91ab7157eeee60b2107775cf64b0db6a2
   languageName: node
   linkType: hard
 
@@ -7197,13 +7197,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/utils@npm:7.29.0":
-  version: 7.29.0
-  resolution: "@sentry/utils@npm:7.29.0"
+"@sentry/utils@npm:7.30.0":
+  version: 7.30.0
+  resolution: "@sentry/utils@npm:7.30.0"
   dependencies:
-    "@sentry/types": 7.29.0
+    "@sentry/types": 7.30.0
     tslib: ^1.9.3
-  checksum: 9e683c550943b6f5ad7adf7202cc26a0d10ef0d4b554f7ef7b5ce39098e38534e6884aee57791486f5800a0f57e618a1619a8c84cce9cbb42b02e028a04b20db
+  checksum: acca9a7d50506c44716ff51880775ca1884cd5dfac3c0e9ffe7fa929034273bf4131f11544d595e9ccd2b561d91177d52ba92b6c38f3d0e5af75b9e2bb199c1d
   languageName: node
   linkType: hard
 
@@ -11848,6 +11848,7 @@ __metadata:
     "@ethersproject/providers": ^5.4.5
     "@ethersproject/units": ^5.5.0
     "@ethersproject/wallet": ^5.4.0
+    "@prisma/client": ^4.7.1
     "@redwoodjs/api": ^3.8.0
     "@redwoodjs/cli": ^3.8.0
     "@redwoodjs/graphql-server": ^3.8.0
@@ -11864,7 +11865,7 @@ __metadata:
     email-templates: ^9.0.0
     form-data: ^4.0.0
     jwks-rsa: ^2.0.4
-    oauth2-server-redwood: 0.1.1
+    oauth2-server-redwood: 0.2.0
     pkce-challenge: ^3.0.0
     plaid: ^10.2.0
     react: ^17.0.2
@@ -17593,11 +17594,12 @@ __metadata:
   linkType: hard
 
 "es-abstract@npm:^1.17.2, es-abstract@npm:^1.19.0, es-abstract@npm:^1.20.4":
-  version: 1.21.0
-  resolution: "es-abstract@npm:1.21.0"
+  version: 1.21.1
+  resolution: "es-abstract@npm:1.21.1"
   dependencies:
+    available-typed-arrays: ^1.0.5
     call-bind: ^1.0.2
-    es-set-tostringtag: ^2.0.0
+    es-set-tostringtag: ^2.0.1
     es-to-primitive: ^1.2.1
     function-bind: ^1.1.1
     function.prototype.name: ^1.1.5
@@ -17610,7 +17612,7 @@ __metadata:
     has-proto: ^1.0.1
     has-symbols: ^1.0.3
     internal-slot: ^1.0.4
-    is-array-buffer: ^3.0.0
+    is-array-buffer: ^3.0.1
     is-callable: ^1.2.7
     is-negative-zero: ^2.0.2
     is-regex: ^1.1.4
@@ -17628,7 +17630,7 @@ __metadata:
     typed-array-length: ^1.0.4
     unbox-primitive: ^1.0.2
     which-typed-array: ^1.1.9
-  checksum: 70e259e377d86de283c7182743ce5032899cb414ec698466e700494dc2c99d189698bb72e8cbbaa091211be851f4c50a6cdf585d99eace3df8a6013bf31d8734
+  checksum: f05b7c6a0c2ff951bb358e252daa3b059de6aad2222d1338352a104c252824e9eeba7c18961b7e56b9d1bfb39f99580469144b39f05ec44af170b10dd69d4221
   languageName: node
   linkType: hard
 
@@ -17662,7 +17664,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"es-set-tostringtag@npm:^2.0.0":
+"es-set-tostringtag@npm:^2.0.1":
   version: 2.0.1
   resolution: "es-set-tostringtag@npm:2.0.1"
   dependencies:
@@ -21921,7 +21923,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-array-buffer@npm:^3.0.0, is-array-buffer@npm:^3.0.1":
+"is-array-buffer@npm:^3.0.1":
   version: 3.0.1
   resolution: "is-array-buffer@npm:3.0.1"
   dependencies:
@@ -27479,14 +27481,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"oauth2-server-redwood@npm:0.1.1":
-  version: 0.1.1
-  resolution: "oauth2-server-redwood@npm:0.1.1"
+"oauth2-server-redwood@npm:0.2.0":
+  version: 0.2.0
+  resolution: "oauth2-server-redwood@npm:0.2.0"
   dependencies:
     deepmerge: ^4.2.2
+    ejs: ^3.1.8
     express: ^4.18.2
     oidc-provider: ^7.14.3
-  checksum: 6e6734dcc5e71e847ad2289edd9c209172d0e141ef91c09204fe2b9845498e7cbbedec1ebef946c9028fed56277df791bff5b35fee63302ef769df8d02070dc4
+  checksum: 64ba261b2eb80c07a025b4c774b98ed42b2ea18708056a20384a842b1d3f0219d2c38270e1d3a95686174dcb9673e3b2190cb2e1ee9bb2bdc77ff84262865b72
   languageName: node
   linkType: hard
 
@@ -30435,9 +30438,9 @@ __metadata:
   linkType: hard
 
 "punycode@npm:^2.1.0, punycode@npm:^2.1.1":
-  version: 2.1.1
-  resolution: "punycode@npm:2.1.1"
-  checksum: 83815ca9b9177f055771f31980cbec7ffaef10257d50a95ab99b4a30f0404846e85fa6887ee1bbc0aaddb7bad6d96e2fa150a016051ff0f6b92be4ad613ddca8
+  version: 2.2.0
+  resolution: "punycode@npm:2.2.0"
+  checksum: c4c67082ab53d4304e7f2bb0635290db5baa84758cd4ade4219f24c16ecd803dd5022054186e9c778a4df851cc989b02201a35eaed6b08cb9cabec8b8e2d8332
   languageName: node
   linkType: hard
 
@@ -32526,9 +32529,9 @@ __metadata:
   linkType: hard
 
 "secure-json-parse@npm:^2.4.0, secure-json-parse@npm:^2.5.0":
-  version: 2.6.0
-  resolution: "secure-json-parse@npm:2.6.0"
-  checksum: b59511c9659b40484e6cfb719e4d78285739db8675511087cd6e1bffea617502dcb0049023aaa76ebec3dae37ee12d96bf6b65cbc796f337e00bc5601e743cef
+  version: 2.7.0
+  resolution: "secure-json-parse@npm:2.7.0"
+  checksum: f57eb6a44a38a3eeaf3548228585d769d788f59007454214fab9ed7f01fbf2e0f1929111da6db28cf0bcc1a2e89db5219a59e83eeaec3a54e413a0197ce879e4
   languageName: node
   linkType: hard
 
@@ -35332,27 +35335,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:4.7.4":
-  version: 4.7.4
-  resolution: "typescript@npm:4.7.4"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 8c1c4007b6ce5b24c49f0e89173ab9e82687cc6ae54418d1140bb63b82d6598d085ac0f993fe3d3d1fbf87a2c76f1f81d394dc76315bc72c7a9f8561c5d8d205
-  languageName: node
-  linkType: hard
-
-"typescript@npm:^3.9.10":
-  version: 3.9.10
-  resolution: "typescript@npm:3.9.10"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 863cc06070fa18a0f9c6a83265fb4922a8b51bf6f2c6760fb0b73865305ce617ea4bc6477381f9f4b7c3a8cb4a455b054f5469e6e41307733fe6a2bd9aae82f8
-  languageName: node
-  linkType: hard
-
-"typescript@npm:^4.4.3":
+"typescript@npm:4.7.4, typescript@npm:^3.9.10, typescript@npm:^4.4.3":
   version: 4.9.4
   resolution: "typescript@npm:4.9.4"
   bin:
@@ -35362,27 +35345,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@4.7.4#~builtin<compat/typescript>":
-  version: 4.7.4
-  resolution: "typescript@patch:typescript@npm%3A4.7.4#~builtin<compat/typescript>::version=4.7.4&hash=a1c5e5"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 2eb6e31b04fabec84a4d07b5d567deb5ef0a2971d89d9adb16895f148f7d8508adfb12074abc2efc6966805d3664e68ab67925060e5b0ebd8da616db4b151906
-  languageName: node
-  linkType: hard
-
-"typescript@patch:typescript@^3.9.10#~builtin<compat/typescript>":
-  version: 3.9.10
-  resolution: "typescript@patch:typescript@npm%3A3.9.10#~builtin<compat/typescript>::version=3.9.10&hash=a1c5e5"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 9041fb3886e7d6a560f985227b8c941d17a750f2edccb5f9b3a15a2480574654d9be803ad4a14aabcc2f2553c4d272a25fd698a7c42692f03f66b009fb46883c
-  languageName: node
-  linkType: hard
-
-"typescript@patch:typescript@^4.4.3#~builtin<compat/typescript>":
+"typescript@patch:typescript@4.7.4#~builtin<compat/typescript>, typescript@patch:typescript@^3.9.10#~builtin<compat/typescript>, typescript@patch:typescript@^4.4.3#~builtin<compat/typescript>":
   version: 4.9.4
   resolution: "typescript@patch:typescript@npm%3A4.9.4#~builtin<compat/typescript>::version=4.9.4&hash=a1c5e5"
   bin:
