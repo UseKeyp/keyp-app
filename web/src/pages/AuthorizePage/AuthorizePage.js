@@ -1,11 +1,17 @@
 import { MetaTags } from '@redwoodjs/web'
 
 import Authorize from 'src/pages/AuthorizePage/Authorize'
+import { useOAuthAuthority } from 'src/providers/oAuthAuthority'
 
 const AuthorizePage = () => {
-  const handleConsent = () => {}
+  const { continueInteraction } = useOAuthAuthority()
+  const handleConsent = () => {
+    continueInteraction({ type: 'confirm' })
+  }
 
-  const handleAbort = () => {}
+  const handleAbort = () => {
+    continueInteraction({ type: 'abort' })
+  }
 
   return (
     <>

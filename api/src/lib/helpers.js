@@ -1,7 +1,6 @@
 import { EnvelopError } from '@envelop/core'
 import ProfanityFilter from 'bad-words'
 
-
 import { logger } from 'src/lib/logger'
 
 const profanityFilter = new ProfanityFilter()
@@ -50,8 +49,6 @@ export const validateTreasureTitle = (string) => {
       `Only alphanumeric characters, emojis, and the symbols !@#$%^&*()+=-[]\\/|';,.{}":<>? are allowed.`
     )
 }
-
-
 
 export const cors = {
   origin: isProduction

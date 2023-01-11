@@ -47,7 +47,12 @@ module.exports = (config, { mode }) => {
     config.module.rules.push({
       test: /\.(js|jsx)$/,
       loader: 'babel-loader',
-      options: { presets: ['@babel/preset-env',['@babel/preset-react', {"runtime": "automatic"}]]},
+      options: {
+        presets: [
+          '@babel/preset-env',
+          ['@babel/preset-react', { runtime: 'automatic' }],
+        ],
+      },
       resolve: {
         fullySpecified: false,
       },

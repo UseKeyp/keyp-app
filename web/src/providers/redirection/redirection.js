@@ -55,14 +55,14 @@ const RedirectionProvider = ({ children }) => {
       method: 'login',
     })
     if (response.error || !response || !response.id)
-    return setState({
-      isLoading: false,
-      errorMessage: response.error || 'Something went wrong',
-    })
+      return setState({
+        isLoading: false,
+        errorMessage: response.error || 'Something went wrong',
+      })
     const uid = grantState.split(':')[1]
-    console.log({uid})
+    console.log({ uid })
     if (uid) {
-      console.log({uid})
+      console.log({ uid })
       const { error } = await continueInteraction({
         type: 'login',
         userId: response.id,
