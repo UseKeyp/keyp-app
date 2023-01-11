@@ -1,7 +1,6 @@
 import { Toaster, ToastBar, toast, useToasterStore } from '@redwoodjs/web/toast'
 
 import LoadingDots from 'src/components/LoadingDots'
-import { useTheme } from 'src/providers/theme'
 
 const ToastContext = React.createContext({
   mintStatus: null,
@@ -12,7 +11,6 @@ const ToastContext = React.createContext({
 
 const ToastProvider = ({ children }) => {
   const { toasts } = useToasterStore()
-  const { theme } = useTheme()
   // const { toasts } = useToaster();
   // toast() - Text only, no icon shown
   // toast.success() - Checkmark icon with text
@@ -37,7 +35,6 @@ const ToastProvider = ({ children }) => {
           style: {
             // border: '1px solid #713200',
             // padding: '16px',
-            color: theme.colors.black,
             fontSize: '14px',
           },
           success: { duration: 5000 },

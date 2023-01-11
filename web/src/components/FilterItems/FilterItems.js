@@ -94,7 +94,6 @@ const FilterItems = ({ onChange }) => {
             fontSize={11}
             fontWeight="bold"
             color={transparentWhite}
-            mt="1rem"
             className="mb-2"
           >
             Opponent

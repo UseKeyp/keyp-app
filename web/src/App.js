@@ -11,8 +11,7 @@ import { logIn, logOut } from 'src/utils/auth/client'
 
 import 'src/i18n'
 
-import './scaffold.css'
-import './index.scss'
+import './index.css'
 
 /* eslint-disable no-console */
 /* eslint-disable no-irregular-whitespace */

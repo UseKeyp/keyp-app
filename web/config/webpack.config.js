@@ -38,12 +38,26 @@ module.exports = (config, { mode }) => {
     crypto: require.resolve(`crypto-browserify`),
     path: require.resolve('path-browserify'),
   }
+  // eslint-disable-next-line no-unused-expressions
   config.module.rules.push({
     test: /\.m?js/,
     resolve: {
       fullySpecified: false,
     },
-  })
+  }),
+    config.module.rules.push({
+      test: /\.(js|jsx)$/,
+      loader: 'babel-loader',
+      options: {
+        presets: [
+          '@babel/preset-env',
+          ['@babel/preset-react', { runtime: 'automatic' }],
+        ],
+      },
+      resolve: {
+        fullySpecified: false,
+      },
+    })
   config.plugins.push(
     new webpack.ProvidePlugin({
       process: 'process/browser',

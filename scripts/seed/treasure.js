@@ -1,5 +1,5 @@
 const members = require('./member')
-const [alice, bob, carl] = members
+const [alice, bob] = members
 
 const treasureData = [
   {
