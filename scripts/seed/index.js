@@ -4,9 +4,8 @@ const { performance } = require('perf_hooks')
 const { PrismaClient } = require('@prisma/client')
 const dotenv = require('dotenv')
 
-const { generateRandomMembers, generateRandomTreasures } = require('./helpers')
+const { generateRandomMembers } = require('./helpers')
 const exampleMembers = require('./member')
-const exampleTreasures = require('./treasure')
 
 dotenv.config()
 const db = new PrismaClient()
@@ -46,37 +45,6 @@ async function main() {
   }
 
   const members = await db.member.findMany()
-  // TREASURES
-  console.log(`${newTreasuresToCreate} new Treasures`)
-  const highestTreasureTokenId = await db.treasure.count()
-  var startTreasureGenTime = performance.now()
-  const randomTreasures = generateRandomTreasures(
-    newTreasuresToCreate,
-    highestTreasureTokenId,
-    members
-  )
-  var endTreasureGenTime = performance.now()
-  console.log(
-    `Gen: ${((endTreasureGenTime - startTreasureGenTime) / 1000).toFixed(
-      3
-    )} seconds`
-  )
-  var startTreasureWriteTime = performance.now()
-  await db.treasure.createMany({
-    data: randomTreasures,
-  })
-  var endTreasureWriteTime = performance.now()
-  console.log(
-    `Write: ${((endTreasureWriteTime - startTreasureWriteTime) / 1000).toFixed(
-      3
-    )} seconds`
-  )
-  console.log('')
-  console.log(
-    `Total: ${((endTreasureWriteTime - startMemberGenTime) / 1000).toFixed(
-      3
-    )} seconds`
-  )
 }
 
 const seed = async () => {

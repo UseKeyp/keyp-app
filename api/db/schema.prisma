@@ -10,7 +10,8 @@ generator client {
 }
 
 model User {
-  id               String                @id
+  id               String
+  provider         ProviderType
   username         String?               @unique // platform username
   address          String?               @unique // Torus wallet address
   locale           String?
@@ -38,13 +39,16 @@ model User {
   betaAccess       Boolean               @default(false)
   TransferFrom     Transfer[]            @relation(name: "fromUser")
   TransferReceived Transfer[]            @relation(name: "toUser")
+
+  @@id([provider, id])
 }
 
 model Ramp {
   id                 String         @id @default(uuid())
   createdAt          DateTime       @default(now())
   updatedAt          DateTime       @updatedAt
-  user               User?          @relation(fields: [userId], references: [id])
+  user               User?          @relation(fields: [userId, userProvider], references: [id, provider])
+  userProvider       ProviderType
   userId             String?
   type               RampType
   email              String?
@@ -66,16 +70,17 @@ model Ramp {
 }
 
 model DepositOrder {
-  id             Int      @id @default(autoincrement())
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  id             Int          @id @default(autoincrement())
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
   // --------------- LINKS --------------
-  user           User     @relation("depositOrders", fields: [userId], references: [id])
+  user           User         @relation("depositOrders", fields: [userId, userProvider], references: [id, provider])
+  userProvider   ProviderType
   userId         String
   // --------------- STATE --------------
   amount         Float?
   paymentType    RampType
-  status         TxStatus @default(UNSUBMITTED)
+  status         TxStatus     @default(UNSUBMITTED)
   // Wyre
   sourceCurrency String?
   sourceAmount   Float?
@@ -83,8 +88,8 @@ model DepositOrder {
   destCurrency   String?
   paymentMethod  String?
   orderType      String? // DOMESTIC or INTERNATIONAL
-  orderId        String?  @unique // Wyre orderId
-  reservation    String?  @unique // Wyre reservation
+  orderId        String?      @unique // Wyre orderId
+  reservation    String?      @unique // Wyre reservation
 }
 
 model MintPurchase {
@@ -92,7 +97,8 @@ model MintPurchase {
   createdAt         DateTime                 @default(now())
   updatedAt         DateTime                 @updatedAt
   // --------------- LINKS --------------
-  user              User                     @relation("mintPurchases", fields: [userId], references: [id])
+  user              User                     @relation("mintPurchases", fields: [userId, userProvider], references: [id, provider])
+  userProvider      ProviderType
   userId            String
   // --------------- STATE --------------
   gameId            String
@@ -112,23 +118,25 @@ model MintPurchase {
 }
 
 model OAuth {
-  state         String   @id
+  state         String       @id
   codeChallenge String
   codeVerifier  String
-  createdAt     DateTime @default(now())
-  user          User?    @relation(fields: [userId], references: [id])
+  createdAt     DateTime     @default(now())
+  user          User?        @relation(fields: [userId, userProvider], references: [id, provider])
+  userProvider  ProviderType
   userId        String?
 }
 
 model ClientsOnDevelopers {
-  createdAt   DateTime          @default(now())
-  updatedAt   DateTime          @updatedAt
-  user        User              @relation(fields: [userId], references: [id])
-  userId      String
-  oidc        Oidc              @relation(fields: [oidcId, oidcType], references: [id, type])
-  oidcId      String
-  oidcType    Int               @default(7)
-  accessLevel ClientAccessLevel
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+  user         User              @relation(fields: [userId, userProvider], references: [id, provider])
+  userProvider ProviderType
+  userId       String
+  oidc         Oidc              @relation(fields: [oidcId, oidcType], references: [id, type])
+  oidcId       String
+  oidcType     Int               @default(7)
+  accessLevel  ClientAccessLevel
 
   @@id([userId, oidcId])
 }
@@ -156,7 +164,8 @@ model OAuthConnection {
   id           String              @id @default(uuid())
   createdAt    DateTime            @default(now())
   updatedAt    DateTime            @updatedAt
-  user         User                @relation("oAuthConnections", fields: [userId], references: [id])
+  user         User                @relation("oAuthConnections", fields: [userId, userProvider], references: [id, provider])
+  userProvider ProviderType
   userId       String
   type         OAuthConnectionType
   revoked      Boolean             @default(false)
@@ -166,17 +175,18 @@ model OAuthConnection {
 }
 
 model RampWithdraw {
-  id            String      @id @default(uuid())
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
-  status        RampStatus  @default(PENDING)
+  id            String       @id @default(uuid())
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  status        RampStatus   @default(PENDING)
   toAddress     String
   amount        Int
-  transaction   Transaction @relation(fields: [transactionId], references: [id])
-  transactionId String      @unique
-  user          User?       @relation("rampWithdraws", fields: [userId], references: [id])
+  transaction   Transaction  @relation(fields: [transactionId], references: [id])
+  transactionId String       @unique
+  user          User?        @relation("rampWithdraws", fields: [userId, userProvider], references: [id, provider])
+  userProvider  ProviderType
   userId        String?
-  ramp          Ramp        @relation(fields: [rampId], references: [id])
+  ramp          Ramp         @relation(fields: [rampId], references: [id])
   rampId        String
 }
 
@@ -197,16 +207,18 @@ model Transaction {
 }
 
 model Transfer {
-  id               String      @id
-  createdAt        DateTime    @default(now())
-  updatedAt        DateTime    @updatedAt
-  transaction      Transaction @relation(fields: [transactionId], references: [id])
-  facilitator      Oidc        @relation(fields: [oidcId, oidcType], references: [id, type])
+  id               String       @id
+  createdAt        DateTime     @default(now())
+  updatedAt        DateTime     @updatedAt
+  transaction      Transaction  @relation(fields: [transactionId], references: [id])
+  facilitator      Oidc         @relation(fields: [oidcId, oidcType], references: [id, type])
   oidcId           String
-  oidcType         Int         @default(7)
+  oidcType         Int          @default(7)
   externalTransfer Boolean
-  from             User        @relation(name: "fromUser", fields: [fromUserId], references: [id])
-  to               User        @relation(name: "toUser", fields: [toUserId], references: [id])
+  from             User         @relation("fromUser", fields: [fromUserId, fromUserProvider], references: [id, provider])
+  fromUserProvider ProviderType
+  to               User         @relation("toUser", fields: [toUserId, toUserProvider], references: [id, provider])
+  toUserProvider   ProviderType
   collectionId     String
   transactionId    String
   fromUserId       String
@@ -225,12 +237,13 @@ model Promotion {
 }
 
 model PromotionsOnUsers {
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  user        User      @relation(fields: [userId], references: [id])
-  userId      String
-  promotion   Promotion @relation(fields: [promotionId], references: [id])
-  promotionId Int
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+  user         User         @relation(fields: [userId, userProvider], references: [id, provider])
+  userProvider ProviderType
+  userId       String
+  promotion    Promotion    @relation(fields: [promotionId], references: [id])
+  promotionId  Int
 
   @@id([userId, promotionId])
 }
@@ -243,6 +256,16 @@ enum ClientAccessLevel {
 enum RampType {
   COINBASE
   WYRE
+}
+
+enum ProviderType {
+  CHESS
+  GOOGLE
+  DISCORD
+  TWITTER
+  APPLE
+  NATIVE // WebAuthn
+  ETHEREUM // Metamask
 }
 
 enum OAuthConnectionType {
