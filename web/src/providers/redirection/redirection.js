@@ -24,7 +24,7 @@ const RedirectionContext = React.createContext({})
 const RedirectionProvider = ({ children }) => {
   const [state, setState] = React.useState({ isLoading: true })
 
-  const { logIn, reauthenticate } = useAuth()
+  const { logIn } = useAuth()
   const { continueInteraction } = useOAuthAuthority()
   const { submitCodeGrant } = useOAuth()
 

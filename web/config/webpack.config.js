@@ -38,6 +38,7 @@ module.exports = (config, { mode }) => {
     crypto: require.resolve(`crypto-browserify`),
     path: require.resolve('path-browserify'),
   }
+  // eslint-disable-next-line no-unused-expressions
   config.module.rules.push({
     test: /\.m?js/,
     resolve: {

@@ -5,8 +5,6 @@ const { PrismaClient } = require('@prisma/client')
 const dotenv = require('dotenv')
 
 const { generateRandomMembers, generateRandomTreasures } = require('./helpers')
-const exampleMembers = require('./member')
-const exampleTreasures = require('./treasure')
 
 dotenv.config()
 const db = new PrismaClient()

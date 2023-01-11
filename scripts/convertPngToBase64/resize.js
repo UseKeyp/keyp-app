@@ -10,9 +10,8 @@ const resize = async () => {
     if (err) return console.log(err)
     console.log('Converting...')
     if (!files) throw 'No files found'
-    let images = []
     await Promise.all(
-      files.map(async (fileName, index) => {
+      files.map(async (fileName) => {
         if (!fileName.match(/(.png)$/)) return
         return sharp(path.resolve(directoryPath, fileName))
           .resize({
