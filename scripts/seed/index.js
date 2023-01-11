@@ -20,7 +20,7 @@ async function main() {
   // MEMBERS
   if (newMembersToCreate > 0) {
     console.log(`${newMembersToCreate} new Members `)
-    const highestMemberId = await db.member.count()
+    const highestMemberId = await db.user.count()
     const randomMembers = generateRandomMembers(
       newMembersToCreate,
       highestMemberId
@@ -32,7 +32,7 @@ async function main() {
       )} seconds`
     )
     var startMemberWriteTime = performance.now()
-    await db.member.createMany({
+    await db.user.createMany({
       data: randomMembers,
     })
     var endMemberWriteTime = performance.now()
@@ -44,7 +44,7 @@ async function main() {
     console.log('')
   }
 
-  const members = await db.member.findMany()
+  const members = await db.user.findMany()
 }
 
 const seed = async () => {

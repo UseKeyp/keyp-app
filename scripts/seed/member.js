@@ -1,6 +1,7 @@
 const memberData = [
   {
     id: '1',
+    provider: 'CHESS',
     username: 'alice',
     address: '0xaaaaaa34A34d24885DFE166891A4A8FB83643105',
     imageSrc:
@@ -10,6 +11,7 @@ const memberData = [
   },
   {
     id: '2',
+    provider: 'GOOGLE',
     username: 'bob',
     address: '0xbbbbbbF15d6d878dCD0Df7120Ac0fc1509ee9Cab',
     imageSrc:
@@ -20,6 +22,7 @@ const memberData = [
   {
     id: '3',
     username: 'carl',
+    provider: 'DISCORD',
     address: '0xcccccc94C5364a98D14E3b391F84d753A0fa5f14',
     imageSrc:
       'https://cssjs.chesscomfiles-4.com/bundles/web/images/noavatar_l.84a92436@2x.gif',
@@ -29,6 +32,7 @@ const memberData = [
   },
   {
     id: '4',
+    provider: 'NATIVE',
     username: 'carl',
     address: '0xcccccc94C5364a98D14E3b391F84d753A0fa5f14',
     imageSrc:

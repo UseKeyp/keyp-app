@@ -13,7 +13,7 @@ const db = new PrismaClient()
 // $(node tasks/environment/setupEnv) && yarn rw exec metrics
 
 const countLogins = async () => {
-  const signedInMemberCount = await db.member.count({
+  const signedInMemberCount = await db.user.count({
     where: { address: { not: null } },
   })
   console.log(`Total wallets: ${signedInMemberCount}`)

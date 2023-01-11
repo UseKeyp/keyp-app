@@ -20,7 +20,7 @@ rl.on('close', function () {
 
 async function main() {
   const whereQuery = {}
-  const membersAffected = await db.member.count({
+  const membersAffected = await db.user.count({
     where: whereQuery,
   })
   await rl.question(
@@ -28,7 +28,7 @@ async function main() {
     async (yesOrNo) => {
       if (yesOrNo === 'yes') {
         var startTime = performance.now()
-        const updateResults = await db.member.updateMany({
+        const updateResults = await db.user.updateMany({
           where: whereQuery,
           data: { imageSrc: '' },
         })
