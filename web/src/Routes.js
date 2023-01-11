@@ -30,6 +30,7 @@ const Routes = () => {
           <Route path="/about" page={AboutPage} name="about" />
           <Route path="/support" page={SupportPage} name="support" />
           <Private unauthenticated="login">
+            <Route path="/authorize" page={AuthorizePage} name="authorize" />
             <Route path="/wallet" page={WalletPage} name="wallet" />
             <Route path="/settings" page={SettingsPage} name="settings" />
           </Private>

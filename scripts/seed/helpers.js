@@ -1,9 +1,9 @@
-const rug = require('random-username-generator')
 const { id: sha3 } = require('@ethersproject/hash')
 const { Wallet: EthersWallet } = require('@ethersproject/wallet')
-const filters = require('@treasure-chess/treasure-filters').default
 const achievementsCalculator = require('@treasure-chess/chess-achievements')
+const filters = require('@treasure-chess/treasure-filters').default
 const { Chess } = require('chess.js')
+const rug = require('random-username-generator')
 
 const {
   parseGameFromChessDotCom,
@@ -63,7 +63,6 @@ const generateRandomTreasures = (count, highestTokenId, members) => {
       const ran2 = ran1 === members.length - 1 ? ran1 - 1 : ran1 + 1
       const black = members[ran1]
       const white = members[ran2]
-      const winner = randomInt(1, 2) > 1 ? black : white
       const minter = randomInt(1, 2) > 1 ? black : white
 
       const realGame = realGames[randomInt(0, realGames.length - 1)]

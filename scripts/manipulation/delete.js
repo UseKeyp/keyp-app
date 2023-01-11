@@ -1,6 +1,3 @@
-/* eslint-disable no-console */
-import testBoard from './testBoard'
-
 const { performance } = require('perf_hooks')
 const readline = require('readline')
 

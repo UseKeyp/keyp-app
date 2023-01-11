@@ -1,4 +1,4 @@
-import { Icon } from '@usekeyp/components-soft-ui'
+import { Icon } from '@usekeyp/components-soft-ui-testing'
 
 const HomePage = () => {
   return (

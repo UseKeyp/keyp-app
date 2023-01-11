@@ -8,11 +8,11 @@ import { FilterProvider } from './filters'
 import { LocaleProvider } from './locale'
 import { MarketProvider } from './market'
 import { OAuthProvider } from './oAuth'
+import { OAuthAuthorityProvider } from './oAuthAuthority'
 import { RampProvider } from './ramp'
 import { RedirectionProvider } from './redirection'
 import { RestrictedProvider } from './restricted'
 import { TrackingProvider } from './tracking'
-import { OAuthAuthorityProvider} from "./oAuthAuthority"
 
 const AllContextProviders = ({ children }) => {
   // Add additional context providers here

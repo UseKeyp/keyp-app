@@ -1,6 +1,6 @@
-const FaqItem = ({ icon, question, answer, feature }) => {
+const FaqItem = ({ icon, question, answer }) => {
   return (
-    <div className="question-wrapper" has-piece={feature ? 'true' : 'false'}>
+    <div className="question-wrapper">
       <div className="piece" />
       <div className="mb-2">
         {icon ? <div className="text-lg">{icon}</div> : <></>}
@@ -13,24 +13,20 @@ const FaqItem = ({ icon, question, answer, feature }) => {
   )
 }
 
-const FaqSection = ({ title, questionList, columns }) => {
+const FaqSection = ({ title, questionList }) => {
   return (
     <div className="flex justify-center">
       <div>
         {title && (
           <h2 className="faq-header font-black text-4xl py-5">{title}</h2>
         )}
-        <div
-          className="faq-container max-w-2xl"
-          columns={columns ? 'true' : 'false'}
-        >
+        <div className="faq-container max-w-2xl">
           {questionList?.map((item, idx) => (
             <FaqItem
               key={idx}
               icon={item[2]}
               question={item[0]}
               answer={item[1]}
-              feature={item[3]}
             />
           ))}
         </div>

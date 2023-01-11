@@ -37,7 +37,6 @@ const GameByIdForm = ({ setQuery, initialQuery }) => {
           fontSize={11}
           fontWeight="bold"
           color={transparentWhite}
-          mt="1rem"
           className="mb-2"
         >
           Search by URL

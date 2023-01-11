@@ -1,4 +1,4 @@
-import { Icon, Button } from '@usekeyp/components-soft-ui'
+import { Icon, Button } from '@usekeyp/components-soft-ui-testing'
 
 import { routes, Link } from '@redwoodjs/router'
 
