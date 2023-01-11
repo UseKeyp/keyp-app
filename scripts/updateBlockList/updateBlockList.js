@@ -1,11 +1,12 @@
-const fs = require('fs-extra')
-const path = require('path')
-const dotenv = require('dotenv')
-const { performance } = require('perf_hooks')
-var { parse } = require('csv-parse')
-const { PrismaClient } = require('@prisma/client')
-
 import { fetchMemberAndBlock } from '../../api/src/lib/members'
+
+const path = require('path')
+const { performance } = require('perf_hooks')
+
+const { PrismaClient } = require('@prisma/client')
+var { parse } = require('csv-parse')
+const dotenv = require('dotenv')
+const fs = require('fs-extra')
 
 dotenv.config()
 

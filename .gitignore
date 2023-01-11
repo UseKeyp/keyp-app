@@ -5,6 +5,7 @@
 !*.enc
 !.env.template
 *.env
+lerna-debug.log
 .netlify
 .redwood
 dev.db*

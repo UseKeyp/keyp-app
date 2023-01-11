@@ -1,6 +1,6 @@
 global.fetch = require('node-fetch')
 global.atob = require('atob')
-global.window = null
+global.window = undefined
 global.document = null
 
 import NodeManager from '@toruslabs/fetch-node-details/dist/fetchNodeDetails-node'

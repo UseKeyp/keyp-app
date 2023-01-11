@@ -1,5 +1,6 @@
-const randomTitles = require('./randomTitles')
 const fs = require('fs')
+
+const randomTitles = require('./randomTitles')
 const titles = randomTitles.map((title) => {
   const [firstWord, ...rest] = title.toLowerCase().split(' ')
   return (

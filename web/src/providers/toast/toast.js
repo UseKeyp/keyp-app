@@ -1,6 +1,7 @@
 import { Toaster, ToastBar, toast, useToasterStore } from '@redwoodjs/web/toast'
 
 import LoadingDots from 'src/components/LoadingDots'
+import { useTheme } from 'src/providers/theme'
 
 const ToastContext = React.createContext({
   mintStatus: null,

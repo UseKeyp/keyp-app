@@ -7,7 +7,6 @@ import {
 import { parseGameFromChessDotCom } from 'src/lib/chessCom/gameParsing'
 import { getGifUrl } from 'src/lib/chessCom/gifGetter'
 import { db } from 'src/lib/db'
-import { getBoardLayout } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
 import { fetchUser } from 'src/lib/users'
 
@@ -72,7 +71,6 @@ const getFullGameDetails = async ({
       winnerId,
       cardColor,
       opening: '',
-      boardLayout: JSON.stringify(getBoardLayout(game.moves)),
       gifUrl: getGifUrl({ tcn: game.tcn, playerColor: cardColor }),
       ...includeAchievements,
       ...includeAchievements,

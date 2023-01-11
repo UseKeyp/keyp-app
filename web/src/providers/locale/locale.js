@@ -1,15 +1,15 @@
-import { languageData } from '@treasure-chess/localization'
-import { useTranslation, Trans } from 'react-i18next'
-
 import { useAuth } from '@redwoodjs/auth'
 import { isBrowser } from '@redwoodjs/prerender/browserUtils'
 import { useMutation } from '@redwoodjs/web'
-import { toast } from '@redwoodjs/web/toast'
 
 import { USER_LOCALE_MUTATION } from './graphql'
 
 const LocaleContext = React.createContext({})
 const LOCALE_LOCAL_KEY = 'i18nextLng'
+import { useTranslation, Trans } from 'react-i18next'
+import { languageData } from '@treasure-chess/localization'
+
+import { toast } from '@redwoodjs/web/toast'
 
 const getLocaleCode = () => {
   if (!isBrowser) return // Support prerender

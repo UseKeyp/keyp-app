@@ -6,11 +6,12 @@
 # https://redwoodjs.com/docs/app-configuration-redwood-toml
 
 [web]
-  port = 8910
-  host = "0.0.0.0"
   title = "Keyp"
+  port = 3000
+  host = "0.0.0.0"
+  apiUrl = "/api"
   # apiProxyPort = 8911
-  apiUrl = "${REDWOOD_API_URL:/api}"
+  # apiUrl = "${REDWOOD_API_URL:/api}"
   includeEnvironmentVariables = [
     "ENVIRONMENT",
     "VERSION",
@@ -21,7 +22,7 @@
     "SENTRY_DSN"
   ]
 [api]
-  port = 8911
+  port = 3001
   schemaPath = "./api/db/schema.prisma"
 [browser]
   open = true
