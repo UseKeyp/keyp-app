@@ -16,11 +16,11 @@ export const onConnected = async ({ refreshToken, accessToken, decoded }) => {
     const { preferred_username, user_id, email } = decoded
     logger.debug({ custom: decoded }, 'onConnected() decoded')
     // Create member if needed, and get current avatar
-    const member = await fetchUser(preferred_username, true)
-    if (member.banned) {
+    const user = await fetchUser(preferred_username, true, 'CHESS')
+    if (user.banned) {
       throw new AuthenticationError('user is banned')
     }
-    if (user_id !== member.id)
+    if (user_id !== user.id)
       throw new AuthenticationError(
         `user_id in JWT doesn't match player_id from API`
       )
@@ -32,40 +32,40 @@ export const onConnected = async ({ refreshToken, accessToken, decoded }) => {
 
     await createMauticContact({
       member: {
-        username: member.username,
+        username: user.username,
         email,
-        id: member.id,
+        id: user.id,
       },
     })
 
-    await db.member.update({
-      where: { id: member.id },
+    await db.user.update({
+      where: { id: user.id },
       data: {
         refreshToken,
         accessToken,
         email,
         // NOTE: Updates user with their current avatar and country
-        imageSrc: member.imageSrc,
-        country: member.country,
-        ...(member.masterTitle && { masterTitle: member.masterTitle }),
-        ...(member.blocked && { blocked: false }), // Remove the block if they sign in
+        imageSrc: user.imageSrc,
+        country: user.country,
+        ...(user.masterTitle && { masterTitle: user.masterTitle }),
+        ...(user.blocked && { blocked: false }), // Remove the block if they sign in
       },
     })
 
     // NOTE: Get Torus wallet address if needed.
-    if (!member.address) {
+    if (!user.address) {
       try {
-        const publicAddress = await getTorusPublicAddress(member.id)
+        const publicAddress = await getTorusPublicAddress(user.id)
         logger.debug(`getTorusPublicAddress - ${publicAddress}`)
-        await db.member.update({
-          where: { id: member.id },
+        await db.user.update({
+          where: { id: user.id },
           data: { address: publicAddress },
         })
       } catch (e) {
         logger.error(e, "Error fetching user's wallet from Torus")
       }
     }
-    return member
+    return user
   } catch (e) {
     logger.error(e)
     Sentry.captureException(e)

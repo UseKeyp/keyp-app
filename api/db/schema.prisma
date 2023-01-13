@@ -5,8 +5,9 @@ datasource db {
 }
 
 generator client {
-  provider      = "prisma-client-js"
-  binaryTargets = "native"
+  provider        = "prisma-client-js"
+  binaryTargets   = "native"
+  previewFeatures = ["clientExtensions"]
 }
 
 model User {
@@ -118,12 +119,12 @@ model MintPurchase {
 }
 
 model OAuth {
-  state         String       @id
+  state         String        @id
   codeChallenge String
   codeVerifier  String
-  createdAt     DateTime     @default(now())
-  user          User?        @relation(fields: [userId, userProvider], references: [id, provider])
-  userProvider  ProviderType
+  createdAt     DateTime      @default(now())
+  user          User?         @relation(fields: [userId, userProvider], references: [id, provider])
+  userProvider  ProviderType?
   userId        String?
 }
 
@@ -266,6 +267,7 @@ enum ProviderType {
   APPLE
   NATIVE // WebAuthn
   ETHEREUM // Metamask
+  NODE_OIDC // Test provider
 }
 
 enum OAuthConnectionType {

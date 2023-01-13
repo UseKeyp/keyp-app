@@ -17,7 +17,7 @@ export const handler = async (event, context) => {
     cors,
     authModelAccessor: 'user',
     authFields: {
-      id: 'id',
+      provider_id: 'provider_id',
       username: 'username',
     },
     login: {

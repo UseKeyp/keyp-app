@@ -3,6 +3,8 @@ import { AuthenticationError, ForbiddenError } from '@redwoodjs/graphql-server'
 import { db } from 'src/lib/db'
 import Sentry from 'src/lib/sentry'
 
+import { logger } from '../logger'
+
 export const getCurrentUser = async (session) => {
   let user
   if (process.env.IMPERSONATE_USERNAME) {
@@ -22,8 +24,10 @@ export const getCurrentUser = async (session) => {
       },
     })
   } else {
+    const [userProvider, userId] = session.id.split('-')
+    logger.debug(`getCurrentUser ${userId} ${userProvider} ${session.id}`)
     user = await db.user.findUnique({
-      where: { id: session.id },
+      where: { provider_id: { id: userId, provider: userProvider } },
       // Warning: don't send any confidential data here
       select: {
         id: true,
