@@ -36,7 +36,10 @@ export const db = prisma.$extends({
   query: {
     user: {
       async $allOperations({ args, query, operation }) {
-        if (operation === 'create') return query(args)
+        if (operation === 'create') {
+          const user = await query(args)
+          return user ? { ...user, id: `${user.provider}-${user.id}` } : null
+        }
 
         if (!args.where)
           throw new Error('User id and provider must be provided')
@@ -46,7 +49,7 @@ export const db = prisma.$extends({
         delete args.where.provider
         delete args.where.id
 
-        return query({
+        const user = await query({
           ...args,
           where: {
             provider_id: {
@@ -56,6 +59,7 @@ export const db = prisma.$extends({
             ...args.where,
           },
         })
+        return user ? { ...user, id: `${userProvider}-${userId}` } : null
       },
     },
   },

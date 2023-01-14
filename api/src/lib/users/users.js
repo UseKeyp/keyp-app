@@ -9,17 +9,18 @@ export const fetchUser = async (idOrAddress, creationData, providerType) => {
     let user
     let id
     let address
-    logger.debug(`fetchUser ${idOrAddress}`)
     isHexAddress(idOrAddress)
       ? (address = idOrAddress.toLowerCase())
       : (id = idOrAddress.toLowerCase())
+
+    if (id) id = `${providerType && `${providerType}-`}${id.toLowerCase()}`
+    const where = {
+      ...(address && { address }),
+      ...(id && { id }),
+    }
+    logger.debug({ custom: where }, `fetchUser where`)
     user = await db.user.findUnique({
-      where: {
-        ...(address && { address }),
-        ...(id && {
-          id: `${providerType && `${providerType}-`}${id.toLowerCase()}`,
-        }),
-      },
+      where,
     })
 
     if (!user) {
@@ -48,7 +49,6 @@ export const fetchUser = async (idOrAddress, creationData, providerType) => {
     }
     return {
       ...user,
-      id: `${user.provider}-${user.id}`,
       accessToken: 'REDACTED',
       refreshToken: 'REDACTED',
     }

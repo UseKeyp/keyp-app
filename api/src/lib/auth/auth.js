@@ -24,10 +24,8 @@ export const getCurrentUser = async (session) => {
       },
     })
   } else {
-    const [userProvider, userId] = session.id.split('-')
-    logger.debug(`getCurrentUser ${userId} ${userProvider} ${session.id}`)
     user = await db.user.findUnique({
-      where: { provider_id: { id: userId, provider: userProvider } },
+      where: { id: session.id },
       // Warning: don't send any confidential data here
       select: {
         id: true,
@@ -49,7 +47,6 @@ export const getCurrentUser = async (session) => {
   if (user.banned) {
     throw new Error('user is banned')
   }
-
   Sentry.setUser(user)
   return user
 }
