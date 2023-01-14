@@ -32,55 +32,57 @@ const prisma = new PrismaClient({
   log: emitLogLevels(['info', 'warn', 'error']),
 })
 
-export const db = prisma.$extends({
-  query: {
-    user: {
-      async $allOperations({ args, query, operation }) {
-        if (operation === 'create') {
-          const user = await query(args)
-          return user ? { ...user, id: `${user.provider}-${user.id}` } : null
-        }
+export const db = prisma
+  .$extends({
+    query: {
+      user: {
+        async $allOperations({ args, query, operation }) {
+          if (operation === 'create') {
+            const user = await query(args)
+            return user ? { ...user, id: `${user.provider}-${user.id}` } : null
+          }
 
-        if (!args.where)
-          throw new Error('User id and provider must be provided')
+          if (!args.where)
+            throw new Error('User id and provider must be provided')
 
-        let { userId, userProvider } = parseWhere(args.where)
+          let { userId, userProvider } = parseWhere(args.where)
 
-        delete args.where.provider
-        delete args.where.id
+          delete args.where.provider
+          delete args.where.id
 
-        const user = await query({
-          ...args,
-          where: {
-            provider_id: {
-              id: userId,
-              provider: userProvider,
+          const user = await query({
+            ...args,
+            where: {
+              provider_id: {
+                id: userId,
+                provider: userProvider,
+              },
+              ...args.where,
             },
-            ...args.where,
-          },
-        })
-        return user ? { ...user, id: `${userProvider}-${userId}` } : null
+          })
+          return user ? { ...user, id: `${userProvider}-${userId}` } : null
+        },
       },
     },
-  },
-})
-// .$extends({
-//   result: {
-//     user: {
-//       save: {
-//         needs: { id: true },
-//         compute(user) {
-//           const { userId, userProvider } = getIdentifiersFromId(user.id)
-//           return () =>
-//             prisma.user.update({
-//               where: { provider_id: { id: userId, provider: userProvider } },
-//               data: user,
-//             })
-//         },
-//       },
-//     },
-//   },
-// })
+  })
+  .$extends({
+    result: {
+      user: {
+        save: {
+          needs: { id: true },
+          compute(user) {
+            return () =>
+              prisma.user.update({
+                where: {
+                  provider_id: { id: user.id, provider: user.provider },
+                },
+                data: user,
+              })
+          },
+        },
+      },
+    },
+  })
 
 handlePrismaLogging({
   db,

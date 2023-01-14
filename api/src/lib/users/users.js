@@ -13,16 +13,13 @@ export const fetchUser = async (idOrAddress, creationData, providerType) => {
       ? (address = idOrAddress.toLowerCase())
       : (id = idOrAddress.toLowerCase())
 
-    if (id) id = `${providerType && `${providerType}-`}${id.toLowerCase()}`
     const where = {
       ...(address && { address }),
-      ...(id && { id }),
+      ...(id && { id: providerType ? `${providerType}-${id}` : id }),
     }
     logger.debug({ custom: where }, `fetchUser where`)
-    user = await db.user.findUnique({
-      where,
-    })
-
+    user = await db.user.findUnique({ where })
+    logger.debug({ custom: user }, 'fetchUser')
     if (!user) {
       if (creationData) {
         user = await db.user.create({
