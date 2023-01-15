@@ -89,9 +89,11 @@ export const onConnected = async ({ accessToken }) => {
       { email: userDetails.email, accessToken },
       NODE_OIDC
     )
-    user.accessToken = accessToken
-    user.email = userDetails.email
-    await user.save()
+
+    await db.user.update({
+      where: { id: user.id },
+      data: { email: userDetails.email, accessToken },
+    })
 
     return user
   } catch (e) {
