@@ -120,7 +120,7 @@ export const onConnected = async ({ refreshToken, accessToken }) => {
     const { id, username, locale, avatar, mfa_enabled, email } = userDetails
 
     // Create user if needed, and get current avatar
-    const user = await fetchUser(id, { username })
+    const user = await fetchUser(id, { username }, DISCORD)
     if (user.banned) {
       throw new AuthenticationError('user is banned')
     }

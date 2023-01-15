@@ -31,7 +31,7 @@ function chunk(arr, chunkSize) {
 }
 
 const check = async () => {
-  const blockedMemberCount = await db.member.count({
+  const blockedMemberCount = await db.user.count({
     where: { blocked: true },
   })
   console.log(`Total blocked members: ${blockedMemberCount}`)

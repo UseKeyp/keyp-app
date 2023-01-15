@@ -4,6 +4,7 @@ import { decode as decodeJwt } from 'jsonwebtoken'
 import { db } from 'src/lib/db'
 import { logger } from 'src/lib/logger'
 import { encodeBody, getExpiration } from 'src/lib/oAuth/helpers'
+import { fetchUser } from 'src/lib/users'
 
 export const NODE_OIDC = 'NODE_OIDC'
 const NODE_OIDC_API_DOMAIN = process.env.NODE_OIDC_API_DOMAIN
@@ -82,16 +83,18 @@ export const onConnected = async ({ accessToken }) => {
       return res.json()
     })
     logger.debug({ custom: userDetails }, 'User details')
-    // For login-type oauth providers, create the user and return the object
-    const user = await db.user.upsert({
-      update: { email: userDetails.email, accessToken },
-      create: {
-        id: userDetails.sub,
-        email: userDetails.email,
-        accessToken,
-      },
-      where: { id: userDetails.sub },
+
+    const user = await fetchUser(
+      userDetails.sub,
+      { email: userDetails.email, accessToken },
+      NODE_OIDC
+    )
+
+    await db.user.update({
+      where: { id: user.id },
+      data: { email: userDetails.email, accessToken },
     })
+
     return user
   } catch (e) {
     logger.error(e)

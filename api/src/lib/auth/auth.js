@@ -3,6 +3,8 @@ import { AuthenticationError, ForbiddenError } from '@redwoodjs/graphql-server'
 import { db } from 'src/lib/db'
 import Sentry from 'src/lib/sentry'
 
+import { logger } from '../logger'
+
 export const getCurrentUser = async (session) => {
   let user
   if (process.env.IMPERSONATE_USERNAME) {
@@ -45,7 +47,6 @@ export const getCurrentUser = async (session) => {
   if (user.banned) {
     throw new Error('user is banned')
   }
-
   Sentry.setUser(user)
   return user
 }

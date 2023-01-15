@@ -31,7 +31,7 @@ export const oAuthUrl = async (type, stateExtraData) => {
         state,
         codeVerifier: pkce.code_verifier,
         codeChallenge: pkce.code_challenge,
-        ...(userId && { member: { connect: { id: userId } } }),
+        ...(userId && { user: { connect: { id: userId, provider: type } } }),
       },
     })
 

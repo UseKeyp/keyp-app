@@ -16,10 +16,7 @@ export const handler = async (event, context) => {
     db: db,
     cors,
     authModelAccessor: 'user',
-    authFields: {
-      id: 'id',
-      username: 'username',
-    },
+    authFields: { id: 'id', username: 'username' },
     login: {
       handler: (user) => {
         return user

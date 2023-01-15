@@ -42,7 +42,7 @@ const Redirect = ({ type }) => {
       )
     } else {
       callToAction = (
-        <Link to={routes.home()}>
+        <Link to={routes.login()}>
           <Button
             classNameVariant="hover:bg-gray-400"
             borderColor="border-black"

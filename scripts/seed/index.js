@@ -4,7 +4,8 @@ const { performance } = require('perf_hooks')
 const { PrismaClient } = require('@prisma/client')
 const dotenv = require('dotenv')
 
-const { generateRandomMembers, generateRandomTreasures } = require('./helpers')
+const { generateRandomMembers } = require('./helpers')
+const exampleMembers = require('./member')
 
 dotenv.config()
 const db = new PrismaClient()
@@ -19,7 +20,7 @@ async function main() {
   // MEMBERS
   if (newMembersToCreate > 0) {
     console.log(`${newMembersToCreate} new Members `)
-    const highestMemberId = await db.member.count()
+    const highestMemberId = await db.user.count()
     const randomMembers = generateRandomMembers(
       newMembersToCreate,
       highestMemberId
@@ -31,7 +32,7 @@ async function main() {
       )} seconds`
     )
     var startMemberWriteTime = performance.now()
-    await db.member.createMany({
+    await db.user.createMany({
       data: randomMembers,
     })
     var endMemberWriteTime = performance.now()
@@ -43,38 +44,7 @@ async function main() {
     console.log('')
   }
 
-  const members = await db.member.findMany()
-  // TREASURES
-  console.log(`${newTreasuresToCreate} new Treasures`)
-  const highestTreasureTokenId = await db.treasure.count()
-  var startTreasureGenTime = performance.now()
-  const randomTreasures = generateRandomTreasures(
-    newTreasuresToCreate,
-    highestTreasureTokenId,
-    members
-  )
-  var endTreasureGenTime = performance.now()
-  console.log(
-    `Gen: ${((endTreasureGenTime - startTreasureGenTime) / 1000).toFixed(
-      3
-    )} seconds`
-  )
-  var startTreasureWriteTime = performance.now()
-  await db.treasure.createMany({
-    data: randomTreasures,
-  })
-  var endTreasureWriteTime = performance.now()
-  console.log(
-    `Write: ${((endTreasureWriteTime - startTreasureWriteTime) / 1000).toFixed(
-      3
-    )} seconds`
-  )
-  console.log('')
-  console.log(
-    `Total: ${((endTreasureWriteTime - startMemberGenTime) / 1000).toFixed(
-      3
-    )} seconds`
-  )
+  const members = await db.user.findMany()
 }
 
 const seed = async () => {

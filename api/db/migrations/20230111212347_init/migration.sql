@@ -1,5 +1,11 @@
 -- CreateEnum
+CREATE TYPE "ClientAccessLevel" AS ENUM ('OWNER', 'EDITOR');
+
+-- CreateEnum
 CREATE TYPE "RampType" AS ENUM ('COINBASE', 'WYRE');
+
+-- CreateEnum
+CREATE TYPE "ProviderType" AS ENUM ('CHESS', 'GOOGLE', 'DISCORD', 'TWITTER', 'APPLE', 'NATIVE', 'ETHEREUM');
 
 -- CreateEnum
 CREATE TYPE "OAuthConnectionType" AS ENUM ('TWITCH', 'COINBASE', 'DISCORD');
@@ -22,12 +28,14 @@ CREATE TYPE "PromotionType" AS ENUM ('TWITCH_CONNECTION');
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
-    "username" TEXT NOT NULL,
+    "provider" "ProviderType" NOT NULL,
+    "username" TEXT,
     "address" TEXT,
     "locale" TEXT,
     "email" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "mfa_enabled" BOOLEAN,
     "imageSrc" TEXT,
     "country" TEXT,
     "mintCredits" INTEGER NOT NULL DEFAULT 3,
@@ -37,7 +45,7 @@ CREATE TABLE "User" (
     "accessToken" TEXT,
     "betaAccess" BOOLEAN NOT NULL DEFAULT false,
 
-    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "User_pkey" PRIMARY KEY ("provider","id")
 );
 
 -- CreateTable
@@ -45,6 +53,7 @@ CREATE TABLE "Ramp" (
     "id" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "userProvider" "ProviderType" NOT NULL,
     "userId" TEXT,
     "type" "RampType" NOT NULL,
     "email" TEXT,
@@ -67,10 +76,11 @@ CREATE TABLE "DepositOrder" (
     "id" SERIAL NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "userProvider" "ProviderType" NOT NULL,
     "userId" TEXT NOT NULL,
     "amount" DOUBLE PRECISION,
     "paymentType" "RampType" NOT NULL,
-    "status" "TxStatus" NOT NULL DEFAULT E'UNSUBMITTED',
+    "status" "TxStatus" NOT NULL DEFAULT 'UNSUBMITTED',
     "sourceCurrency" TEXT,
     "sourceAmount" DOUBLE PRECISION,
     "purchaseAmount" DOUBLE PRECISION,
@@ -88,12 +98,13 @@ CREATE TABLE "MintPurchase" (
     "id" SERIAL NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "userProvider" "ProviderType" NOT NULL,
     "userId" TEXT NOT NULL,
     "gameId" TEXT NOT NULL,
     "gameEndTime" TEXT NOT NULL,
     "title" TEXT NOT NULL,
-    "paymentType" TEXT NOT NULL DEFAULT E'WYRE',
-    "status" "RampStatus" NOT NULL DEFAULT E'PENDING',
+    "paymentType" TEXT NOT NULL DEFAULT 'WYRE',
+    "status" "RampStatus" NOT NULL DEFAULT 'PENDING',
     "orderStatus" "MintPurchaseOrderStatus",
     "orderId" TEXT,
     "reservation" TEXT,
@@ -108,9 +119,40 @@ CREATE TABLE "OAuth" (
     "codeChallenge" TEXT NOT NULL,
     "codeVerifier" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "userProvider" "ProviderType" NOT NULL,
     "userId" TEXT,
 
     CONSTRAINT "OAuth_pkey" PRIMARY KEY ("state")
+);
+
+-- CreateTable
+CREATE TABLE "ClientsOnDevelopers" (
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "userProvider" "ProviderType" NOT NULL,
+    "userId" TEXT NOT NULL,
+    "oidcId" TEXT NOT NULL,
+    "oidcType" INTEGER NOT NULL DEFAULT 7,
+    "accessLevel" "ClientAccessLevel" NOT NULL,
+
+    CONSTRAINT "ClientsOnDevelopers_pkey" PRIMARY KEY ("userId","oidcId")
+);
+
+-- CreateTable
+CREATE TABLE "Oidc" (
+    "id" TEXT NOT NULL,
+    "type" INTEGER NOT NULL,
+    "grantId" TEXT,
+    "userCode" TEXT,
+    "uid" TEXT,
+    "expiresAt" TIMESTAMP(3),
+    "payload" JSONB NOT NULL,
+    "disabled" BOOLEAN,
+    "consumedAt" TIMESTAMP(3),
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Oidc_pkey" PRIMARY KEY ("id","type")
 );
 
 -- CreateTable
@@ -118,6 +160,7 @@ CREATE TABLE "OAuthConnection" (
     "id" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "userProvider" "ProviderType" NOT NULL,
     "userId" TEXT NOT NULL,
     "type" "OAuthConnectionType" NOT NULL,
     "revoked" BOOLEAN NOT NULL DEFAULT false,
@@ -133,10 +176,11 @@ CREATE TABLE "RampWithdraw" (
     "id" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "status" "RampStatus" NOT NULL DEFAULT E'PENDING',
+    "status" "RampStatus" NOT NULL DEFAULT 'PENDING',
     "toAddress" TEXT NOT NULL,
     "amount" INTEGER NOT NULL,
     "transactionId" TEXT NOT NULL,
+    "userProvider" "ProviderType" NOT NULL,
     "userId" TEXT,
     "rampId" TEXT NOT NULL,
 
@@ -148,7 +192,7 @@ CREATE TABLE "Transaction" (
     "id" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "status" "TxStatus" NOT NULL DEFAULT E'SUBMITTED',
+    "status" "TxStatus" NOT NULL DEFAULT 'SUBMITTED',
     "gasLimit" INTEGER NOT NULL DEFAULT 0,
     "maxPriorityFeePerGas" INTEGER NOT NULL DEFAULT 0,
     "maxFeePerGas" INTEGER NOT NULL DEFAULT 0,
@@ -158,11 +202,29 @@ CREATE TABLE "Transaction" (
 );
 
 -- CreateTable
+CREATE TABLE "Transfer" (
+    "id" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "oidcId" TEXT NOT NULL,
+    "oidcType" INTEGER NOT NULL DEFAULT 7,
+    "externalTransfer" BOOLEAN NOT NULL,
+    "fromUserProvider" "ProviderType" NOT NULL,
+    "toUserProvider" "ProviderType" NOT NULL,
+    "collectionId" TEXT NOT NULL,
+    "transactionId" TEXT NOT NULL,
+    "fromUserId" TEXT NOT NULL,
+    "toUserId" TEXT NOT NULL,
+
+    CONSTRAINT "Transfer_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "Promotion" (
     "id" SERIAL NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "rewardType" "PromotionRewardType" NOT NULL DEFAULT E'MINT_CREDIT',
+    "rewardType" "PromotionRewardType" NOT NULL DEFAULT 'MINT_CREDIT',
     "type" "PromotionType" NOT NULL,
     "mintCredits" INTEGER,
     "enabled" BOOLEAN NOT NULL DEFAULT false,
@@ -174,6 +236,7 @@ CREATE TABLE "Promotion" (
 CREATE TABLE "PromotionsOnUsers" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
+    "userProvider" "ProviderType" NOT NULL,
     "userId" TEXT NOT NULL,
     "promotionId" INTEGER NOT NULL,
 
@@ -205,40 +268,61 @@ CREATE UNIQUE INDEX "MintPurchase_reservation_key" ON "MintPurchase"("reservatio
 CREATE UNIQUE INDEX "MintPurchase_transactionId_key" ON "MintPurchase"("transactionId");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Oidc_uid_key" ON "Oidc"("uid");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "RampWithdraw_transactionId_key" ON "RampWithdraw"("transactionId");
 
 -- AddForeignKey
-ALTER TABLE "Ramp" ADD CONSTRAINT "Ramp_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Ramp" ADD CONSTRAINT "Ramp_userId_userProvider_fkey" FOREIGN KEY ("userId", "userProvider") REFERENCES "User"("id", "provider") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "DepositOrder" ADD CONSTRAINT "DepositOrder_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "DepositOrder" ADD CONSTRAINT "DepositOrder_userId_userProvider_fkey" FOREIGN KEY ("userId", "userProvider") REFERENCES "User"("id", "provider") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "MintPurchase" ADD CONSTRAINT "MintPurchase_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "MintPurchase" ADD CONSTRAINT "MintPurchase_userId_userProvider_fkey" FOREIGN KEY ("userId", "userProvider") REFERENCES "User"("id", "provider") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "MintPurchase" ADD CONSTRAINT "MintPurchase_transactionId_fkey" FOREIGN KEY ("transactionId") REFERENCES "Transaction"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "OAuth" ADD CONSTRAINT "OAuth_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "OAuth" ADD CONSTRAINT "OAuth_userId_userProvider_fkey" FOREIGN KEY ("userId", "userProvider") REFERENCES "User"("id", "provider") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "OAuthConnection" ADD CONSTRAINT "OAuthConnection_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "ClientsOnDevelopers" ADD CONSTRAINT "ClientsOnDevelopers_userId_userProvider_fkey" FOREIGN KEY ("userId", "userProvider") REFERENCES "User"("id", "provider") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "RampWithdraw" ADD CONSTRAINT "RampWithdraw_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "ClientsOnDevelopers" ADD CONSTRAINT "ClientsOnDevelopers_oidcId_oidcType_fkey" FOREIGN KEY ("oidcId", "oidcType") REFERENCES "Oidc"("id", "type") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "RampWithdraw" ADD CONSTRAINT "RampWithdraw_rampId_fkey" FOREIGN KEY ("rampId") REFERENCES "Ramp"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "OAuthConnection" ADD CONSTRAINT "OAuthConnection_userId_userProvider_fkey" FOREIGN KEY ("userId", "userProvider") REFERENCES "User"("id", "provider") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "RampWithdraw" ADD CONSTRAINT "RampWithdraw_transactionId_fkey" FOREIGN KEY ("transactionId") REFERENCES "Transaction"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "RampWithdraw" ADD CONSTRAINT "RampWithdraw_userId_userProvider_fkey" FOREIGN KEY ("userId", "userProvider") REFERENCES "User"("id", "provider") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "RampWithdraw" ADD CONSTRAINT "RampWithdraw_rampId_fkey" FOREIGN KEY ("rampId") REFERENCES "Ramp"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Transaction" ADD CONSTRAINT "Transaction_mintPurchaseId_fkey" FOREIGN KEY ("mintPurchaseId") REFERENCES "MintPurchase"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "PromotionsOnUsers" ADD CONSTRAINT "PromotionsOnUsers_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Transfer" ADD CONSTRAINT "Transfer_transactionId_fkey" FOREIGN KEY ("transactionId") REFERENCES "Transaction"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Transfer" ADD CONSTRAINT "Transfer_oidcId_oidcType_fkey" FOREIGN KEY ("oidcId", "oidcType") REFERENCES "Oidc"("id", "type") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Transfer" ADD CONSTRAINT "Transfer_fromUserId_fromUserProvider_fkey" FOREIGN KEY ("fromUserId", "fromUserProvider") REFERENCES "User"("id", "provider") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Transfer" ADD CONSTRAINT "Transfer_toUserId_toUserProvider_fkey" FOREIGN KEY ("toUserId", "toUserProvider") REFERENCES "User"("id", "provider") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "PromotionsOnUsers" ADD CONSTRAINT "PromotionsOnUsers_userId_userProvider_fkey" FOREIGN KEY ("userId", "userProvider") REFERENCES "User"("id", "provider") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "PromotionsOnUsers" ADD CONSTRAINT "PromotionsOnUsers_promotionId_fkey" FOREIGN KEY ("promotionId") REFERENCES "Promotion"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
