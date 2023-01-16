@@ -3,9 +3,10 @@ import fetch from 'cross-fetch'
 import { logger } from 'src/lib/logger'
 import { getAccessToken } from 'src/lib/users'
 
+const CHESS_API_URL = 'https://api.chess.com'
 export const fetchChessMember = (username) => {
   try {
-    return fetch(`${process.env.CHESS_API_URL}/pub/player/${username}`, {
+    return fetch(`${CHESS_API_URL}/pub/player/${username}`, {
       headers: {
         // Required to prevent rate-limiting
         Authorization: `Bearer ${process.env.CHESS_API_ACCESS_TOKEN}`,
@@ -20,7 +21,7 @@ export const fetchChessGames = async ({ username, year, month }) => {
   let monthString = month.toString()
   if (month.toString().length < 2) monthString = '0' + month
   const response = await fetch(
-    `${process.env.CHESS_API_URL}/pub/player/${username}/games/${year}/${monthString}`,
+    `${CHESS_API_URL}/pub/player/${username}/games/${year}/${monthString}`,
     {
       headers: {
         // Required to prevent rate-limiting
@@ -58,7 +59,7 @@ export const fetchGameByIdOrUrl = async (gameIdOrUrl) => {
     const accessToken = await getAccessToken()
     let id = gameIdOrUrl
     if (gameIdOrUrl.includes('chess.com')) id = gameIdOrUrl.split('live/')[1]
-    let url = `${process.env.CHESS_API_URL}/v1/games/${id}/live`
+    let url = `${CHESS_API_URL}/v1/games/${id}/live`
     const response = await fetch(url, {
       headers: {
         Authorization: `Bearer ${accessToken}`,
