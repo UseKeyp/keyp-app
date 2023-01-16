@@ -25,17 +25,6 @@ export const handler = serverless(
           ],
         },
       ],
-      renderError: (ctx, out, error) => {
-        console.log('renderError', error)
-        console.log('ctx', ctx)
-        console.log('out', out)
-        ctx.res.redirect(
-          '/redirect/oauth?' +
-            Object.entries(out)
-              .map(([key, value]) => `${key}=${encodeURIComponent(value)}&`)
-              .reduce((a, b) => a + b, '')
-        )
-      },
     },
   })
 )

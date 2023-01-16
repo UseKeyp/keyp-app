@@ -1,28 +1,51 @@
- <h1 align="center"><img width="600" style="border-radius: 30px;" src="https://github.com/treasure-chess/treasure-chess/blob/main/github-header.png?raw=true"/></h1>
-<h1 align="center">Welcome to treasure-chess 👋</h1>
+Welcome to Keyp App
 
-<p  align="center">
-  <a href="#" target="_blank">
-    <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg" />
-  </a>
-  <a href="https://twitter.com/treasurechess_" target="_blank">
-    <img alt="Twitter: treasurechess_" src="https://img.shields.io/twitter/follow/treasurechess_.svg?style=social" />
-  </a>
-</p>
+> Keyp app, oauth2 server, and API. Built with RedwoodJS
 
-> RedwoodJS app
+## Usage 📖
 
-**Almost all of the code & tooling for Treasure Chess has been open sourced**. We hope you find these resources useful. Happy hacking!
+We use Yarn as our package manager:
 
-- App tooling using RedwoodJs 👉 https://github.com/pi0neerpat/redwood-devops-example
-- Code specific to Treasure Chess (smart contracts, achievements, card generation, etc.) is on our organization page: https://github.com/treasure-chess
+```bash
+yarn install
+```
 
-# Redwood
+Now start the app. This command injects necessary environment variables. See docs/environment for help.
 
-> **NOTICE:** RedwoodJS is very close to a stable version 1.0. In the last two years,
-> the project has matured significantly and is already used in production by a number
-> of startups. We intend to have a 1.0 release candidate before the end of 2021 and
-> to release a truly production-ready 1.0 in early 2022.
+```bash
+./dev.sh
+```
+
+Your browser should open automatically to `http://localhost:3000` to see the web app. The Fastify server which serves the backend functions is on `http://localhost:3001`.
+
+## Graphql Playground
+
+Access the Graphql playground at http://localhost:3001/graphql
+
+## Storybook
+
+The Storybook server can be started with `yarn rw storybook`
+
+## Postgres Setup
+
+Eventually you'll need a local database. See docs for [Local Postgres Setup](https://redwoodjs.com/docs/local-postgres-setup). After you've set up postgres, update your `.env` file, using `.template.env` as an example, and then run `yarn rw prisma migrate dev`.
+
+## Ngrok it to the web
+
+```bash
+# Example
+ngrok http --host-header=rewrite 10.61.141.234:3000
+```
+
+## Create OAuth Client
+
+To quickly create an test oauth client app you can run `yarn rw prisma studio` and create a new `OIDC` object with the following data:
+
+```js
+client_id: "a08dd22e-e05c-4314-ae7c-cda1af389a34",
+type: 7,
+payload: {"tos_uri":"https://juicebox.com/tos","logo_uri":"https://juicebox.com/logo.png","client_id":"a08dd22e-e05c-4314-ae7c-cda1af389a34","client_uri":"https://juicebox.com","policy_uri":"https://juicebox.com/policy","client_name":"Juicebox","redirect_uris":["http://0.0.0.0:8910/redirect/oauth2_server_redwood"]}
+```
 
 ## Getting Started
 
@@ -30,43 +53,6 @@
 - [Docs](https://redwoodjs.com/docs/introduction): using the Redwood Router, handling assets and files, list of command-line tools, and more.
 - [Redwood Community](https://community.redwoodjs.com): get help, share tips and tricks, and collaborate on everything about RedwoodJS.
 
-### Setup
-
-We use Yarn as our package manager. To get the dependencies installed, just do this in the root directory:
-
-```terminal
-yarn  install
-```
-
-### Fire it up
-
-```terminal
-# This command injects necessary environment variables. See docs/environment for help
-./dev.sh
-```
-
-Your browser should open automatically to `http://localhost:8910` to see the web app. Lambda functions run on `http://localhost:8911` and are also proxied to `http://localhost:8910/.redwood/functions/*`.
-
-After running this dev server, access the Graphql playground at: http://localhost:8910/api/graphql
-
-Check out the components in Storybook
-
-```terminal
-yarn rw storybook
-```
-
-### Local Postgres Setup
-
-See docs for [Local Postgres Setup](https://redwoodjs.com/docs/local-postgres-setup)
-
-After you've set up postgres, run `yarn rw prisma migrate dev`
-
-### Ngrok it to the web
-
-```bash
-# Example
-ngrok http --host-header=rewrite 10.61.141.234:8910
-```
 
 ## Additional Documentation
 
