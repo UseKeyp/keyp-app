@@ -27492,9 +27492,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"oauth2-server-redwood@portal:/home/dev/repos/oauth2-server-redwood/packages/oauth2-server::locator=root-workspace-0b6124%40workspace%3A.":
-  version: 0.0.0-use.local
-  resolution: "oauth2-server-redwood@portal:/home/dev/repos/oauth2-server-redwood/packages/oauth2-server::locator=root-workspace-0b6124%40workspace%3A."
+"oauth2-server-redwood@npm:0.3.2":
+  version: 0.3.2
+  resolution: "oauth2-server-redwood@npm:0.3.2"
   dependencies:
     deepmerge: ^4.2.2
     ejs: ^3.1.8
@@ -27502,8 +27502,9 @@ __metadata:
     oidc-provider: ^7.14.3
   bin:
     oauth2-server-redwood: bin/oauth2-server-redwood.js
+  checksum: 5793c4a72d7c8e0a3576171d95fa4e6c40794dd0c5a044b10e13ed7a7a3805e3163e943ca138f14b1daaa0b907d4c3adc8910654bf5b5985038f72186a7ab24b
   languageName: node
-  linkType: soft
+  linkType: hard
 
 "object-assign@npm:^4.0.1, object-assign@npm:^4.1.0, object-assign@npm:^4.1.1":
   version: 4.1.1
