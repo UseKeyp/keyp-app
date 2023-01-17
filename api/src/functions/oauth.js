@@ -25,6 +25,17 @@ export const handler = serverless(
           ],
         },
       ],
+      ttl: {
+        // Sessions
+        Session: 1209600, // 14 days in seconds
+        Interaction: 600, // 10 minutes
+        DeviceCode: 600, // 10 minutes
+        // Tokens
+        AuthorizationCode: 60, //  1 minute
+        IdToken: 3600, // 1 hour
+        AccessToken: 86400, // 24 hours
+        Grant: 1209600, // 14 days in seconds
+      },
     },
   })
 )
