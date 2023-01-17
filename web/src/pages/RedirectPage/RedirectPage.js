@@ -2,11 +2,11 @@ import { MetaTags } from '@redwoodjs/web'
 
 import Redirect from 'src/components/Redirect'
 
-const RedirectPage = ({ type, error }) => {
+const RedirectPage = ({ type }) => {
   return (
     <>
       <MetaTags title="Redirect" />
-      <Redirect type={type} error={error} />
+      <Redirect type={type}  />
     </>
   )
 }

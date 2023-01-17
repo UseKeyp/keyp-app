@@ -25,7 +25,7 @@
     "email-templates": "^9.0.0",
     "form-data": "^4.0.0",
     "jwks-rsa": "^2.0.4",
-    "oauth2-server-redwood": "0.2.0",
+    "oauth2-server-redwood": "0.3.2",
     "pkce-challenge": "^3.0.0",
     "plaid": "^10.2.0",
     "react": "^17.0.2",

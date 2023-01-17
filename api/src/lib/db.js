@@ -7,7 +7,7 @@ import { emitLogLevels, handlePrismaLogging } from '@redwoodjs/api/logger'
 
 import { logger } from './logger'
 
-const getIdentifiersFromId = (id) => ({
+export const getIdentifiersFromId = (id) => ({
   userProvider: id.slice(0, id.indexOf('-')),
   userId: id.slice(id.indexOf('-') + 1),
 })

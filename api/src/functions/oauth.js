@@ -2,13 +2,15 @@ import oauth2Server from 'oauth2-server-redwood'
 import serverless from 'serverless-http'
 
 import { db } from 'src/lib/db'
+import jwks from 'src/lib/jwks'
 
 export const handler = serverless(
   oauth2Server(db, {
-    SECURE_KEY: 'boo,foo', // process.env.OAUTH_SECRET_KEY,
-    APP_DOMAIN: 'http://localhost', //process.env.APP_DOMAIN,
-    INTROSPECTION_SECRET: 'foo', //process.env.INTROSPECTION_SECRET,
+    SECURE_KEY: process.env.OAUTH_SECRET_KEY,
+    APP_DOMAIN: process.env.APP_DOMAIN,
+    INTROSPECTION_SECRET: process.env.INTROSPECTION_SECRET,
     routes: { login: '/login', authorize: '/authorize' },
+    jwks,
     config: {
       // OIDC-Provider config, see https://github.com/panva/node-oidc-provider
       clients: [
@@ -23,6 +25,17 @@ export const handler = serverless(
           ],
         },
       ],
+      ttl: {
+        // Sessions
+        Session: 1209600, // 14 days in seconds
+        Interaction: 600, // 10 minutes
+        DeviceCode: 600, // 10 minutes
+        // Tokens
+        AuthorizationCode: 60, //  1 minute
+        IdToken: 3600, // 1 hour
+        AccessToken: 86400, // 24 hours
+        Grant: 1209600, // 14 days in seconds
+      },
     },
   })
 )
