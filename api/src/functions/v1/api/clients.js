@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid'
 
-import { db, getIdentifiersFromId } from 'src/lib/db'
+import { db } from 'src/lib/db'
 
 var express = require('express')
 var router = express.Router()
@@ -21,37 +21,36 @@ const validateOwnerAccess = (developers, userId) => {
 }
 
 router.get('/', async (req, res) => {
-  const { userId, userProvider } = getIdentifiersFromId(req.ctx.sub)
+  const { userProvider, userId } = req.ctx
   const clients = await db.oidc.findMany({
     where: { developers: { some: { userProvider, userId } } },
     include: { developers: true },
   })
-  console.log('clients', clients[0].developers)
   res.send(
     clients
       .filter((client) => !client.disabled)
       .map((client) => ({
         ...client,
-        accessLevel: getAccessLevel(client.developers, userId),
+        accessLevel: getAccessLevel(client.developers, req.ctx.userId),
       }))
   )
 })
 
-// export const updateClient = async ({ id, redirectUrls }) => {
-//   const client = await db.oidc.findUnique({
-//     where: { id_type: { id, type: 7 } },
-//     select: { developers: true, payload: true },
-//   })
-//   if (!client) throw new Error('Client not found')
-
-//   validateEditAccess(client.developers)
-//   const list = redirectUrls.split(',').map((url) => url.trim())
-//   // TODO validate list as https urls, or http for localhost
-//   return db.oidc.update({
-//     where: { id_type: { id, type: 7 } },
-//     data: { payload: { ...client.payload, redirect_uris: list } },
-//   })
-// }
+router.patch('/:clientId', async (req, res) => {
+  const { clientId } = req.params
+  const client = await db.oidc.findUnique({
+    where: { id_type: { id: clientId, type: 7 } },
+    select: { developers: true, payload: true },
+  })
+  if (!client) throw new Error('Client not found')
+  validateEditAccess(client.developers, req.ctx.userId)
+  const list = redirectUrls.split(',').map((url) => url.trim())
+  // TODO validate list as https urls, or http for localhost
+  return db.oidc.update({
+    where: { id_type: { id, type: 7 } },
+    data: { payload: { ...client.payload, redirect_uris: list } },
+  })
+})
 
 // Create client
 router.post('/', async (req, res) => {
@@ -73,7 +72,7 @@ router.post('/', async (req, res) => {
       accessLevel: 'OWNER',
     },
   })
-  res.send({ client })
+  res.send(client)
 })
 
 module.exports = router

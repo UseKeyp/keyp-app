@@ -4,6 +4,8 @@ import path from 'path'
 import express from 'express'
 import fetch from 'node-fetch'
 
+import { getIdentifiersFromId } from 'src/lib/db'
+
 import clients from './clients'
 import router from './router'
 
@@ -38,9 +40,11 @@ const app = (db, settings) => {
         }),
       }
     ).then((res) => res.json())
-    console.log(response)
     if (!response.active) return res.status(401).send('Unauthorized')
+    const { userId, userProvider } = getIdentifiersFromId(response.sub)
     req.ctx = {
+      userId,
+      userProvider,
       sub: response.sub,
       scope: response.scope,
       clientId: response.client_id,
