@@ -38,31 +38,32 @@ router.get('/', async (req, res) => {
 
 router.patch('/:clientId', async (req, res) => {
   const { clientId } = req.params
-  const client = await db.oidc.findUnique({
+  const { redirect_uris } = req.body
+
+  if (!redirect_uris) throw new Error('Missing redirect_uris')
+
+  let client = await db.oidc.findUnique({
     where: { id_type: { id: clientId, type: 7 } },
     select: { developers: true, payload: true },
   })
   if (!client) throw new Error('Client not found')
   validateEditAccess(client.developers, req.ctx.userId)
-  const list = redirectUrls.split(',').map((url) => url.trim())
   // TODO validate list as https urls, or http for localhost
-  return db.oidc.update({
-    where: { id_type: { id, type: 7 } },
-    data: { payload: { ...client.payload, redirect_uris: list } },
+  client = await db.oidc.update({
+    where: { id_type: { id: clientId, type: 7 } },
+    data: { payload: { ...client.payload, redirect_uris } },
+    select: { developers: true, payload: true, id: true },
   })
+  res.send(client)
 })
 
 // Create client
 router.post('/', async (req, res) => {
   const id = uuidv4()
   const client = await db.oidc.create({
-    data: {
-      id,
-      type: 7,
-      payload: { client_id: id, redirect_uris: [] },
-    },
+    data: { id, type: 7, payload: { client_id: id, redirect_uris: [] } },
   })
-  const { userId, userProvider } = getIdentifiersFromId(req.ctx.sub)
+  const { userProvider, userId } = req.ctx
   await db.clientsOnDevelopers.create({
     data: {
       user: {

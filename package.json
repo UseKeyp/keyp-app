@@ -57,7 +57,6 @@
   "packageManager": "yarn@3.3.0",
   "resolutions": {
     "core-js": "3.27.1",
-    "ejs": "3.1.8",
-    "oauth2-server-redwood": "portal:/home/dev/repos/oauth2-server-redwood/packages/oauth2-server"
+    "ejs": "3.1.8"
   }
 }

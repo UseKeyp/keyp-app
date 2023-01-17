@@ -1,6 +1,7 @@
 import assert from 'assert'
 import path from 'path'
 
+import bodyParser from 'body-parser'
 import express from 'express'
 import fetch from 'node-fetch'
 
@@ -54,8 +55,15 @@ const app = (db, settings) => {
 
   // Express docs https://expressjs.com/en/5x/api.html#app.settings.table
   const app = express()
+
+  // Configuration
   app.set('trust proxy', true)
+
+  // Middleware
   app.use(validateToken)
+  app.use(bodyParser.json())
+
+  // Routes
   app.use(`/${settings.version}/clients`, clients) // Prefix routes eg. /v1/sanity-check
   app.use(`/${settings.version}`, router) // Prefix routes eg. /v1/sanity-check
 
