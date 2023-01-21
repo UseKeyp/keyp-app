@@ -1,19 +1,11 @@
 import bodyParser from 'body-parser'
 import express from 'express'
-import fetch from 'node-fetch'
-
-import { getIdentifiersFromId } from 'src/lib/db'
 
 import { validateToken } from './middleware/validation'
 import clients from './routes/clients'
 import health from './routes/health'
 import tokens from './routes/tokens'
 import users from './routes/users'
-
-const encodeBody = (body) =>
-  Object.keys(body)
-    .map((key) => encodeURIComponent(key) + '=' + encodeURIComponent(body[key]))
-    .join('&')
 
 const app = (db, settings) => {
   // TODO: set cache policy
@@ -30,7 +22,7 @@ const app = (db, settings) => {
   app.set('trust proxy', true)
 
   // Middleware
-  app.use(validateToken)
+  app.use(validateToken(settings))
   app.use(bodyParser.json())
 
   // Routes

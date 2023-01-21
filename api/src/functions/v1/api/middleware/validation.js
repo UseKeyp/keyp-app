@@ -1,4 +1,13 @@
-export const validateToken = async (req, res, next) => {
+import fetch from 'node-fetch'
+
+import { getIdentifiersFromId } from 'src/lib/db'
+
+const encodeFormBody = (body) =>
+  Object.keys(body)
+    .map((key) => encodeURIComponent(key) + '=' + encodeURIComponent(body[key]))
+    .join('&')
+
+export const validateToken = (settings) => async (req, res, next) => {
   const token = req?.headers?.authorization?.split(' ')[1]
   if (!token)
     return res.status(401).send('Unauthorized. No access token provided')
@@ -9,7 +18,7 @@ export const validateToken = async (req, res, next) => {
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
       },
-      body: encodeBody({
+      body: encodeFormBody({
         token,
         client_id: 'api-server',
         client_secret: process.env.INTROSPECTION_SECRET,
@@ -17,7 +26,6 @@ export const validateToken = async (req, res, next) => {
     }
   ).then((res) => res.json())
   if (!response.active) return res.status(401).send('Unauthorized')
-  console.log(response)
   const { userId, userProvider } = getIdentifiersFromId(response.sub)
   req.ctx = {
     userId,
