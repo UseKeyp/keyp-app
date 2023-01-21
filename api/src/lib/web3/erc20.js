@@ -65,31 +65,26 @@ export const getErc20Balance = async ({ tokenAddress, address }) => {
 }
 
 export const transferErc20 = async ({
-  fromUserId,
-  toAddress,
-  toUserId,
+  fromUser,
+  toUser,
   amount,
   tokenAddress,
 }) => {
-  if (!toAddress && !toUserId && !context.currentUser)
-    throw 'No toAddress or toUserId provided'
-  if (toAddress && toUserId) throw 'Both toAddress and toUserId provided'
+  if (toUser) throw 'No toUser provided'
+  if (fromUser) throw 'No fromUser provided'
   if (!amount) throw 'No amount provided'
-  if (!fromUserId) throw 'No fromUserId provided'
   if (!tokenAddress) throw 'No tokenAddress provided'
+
   let contract
   try {
-    let sender = context.currentUser
-    if (fromUserId) sender = await fetchUser(fromUserId)
-    let receiver = { address: toAddress }
-    if (!toAddress) receiver = await fetchUser(toUserId)
-
-    const gettingGas = await checkGasAndAirdrop({ user: sender })
+    const { address: toAddress } = toUser
+    const { address: fromAddress } = fromUser
+    const gettingGas = await checkGasAndAirdrop({ user: fromUser })
     if (gettingGas)
       throw "Try again in a few minutes, we're sending some gas to your wallet."
 
     contract = getTokenContract({ tokenAddress })
-    const bal = await contract.balanceOf(sender.address)
+    const bal = await contract.balanceOf(fromAddress)
 
     let amountBn
     let balance
@@ -125,13 +120,10 @@ export const transferErc20 = async ({
     }
 
     const unsignedTx = await contract.populateTransaction.transfer(
-      toAddress || receiver.address,
+      toAddress,
       amountBn
     )
-    const tx = await userSendTransaction({
-      userId: fromUserId,
-      unsignedTx,
-    })
+    const tx = await userSendTransaction({ userId: fromUser.id, unsignedTx })
     return tx
   } catch (e) {
     logger.error(e)

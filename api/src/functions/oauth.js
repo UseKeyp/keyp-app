@@ -16,13 +16,8 @@ export const handler = serverless(
       clients: [
         {
           // Example client for testing, see https://oauth2-client-redwood-eta.vercel.app/login
-          client_id: '123',
-          redirect_uris: [
-            'https://jwt.io',
-            'https://oauthdebugger.com/debug',
-            'http://0.0.0.0:8910/redirect/oauth2_server_redwood',
-            'https://oauth2-client-redwood-eta.vercel.app/redirect/node_oidc',
-          ],
+          client_id: 'dev-portal',
+          redirect_uris: ['http://0.0.0.0:8910/redirect/keyp'],
         },
       ],
       ttl: {
