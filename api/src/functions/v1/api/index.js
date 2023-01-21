@@ -3,6 +3,7 @@ import express from 'express'
 
 import { validateToken } from './middleware/validation'
 import clients from './routes/clients'
+import contracts from './routes/contracts'
 import health from './routes/health'
 import tokens from './routes/tokens'
 import users from './routes/users'
@@ -26,9 +27,11 @@ const app = (db, settings) => {
   app.use(bodyParser.json())
 
   // Routes
-  app.use(`/${settings.version}/tokens`, tokens) // Prefix routes eg. /v1/sanity-check
-  app.use(`/${settings.version}/clients`, clients) // Prefix routes eg. /v1/sanity-check
-  app.use(`/${settings.version}/users`, users) // Prefix routes eg. /v1/sanity-check
+  app.use(`/${settings.version}/tokens`, tokens)
+  app.use(`/${settings.version}/clients`, clients)
+  app.use(`/${settings.version}/users`, users)
+  app.use(`/${settings.version}/contracts`, contracts)
+
   app.use(`/${settings.version}`, health) // sanity-check
 
   return app

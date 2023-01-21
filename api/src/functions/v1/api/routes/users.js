@@ -5,6 +5,13 @@ import { getErc20Balance } from 'src/lib/web3/erc20'
 var express = require('express')
 var router = express.Router()
 
+router.get('/:userId', async (req, res) => {
+  const { userId } = req.params
+  const user = await fetchUser(userId)
+
+  res.send(user)
+})
+
 router.get('/:userId/balance', async (req, res) => {
   const { userId } = req.params
   const user = await fetchUser(userId)
@@ -27,13 +34,6 @@ router.get('/:userId/balance/:tokenAddress', async (req, res) => {
   })
 
   res.send({ [tokenAddress.toLowerCase()]: tokenBalanceData })
-})
-
-router.get('/:userId', async (req, res) => {
-  const { userId } = req.params
-  const user = await fetchUser(userId)
-
-  res.send(user)
 })
 
 module.exports = router
