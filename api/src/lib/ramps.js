@@ -3,14 +3,14 @@ import { EnvelopError } from '@envelop/core'
 import { logger } from 'src/lib/logger'
 import { encodeBody } from 'src/lib/oAuth/helpers'
 import { userSignMesage } from 'src/lib/web3/wallets'
-import { createDepositReservation } from 'src/lib/wyre'
+
 const MT_PELERIN = 'MT_PELERIN'
-const WYRE = 'WYRE'
 const RAMP_NETWORK = 'RAMP_NETWORK'
 const WERT = 'WERT'
-export const RAMP_DEPOSIT_TYPES_ENABLED = [WERT, MT_PELERIN, WYRE, RAMP_NETWORK]
 
-export const getRampOffUrl = async ({ _type }) => {
+export const RAMP_DEPOSIT_TYPES_ENABLED = [WERT, MT_PELERIN, RAMP_NETWORK]
+
+export const getRampOffUrl = async ({ _type, _user }) => {
   // let url
   // const address = context.currentUser.address
   // if (type === WYRE) {
@@ -18,17 +18,17 @@ export const getRampOffUrl = async ({ _type }) => {
   // return url
 }
 
-export const getRampOnUrl = async ({ type }) => {
+export const getRampOnUrl = async ({ type, user }) => {
   try {
     if (!RAMP_DEPOSIT_TYPES_ENABLED.includes(type))
       throw new EnvelopError(`Ramp type "${type}" is not supported.`)
     let url
-    const address = context.currentUser.address
+    const address = user.address
     if (type === MT_PELERIN) {
       const code = Math.floor(Math.random() * 9999)
       const message = `MtPelerin-${code}`
       const signature = await userSignMesage({
-        userId: context.currentUser.id,
+        userId: user.id,
         message,
       })
       const hash = Buffer.from(signature.replace('0x', ''), 'hex').toString(
@@ -43,7 +43,7 @@ export const getRampOnUrl = async ({ type }) => {
           bdc: 'USDC',
           crys: 'USDC',
           tabs: 'buy',
-          mylogo: 'https://treasure.chess.com/logo.png',
+          mylogo: `${process.env.APP_DOMAIN}/logo.png`,
           primary: '#47433f',
           success: '#0096c6',
           // TODO:  add referral code
@@ -64,8 +64,6 @@ export const getRampOnUrl = async ({ type }) => {
           // Use for testing
           //'https://ri-widget-staging.firebaseapp.com/',
         })
-    } else if (type === WYRE) {
-      ;({ url } = await createDepositReservation(address))
     } else if (type === WERT) {
       url = `${process.env.APP_DOMAIN}/wert?address=${address}`
     }
