@@ -1,8 +1,8 @@
 {
-  "name": "Treasure Chess",
-  "description": "Play Create and Collect",
-  "theme_color": "#47433f",
-  "background_color": "#47433f",
+  "name": "Keyp App",
+  "description": "Powerful Web3 Onboarding for Games and Apps",
+  "theme_color": "#1499DA",
+  "background_color": "#ffffff",
   "display": "standalone",
   "scope": "/",
   "start_url": "/profile",
@@ -33,7 +33,7 @@
       "type": "image/png"
     },
     {
-      "src": "images/icons/icon-512.png",
+      "src": "images/icons/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
