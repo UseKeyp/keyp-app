@@ -5,10 +5,14 @@ import { db } from 'src/lib/db'
 import { APP_DOMAIN } from 'src/lib/helpers'
 import jwks from 'src/lib/jwks'
 
+let redirect_uris = ['http://0.0.0.0:8910/redirect/keyp']
+if (process.env.ENVIRONMENT === 'prod')
+  redirect_uris = ['https://dashboard.usekeyp.com/redirect/keyp']
+
 export const handler = serverless(
   oauth2Server(db, {
     SECURE_KEY: process.env.OAUTH_SECRET_KEY,
-    APP_DOMAIN: APP_DOMAIN,
+    APP_DOMAIN,
     INTROSPECTION_SECRET: process.env.INTROSPECTION_SECRET,
     routes: { login: '/login', authorize: '/authorize' },
     jwks,
@@ -18,11 +22,7 @@ export const handler = serverless(
         {
           // Example client for testing, see https://oauth2-client-redwood-eta.vercel.app/login
           client_id: 'dev-portal',
-          redirect_uris: [
-            'http://0.0.0.0:8910/redirect/keyp',
-            'https://dashboard.usekeyp.com/redirect/keyp',
-            'https://keyp-dev-portal.vercel.app/redirect/keyp',
-          ],
+          redirect_uris,
         },
       ],
       ttl: {
