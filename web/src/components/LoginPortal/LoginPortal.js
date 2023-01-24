@@ -58,7 +58,7 @@ const LoginPortal = () => {
           <Icon name="discord" />
         </Button>
         <Button
-          onClick={() => onSubmitSignUp('NODE_OIDC')}
+          onClick={() => onSubmitSignUp('GOOGLE')}
           classNameVariant="hover:bg-[#4285F4] hover:border-[#4285F4] w-[327px]"
           borderColor="border-[#E5E7EB]"
           fluid={true}
@@ -66,7 +66,7 @@ const LoginPortal = () => {
           <Icon name="google" />
         </Button>
         <Button
-          onClick={() => onSubmitSignUp('NODE_OIDC')}
+          onClick={() => onSubmitSignUp('CHESS')}
           classNameVariant="hover:bg-[#6c9d41] hover:border-[#6c9d41] w-[327px]"
           borderColor="border-[#E5E7EB]"
           fluid={false}
@@ -78,6 +78,16 @@ const LoginPortal = () => {
             name="chess_com"
           />
         </Button>
+        {process.env.ENVIRONMENT !== 'prod' && (
+          <Button
+            onClick={() => onSubmitSignUp('NODE_OIDC')}
+            classNameVariant="hover:bg-[#4285F4] hover:border-[#4285F4] w-[327px] "
+            borderColor="border-[#E5E7EB]"
+            fluid={true}
+          >
+            <p className='text-black'>Test Provider</p>
+          </Button>
+        )}
         {errorText && <div className="mt-2 rw-cell-error">{errorText}</div>}
       </div>
     </div>

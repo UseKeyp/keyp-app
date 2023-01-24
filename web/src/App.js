@@ -4,7 +4,6 @@ import { AuthProvider } from '@redwoodjs/auth'
 import { FatalErrorBoundary, RedwoodProvider } from '@redwoodjs/web'
 import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
 
-import LandingModal from 'src/components/LandingModal'
 import FatalErrorPage from 'src/pages/FatalErrorPage'
 import Routes from 'src/Routes'
 import { logIn, logOut } from 'src/utils/auth/client'
@@ -49,7 +48,6 @@ const App = () => (
           <RedwoodApolloProvider
             graphQLClientConfig={{ httpLinkConfig: { credentials: 'include' } }}
           >
-            <LandingModal />
 
             <Routes />
           </RedwoodApolloProvider>

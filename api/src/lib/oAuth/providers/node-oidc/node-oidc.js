@@ -8,7 +8,10 @@ import { encodeBody, getExpiration } from 'src/lib/oAuth/helpers'
 import { fetchUser } from 'src/lib/users'
 
 export const NODE_OIDC = 'NODE_OIDC'
-const NODE_OIDC_API_DOMAIN = process.env.NODE_OIDC_API_DOMAIN
+
+let NODE_OIDC_API_DOMAIN = process.env.NODE_OIDC_API_DOMAIN
+if (['staging', 'prod'].includes(process.env.ENVIRONMENT))
+  NODE_OIDC_API_DOMAIN = 'https://node-oidc-provider-example.vercel.app'
 
 export const NODE_OIDC_OAUTH_URL_AUTHORIZE = `${NODE_OIDC_API_DOMAIN}/auth`
 
