@@ -7,13 +7,9 @@ import { encodeBody, getExpiration } from 'src/lib/oAuth/helpers'
 import { fetchUser } from 'src/lib/users'
 
 export const GOOGLE = 'GOOGLE'
-const GOOGLE_API_DOMAIN = process.env.GOOGLE_API_DOMAIN
-const GOOGLE_TOKEN_DOMAIN = process.env.GOOGLE_TOKEN_DOMAIN
-const GOOGLE_USER_INFO_DOMAIN = process.env.GOOGLE_USER_INFO_DOMAIN
+export const GOOGLE_OAUTH_URL_AUTHORIZE = `https://accounts.google.com/o/oauth2/auth`
 
-export const GOOGLE_OAUTH_URL_AUTHORIZE = `${GOOGLE_API_DOMAIN}/auth`
-
-const GOOGLE_OAUTH_URL_TOKEN = `${GOOGLE_TOKEN_DOMAIN}/token`
+const GOOGLE_OAUTH_URL_TOKEN = `https://oauth2.googleapis.com/token`
 
 const GOOGLE_SCOPE =
   'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile openid'
@@ -81,9 +77,12 @@ export const onSubmitCode = async (code, { codeVerifier }) => {
 
 export const onConnected = async ({ accessToken }) => {
   try {
-    const userDetails = await fetch(`${GOOGLE_USER_INFO_DOMAIN}/me`, {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    }).then((res) => {
+    const userDetails = await fetch(
+      `https://www.googleapis.com/userinfo/v2/me`,
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      }
+    ).then((res) => {
       if (res.status != 200)
         throw 'GOOGLE authorization failed, or secret invalid'
       return res.json()
