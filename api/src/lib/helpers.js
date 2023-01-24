@@ -1,8 +1,6 @@
 import { EnvelopError } from '@envelop/core'
 import ProfanityFilter from 'bad-words'
 
-import { logger } from 'src/lib/logger'
-
 const profanityFilter = new ProfanityFilter()
 
 profanityFilter.removeWords('Pawn', 'pawn')
@@ -32,9 +30,6 @@ export const isOlderThanResubmitTimeout = (date) => {
   // var TEN_MIN = 0.2 * 60 * 1000
   var TWO_HOURS = 60 * 60 * 1000 * 2
   const now = new Date()
-  logger.debug({ custom: date }, 'date')
-  logger.debug({ custom: now }, 'now')
-  logger.debug(`TWO_HOURS ${TWO_HOURS}`)
   return now - new Date(date) > TWO_HOURS
 }
 
