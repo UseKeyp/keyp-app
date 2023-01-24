@@ -15,7 +15,8 @@ export const GOOGLE_OAUTH_URL_AUTHORIZE = `${GOOGLE_API_DOMAIN}/auth`
 
 const GOOGLE_OAUTH_URL_TOKEN = `${GOOGLE_TOKEN_DOMAIN}/token`
 
-const GOOGLE_SCOPE = 'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile openid'
+const GOOGLE_SCOPE =
+  'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile openid'
 const GOOGLE_REDIRECT_URI = process.env.APP_DOMAIN + '/redirect/google'
 
 const responseType = 'code'
@@ -40,7 +41,10 @@ export const onSubmitCode = async (code, { codeVerifier }) => {
     const response = await fetch(GOOGLE_OAUTH_URL_TOKEN, {
       method: 'post',
       body: encodedBody,
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded', 'Referrer-Policy': 'no-referrer-when-downgrade' },
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Referrer-Policy': 'no-referrer-when-downgrade',
+      },
     }).then((res) => {
       if (res.status != 200)
         throw `GOOGLE API failed for /token. Returned ${res.status} - ${res.statusText}`

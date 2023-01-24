@@ -16,4 +16,12 @@ export const providers = {
   [GOOGLE]: googleProvider,
 }
 
-export const types = [DISCORD, COINBASE, CHESS, TWITCH, PLAID, NODE_OIDC, GOOGLE]
+export const types = [
+  DISCORD,
+  COINBASE,
+  CHESS,
+  TWITCH,
+  PLAID,
+  NODE_OIDC,
+  GOOGLE,
+]

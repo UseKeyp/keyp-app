@@ -6,7 +6,7 @@ const RedirectPage = ({ type }) => {
   return (
     <>
       <MetaTags title="Redirect" />
-      <Redirect type={type}  />
+      <Redirect type={type} />
     </>
   )
 }
