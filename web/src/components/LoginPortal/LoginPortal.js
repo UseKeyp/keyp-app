@@ -58,12 +58,20 @@ const LoginPortal = () => {
           <Icon name="discord" />
         </Button>
         <Button
-          onClick={() => onSubmitSignUp('NODE_OIDC')}
+          onClick={() => onSubmitSignUp('GOOGLE')}
           classNameVariant="hover:bg-[#4285F4] hover:border-[#4285F4] w-[327px]"
           borderColor="border-[#E5E7EB]"
           fluid={true}
         >
           <Icon name="google" />
+        </Button>
+        <Button
+          onClick={() => onSubmitSignUp('NODE_OIDC')}
+          classNameVariant="hover:bg-[#4285F4] hover:border-[#4285F4] w-[327px]"
+          borderColor="border-[#E5E7EB]"
+          fluid={true}
+        >
+          <div className="text-black">NODE_OIDC</div>
         </Button>
         <Button
           onClick={() => onSubmitSignUp('NODE_OIDC')}
