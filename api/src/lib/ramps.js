@@ -1,5 +1,6 @@
 import { EnvelopError } from '@envelop/core'
 
+import { APP_DOMAIN } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
 import { encodeBody } from 'src/lib/oAuth/helpers'
 import { userSignMesage } from 'src/lib/web3/wallets'
@@ -43,7 +44,7 @@ export const getRampOnUrl = async ({ type, user }) => {
           bdc: 'USDC',
           crys: 'USDC',
           tabs: 'buy',
-          mylogo: `${process.env.APP_DOMAIN}/logo.png`,
+          mylogo: `${APP_DOMAIN}/logo.png`,
           primary: '#47433f',
           success: '#0096c6',
           // TODO:  add referral code
@@ -60,12 +61,12 @@ export const getRampOnUrl = async ({ type, user }) => {
           hostLogoUrl: 'https://treasure.chess.com/logo.png',
           hostAppName: 'Treasure Chess',
           // swapAsset: 'MATIC_USDC',
-          finalUrl: process.env.APP_DOMAIN + '/redirect/ramp_network',
+          finalUrl: APP_DOMAIN + '/redirect/ramp_network',
           // Use for testing
           //'https://ri-widget-staging.firebaseapp.com/',
         })
     } else if (type === WERT) {
-      url = `${process.env.APP_DOMAIN}/wert?address=${address}`
+      url = `${APP_DOMAIN}/wert?address=${address}`
     }
 
     // TODO:  implement database update

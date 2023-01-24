@@ -1,5 +1,6 @@
 import { db } from 'src/lib/db'
 import { isProduction } from 'src/lib/helpers'
+import { APP_DOMAIN } from 'src/lib/helpers'
 import { processMintPurchaseOrder } from 'src/lib/mintPurchases'
 import Sentry from 'src/lib/sentry'
 
@@ -9,7 +10,7 @@ const stripe = require('stripe')(
 const STRIPE_WEBHOOK_SECRET = isProduction
   ? process.env.STRIPE_WEBHOOK_SECRET
   : 'whsec_9b44ae98a6e0e6b55e47482362f86e6d03f0aaabc0a971d589e14eb2f45cd055'
-const YOUR_DOMAIN = process.env.APP_DOMAIN
+const YOUR_DOMAIN = APP_DOMAIN
 
 export const createCheckoutSession = async ({ metadata, email }) => {
   const session = await stripe.checkout.sessions.create({

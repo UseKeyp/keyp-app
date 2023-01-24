@@ -4,6 +4,7 @@ import { AuthenticationError } from '@redwoodjs/graphql-server'
 
 import { db } from 'src/lib/db'
 import { fetchDiscord } from 'src/lib/discord'
+import { APP_DOMAIN } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
 import { encodeBody, getExpiration } from 'src/lib/oAuth/helpers'
 import Sentry from 'src/lib/sentry'
@@ -16,7 +17,7 @@ export const DISCORD_OAUTH_URL_AUTHORIZE =
 
 const DISCORD_OAUTH_URL_TOKEN = 'https://discord.com/api/oauth2/token'
 const DISCORD_SCOPE = 'identify email'
-const DISCORD_REDIRECT_URI = process.env.APP_DOMAIN + '/redirect/discord'
+const DISCORD_REDIRECT_URI = APP_DOMAIN + '/redirect/discord'
 
 const responseType = 'code'
 export const params = {

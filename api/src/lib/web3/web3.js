@@ -5,6 +5,7 @@ import { db } from 'src/lib/db'
 import { sendDiscordAdminAlert } from 'src/lib/discord/admin'
 import { fetchGame } from 'src/lib/games'
 import { isProduction, isOlderThanResubmitTimeout } from 'src/lib/helpers'
+import { APP_DOMAIN } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
 import { updateMauticContactMinted } from 'src/lib/mautic'
 import { pinTreasure } from 'src/lib/pinata/pinata'
@@ -34,7 +35,7 @@ const alertDiscord = async (treasure) => {
       embed: {
         color: 8963403,
         title: `✨ Mint success!`,
-        url: `${process.env.APP_DOMAIN}/treasures/${treasure.tokenId}`,
+        url: `${APP_DOMAIN}/treasures/${treasure.tokenId}`,
         description: `${EXPLORER_BASE_URL}token/${treasure.id}`,
         fields: [
           { name: 'tokenId', value: treasure.tokenId, inline: true },

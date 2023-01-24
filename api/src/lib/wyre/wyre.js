@@ -3,6 +3,7 @@ import fetch from 'node-fetch'
 import { db } from 'src/lib/db'
 import { sendDiscordAdminAlert } from 'src/lib/discord/admin'
 import { isProduction } from 'src/lib/helpers'
+import { APP_DOMAIN } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
 import { processMintPurchaseOrder } from 'src/lib/mintPurchases'
 import Sentry from 'src/lib/sentry'
@@ -21,10 +22,10 @@ const API_URL = isProduction
 const API_URL_V2 = isProduction
   ? 'https://api.sendwyre.com/v2'
   : 'https://api.testwyre.com/v2'
-const WYRE_WEBHOOK_URL = process.env.APP_DOMAIN + '/api/wyre'
+const WYRE_WEBHOOK_URL = APP_DOMAIN + '/api/wyre'
 
-const WYRE_REDIRECT_URI = `${process.env.APP_DOMAIN}/redirect/wyre`
-const WYRE_REDIRECT_URI_ERROR = `${process.env.APP_DOMAIN}/redirect/wyre?error=true`
+const WYRE_REDIRECT_URI = `${APP_DOMAIN}/redirect/wyre`
+const WYRE_REDIRECT_URI_ERROR = `${APP_DOMAIN}/redirect/wyre?error=true`
 
 const WYRE_TOKEN_SYMBOL = 'MUSDC'
 
