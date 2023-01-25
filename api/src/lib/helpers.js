@@ -15,12 +15,6 @@ export const isDevelopment =
 
 export const isProduction = !isDevelopment
 
-let appDomain = process.env.APP_DOMAIN
-if (process.env.VERCEL) {
-  appDomain = `https://${process.env.VERCEL_URL}`
-}
-export const APP_DOMAIN = appDomain
-
 export const isExpired = (expiration) => {
   return new Date(expiration) > new Date()
 }
@@ -51,9 +45,15 @@ export const validateTreasureTitle = (string) => {
     )
 }
 
+let appDomain = process.env.APP_DOMAIN
+if (process.env.REDWOOD_ENV_VERCEL_URL) {
+  appDomain = `https://${process.env.REDWOOD_ENV_VERCEL_URL}`
+}
+export const APP_DOMAIN = appDomain
+
 export const cors = {
   origin: isProduction
-    ? process.env.APP_DOMAIN
+    ? APP_DOMAIN
     : [
         'http://0.0.0.0:8910',
         'http://localhost:8910',
