@@ -3,7 +3,6 @@
     "silent": true
   },
   "rewrites": [
-    { "source": "/oauth/(.*)", "destination": "/api/oauth/$1" },
     {
       "source": "/:path*",
       "has": [
