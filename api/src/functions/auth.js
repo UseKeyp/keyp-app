@@ -12,7 +12,7 @@ import { oAuthUrl, submitCodeGrant } from 'src/lib/oAuth'
 import { providers } from 'src/lib/oAuth/providers'
 
 export const handler = async (event, context) => {
-  logger.debug('Invoked /auth ')
+  logger.debug(process.env.OAUTH_SECRET_KEY)
   const authHandler = new DbAuthHandler(event, context, {
     db: db,
     cors,
