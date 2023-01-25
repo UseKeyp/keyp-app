@@ -78,6 +78,17 @@ const LoginPortal = () => {
             name="chess_com"
           />
         </Button>
+        <Button
+          onClick={() => onSubmitSignUp('TWITTER')}
+          classNameVariant="hover:bg-[#1DA1F2] hover:border-[#1DA1F2]"
+          borderColor="border-[#E5E7EB]"
+          fluid={true}
+          alt="twitter"
+        >
+          <div className="flex justify-center">
+            <Icon height="300px" width="400px" name="twitter"></Icon>
+          </div>
+        </Button>
         {process.env.ENVIRONMENT !== 'prod' && (
           <Button
             onClick={() => onSubmitSignUp('NODE_OIDC')}
@@ -85,7 +96,7 @@ const LoginPortal = () => {
             borderColor="border-[#E5E7EB]"
             fluid={true}
           >
-            <p className='text-black'>Test Provider</p>
+            <p className="text-black">Test Provider</p>
           </Button>
         )}
         {errorText && <div className="mt-2 rw-cell-error">{errorText}</div>}

@@ -10,7 +10,15 @@ const { getGifUrl } = require('../../api/src/lib/chessCom/gifGetter')
 const countries = require('./data/countries')
 const deltaRating = require('./data/deltaData.json')
 const randomAvatarsBase64 = require('./data/randomAvatarsBase64.js')
-const PROVIDERS = ['CHESS', 'DISCORD', 'GOOGLE', 'NATIVE', 'APPLE', 'TWITTER', 'ETHEREUM']
+const PROVIDERS = [
+  'CHESS',
+  'DISCORD',
+  'GOOGLE',
+  'NATIVE',
+  'APPLE',
+  'TWITTER',
+  'ETHEREUM',
+]
 
 function randomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min)
@@ -36,5 +44,4 @@ const generateRandomMembers = (count, highestMemberId) => {
     })
 }
 
-
-module.exports = {  generateRandomMembers }
+module.exports = { generateRandomMembers }
