@@ -4,14 +4,14 @@
   },
   "rewrites": [
     {
-      "source": "/:path*",
+      "source": "/v1/:path*",
       "has": [
         {
           "type": "host",
           "value": "api.usekeyp.com"
         }
       ],
-      "destination": "/api/:path*"
+      "destination": "/api/v1"
     },
     {
       "source": "/:path*",
@@ -21,7 +21,7 @@
           "value": "oauth.usekeyp.com"
         }
       ],
-      "destination": "/api/oauth/:path*"
+      "destination": "/api/oauth"
     }
   ]
 }
