@@ -24,3 +24,4 @@ deleteme.*
 *.deleteme.*
 deleteme/
 locales/
+.vercel

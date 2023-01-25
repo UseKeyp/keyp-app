@@ -3,6 +3,26 @@
     "silent": true
   },
   "rewrites": [
-    { "source": "/oauth/(.*)", "destination": "/api/oauth/$1" }
+    { "source": "/oauth/(.*)", "destination": "/api/oauth/$1" },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "api.usekeyp.com"
+        }
+      ],
+      "destination": "/api/:path*"
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "oauth.usekeyp.com"
+        }
+      ],
+      "destination": "/api/oauth/:path*"
+    }
   ]
 }
