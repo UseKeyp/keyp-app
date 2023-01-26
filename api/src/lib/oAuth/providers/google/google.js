@@ -1,7 +1,10 @@
 import fetch from 'cross-fetch'
 import { decode as decodeJwt } from 'jsonwebtoken'
 
+import { AuthenticationError } from '@redwoodjs/graphql-server'
+
 import { db } from 'src/lib/db'
+import { APP_DOMAIN } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
 import { encodeBody, getExpiration } from 'src/lib/oAuth/helpers'
 import { fetchUser } from 'src/lib/users'
@@ -11,15 +14,15 @@ export const GOOGLE_OAUTH_URL_AUTHORIZE = `https://accounts.google.com/o/oauth2/
 
 const GOOGLE_OAUTH_URL_TOKEN = `https://oauth2.googleapis.com/token`
 
-const GOOGLE_SCOPE =
-  'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile openid'
-const GOOGLE_REDIRECT_URI = process.env.APP_DOMAIN + '/redirect/google'
+const GOOGLE_SCOPE = 'email profile openid'
+const GOOGLE_REDIRECT_URI = APP_DOMAIN + '/redirect/google'
 
 const responseType = 'code'
 const params = {
   client_id: process.env.GOOGLE_CLIENT_ID,
   scope: GOOGLE_SCOPE,
   redirect_uri: GOOGLE_REDIRECT_URI,
+  access_type: 'offline',
 }
 
 export const onSubmitCode = async (code, { codeVerifier }) => {
@@ -50,6 +53,7 @@ export const onSubmitCode = async (code, { codeVerifier }) => {
       throw `${response.error} - ${response.hint}. ${response.message}`
 
     const {
+      refresh_token: refreshToken,
       access_token: accessToken,
       expires_in: expiration,
       id_token: idToken,
@@ -65,6 +69,7 @@ export const onSubmitCode = async (code, { codeVerifier }) => {
 
     return {
       accessToken,
+      refreshToken,
       accessTokenExpiration: getExpiration(expiration),
       idToken,
       decoded,
@@ -75,7 +80,7 @@ export const onSubmitCode = async (code, { codeVerifier }) => {
   }
 }
 
-export const onConnected = async ({ accessToken }) => {
+export const onConnected = async ({ refreshToken, accessToken }) => {
   try {
     const userDetails = await fetch(
       `https://www.googleapis.com/userinfo/v2/me`,
@@ -87,7 +92,11 @@ export const onConnected = async ({ accessToken }) => {
         throw 'GOOGLE authorization failed, or secret invalid'
       return res.json()
     })
-    logger.debug({ custom: userDetails }, 'User details')
+
+    if (!userDetails.verified_email)
+      throw new AuthenticationError(
+        `Verify your email with Google and try again.`
+      )
 
     const user = await fetchUser(
       userDetails.id,
@@ -97,7 +106,7 @@ export const onConnected = async ({ accessToken }) => {
 
     await db.user.update({
       where: { id: user.id },
-      data: { email: userDetails.email, accessToken },
+      data: { email: userDetails.email, accessToken, refreshToken },
     })
 
     return user
