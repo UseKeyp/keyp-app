@@ -10752,9 +10752,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@usekeyp/components-soft-ui-testing@npm:0.1.0":
+"@usekeyp/components-soft-ui@npm:0.1.0":
   version: 0.1.0
-  resolution: "@usekeyp/components-soft-ui-testing@npm:0.1.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40usekeyp%2Fcomponents-soft-ui-testing%2F0.1.0%2Fa95aeb9a9ce2a7d482091d7cfa42f8e938eb18fa"
+  resolution: "@usekeyp/components-soft-ui@npm:0.1.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40usekeyp%2Fcomponents-soft-ui%2F0.1.0%2Fb25e10dfc639ab4ca7f6463752eaceb74ee90df6"
   dependencies:
     "@redwoodjs/router": ^3.3.0
     "@testing-library/jest-dom": ^5.16.5
@@ -10772,7 +10772,7 @@ __metadata:
     surge: ^0.23.1
     uuid: ^9.0.0
     web-vitals: ^2.1.4
-  checksum: c0bedd06c29ebbf0f637e9b0f8f1a6e2db7d7db7f7c5293908f72c29c70ea9be5f625da0970afecda55fa576025d7460571a29194b4fc19ab7853ef064784731
+  checksum: 4a7adf4eb2e227d38b510b2c4134a6782b9bb0cda1b28bd879c3a14054e3345b7e54d339d48e02682934aa21b414eb62076d59a5393ba3c02dcca69de5bd1fa3
   languageName: node
   linkType: hard
 
@@ -36606,7 +36606,7 @@ __metadata:
     "@redwoodjs/web": ^3.8.0
     "@sentry/browser": ^6.19.7
     "@storybook/addon-essentials": ^6.5.15
-    "@usekeyp/components-soft-ui-testing": 0.1.0
+    "@usekeyp/components-soft-ui": 0.1.0
     "@usekeyp/tailwind-presets": 0.1.0
     "@wert-io/module-react-component": ^0.2.0
     autoprefixer: ^10.4.13

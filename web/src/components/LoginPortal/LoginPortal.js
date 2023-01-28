@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { Button, Icon } from '@usekeyp/components-soft-ui-testing'
+import { Button, Icon } from '@usekeyp/components-soft-ui'
 
 import { useAuth } from '@redwoodjs/auth'
 import { routes, navigate, useParams } from '@redwoodjs/router'
