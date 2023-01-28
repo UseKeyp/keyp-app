@@ -34,7 +34,7 @@ services:
   env: node
   region: oregon
   buildCommand: yarn && yarn rw build api
-  startCommand: yarn rw deploy render api
+  startCommand: ./serve-api.sh
   envVars:
   - key: NODE_VERSION
     value: 16
