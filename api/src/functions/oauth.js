@@ -7,7 +7,7 @@ import jwks from 'src/lib/jwks'
 
 let redirect_uris = ['http://0.0.0.0:8910/redirect/keyp']
 if (process.env.ENVIRONMENT === 'prod')
-  redirect_uris = ['https://dashboard.usekeyp.com/redirect/keyp']
+  redirect_uris = ['https://dev.usekeyp.com/redirect/keyp']
 
 export const handler = serverless(
   oauth2Server(db, {

@@ -36,4 +36,10 @@ services:
   envVars:
   - key: NODE_VERSION
     value: 16
-
+  routes:
+  - type: rewrite
+    source: /redirect/*
+    destination: https://app.usekeyp.com/redirect/*
+  - type: rewrite
+    source: /login/*
+    destination: https://app.usekeyp.com/login/*
