@@ -18,10 +18,7 @@ services:
   routes:
   - type: rewrite
     source: /.redwood/functions/*
-    destination: https://keyp-app-api.onrender.com/*
-  - type: rewrite
-    source: /.redwood/functions/oauth/*
-    destination: https://keyp-app-api.onrender.com/oauth/*
+    destination: https://api.usekeyp.com/*
   - type: rewrite
     source: /*
     destination: /index.html
