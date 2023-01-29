@@ -36,6 +36,7 @@ const LoginPortal = () => {
     if (error) setErrorText(getErrorText(error))
   }, [error])
 
+  console.log(global)
   // useEffect(() => {
   //   if (isAuthenticated) {
   //     navigate(routes.profile())
