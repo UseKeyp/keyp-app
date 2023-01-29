@@ -36,11 +36,11 @@ const LoginPortal = () => {
     if (error) setErrorText(getErrorText(error))
   }, [error])
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate(routes.profile())
-    }
-  }, [isAuthenticated])
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     navigate(routes.profile())
+  //   }
+  // }, [isAuthenticated])
 
   return (
     <div className="flex flex-col justify-center items-center">
@@ -85,7 +85,7 @@ const LoginPortal = () => {
             borderColor="border-[#E5E7EB]"
             fluid={true}
           >
-            <p className='text-black'>Test Provider</p>
+            <p className="text-black">Test Provider</p>
           </Button>
         )}
         {errorText && <div className="mt-2 rw-cell-error">{errorText}</div>}

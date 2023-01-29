@@ -7088,7 +7088,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/browser@npm:^6.19.7":
+"@sentry/browser@npm:^6.17.3":
   version: 6.19.7
   resolution: "@sentry/browser@npm:6.19.7"
   dependencies:
@@ -7110,17 +7110,6 @@ __metadata:
     "@sentry/utils": 6.19.7
     tslib: ^1.9.3
   checksum: 65dc0b21859ec8e31e4091c2e0516bad3073de7c2518d239906ff875a0542490688cb76441c462c84189cd0f19176f5af6d6e56dbb5e157c9d03906791259411
-  languageName: node
-  linkType: hard
-
-"@sentry/core@npm:7.30.0":
-  version: 7.30.0
-  resolution: "@sentry/core@npm:7.30.0"
-  dependencies:
-    "@sentry/types": 7.30.0
-    "@sentry/utils": 7.30.0
-    tslib: ^1.9.3
-  checksum: af585275905ee8824189bb394851b1c127a1b632df976ea9118194744c907c9322a55546eda37d76e22e932830445ffa73290d76bdcbe15b4cd9947cd4c42eac
   languageName: node
   linkType: hard
 
@@ -7146,30 +7135,32 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/node@npm:^7.24.2":
-  version: 7.30.0
-  resolution: "@sentry/node@npm:7.30.0"
+"@sentry/node@npm:^6.18.1":
+  version: 6.19.7
+  resolution: "@sentry/node@npm:6.19.7"
   dependencies:
-    "@sentry/core": 7.30.0
-    "@sentry/types": 7.30.0
-    "@sentry/utils": 7.30.0
+    "@sentry/core": 6.19.7
+    "@sentry/hub": 6.19.7
+    "@sentry/types": 6.19.7
+    "@sentry/utils": 6.19.7
     cookie: ^0.4.1
     https-proxy-agent: ^5.0.0
     lru_map: ^0.3.3
     tslib: ^1.9.3
-  checksum: 8396a2a98898a091bd9bdb41e73fefecfbac9946cc08f31791bce7d319b1eb43d17411615163839dc6ccca4101b2f9cec0597f2e6242398d6b38c399175b67e5
+  checksum: 4a25dfa4a5278375e7644a3c642abb4a90be70c99fdf633536bf1194f246aa3d11edc8efb3487ed8aeecc01c6ea9204660a9162c019337459da92837b969cfa5
   languageName: node
   linkType: hard
 
-"@sentry/tracing@npm:^7.24.2":
-  version: 7.30.0
-  resolution: "@sentry/tracing@npm:7.30.0"
+"@sentry/tracing@npm:^6.18.1":
+  version: 6.19.7
+  resolution: "@sentry/tracing@npm:6.19.7"
   dependencies:
-    "@sentry/core": 7.30.0
-    "@sentry/types": 7.30.0
-    "@sentry/utils": 7.30.0
+    "@sentry/hub": 6.19.7
+    "@sentry/minimal": 6.19.7
+    "@sentry/types": 6.19.7
+    "@sentry/utils": 6.19.7
     tslib: ^1.9.3
-  checksum: 19a0b82847f99131c7e226eb5d29db7baa6c48f2dd1b487420389698116a322f2cca90dc1f15afbc42e21b8df0e972a1e8b32fcd66b41896d26a212fb9c86b9a
+  checksum: a2e848c9e557fdd29885a1b5a135eb69c7f5d9523fcbbceb9758bcd89f185fbc020c717cf0155975b83835de7f9e1f542ad6780e349050b5877dfaabfa4f1534
   languageName: node
   linkType: hard
 
@@ -7180,13 +7171,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sentry/types@npm:7.30.0":
-  version: 7.30.0
-  resolution: "@sentry/types@npm:7.30.0"
-  checksum: 6b6861dd79b8e315d75f5336af2d78e953b08a27fc5acd2bb8436ba92dc0f9c0f547477eae6d0e761a3405f0f57bc4d91ab7157eeee60b2107775cf64b0db6a2
-  languageName: node
-  linkType: hard
-
 "@sentry/utils@npm:6.19.7":
   version: 6.19.7
   resolution: "@sentry/utils@npm:6.19.7"
@@ -7194,16 +7178,6 @@ __metadata:
     "@sentry/types": 6.19.7
     tslib: ^1.9.3
   checksum: 3c15e6bc75800124924da5b180137007e74d39e605c01bd28d2cfd63ee97fac1ea0c3ec8be712a1ef70802730184b71d0f3b6d50c41da9947fef348f1fd68e12
-  languageName: node
-  linkType: hard
-
-"@sentry/utils@npm:7.30.0":
-  version: 7.30.0
-  resolution: "@sentry/utils@npm:7.30.0"
-  dependencies:
-    "@sentry/types": 7.30.0
-    tslib: ^1.9.3
-  checksum: acca9a7d50506c44716ff51880775ca1884cd5dfac3c0e9ffe7fa929034273bf4131f11544d595e9ccd2b561d91177d52ba92b6c38f3d0e5af75b9e2bb199c1d
   languageName: node
   linkType: hard
 
@@ -11852,8 +11826,8 @@ __metadata:
     "@redwoodjs/api": ^3.8.0
     "@redwoodjs/cli": ^3.8.0
     "@redwoodjs/graphql-server": ^3.8.0
-    "@sentry/node": ^7.24.2
-    "@sentry/tracing": ^7.24.2
+    "@sentry/node": ^6.18.1
+    "@sentry/tracing": ^6.18.1
     "@toruslabs/fetch-node-details": ^5.0.0
     "@toruslabs/torus.js": ^5.0.1
     "@treasure-chess/treasure-contracts": ^0.1.0
@@ -11865,7 +11839,7 @@ __metadata:
     email-templates: ^9.0.0
     form-data: ^4.0.0
     jwks-rsa: ^2.0.4
-    oauth2-server-redwood: 0.3.4
+    oauth2-server-redwood: 0.3.8
     pkce-challenge: ^3.0.0
     plaid: ^10.2.0
     react: ^17.0.2
@@ -27492,9 +27466,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"oauth2-server-redwood@npm:0.3.4":
-  version: 0.3.4
-  resolution: "oauth2-server-redwood@npm:0.3.4"
+"oauth2-server-redwood@npm:0.3.8":
+  version: 0.3.8
+  resolution: "oauth2-server-redwood@npm:0.3.8"
   dependencies:
     deepmerge: ^4.2.2
     ejs: ^3.1.8
@@ -27502,7 +27476,7 @@ __metadata:
     oidc-provider: ^7.14.3
   bin:
     oauth2-server-redwood: bin/oauth2-server-redwood.js
-  checksum: f503ac1e1e438d23c5e122cffe9f4b6ac5f1583312c5b8aa08e85b94528eafce46e6f72dcdf20cf175803c01f7421a318947d3d5afd2d1647ce48dc7eab061ea
+  checksum: 015dcb529ddc4fc684d6a3dfb610f1887ef6363f7f2bca76bdfb4e13a247662b5c77c72866e2b44cee2a693749919bbbe25e186ec4b718da4787b995cfc89f15
   languageName: node
   linkType: hard
 
@@ -36604,7 +36578,7 @@ __metadata:
     "@redwoodjs/forms": ^3.8.0
     "@redwoodjs/router": ^3.8.0
     "@redwoodjs/web": ^3.8.0
-    "@sentry/browser": ^6.19.7
+    "@sentry/browser": ^6.17.3
     "@storybook/addon-essentials": ^6.5.15
     "@usekeyp/components-soft-ui": 0.1.0
     "@usekeyp/tailwind-presets": 0.1.0
