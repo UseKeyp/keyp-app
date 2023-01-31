@@ -60,9 +60,7 @@ const RedirectionProvider = ({ children }) => {
         errorMessage: response.error || 'Something went wrong',
       })
     const uid = grantState.split(':')[1]
-    console.log({ uid })
     if (uid) {
-      console.log({ uid })
       const { error } = await continueInteraction({
         type: 'login',
         userId: response.id,

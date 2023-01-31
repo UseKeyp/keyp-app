@@ -1,11 +1,13 @@
+import { getRampOnUrl } from 'src/lib/ramps'
+
 import { withUser } from '../middleware/user'
 
 var express = require('express')
 var router = express.Router()
 
-router.get('/:rampType', withUser, async (req, res) => {
+router.get('/on/:rampType', withUser, async (req, res) => {
   const { rampType } = req.params
-  const { url } = await getRampOnUrl({ type, user: req.ctx.user })
+  const { url } = await getRampOnUrl({ type: rampType, user: req.ctx.user })
 
   res.send(url)
 })

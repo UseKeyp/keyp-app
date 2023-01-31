@@ -5,7 +5,7 @@ import Profile from 'src/components/Profile/Profile'
 const ProfilePage = () => {
   return (
     <>
-      <MetaTags title="Profile" description="My Treasure Chess profile" />
+      <MetaTags title="Profile" description="My Keyp Profile" />
       <Profile />
     </>
   )

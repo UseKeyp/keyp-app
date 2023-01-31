@@ -102,7 +102,7 @@ export const fetchDiscord = async ({
         'Content-Type': 'application/json',
       },
     }).then((res) => {
-      logger.debug({ custom: res }, 'fetchDiscord res')
+      // logger.debug({ custom: res }, 'fetchDiscord res')
       if (res.status !== 200) throw res
       return res.json()
     })

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Icon } from '@usekeyp/components-soft-ui-testing'
+import { Icon } from '@usekeyp/components-soft-ui'
 
 const LoadingScreen = () => {
   return (
