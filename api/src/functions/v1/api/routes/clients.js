@@ -38,7 +38,7 @@ router.get('/', async (req, res) => {
 
 router.patch('/:clientId', async (req, res) => {
   const { clientId } = req.params
-  const { redirect_uris } = req.body
+  const { redirect_uris, clientURI, clientName, tosURI, logoURI, policyURI } = req.body
 
   if (!redirect_uris) throw new Error('Missing redirect_uris')
 
@@ -51,7 +51,15 @@ router.patch('/:clientId', async (req, res) => {
   // TODO validate list as https urls, or http for localhost
   client = await db.oidc.update({
     where: { id_type: { id: clientId, type: 7 } },
-    data: { payload: { ...client.payload, redirect_uris } },
+    data: { payload: {
+        ...client.payload,
+        ...(clientURI && { client_uri: clientURI }),
+        ...(clientName && { client_name: clientName }),
+        ...(tosURI && { tos_uri: tosURI }),
+        ...(logoURI && { logo_uri: logoURI }),
+        ...(policyURI && { policy_uri: policyURI }),
+        redirect_uris: redirect_uris,
+      }, },
     select: { developers: true, payload: true, id: true },
   })
   res.send(client)
