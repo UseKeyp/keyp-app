@@ -1,0 +1,125 @@
+import fetch from 'cross-fetch'
+import { decode as decodeJwt } from 'jsonwebtoken'
+
+import { AuthenticationError } from '@redwoodjs/graphql-server'
+
+import { db } from 'src/lib/db'
+import { APP_DOMAIN } from 'src/lib/helpers'
+import { logger } from 'src/lib/logger'
+import { encodeBody, getExpiration } from 'src/lib/oAuth/helpers'
+import { fetchUser } from 'src/lib/users'
+
+export const GOOGLE = 'GOOGLE'
+export const GOOGLE_OAUTH_URL_AUTHORIZE = `https://accounts.google.com/o/oauth2/auth`
+
+const GOOGLE_OAUTH_URL_TOKEN = `https://oauth2.googleapis.com/token`
+
+const GOOGLE_SCOPE = 'email profile openid'
+const GOOGLE_REDIRECT_URI = APP_DOMAIN + '/redirect/google'
+
+const responseType = 'code'
+const params = {
+  client_id: process.env.GOOGLE_CLIENT_ID,
+  scope: GOOGLE_SCOPE,
+  redirect_uri: GOOGLE_REDIRECT_URI,
+  access_type: 'offline',
+}
+
+export const onSubmitCode = async (code, { codeVerifier }) => {
+  try {
+    const body = {
+      grant_type: 'authorization_code',
+      client_id: process.env.GOOGLE_CLIENT_ID,
+      client_secret: process.env.GOOGLE_CLIENT_SECRET,
+      redirect_uri: GOOGLE_REDIRECT_URI,
+      code_verifier: codeVerifier,
+      code,
+    }
+    const encodedBody = encodeBody(body)
+    logger.debug({ custom: body }, '/token request body')
+    const response = await fetch(GOOGLE_OAUTH_URL_TOKEN, {
+      method: 'post',
+      body: encodedBody,
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Referrer-Policy': 'no-referrer-when-downgrade',
+      },
+    }).then((res) => {
+      if (res.status != 200)
+        throw `GOOGLE API failed for /token. Returned ${res.status} - ${res.statusText}`
+      return res.json()
+    })
+    if (response.error)
+      throw `${response.error} - ${response.hint}. ${response.message}`
+
+    const {
+      refresh_token: refreshToken,
+      access_token: accessToken,
+      expires_in: expiration,
+      id_token: idToken,
+    } = response
+
+    if (!response.id_token) throw 'Failed to get id_token'
+    const decoded = await decodeJwt(idToken)
+
+    logger.debug({ custom: decoded }, 'decoded id_token')
+
+    if (new Date() - new Date(decoded.iat * 1000) > 60 * 1000)
+      throw 'id_token was not issued recently. It must be <1 minute old.'
+
+    return {
+      accessToken,
+      refreshToken,
+      accessTokenExpiration: getExpiration(expiration),
+      idToken,
+      decoded,
+      idTokenExpiration: new Date(decoded.exp * 1000),
+    }
+  } catch (e) {
+    throw `onSubmitCode() ${e}`
+  }
+}
+
+export const onConnected = async ({ refreshToken, accessToken }) => {
+  try {
+    const userDetails = await fetch(
+      `https://www.googleapis.com/userinfo/v2/me`,
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      }
+    ).then((res) => {
+      if (res.status != 200)
+        throw 'GOOGLE authorization failed, or secret invalid'
+      return res.json()
+    })
+
+    if (!userDetails.verified_email)
+      throw new AuthenticationError(
+        `Verify your email with Google and try again.`
+      )
+
+    const user = await fetchUser(
+      userDetails.id,
+      { email: userDetails.email, accessToken },
+      GOOGLE
+    )
+
+    await db.user.update({
+      where: { id: user.id },
+      data: { email: userDetails.email, accessToken, refreshToken },
+    })
+
+    return user
+  } catch (e) {
+    logger.error(e)
+    throw `onConnected() ${e}`
+  }
+}
+
+export const provider = {
+  urlAuthorize: GOOGLE_OAUTH_URL_AUTHORIZE,
+  params,
+  onSubmitCode,
+  onConnected,
+  responseType,
+}
