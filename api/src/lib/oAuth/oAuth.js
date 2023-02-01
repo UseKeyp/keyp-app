@@ -8,7 +8,7 @@ import { logger } from 'src/lib/logger'
 import { providers, types } from 'src/lib/oAuth/providers'
 import Sentry from 'src/lib/sentry'
 
-export const oAuthUrl = async (type, stateExtraData) => {
+export const oAuthUrl = async (type, stateExtraData, user) => {
   try {
     if (!Object.values(types).includes(type))
       throw `OAuth Provider ${type} is not enabled.`
@@ -22,18 +22,26 @@ export const oAuthUrl = async (type, stateExtraData) => {
       url.searchParams.set(key, params[key])
     })
     const state = uuidv4() + (stateExtraData ? `:${stateExtraData}` : '')
-    // For oAuth codeGrant, we sometimes need the user id
-    let userId
-    if (context.currentUser?.id) userId = context.currentUser?.id
 
-    await db.oAuth.create({
+    // For oAuth codeGrant, we sometimes need the user id
+    // TODO this may cause issues with user.id and user.provider existing
+    const currentUser = user || context.currentUser // context is not available for public api
+
+    const oAuth = await db.oAuth.create({
       data: {
         state,
         codeVerifier: pkce.code_verifier,
         codeChallenge: pkce.code_challenge,
-        ...(userId && { user: { connect: { id: userId, provider: type } } }),
       },
     })
+
+    if (currentUser.id) {
+      // Connecting the user is needed for at least Coinbase, ...
+      await db.user.update({
+        where: { id: currentUser.id },
+        data: { oAuth: { connect: { state: oAuth.state } } },
+      })
+    }
 
     url.searchParams.set('response_type', responseType)
     url.searchParams.set('state', state)
