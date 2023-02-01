@@ -17,4 +17,4 @@ jobs:
         with:
           webhook-url: 'https://discord.com/api/webhooks/952017446993281034/kptveM_x855z0txMPw56OQJwM5PBZw4pq8BJPtXymotk37YwbjjYugbrr32JvkIjZ3p4/slack' # Required
           provider: 'slack' # Required (slack or msteams)
-          github-provider-map: 'jschiarizzi:468883290577960980,pi0neerpat:381135787330109441'
+          github-provider-map: 'jschiarizzi:468883290577960980,pi0neerpat:381135787330109441,jahabeebs:757992642314502296'

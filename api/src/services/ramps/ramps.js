@@ -41,6 +41,7 @@ export const rampWithdraw = async ({ type, amount }) => {
 }
 
 export const getRampUrl = async ({ type, direction }) => {
-  if (direction === 'ON') return getRampOnUrl({ type })
-  return getRampOffUrl({ type })
+  if (direction === 'ON')
+    return getRampOnUrl({ type, user: context.currentUser })
+  return getRampOffUrl({ type, user: context.currentUser })
 }

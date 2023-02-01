@@ -1,4 +1,4 @@
-Welcome to Keyp App
+# Welcome to Keyp App
 
 > Keyp app, oauth2 server, and API. Built with RedwoodJS
 

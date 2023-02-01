@@ -8,6 +8,7 @@ import {
 
 import { db } from 'src/lib/db'
 import { isProduction } from 'src/lib/helpers'
+import { APP_DOMAIN } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
 import Sentry from 'src/lib/sentry'
 import {
@@ -20,7 +21,7 @@ export const WYRE = 'WYRE'
 
 const PLAID_SCOPE = [Products.Auth, Products.Identity]
 const PLAID_REDIRECT_URI = isProduction
-  ? process.env.APP_DOMAIN + '/redirect/plaid'
+  ? APP_DOMAIN + '/redirect/plaid'
   : 'https://0.0.0.0:8910/redirect/plaid'
 
 const PLAID_WEBHOOK_URL = isProduction

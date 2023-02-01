@@ -25,27 +25,31 @@ const TrackingProvider = () => {
     console.log(e)
   }
   React.useEffect(() => {
-    if (!currentUser) return
-    /* eslint-disable no-undef */
-    // Matomo
-    _paq.push(['setUserId', currentUser.username])
-    // Mautic
-    mt(
-      'send',
-      'pageview',
-      {},
-      {
-        onload: () => {
-          mt('send', 'pageview', {
-            username: currentUser.username,
-            chessId: currentUser.id,
-          })
-        },
-        onerror: () => {},
-      }
-    )
-    /* eslint-enable no-undef */
-    Sentry.setUser(currentUser)
+    try {
+      if (!currentUser) return
+      /* eslint-disable no-undef */
+      // Matomo
+      _paq.push(['setUserId', currentUser.username])
+      // Mautic
+      mt(
+        'send',
+        'pageview',
+        {},
+        {
+          onload: () => {
+            mt('send', 'pageview', {
+              username: currentUser.username,
+              chessId: currentUser.id,
+            })
+          },
+          onerror: () => {},
+        }
+      )
+      /* eslint-enable no-undef */
+      Sentry.setUser(currentUser)
+    } catch (e) {
+      // do nothing
+    }
   }, [currentUser])
   // Set chatwoot user
 

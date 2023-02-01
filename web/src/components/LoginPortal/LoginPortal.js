@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 
-import { Button, Icon } from '@usekeyp/components-soft-ui-testing'
+import { Button, Icon } from '@usekeyp/components-soft-ui'
 
 import { useAuth } from '@redwoodjs/auth'
 import { routes, navigate, useParams } from '@redwoodjs/router'
@@ -36,11 +36,12 @@ const LoginPortal = () => {
     if (error) setErrorText(getErrorText(error))
   }, [error])
 
-  useEffect(() => {
-    if (isAuthenticated) {
-      navigate(routes.profile())
-    }
-  }, [isAuthenticated])
+  console.log(global)
+  // useEffect(() => {
+  //   if (isAuthenticated) {
+  //     navigate(routes.profile())
+  //   }
+  // }, [isAuthenticated])
 
   return (
     <div className="flex flex-col justify-center items-center">
@@ -66,15 +67,7 @@ const LoginPortal = () => {
           <Icon name="google" />
         </Button>
         <Button
-          onClick={() => onSubmitSignUp('NODE_OIDC')}
-          classNameVariant="hover:bg-[#4285F4] hover:border-[#4285F4] w-[327px]"
-          borderColor="border-[#E5E7EB]"
-          fluid={true}
-        >
-          <div className="text-black">NODE_OIDC</div>
-        </Button>
-        <Button
-          onClick={() => onSubmitSignUp('NODE_OIDC')}
+          onClick={() => onSubmitSignUp('CHESS')}
           classNameVariant="hover:bg-[#6c9d41] hover:border-[#6c9d41] w-[327px]"
           borderColor="border-[#E5E7EB]"
           fluid={false}
@@ -86,6 +79,16 @@ const LoginPortal = () => {
             name="chess_com"
           />
         </Button>
+        {process.env.ENVIRONMENT !== 'prod' && (
+          <Button
+            onClick={() => onSubmitSignUp('NODE_OIDC')}
+            classNameVariant="hover:bg-[#4285F4] hover:border-[#4285F4] w-[327px] "
+            borderColor="border-[#E5E7EB]"
+            fluid={true}
+          >
+            <p className="text-black">Test Provider</p>
+          </Button>
+        )}
         {errorText && <div className="mt-2 rw-cell-error">{errorText}</div>}
       </div>
     </div>

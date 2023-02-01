@@ -3,7 +3,7 @@ import { Contract } from '@ethersproject/contracts'
 
 import { logger } from 'src/lib/logger'
 import { web3Provider } from 'src/lib/web3/helpers'
-import { memberSendTransaction } from 'src/lib/web3/wallets'
+import { userSendTransaction } from 'src/lib/web3/wallets'
 
 export const getERC721Contract = (tokenAddress) => {
   try {
@@ -24,10 +24,10 @@ export const getERC721Contract = (tokenAddress) => {
 // NOTE: If "to" refers to a smart contract, it must implement
 // IERC721Receiver.onERC721Received, which is called upon a safe transfer.
 export const transferERC721 = async ({
+  fromUser,
+  toUser,
   tokenAddress,
   tokenId,
-  toAddress,
-  member,
 }) => {
   let contract
   try {
@@ -37,25 +37,27 @@ export const transferERC721 = async ({
     throw new EnvelopError('Unable to transfer ERC721', e.me)
   }
 
+  const { address: toAddress } = toUser
+  const { address: fromAddress } = fromUser
   try {
     const ownerAddress = await contract.ownerOf(tokenId)
-    if (member.address.toLowerCase() !== ownerAddress.toLowerCase())
+    if (fromAddress.toLowerCase() !== ownerAddress.toLowerCase())
       throw new EnvelopError('You do not own this token')
 
     const unsignedTx = await contract.populateTransaction.safeTransferFrom(
-      member.address,
+      fromAddress,
       toAddress,
       tokenId
     )
-    const tx = await memberSendTransaction({ memberId: member.id, unsignedTx })
-    return { status: 'SUCCESS', hash: tx.hash }
+    const tx = await userSendTransaction({ userId: fromUser.id, unsignedTx })
+    return tx
   } catch (e) {
     logger.error(e)
     throw new EnvelopError(`Unable to transfer ERC721 - ${e.message}`)
   }
 }
 
-export const getERC721Balance = async ({ contractAddress, memberAddress }) => {
+export const getERC721Balance = async ({ contractAddress, userAddress }) => {
   let contract
   try {
     contract = getERC721Contract(contractAddress)
@@ -63,7 +65,7 @@ export const getERC721Balance = async ({ contractAddress, memberAddress }) => {
     logger.error(e)
     throw new EnvelopError('Unable to get ERC721 balance')
   }
-  return await contract.balanceOf(memberAddress)
+  return await contract.balanceOf(userAddress)
 }
 
 export const totalSupply = async () => {

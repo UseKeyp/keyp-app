@@ -1,0 +1,39 @@
+#####
+# Documentation
+# Redwood: https://render.com/docs/deploy-redwood
+# YAML (all config values): https://render.com/docs/yaml-spec
+#####
+
+services:
+- name: keyp-app-web
+  type: web
+  env: static
+  buildCommand: yarn install && yarn rw deploy render web
+  staticPublishPath: ./web/dist
+  envVars:
+  - key: NODE_VERSION
+    value: 16
+  - key: SKIP_INSTALL_DEPS
+    value: true
+  routes:
+  - type: rewrite
+    source: /.redwood/functions/*
+    destination: https://api.usekeyp.com/*
+  - type: rewrite
+    source: /oauth/*
+    destination: https://api.usekeyp.com/oauth/*
+  - type: rewrite
+    source: /*
+    destination: /index.html
+
+- name: keyp-app-api
+  type: web
+  plan: free
+  env: node
+  region: oregon
+  buildCommand: yarn && yarn rw build api
+  startCommand: ./serve-api.sh
+  envVars:
+  - key: NODE_VERSION
+    value: 16
+

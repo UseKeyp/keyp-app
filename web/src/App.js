@@ -4,7 +4,6 @@ import { AuthProvider } from '@redwoodjs/auth'
 import { FatalErrorBoundary, RedwoodProvider } from '@redwoodjs/web'
 import { RedwoodApolloProvider } from '@redwoodjs/web/apollo'
 
-import LandingModal from 'src/components/LandingModal'
 import FatalErrorPage from 'src/pages/FatalErrorPage'
 import Routes from 'src/Routes'
 import { logIn, logOut } from 'src/utils/auth/client'
@@ -20,11 +19,11 @@ console.log(
   'color:red;font-family:sans-serif;font-size:4rem;-webkit-text-stroke: 1px black;font-weight:bold'
 )
 console.log(
-  `%c⚠️ This is a browser feature intended for developers. Do not paste anything here! If someone told you to copy and paste something here, it is a scam and could give them access to your Treasure Chess wallet. ⚠️`,
+  `%c⚠️ This is a browser feature intended for developers. Do not paste anything here! If someone told you to copy and paste something here, it is a scam and could give them access to your acount. ⚠️`,
   'font-family:sans-serif;font-size:1rem;font-weight:bold'
 )
 console.log(
-  `%c🛠️ Come build with the brightest minds! https://github.com/treasure-chess/jobs`,
+  `%c🛠️ Come build cool things with us! https://UseKeyp.com/jobs`,
   'font-family:sans-serif;font-size:1rem;'
 )
 /* eslint-enable no-irregular-whitespace */
@@ -49,8 +48,6 @@ const App = () => (
           <RedwoodApolloProvider
             graphQLClientConfig={{ httpLinkConfig: { credentials: 'include' } }}
           >
-            <LandingModal />
-
             <Routes />
           </RedwoodApolloProvider>
         </AuthProviderExtended>

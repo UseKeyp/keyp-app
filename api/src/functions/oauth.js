@@ -2,12 +2,19 @@ import oauth2Server from 'oauth2-server-redwood'
 import serverless from 'serverless-http'
 
 import { db } from 'src/lib/db'
+import { APP_DOMAIN } from 'src/lib/helpers'
 import jwks from 'src/lib/jwks'
+
+let devPortalRedirectUris = ['http://0.0.0.0:8910/redirect/keyp']
+if (process.env.ENVIRONMENT === 'prod')
+  devPortalRedirectUris = ['https://dev.usekeyp.com/redirect/keyp']
 
 export const handler = serverless(
   oauth2Server(db, {
     SECURE_KEY: process.env.OAUTH_SECRET_KEY,
-    APP_DOMAIN: process.env.APP_DOMAIN,
+    ISSUER_URL: APP_DOMAIN,
+    REDWOOD_API_URL:
+      process.env.REDWOOD_API_URL || `${APP_DOMAIN}/.redwood/functions`,
     INTROSPECTION_SECRET: process.env.INTROSPECTION_SECRET,
     routes: { login: '/login', authorize: '/authorize' },
     jwks,
@@ -16,13 +23,8 @@ export const handler = serverless(
       clients: [
         {
           // Example client for testing, see https://oauth2-client-redwood-eta.vercel.app/login
-          client_id: '123',
-          redirect_uris: [
-            'https://jwt.io',
-            'https://oauthdebugger.com/debug',
-            'http://0.0.0.0:8910/redirect/oauth2_server_redwood',
-            'https://oauth2-client-redwood-eta.vercel.app/redirect/node_oidc',
-          ],
+          client_id: 'dev-portal',
+          redirect_uris: devPortalRedirectUris,
         },
       ],
       ttl: {

@@ -1,12 +1,13 @@
 import fetch from 'cross-fetch'
 
+import { APP_DOMAIN } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
 import { getDescription, getAttributes } from 'src/lib/pinata/helpers'
 
 const PINATA_API_URL = 'https://api.pinata.cloud'
 const PINATA_API_KEY = process.env.PINATA_API_KEY
 const PINATA_API_SECRET_KEY = process.env.PINATA_API_SECRET_KEY
-const TOKEN_URI_DOMAIN = process.env.APP_DOMAIN
+const TOKEN_URI_DOMAIN = APP_DOMAIN
 
 const pinJson = async (jsonString) => {
   try {

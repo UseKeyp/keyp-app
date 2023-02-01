@@ -9,9 +9,7 @@
   title = "Keyp"
   port = 3000
   host = "0.0.0.0"
-  apiUrl = "/api"
-  # apiProxyPort = 8911
-  # apiUrl = "${REDWOOD_API_URL:/api}"
+  apiUrl = "/.redwood/functions"
   includeEnvironmentVariables = [
     "ENVIRONMENT",
     "VERSION",
