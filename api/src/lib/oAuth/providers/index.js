@@ -6,6 +6,8 @@ import { GOOGLE, provider as googleProvider } from './google'
 import { NODE_OIDC, provider as nodeOIDCProvider } from './node-oidc/node-oidc'
 import { PLAID, provider as plaidProvider } from './plaid'
 import { TWITCH, provider as twitchProvider } from './twitch'
+import { TWITTER, provider as twitterProvider } from './twitter'
+
 export const providers = {
   [CHESS]: { ...chessProvider, onConnected: onConnectedChess },
   [COINBASE]: coinbaseProvider,
@@ -13,6 +15,7 @@ export const providers = {
   [PLAID]: plaidProvider,
   [DISCORD]: discordProvider,
   [NODE_OIDC]: nodeOIDCProvider,
+  [TWITTER]: twitterProvider,
   [GOOGLE]: googleProvider,
 }
 
@@ -23,5 +26,6 @@ export const types = [
   TWITCH,
   PLAID,
   NODE_OIDC,
+  TWITTER,
   GOOGLE,
 ]

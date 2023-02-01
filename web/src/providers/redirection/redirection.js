@@ -6,7 +6,7 @@ import { useOAuth } from 'src/providers/oAuth'
 import { useOAuthAuthority } from 'src/providers/oAuthAuthority'
 
 const LOCAL_REDIRECT_TO_KEY = 'redirect_to'
-const APPROVED_LOGIN_PROVIDERS = ['CHESS', 'DISCORD', 'NODE_OIDC', 'GOOGLE']
+const APPROVED_LOGIN_PROVIDERS = ['CHESS', 'DISCORD', 'NODE_OIDC', 'GOOGLE', 'TWITTER']
 
 const saveRedirectTo = (redirect) =>
   redirect &&
