@@ -94,5 +94,5 @@ export const submitCodeGrant = async ({ state, code, type }) => {
     throw 'Sorry, authentication must be completed within 10 minutes.'
 
   const { onSubmitCode } = providers[type]
-  return onSubmitCode(code, oAuth)
+  return onSubmitCode(code, oAuth) // oAuth here is needed to pass details about the user.
 }
