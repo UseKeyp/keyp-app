@@ -2,7 +2,9 @@ import { EnvelopError } from '@envelop/core'
 
 import { APP_DOMAIN } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
+import { oAuthUrl } from 'src/lib/oAuth'
 import { encodeBody } from 'src/lib/oAuth/helpers'
+import { COINBASE } from 'src/lib/oAuth/providers/coinbase'
 import { userSignMesage } from 'src/lib/web3/wallets'
 
 const MT_PELERIN = 'MT_PELERIN'
@@ -10,19 +12,23 @@ const RAMP_NETWORK = 'RAMP_NETWORK'
 const WERT = 'WERT'
 
 export const RAMP_DEPOSIT_TYPES_ENABLED = [WERT, MT_PELERIN, RAMP_NETWORK]
+export const RAMP_WITHDRAW_TYPES_ENABLED = [COINBASE]
 
-export const getRampOffUrl = async ({ _type, _user }) => {
-  // let url
-  // const address = context.currentUser.address
-  // if (type === WYRE) {
-  // }
-  // return url
+export const getRampOffUrl = async ({ type, user }) => {
+  if (!RAMP_WITHDRAW_TYPES_ENABLED.includes(type))
+    throw new EnvelopError(
+      `Ramp type "${type}" is not supported for withdrawals.`
+    )
+  const { url } = await oAuthUrl(type, null, user)
+  return { url }
 }
 
 export const getRampOnUrl = async ({ type, user }) => {
   try {
     if (!RAMP_DEPOSIT_TYPES_ENABLED.includes(type))
-      throw new EnvelopError(`Ramp type "${type}" is not supported.`)
+      throw new EnvelopError(
+        `Ramp type "${type}" is not supported for deposits.`
+      )
     let url
     const address = user.address
     if (type === MT_PELERIN) {

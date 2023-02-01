@@ -14,15 +14,13 @@ const Routes = () => {
         <Route path="/wert" page={WertPage} name="wert" />
         <Route path="/restricted" page={RestrictedPage} name="restricted" />
         <Route path="/redirect/{type}" page={RedirectPage} name="redirect" />
-        <Set wrap={NoBackgroundLayout}>
+        <Set wrap={DefaultLayout}>
           <Private unauthenticated="login">
             <Route path="/profile" page={ProfilePage} name="profile" />
           </Private>
           <Route path="/users/{usernameOrAddress}" page={UserPage} name="user" />
-        </Set>
-        <Set wrap={DefaultLayout}>
           <Route path="/" page={HomePage} name="home" />
-          <Route path="/login" page={SignInPage} name="login" />
+          <Route path="/login" page={LoginPage} name="login" />
           <Route notfound page={NotFoundPage} />
           <Route path="/terms" page={TermsPage} name="terms" />
           <Route path="/privacy" page={PrivacyPage} name="privacy" />

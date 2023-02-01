@@ -11,7 +11,7 @@ export const fetchUser = async (idOrAddress, creationData, providerType) => {
     let address
     isHexAddress(idOrAddress)
       ? (address = idOrAddress.toLowerCase())
-      : (id = idOrAddress.toLowerCase())
+      : (id = idOrAddress)
 
     const where = {
       ...(address && { address }),

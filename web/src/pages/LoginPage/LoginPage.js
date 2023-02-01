@@ -2,7 +2,7 @@ import { MetaTags } from '@redwoodjs/web'
 
 import LoginPortal from 'src/components/LoginPortal'
 
-const SignInPage = () => {
+const LoginPage = () => {
   return (
     <>
       <MetaTags title="Login" description="Log into Keyp!" />
@@ -11,4 +11,4 @@ const SignInPage = () => {
   )
 }
 
-export default SignInPage
+export default LoginPage

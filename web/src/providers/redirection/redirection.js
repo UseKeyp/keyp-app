@@ -6,7 +6,7 @@ import { useOAuth } from 'src/providers/oAuth'
 import { useOAuthAuthority } from 'src/providers/oAuthAuthority'
 
 const LOCAL_REDIRECT_TO_KEY = 'redirect_to'
-const APPROVED_LOGIN_PROVIDERS = ['CHESS', 'DISCORD', 'NODE_OIDC', 'TWITTER']
+const APPROVED_LOGIN_PROVIDERS = ['CHESS', 'DISCORD', 'NODE_OIDC', 'GOOGLE', 'TWITTER']
 
 const saveRedirectTo = (redirect) =>
   redirect &&
@@ -60,9 +60,7 @@ const RedirectionProvider = ({ children }) => {
         errorMessage: response.error || 'Something went wrong',
       })
     const uid = grantState.split(':')[1]
-    console.log({ uid })
     if (uid) {
-      console.log({ uid })
       const { error } = await continueInteraction({
         type: 'login',
         userId: response.id,

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import { Button, Icon } from '@usekeyp/components-soft-ui-testing'
+import { Button, Icon } from '@usekeyp/components-soft-ui'
 
 import { useAuth } from '@redwoodjs/auth'
 

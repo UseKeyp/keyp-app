@@ -24,3 +24,5 @@ deleteme.*
 *.deleteme.*
 deleteme/
 locales/
+.vercel
+build-storybook.log
