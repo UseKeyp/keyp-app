@@ -35,7 +35,7 @@ export const oAuthUrl = async (type, stateExtraData, user) => {
       },
     })
 
-    if (currentUser.id) {
+    if (currentUser?.id) {
       // Connecting the user is needed for at least Coinbase, ...
       await db.user.update({
         where: { id: currentUser.id },

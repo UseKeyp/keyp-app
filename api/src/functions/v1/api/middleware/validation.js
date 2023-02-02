@@ -1,6 +1,6 @@
 import fetch from 'node-fetch'
 
-import { getIdentifiersFromId } from 'src/lib/db'
+import { getIdentifiersFromId, db } from 'src/lib/db'
 
 const encodeFormBody = (body) =>
   Object.keys(body)
@@ -27,7 +27,25 @@ export const validateToken = (settings) => async (req, res, next) => {
   ).then((res) => res.json())
   if (!response.active) return res.status(401).send('Unauthorized')
   const { userId, userProvider } = getIdentifiersFromId(response.sub)
+
+  console.log(response)
+  let client
+  // Inject client details
+  try {
+    client = await db.oidc.findUnique({
+      where: { id_type: { id: response.client_id, type: 7 } },
+    })
+  } catch (e) {
+    next(
+      new Error(
+        "No client found. Are you sure you're using a generated client and not the dev-portal client?"
+      )
+    )
+  }
+
   req.ctx = {
+    network: client?.payload?.network,
+    client,
     userId,
     userProvider,
     sub: response.sub,
