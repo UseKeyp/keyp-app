@@ -4,6 +4,7 @@ import { db } from 'src/lib/db'
 import { APP_DOMAIN } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
 import { encodeBody, getExpiration } from 'src/lib/oAuth/helpers'
+import { getTorusPublicAddress } from 'src/lib/torus/torus'
 import { fetchUser } from 'src/lib/users'
 
 export const TWITTER = 'TWITTER'
@@ -77,9 +78,25 @@ export const onConnected = async ({ refreshToken, accessToken }) => {
 
     const user = await fetchUser(id, { username }, TWITTER)
 
+    let publicAddress
+    if (!user.address) {
+      try {
+        publicAddress = await getTorusPublicAddress(user.id)
+      } catch (e) {
+        /* eslint-disable no-console */
+        logger.error("Error fetching user's wallet from Torus")
+        logger.error(e)
+        /* eslint-enable no-console */
+      }
+    }
+
     await db.user.update({
       where: { id: user.id },
-      data: { refreshToken, accessToken },
+      data: {
+        ...(publicAddress && { address: publicAddress }),
+        refreshToken,
+        accessToken,
+      },
     })
 
     return user
