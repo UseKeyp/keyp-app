@@ -1,4 +1,4 @@
-import { writeMethod, readMethod } from 'src/lib/web3'
+import { writeMethod, readMethod } from 'src/lib/web3/contracts'
 
 import { withUser } from '../middleware/user'
 
@@ -10,6 +10,7 @@ router.post('/method', withUser, async (req, res) => {
 
   const tx = await writeMethod({
     user: req.ctx.user,
+    network: req.ctx.network,
     ...req.body,
   })
 

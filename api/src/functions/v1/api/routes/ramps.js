@@ -6,8 +6,6 @@ var express = require('express')
 var router = express.Router()
 
 router.get('/on/:rampType', withUser, async (req, res) => {
-  console.log(req.ctx)
-
   const { rampType } = req.params
   const { url } = await getRampOnUrl({
     type: rampType.toUpperCase(),

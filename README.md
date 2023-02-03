@@ -44,7 +44,7 @@ To quickly create an test oauth client app you can run `yarn rw prisma studio` a
 ```js
 client_id: "a08dd22e-e05c-4314-ae7c-cda1af389a34",
 type: 7,
-payload: {"tos_uri":"https://juicebox.com/tos","logo_uri":"https://juicebox.com/logo.png","client_id":"a08dd22e-e05c-4314-ae7c-cda1af389a34","client_uri":"https://juicebox.com","policy_uri":"https://juicebox.com/policy","client_name":"Juicebox","redirect_uris":["http://0.0.0.0:8910/redirect/oauth2_server_redwood"]}
+payload: {"tos_uri":"https://juicebox.com/tos","logo_uri":"https://juicebox.com/logo.png","client_id":"a08dd22e-e05c-4314-ae7c-cda1af389a34","client_uri":"https://juicebox.com","policy_uri":"https://juicebox.com/policy","client_name":"Juicebox","redirect_uris":["http://0.0.0.0:8910/redirect/key", "http://localhost:4000/redirect/keyp"]}
 ```
 
 ## Getting Started
