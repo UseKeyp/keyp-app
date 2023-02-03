@@ -80,33 +80,29 @@ export const onSubmitCode = async (code, { codeVerifier }) => {
   }
 }
 
-export const onConnected = async ({ refreshToken, accessToken }) => {
+export const onConnected = async ({ refreshToken, accessToken, decoded }) => {
   try {
-    const userDetails = await fetch(
-      `https://www.googleapis.com/userinfo/v2/me`,
-      {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      }
-    ).then((res) => {
-      if (res.status != 200)
-        throw 'GOOGLE authorization failed, or secret invalid'
-      return res.json()
-    })
-
-    if (!userDetails.verified_email)
+    if (!decoded.email_verified)
       throw new AuthenticationError(
         `Verify your email with Google and try again.`
       )
 
     const user = await fetchUser(
-      userDetails.id,
-      { email: userDetails.email, accessToken },
+      decoded.sub,
+      { email: decoded.email, accessToken },
       GOOGLE
     )
 
     await db.user.update({
       where: { id: user.id },
-      data: { email: userDetails.email, accessToken, refreshToken },
+      data: {
+        email: decoded.email,
+        accessToken,
+        refreshToken,
+        imageSrc: decoded.picture,
+        locale: decoded.locale,
+        username: decoded.name,
+      },
     })
 
     return user
