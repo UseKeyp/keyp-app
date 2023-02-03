@@ -15,12 +15,6 @@ export const isDevelopment =
 
 export const isProduction = !isDevelopment
 
-let appDomain = process.env.APP_DOMAIN
-if (process.env.VERCEL) {
-  appDomain = `https://${process.env.VERCEL_URL}`
-}
-export const APP_DOMAIN = appDomain
-
 export const isExpired = (expiration) => {
   return new Date(expiration) > new Date()
 }
