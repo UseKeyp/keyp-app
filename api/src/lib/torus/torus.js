@@ -3,7 +3,6 @@ global.atob = require('atob')
 global.window = undefined
 global.document = undefined
 
-import NodeManager from '@toruslabs/fetch-node-details/dist/fetchNodeDetails-node'
 import TorusUtils from '@toruslabs/torus.js/dist/torusUtils-node'
 
 import { getIdentifiersFromId } from 'src/lib/db'
@@ -11,31 +10,29 @@ import { isProduction } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
 import { getNewIdToken } from 'src/lib/oAuth/jwt'
 
-const TORUS_VERIFIER = {
-  prod: {
-    DISCORD: 'usekeyp-discord', // TODO: change to patrick@usekeyp.com
-    GOOGLE: 'google',
-    TWITTER: 'twitter',
-    CHESS: 'chess',
-  },
-  dev: {
-    DISCORD: 'discord',
-    GOOGLE: 'google',
-    TWITTER: 'twitter',
-    CHESS: 'chess',
-  },
-}
+const NodeDetailManager =
+  require('@toruslabs/fetch-node-details/dist/fetchNodeDetails-node.js').default
 
-let config = {
-  network: 'ropsten',
-  proxyAddress: '0x6258c9d6c12ed3edda59a1a6527e469517744aa7',
-}
-if (isProduction)
-  config = {
-    network: 'polygon-mainnet',
-    proxyAddress: '0x9f072ba19b3370e512aa1b4bfcdaf97283168005',
-  }
-const fetchNodeDetails = new NodeManager(config)
+const config = isProduction
+  ? null
+  : {
+      network: 'testnet',
+      proxyAddress: NodeDetailManager.PROXY_ADDRESS_TESTNET,
+    }
+const nodeDetailManager = new NodeDetailManager(config)
+
+const TORUS_VERIFIER = isProduction
+  ? {
+      DISCORD: '',
+      GOOGLE: '',
+      CHESS: 'treasure-chess-prod-1',
+    }
+  : {
+      DISCORD: 'keyp-discord-testnet',
+      GOOGLE: 'keyp-google-testnet',
+      CHESS: 'treasure-chess-sandbox-aggregate',
+    }
+
 const torusUtils = new TorusUtils(
   isProduction
     ? {
@@ -46,7 +43,7 @@ const torusUtils = new TorusUtils(
 )
 
 const getVerifier = (userProvider) => {
-  const verifier = TORUS_VERIFIER[process.env.NODE_ENV][userProvider]
+  const verifier = TORUS_VERIFIER[userProvider]
   if (!verifier) throw new Error(`No verifier for ${userProvider}`)
   return verifier
 }
@@ -61,7 +58,7 @@ export const getTorusPublicAddress = async (userId) => {
       verifierId: parsedUserId,
     }
     const { torusNodeEndpoints, torusNodePub } =
-      await fetchNodeDetails.getNodeDetails(verifierDetails)
+      await nodeDetailManager.getNodeDetails(verifierDetails)
 
     const publicAddress = await torusUtils.getPublicAddress(
       torusNodeEndpoints,
@@ -95,7 +92,7 @@ export const getTorusWallet = async (userId) => {
     }
 
     const { torusNodeEndpoints, torusIndexes } =
-      await fetchNodeDetails.getNodeDetails(verifierDetails)
+      await nodeDetailManager.getNodeDetails(verifierDetails)
     const retrieveSharesResponse = await torusUtils.retrieveShares(
       torusNodeEndpoints,
       torusIndexes,

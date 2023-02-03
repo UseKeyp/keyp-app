@@ -15,7 +15,7 @@
     "@redwoodjs/graphql-server": "^3.8.0",
     "@sentry/node": "^6.18.1",
     "@sentry/tracing": "^6.18.1",
-    "@toruslabs/fetch-node-details": "^5.0.0",
+    "@toruslabs/fetch-node-details": "^8.1.0",
     "@toruslabs/torus.js": "^5.0.1",
     "@treasure-chess/treasure-contracts": "^0.1.0",
     "@treasure-chess/web3-helpers": "^1.1.0-staging.0",
