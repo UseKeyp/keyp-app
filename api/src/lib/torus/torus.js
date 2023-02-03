@@ -6,9 +6,25 @@ global.document = undefined
 import NodeManager from '@toruslabs/fetch-node-details/dist/fetchNodeDetails-node'
 import TorusUtils from '@toruslabs/torus.js/dist/torusUtils-node'
 
+import { getIdentifiersFromId } from 'src/lib/db'
 import { isProduction } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
 import { getNewIdToken } from 'src/lib/oAuth/jwt'
+
+const TORUS_VERIFIER = {
+  prod: {
+    DISCORD: 'usekeyp-discord', // TODO: change to patrick@usekeyp.com
+    GOOGLE: 'google',
+    TWITTER: 'twitter',
+    CHESS: 'chess',
+  },
+  dev: {
+    DISCORD: 'discord',
+    GOOGLE: 'google',
+    TWITTER: 'twitter',
+    CHESS: 'chess',
+  },
+}
 
 let config = {
   network: 'ropsten',
@@ -29,12 +45,20 @@ const torusUtils = new TorusUtils(
     : undefined
 )
 
+const getVerifier = (userProvider) => {
+  const verifier = TORUS_VERIFIER[process.env.NODE_ENV][userProvider]
+  if (!verifier) throw new Error(`No verifier for ${userProvider}`)
+  return verifier
+}
+
 export const getTorusPublicAddress = async (userId) => {
   try {
+    const { userProvider, userId: parsedUserId } = getIdentifiersFromId(userId)
+    const verifier = getVerifier(userProvider)
     /* eslint-disable camelcase */
     const verifierDetails = {
-      verifier: process.env.TORUS_VERIFIER,
-      verifierId: userId,
+      verifier,
+      verifierId: parsedUserId,
     }
     const { torusNodeEndpoints, torusNodePub } =
       await fetchNodeDetails.getNodeDetails(verifierDetails)
@@ -62,10 +86,12 @@ export const getTorusWallet = async (userId) => {
     //   verifier: process.env.TORUS_VERIFIER,
     //   verifierId: verifierId,
     // }
-    logger.debug(`getTorusWallet ${userId}`)
+    const { userProvider, userId: parsedUserId } = getIdentifiersFromId(userId)
+    const verifier = getVerifier(userProvider)
+    logger.debug(`getTorusWallet ${parsedUserId}`)
     const verifierDetails = {
-      verifier: process.env.TORUS_VERIFIER,
-      verifierId: userId,
+      verifier,
+      verifierId: parsedUserId,
     }
 
     const { torusNodeEndpoints, torusIndexes } =
@@ -73,14 +99,14 @@ export const getTorusWallet = async (userId) => {
     const retrieveSharesResponse = await torusUtils.retrieveShares(
       torusNodeEndpoints,
       torusIndexes,
-      process.env.TORUS_VERIFIER,
+      verifier,
       // NOTE: old chess.com way using jwt
       // {
       //   verify_params: [{ verifier_id: verifierId, idtoken: idToken }],
       //   sub_verifier_ids: ['chess'],
       //   verifier_id: verifierId,
       // },
-      { verifier_id: userId },
+      { verifier_id: parsedUserId },
       idToken
     )
     const { ethAddress, privKey } = retrieveSharesResponse
