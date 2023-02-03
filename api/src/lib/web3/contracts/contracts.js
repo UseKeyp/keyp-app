@@ -8,9 +8,12 @@ import { userSendTransaction } from 'src/lib/web3/wallets'
 export const getJuiceBoxContract = ({ address, network }) => {
   // Validate address does not match correct network
 
-  const JB_CONTRACT_ADDRESS = { goerli: '', mainnet: '' }
+  const JB_CONTRACT_ADDRESS = {
+    goerli: '0x55d4dfb578daa4d60380995fff7a706471d7c719',
+    mainnet: '0x594cb208b5bb48db1bcbc9354d1694998864ec63',
+  }
   const jbContractAddress = JB_CONTRACT_ADDRESS[network]
-  if (address.toLowercase() !== jbContractAddress.toLowercase())
+  if (address.toLowerCase() !== jbContractAddress.toLowerCase())
     throw 'Contract address does not match network'
 
   try {
