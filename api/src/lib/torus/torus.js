@@ -3,8 +3,6 @@ global.atob = require('atob')
 global.window = undefined
 global.document = undefined
 
-import TorusUtils from '@toruslabs/torus.js/dist/torusUtils-node.js'
-
 import { getIdentifiersFromId } from 'src/lib/db'
 import { isProduction } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
@@ -12,6 +10,8 @@ import { getNewIdToken } from 'src/lib/oAuth/jwt'
 
 const NodeDetailManager =
   require('@toruslabs/fetch-node-details/dist/fetchNodeDetails-node.js').default
+const TorusUtils =
+  require('@toruslabs/torus.js/dist/torusUtils-node.js').default
 
 const config = isProduction
   ? {
