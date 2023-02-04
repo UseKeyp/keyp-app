@@ -1,6 +1,7 @@
 import fetch from 'cross-fetch'
 import { decode as decodeJwt } from 'jsonwebtoken'
 
+import { db } from 'src/lib/db'
 import { isDevelopment } from 'src/lib/helpers'
 import { APP_DOMAIN } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
@@ -87,8 +88,10 @@ const onSubmitCode = async (code, { codeVerifier, memberId }) => {
   }
 }
 
-export const refreshChessTokens = async (refreshToken) => {
+export const refreshChessTokens = async (userId) => {
   try {
+    const { refreshToken } = await db.user.findUnique({ where: { id: userId } })
+
     const body = {
       grant_type: 'refresh_token',
       client_id: process.env.CHESS_CLIENT_ID,
@@ -103,7 +106,9 @@ export const refreshChessTokens = async (refreshToken) => {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     }).then((res) => {
       if (res.status == 401)
-        throw new Error('Chess.com basic authorization failed')
+        throw new Error(
+          'Chess.com basic authorization failed failed for /token endpoint'
+        )
       return res.json()
     })
     if (response.error)
@@ -119,6 +124,16 @@ export const refreshChessTokens = async (refreshToken) => {
     const newExpirationDate = getExpiration(newExpiration)
     const decoded = decodeJwt(newIdToken)
     const idTokenExpiration = new Date(decoded.exp * 1000)
+
+    await db.user.update({
+      where: { id: userId },
+      data: {
+        accessToken: newAccessToken,
+        accessTokenExpiration: newExpirationDate,
+        refreshToken: newRefreshToken,
+      },
+    })
+
     return {
       accessToken: newAccessToken,
       accessTokenExpiration: newExpirationDate,

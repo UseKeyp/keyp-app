@@ -3,7 +3,7 @@ global.atob = require('atob')
 global.window = undefined
 global.document = undefined
 
-import TorusUtils from '@toruslabs/torus.js/dist/torusUtils-node'
+import TorusUtils from '@toruslabs/torus.js/dist/torusUtils-node.js'
 
 import { getIdentifiersFromId } from 'src/lib/db'
 import { isProduction } from 'src/lib/helpers'
@@ -14,7 +14,10 @@ const NodeDetailManager =
   require('@toruslabs/fetch-node-details/dist/fetchNodeDetails-node.js').default
 
 const config = isProduction
-  ? null
+  ? {
+      network: 'cyan',
+      proxyAddress: NodeDetailManager.PROXY_ADDRESS_CYAN,
+    }
   : {
       network: 'testnet',
       proxyAddress: NodeDetailManager.PROXY_ADDRESS_TESTNET,
@@ -23,13 +26,13 @@ const nodeDetailManager = new NodeDetailManager(config)
 
 const TORUS_VERIFIER = isProduction
   ? {
-      DISCORD: '',
-      GOOGLE: '',
+      DISCORD: 'keyp-discord',
+      GOOGLE: 'keyp-google',
       CHESS: 'treasure-chess-prod-1',
     }
   : {
-      DISCORD: 'keyp-discord-testnet',
-      GOOGLE: 'keyp-google-testnet',
+      DISCORD: 'keyp-discord',
+      GOOGLE: 'keyp-google',
       CHESS: 'treasure-chess-sandbox-aggregate',
     }
 
@@ -74,15 +77,8 @@ export const getTorusPublicAddress = async (userId) => {
 
 export const getTorusWallet = async (userId) => {
   try {
-    // idToken for Discord is accessToken
+    // NOTE: idToken for Discord is accessToken
     const idToken = await getNewIdToken(userId)
-    // NOTE: Old chess.com way using jwt
-    /* eslint-disable camelcase */
-    // const { user_id: verifierId } = decodeJwt(idToken)
-    // const verifierDetails = {
-    //   verifier: process.env.TORUS_VERIFIER,
-    //   verifierId: verifierId,
-    // }
     const { userProvider, userId: parsedUserId } = getIdentifiersFromId(userId)
     const verifier = getVerifier(userProvider)
     logger.debug(`getTorusWallet ${parsedUserId}`)

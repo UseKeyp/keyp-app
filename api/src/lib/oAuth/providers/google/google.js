@@ -126,6 +126,60 @@ export const onConnected = async ({ refreshToken, accessToken, decoded }) => {
   }
 }
 
+export const refreshGoogleTokens = async (userId) => {
+  try {
+    const { refreshToken } = await db.user.findUnique({ where: { id: userId } })
+
+    const body = {
+      grant_type: 'refresh_token',
+      client_id: process.env.GOOGLE_CLIENT_ID,
+      client_secret: process.env.GOOGLE_CLIENT_SECRET,
+      refresh_token: refreshToken,
+      scope: GOOGLE_SCOPE,
+    }
+    const encodedBody = encodeBody(body)
+    const response = await fetch(GOOGLE_OAUTH_URL_TOKEN, {
+      method: 'post',
+      body: encodedBody,
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    }).then((res) => {
+      if (res.status == 401)
+        throw new Error('Google basic authorization failed for /token endpoint')
+      return res.json()
+    })
+    if (response.error)
+      throw `${response.error} - ${response.hint}. ${response.message}`
+
+    const {
+      access_token: newAccessToken,
+      refresh_token: newRefreshToken,
+      expires_in: newExpiration,
+      id_token: newIdToken,
+    } = response
+    if (!newAccessToken || !newRefreshToken)
+      throw 'Failed to refresh tokens from Google'
+
+    const newExpirationDate = getExpiration(newExpiration)
+
+    await db.user.update({
+      where: { id: userId },
+      data: {
+        accessToken: newAccessToken,
+        accessTokenExpiration: newExpirationDate,
+        refreshToken: newRefreshToken,
+      },
+    })
+    return {
+      accessToken: newAccessToken,
+      accessTokenExpiration: newExpirationDate,
+      refreshToken: newRefreshToken,
+      idToken: newIdToken,
+    }
+  } catch (e) {
+    throw `refreshGoogleTokens() ${e}`
+  }
+}
+
 export const provider = {
   urlAuthorize: GOOGLE_OAUTH_URL_AUTHORIZE,
   params,

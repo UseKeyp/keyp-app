@@ -6,25 +6,32 @@ import jwksClient from 'jwks-rsa'
 import { AuthenticationError } from '@redwoodjs/graphql-server'
 
 import { db } from 'src/lib/db'
+import { getIdentifiersFromId } from 'src/lib/db'
 import productionJwks from 'src/lib/oAuth/jwks'
 import {
   getChessBasicAuth,
   CHESS_OAUTH_URL,
 } from 'src/lib/oAuth/providers/chess'
+import { refreshChessTokens } from 'src/lib/oAuth/providers/chess'
 import { refreshDiscordTokens } from 'src/lib/oAuth/providers/discord'
+import { refreshGoogleTokens } from 'src/lib/oAuth/providers/google'
 
 export const getNewIdToken = async (userId) => {
   try {
-    const { refreshToken } = await db.user.findUnique({
-      where: { id: userId },
-    })
-    const { refreshToken: newRefreshToken, accessToken: newAccessToken } =
-      await refreshDiscordTokens(refreshToken)
-    await db.user.update({
-      where: { id: userId },
-      data: { refreshToken: newRefreshToken, accessToken: newAccessToken },
-    })
-    return newAccessToken
+    const { userProvider } = getIdentifiersFromId(userId)
+    let idToken
+    if (userProvider === 'DISCORD')
+      ({ accessToken: idToken } = await refreshDiscordTokens(userId))
+    else if (userProvider === 'CHESS')
+      ({ idToken } = await refreshChessTokens(userId))
+    else if (userProvider === 'GOOGLE')
+      ({ idToken } = await refreshGoogleTokens(userId))
+    else
+      throw new AuthenticationError(
+        `getNewIdToken() Unknown userProvider: ${userProvider}`
+      )
+
+    return idToken
   } catch (e) {
     /* eslint-disable-next-line no-console */
     console.log(e)

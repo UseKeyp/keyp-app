@@ -9372,32 +9372,37 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@toruslabs/http-helpers@npm:^2.2.0":
-  version: 2.2.0
-  resolution: "@toruslabs/http-helpers@npm:2.2.0"
+"@toruslabs/http-helpers@npm:^3.2.0":
+  version: 3.2.0
+  resolution: "@toruslabs/http-helpers@npm:3.2.0"
   dependencies:
     lodash.merge: ^4.6.2
     loglevel: ^1.8.0
   peerDependencies:
-    "@babel/runtime": 7.x
-  checksum: ff1d3fcd8b9f25b0a18bb1807bec2dab8016d7f0b46d3cea18c52c387f13564a5b533d007080698f739f5386a4b3d1932b16494c0a261133b2735dab7fd17bd6
+    "@babel/runtime": ^7.x
+    "@sentry/types": ^7.x
+  peerDependenciesMeta:
+    "@sentry/types":
+      optional: true
+  checksum: eff3a54315d660c53b4b1db50e3c236f4b66b8e7535347969a9b44a3227b5f4ee01b90cca733723a4ca5a09bfba6ab29058dd5d2e648a1bf93b553c6052f31e6
   languageName: node
   linkType: hard
 
-"@toruslabs/torus.js@npm:^5.0.1":
-  version: 5.1.0
-  resolution: "@toruslabs/torus.js@npm:5.1.0"
+"@toruslabs/torus.js@npm:^6.3.2":
+  version: 6.3.2
+  resolution: "@toruslabs/torus.js@npm:6.3.2"
   dependencies:
     "@toruslabs/eccrypto": ^1.1.8
-    "@toruslabs/http-helpers": ^2.2.0
-    bn.js: ^5.2.0
+    "@toruslabs/http-helpers": ^3.2.0
+    bn.js: ^5.2.1
     elliptic: ^6.5.4
-    json-stable-stringify: ^1.0.1
-    loglevel: ^1.8.0
-    web3-utils: ^1.7.0
+    json-stable-stringify: ^1.0.2
+    keccak: ^3.0.3
+    loglevel: ^1.8.1
+    web3-utils: ^1.8.1
   peerDependencies:
     "@babel/runtime": 7.x
-  checksum: 90aadc9b693b7eda4cd6723a58917cbe1a93af8c88d1eeed7d610dc8e3dc09de26a5fc817276b5181a3c9819f89c8690e4659a37852c6c372245ca506467da46
+  checksum: 845885e09f3a9c1be0553d5d2fb7dbc77e6fd22898eaf85ac781a95ee0b4293f1bd7d36ca9b4e3217e8adfbf36edf26af97efec1e904b32b5a68d658b97dfccf
   languageName: node
   linkType: hard
 
@@ -11829,7 +11834,7 @@ __metadata:
     "@sentry/node": ^6.18.1
     "@sentry/tracing": ^6.18.1
     "@toruslabs/fetch-node-details": ^8.1.0
-    "@toruslabs/torus.js": ^5.0.1
+    "@toruslabs/torus.js": ^6.3.2
     "@treasure-chess/treasure-contracts": ^0.1.0
     "@treasure-chess/web3-helpers": ^1.1.0-staging.0
     atob: ^2.1.2
@@ -24177,7 +24182,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"json-stable-stringify@npm:^1.0.1":
+"json-stable-stringify@npm:^1.0.1, json-stable-stringify@npm:^1.0.2":
   version: 1.0.2
   resolution: "json-stable-stringify@npm:1.0.2"
   dependencies:
@@ -24410,7 +24415,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"keccak@npm:^3.0.0":
+"keccak@npm:^3.0.0, keccak@npm:^3.0.3":
   version: 3.0.3
   resolution: "keccak@npm:3.0.3"
   dependencies:
@@ -25411,7 +25416,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"loglevel@npm:^1.8.0":
+"loglevel@npm:^1.8.0, loglevel@npm:^1.8.1":
   version: 1.8.1
   resolution: "loglevel@npm:1.8.1"
   checksum: 21069436c97448a1801b154a77d19ada212225c513d94f0471bfe299c981ffd4dc0d21e6211f9250bd6209ba9837bfe0d40d9295c673d73e3c543ec6b1c5d9ef
@@ -36559,21 +36564,6 @@ __metadata:
     randombytes: ^2.1.0
     utf8: 3.0.0
   checksum: acb2f1e0d49bbb39871719e54431dd68374f132bf1d92046ec757cc3dd64d72056dc2481c2a3a21eea6c65d4cd761acc8af48dd331acfcc8da14c8a3f51336c3
-  languageName: node
-  linkType: hard
-
-"web3-utils@npm:^1.7.0":
-  version: 1.8.1
-  resolution: "web3-utils@npm:1.8.1"
-  dependencies:
-    bn.js: ^5.2.1
-    ethereum-bloom-filters: ^1.0.6
-    ethereumjs-util: ^7.1.0
-    ethjs-unit: 0.1.6
-    number-to-bn: 1.7.0
-    randombytes: ^2.1.0
-    utf8: 3.0.0
-  checksum: f04175000d1e445509fd07df38ab73557177108f4dd373174eaed9f3ea773e4a417eb368628e1777169f03c7b83e9812c56e10863293349735445e7ce35e9b35
   languageName: node
   linkType: hard
 
