@@ -25,6 +25,7 @@ export const mint = async ({
   treasure,
   tokenUri,
   minterAddress,
+  network,
   // gasMultiplier = 1,
 }) => {
   try {
@@ -54,7 +55,7 @@ export const mint = async ({
       logger.error(e)
     }
     logger.debug({ custom: { ...unsignedTx } }, 'unsignedTx')
-    const tx = await adminSendTransaction(unsignedTx)
+    const tx = await adminSendTransaction({ unsigned: unsignedTx, network })
     logger.debug({ custom: { ...tx } }, 'tx')
     return tx
   } catch (e) {

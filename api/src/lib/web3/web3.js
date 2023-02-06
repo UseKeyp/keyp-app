@@ -12,7 +12,7 @@ import { pinTreasure } from 'src/lib/pinata/pinata'
 import Sentry from 'src/lib/sentry'
 import { generateTreasureData } from 'src/lib/treasures'
 import { fetchUser } from 'src/lib/users'
-import { web3Provider } from 'src/lib/web3/helpers'
+import { Web3Providers, AVAILABLE_NETWORKS } from 'src/lib/web3/provider'
 import { mint } from 'src/lib/web3/treasure'
 
 import { getAdminBalance } from './wallets/admin'
@@ -28,9 +28,22 @@ const FAILED = 'FAILED'
 const MINIMUM_CONFIRMATIONS = isProduction ? 15 : 1
 const MAX_RESUBMIT_ATTEMPTS = 0
 
-const alertDiscord = async (treasure) => {
+const alertDiscord = async ({ treasure, network }) => {
   try {
-    const adminMaticBalance = await getAdminBalance()
+    let balanceObjects = []
+    await Promise.all(
+      Web3Providers.map(async (provider) => {
+        const balance = await getAdminBalance({ network: provider.network })
+        balanceObjects.push({
+          network,
+          field: {
+            name: `Admin wallet - ${provider.network}`,
+            value: `${formatEther(balance).substring(0, 6)} ETH`,
+            inline: true,
+          },
+        })
+      })
+    )
     await sendDiscordAdminAlert({
       embed: {
         color: 8963403,
@@ -39,11 +52,13 @@ const alertDiscord = async (treasure) => {
         description: `${EXPLORER_BASE_URL}token/${treasure.id}`,
         fields: [
           { name: 'tokenId', value: treasure.tokenId, inline: true },
-          {
-            name: 'Admin wallet',
-            value: `${formatEther(adminMaticBalance).substring(0, 6)} ETH`,
-            inline: true,
-          },
+          ...balanceObjects
+            .sort(
+              (a, b) =>
+                AVAILABLE_NETWORKS.indexOf(a.network) -
+                AVAILABLE_NETWORKS.indexOf(b.network)
+            )
+            .map((balanceObject) => balanceObject.field),
         ],
         image: { url: treasure.openGraphImageSrc },
         footer: { text: new Date().toString() },
@@ -85,8 +100,10 @@ ${errorMessage.substring(0, 2000)}`,
   })
 }
 
-export const mintTreasureAndUpdatePurchase = async ({ mintPurchase }) => {
-  logger.debug('invoked mintTreasureAndUpdatePurchase')
+export const mintTreasureAndUpdatePurchase = async ({
+  mintPurchase,
+  network,
+}) => {
   try {
     const { gameId, gameEndTime, title, member } = mintPurchase
 
@@ -122,7 +139,10 @@ export const mintTreasureAndUpdatePurchase = async ({ mintPurchase }) => {
     })
     // logger.debug({ custom: mintPurchase }, 'mintPurchase')
     if (mintPurchase.transaction?.id) {
-      const { status, tokenId } = await getMintTxStatus({ mintPurchase })
+      const { status, tokenId } = await getMintTxStatus({
+        mintPurchase,
+        network,
+      })
       if (status === COMPLETE) {
         // YAY! Create the treasure in the database
         // TODO: optimize by combining these two db calls
@@ -145,11 +165,14 @@ export const mintTreasureAndUpdatePurchase = async ({ mintPurchase }) => {
           },
         })
         await alertDiscord({
-          ...treasureData,
-          tokenId,
-          uriData,
-          tokenUri,
-          openGraphImageSrc,
+          network,
+          treasure: {
+            ...treasureData,
+            tokenId,
+            uriData,
+            tokenUri,
+            openGraphImageSrc,
+          },
         })
         await updateMauticContactMinted({ member })
         return purchase
@@ -200,6 +223,7 @@ export const mintTreasureAndUpdatePurchase = async ({ mintPurchase }) => {
     let tx
     try {
       tx = await mint({
+        network,
         treasure: treasureData,
         tokenUri,
         minterAddress: member.address,
@@ -233,14 +257,7 @@ export const mintTreasureAndUpdatePurchase = async ({ mintPurchase }) => {
     /* eslint-disable-next-line no-console */
   } catch (e) {
     throw `mintTreasureAndUpdatePurchase() ${JSON.stringify(
-      {
-        ...mintPurchase,
-        member: {
-          ...mintPurchase.member,
-          refreshToken: 'REDACTED',
-          accessToken: 'REDACTED',
-        },
-      },
+      { ...mintPurchase },
       undefined,
       4
     )} ${e}`
@@ -255,11 +272,11 @@ const getLogByTopic = ({ logs, topic }) => {
   return logByTopic
 }
 
-export const getTxReceipt = async (txHash) =>
-  web3Provider.getTransactionReceipt(txHash)
+export const getTxReceipt = async ({ txHash, network }) =>
+  Web3Providers[network].getTransactionReceipt(txHash)
 
-export const getTxStatus = async (txHash) => {
-  const receipt = await getTxReceipt(txHash)
+export const getTxStatus = async ({ txHash, network }) => {
+  const receipt = await getTxReceipt({ network, txHash })
   if (
     receipt?.status === 0 &&
     receipt?.confirmations >= MINIMUM_CONFIRMATIONS
@@ -274,10 +291,13 @@ export const getTxStatus = async (txHash) => {
   return SUBMITTED
 }
 
-export const getMintTxStatus = async ({ mintPurchase }) => {
+const getMintTxStatus = async ({ mintPurchase, network }) => {
   try {
     if (mintPurchase.transaction?.status === SUBMITTED) {
-      const receipt = await getTxReceipt(mintPurchase.transaction.id)
+      const receipt = await getTxReceipt({
+        txHash: mintPurchase.transaction.id,
+        network,
+      })
       logger.debug(
         { custom: { receipt, id: mintPurchase.transaction.id } },
         'getMintTxStatus'
@@ -307,9 +327,9 @@ export const getMintTxStatus = async ({ mintPurchase }) => {
     throw `getMintTxStatus() ${e}`
   }
 }
-export const getSaleTxStatus = async (txHash) => {
+export const getSaleTxStatus = async ({ txHash, network }) => {
   try {
-    const receipt = await getTxReceipt(txHash)
+    const receipt = await getTxReceipt({ network, txHash })
 
     if (
       receipt?.status === 0 &&

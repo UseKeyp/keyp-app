@@ -28,6 +28,7 @@ export const transferERC721 = async ({
   toUser,
   tokenAddress,
   tokenId,
+  network,
 }) => {
   let contract
   try {
@@ -49,7 +50,11 @@ export const transferERC721 = async ({
       toAddress,
       tokenId
     )
-    const tx = await userSendTransaction({ userId: fromUser.id, unsignedTx })
+    const tx = await userSendTransaction({
+      userId: fromUser.id,
+      unsignedTx,
+      network,
+    })
     return tx
   } catch (e) {
     logger.error(e)

@@ -1,17 +1,12 @@
 import { Wallet } from '@ethersproject/wallet'
 
 import { logger } from 'src/lib/logger'
-import { web3Provider, getGasSettings } from 'src/lib/web3/helpers'
+import { getGasSettings } from 'src/lib/web3/gas'
+import { Web3Providers } from 'src/lib/web3/provider'
 
 const adminWallet = Wallet.fromMnemonic(
   process.env.APP_ADMIN_WALLET_MNEMONIC.replace(/,/g, ' ')
 )
-
-// const getPrivKey = () => {
-//   logger.debug(adminWallet.privateKey)
-// }
-//
-// getPrivKey()
 
 const validateConfig = (wallet) => {
   if (
@@ -21,13 +16,13 @@ const validateConfig = (wallet) => {
     throw 'Admin wallet address and mnemonic do not match'
 }
 
-export const adminSign = async (unsigned) =>
-  adminWallet.signTransaction(unsigned)
+// Currently unused
+// const adminSign = async (unsigned) => adminWallet.signTransaction(unsigned)
 
-export const getAdminBalance = async () =>
-  web3Provider.getBalance(adminWallet.address)
+export const getAdminBalance = async ({ network }) =>
+  Web3Providers[network].getBalance(adminWallet.address)
 
-export const adminSendTransaction = async (unsigned) => {
+export const adminSendTransaction = async ({ unsigned, network }) => {
   validateConfig(adminWallet)
   try {
     if (process.env.IMPERSONATE_USERNAME)
@@ -35,11 +30,10 @@ export const adminSendTransaction = async (unsigned) => {
         { custom: unsigned },
         'IMPERSONATE_USERNAME tx skipped'
       )
-    logger.debug({ custom: web3Provider.connection }, 'web3Provider')
-    const adminWalletWithProvider = adminWallet.connect(web3Provider)
-    // const nonce = await web3Provider.getTransactionCount(adminWallet.address)
-    // logger.debug(`Admin wallet transactionCount: ${nonce}`)
-    const gasSettings = await getGasSettings()
+    const adminWalletWithProvider = adminWallet.connect(Web3Providers[network])
+    const nonce = await Web3Providers.getTransactionCount(adminWallet.address)
+    logger.debug(`Admin wallet nonce for ${network}: ${nonce}`)
+    const gasSettings = await getGasSettings({ network })
     return await adminWalletWithProvider.sendTransaction({
       ...unsigned,
       ...gasSettings,

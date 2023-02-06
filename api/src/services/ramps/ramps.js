@@ -2,7 +2,7 @@ import { EnvelopError } from '@envelop/core'
 
 import { db } from 'src/lib/db'
 import { getRampOffUrl, getRampOnUrl } from 'src/lib/ramps'
-import { transferUsdc } from 'src/lib/web3/tokens'
+import { transferUsdc } from 'src/lib/web3/usdc'
 
 export const ramps = async () => {
   const ramps = await db.ramp.findMany({
@@ -18,14 +18,14 @@ export const ramps = async () => {
   return filtered
 }
 
-export const rampWithdraw = async ({ type, amount }) => {
+export const rampWithdraw = async ({ type, amount, network }) => {
   if (!Number(amount) > 0)
     throw new EnvelopError('Value must be greater than 0')
   const availableRamps = await ramps()
   const ramp = availableRamps.find((ramp) => ramp.type == type)
   if (!ramp)
     throw new EnvelopError(`You don't have a ramp connected yet for ${type}`)
-  const tx = await transferUsdc({ toAddress: ramp.address, amount })
+  const tx = await transferUsdc({ toAddress: ramp.address, amount, network })
   // TODO: create ramp withdraw tx
   // TODO: Send email receipts
   await db.rampWithdraw.create({
@@ -40,8 +40,8 @@ export const rampWithdraw = async ({ type, amount }) => {
   return { id: tx.hash }
 }
 
-export const getRampUrl = async ({ type, direction }) => {
+export const getRampUrl = async ({ type, direction, network }) => {
   if (direction === 'ON')
-    return getRampOnUrl({ type, user: context.currentUser })
-  return getRampOffUrl({ type, user: context.currentUser })
+    return getRampOnUrl({ type, user: context.currentUser, network })
+  return getRampOffUrl({ type, user: context.currentUser, network })
 }

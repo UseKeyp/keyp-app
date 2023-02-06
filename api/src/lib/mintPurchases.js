@@ -7,10 +7,10 @@ import { validateTreasureTitle } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
 import { mintTreasureAndUpdatePurchase } from 'src/lib/web3'
 import { checkGasAndAirdrop } from 'src/lib/web3/airdrop'
-import { transferUsdc } from 'src/lib/web3/tokens'
-import { getUsdcBalance } from 'src/lib/web3/tokens.js'
 import { getTokenIdFromHashId } from 'src/lib/web3/treasure'
 import { checkAndSetMarketApprovals } from 'src/lib/web3/treasureMarket'
+import { transferUsdc } from 'src/lib/web3/usdc'
+import { getUsdcBalance } from 'src/lib/web3/usdc.js'
 
 export const COMPLETE = 'COMPLETE'
 export const FAILED = 'FAILED'
@@ -110,6 +110,7 @@ export const processMintBalanceRequest = async ({
   endTime,
   title,
   paymentType,
+  network,
 }) => {
   try {
     await checkGasAndAirdrop({ user: context.currentUser })
@@ -135,6 +136,7 @@ export const processMintBalanceRequest = async ({
     await transferUsdc({
       to: process.env.APP_ADMIN_WALLET_ADDRESS,
       amount: process.env.WYRE_MINT_USD_PURCHASE_AMOUNT,
+      network,
     })
   }
   const mintPurchase = await db.mintPurchase.create({
@@ -152,6 +154,7 @@ export const processMintBalanceRequest = async ({
 
 // Part of the polling system. Triggers minting.
 export const processPendingPurchases = async () => {
+  // TODO: Update to include network
   let pendingPurchases = await fetchPendingMintPurchases()
   pendingPurchases = await Promise.all(
     pendingPurchases.map(async (mintPurchase) => {
@@ -174,7 +177,7 @@ export const processPendingPurchases = async () => {
       if (![COMPLETE, FAILED].includes(mintPurchase.status)) {
         // Treasure not successfully minted. Proceed to mint!
         logger.debug(`Pending Purchase: #${mintPurchase.id}`)
-        return mintTreasureAndUpdatePurchase({ mintPurchase })
+        return mintTreasureAndUpdatePurchase({ mintPurchase, network })
       }
       return mintPurchase
     })

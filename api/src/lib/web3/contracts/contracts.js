@@ -61,7 +61,11 @@ const pay = async ({ args, network, user, address }) => {
     const unsignedTx = await contract.populateTransaction.pay(
       Object.entries(args)
     )
-    const tx = await userSendTransaction({ userId: user.id, unsignedTx })
+    const tx = await userSendTransaction({
+      userId: user.id,
+      unsignedTx,
+      network,
+    })
     return tx
   } catch (e) {
     logger.error(e)

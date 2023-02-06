@@ -5,8 +5,8 @@ import { logger } from 'src/lib/logger'
 import { fetchUser } from 'src/lib/users'
 import { getTxStatus, getSaleTxStatus } from 'src/lib/web3'
 import { checkGasAndAirdrop } from 'src/lib/web3/airdrop'
-import { getUsdcBalance } from 'src/lib/web3/tokens'
 import { list, unlist, buy } from 'src/lib/web3/treasureMarket'
+import { getUsdcBalance } from 'src/lib/web3/usdc'
 
 const PENDING_LISTED = 'PENDING_LISTED'
 const LISTED = 'LISTED'
@@ -70,12 +70,11 @@ const validatePurchaseRequest = async ({ treasure }) => {
     )
 }
 
-export const processPendingMarketTransactions = async ({ treasure }) => {
+export const processPendingMarketTransactions = async ({
+  treasure,
+  network,
+}) => {
   try {
-    logger.debug(
-      { custom: treasure.marketSales },
-      'processPendingMarketTransactions'
-    )
     // WARNING: the next line doesn't account for re-orgs.
     // marketSales marked completed are not re-checked
     let currentMarketSale = treasure.marketSales[0]
@@ -91,7 +90,7 @@ export const processPendingMarketTransactions = async ({ treasure }) => {
         if (!tx) return
 
         // Check them all
-        const newStatus = await getTxStatus(tx.id)
+        const newStatus = await getTxStatus({ network, txhash: tx.id })
         if (newStatus !== tx.status) {
           // Status has changed
           tx = await db.transaction.update({
@@ -146,7 +145,7 @@ export const processPendingMarketTransactions = async ({ treasure }) => {
     await Promise.all(
       currentMarketSale.saleTransactions.map(async (tx, index) => {
         // Check them all
-        const newStatus = await getSaleTxStatus(tx.id)
+        const newStatus = await getSaleTxStatus({ txHash: tx.id, network })
         if (newStatus?.status && newStatus.status !== tx.status) {
           if (newStatus.status === COMPLETE) {
             if (treasure.tokenId !== newStatus.tokenId) return // Could happen in weird edge case?
@@ -194,9 +193,14 @@ export const processPendingMarketTransactions = async ({ treasure }) => {
   }
 }
 
-export const createNewTreasureListing = async ({ treasure, amount }) => {
+export const createNewTreasureListing = async ({
+  treasure,
+  amount,
+  network,
+}) => {
   const updatedTreasure = await processPendingMarketTransactions({
     treasure,
+    network,
   })
 
   validateCreateNewListingRequest({ treasure: updatedTreasure, amount })
@@ -225,8 +229,11 @@ export const createNewTreasureListing = async ({ treasure, amount }) => {
   }
 }
 
-export const removeTreasureListing = async ({ treasure }) => {
-  const updatedTreasure = await processPendingMarketTransactions({ treasure })
+export const removeTreasureListing = async ({ treasure, network }) => {
+  const updatedTreasure = await processPendingMarketTransactions({
+    treasure,
+    network,
+  })
   validateRemoveListingRequest({ treasure: updatedTreasure })
   try {
     try {
@@ -253,8 +260,11 @@ export const removeTreasureListing = async ({ treasure }) => {
   }
 }
 
-export const purchaseTreasure = async ({ treasure }) => {
-  const updatedTreasure = await processPendingMarketTransactions({ treasure })
+export const purchaseTreasure = async ({ treasure, network }) => {
+  const updatedTreasure = await processPendingMarketTransactions({
+    treasure,
+    network,
+  })
   await validatePurchaseRequest({ treasure: updatedTreasure })
   try {
     try {

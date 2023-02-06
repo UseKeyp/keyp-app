@@ -3,7 +3,6 @@ import { Contract } from '@ethersproject/contracts'
 import { formatUnits, parseUnits } from '@ethersproject/units'
 
 import { logger } from 'src/lib/logger'
-import { fetchUser } from 'src/lib/users'
 import { checkGasAndAirdrop } from 'src/lib/web3/airdrop'
 import { web3Provider } from 'src/lib/web3/helpers'
 import { userSendTransaction } from 'src/lib/web3/wallets'
@@ -69,9 +68,10 @@ export const transferErc20 = async ({
   toUser,
   amount,
   tokenAddress,
+  network,
 }) => {
-  if (toUser) throw 'No toUser provided'
-  if (fromUser) throw 'No fromUser provided'
+  if (!toUser) throw 'No toUser provided'
+  if (!fromUser) throw 'No fromUser provided'
   if (!amount) throw 'No amount provided'
   if (!tokenAddress) throw 'No tokenAddress provided'
 
@@ -123,7 +123,11 @@ export const transferErc20 = async ({
       toAddress,
       amountBn
     )
-    const tx = await userSendTransaction({ userId: fromUser.id, unsignedTx })
+    const tx = await userSendTransaction({
+      userId: fromUser.id,
+      unsignedTx,
+      network,
+    })
     return tx
   } catch (e) {
     logger.error(e)

@@ -4,8 +4,8 @@ import { parseUnits } from '@ethersproject/units'
 
 import { logger } from 'src/lib/logger'
 import { web3Provider } from 'src/lib/web3/helpers'
-import { getTokenContract } from 'src/lib/web3/tokens'
 import { getTreasureContract } from 'src/lib/web3/treasure'
+import { getUsdcContract } from 'src/lib/web3/usdc'
 import { memberSendTransaction } from 'src/lib/web3/wallets'
 
 const treasureMerketArtifact = require('@treasure-chess/treasure-contracts/artifacts/contracts/TreasureMarket.sol/TreasureMarket.json')
@@ -23,7 +23,7 @@ export const getTreasureMarketContract = () => {
   }
 }
 
-export const checkAndSetMarketApprovals = async ({ member }) => {
+export const checkAndSetMarketApprovals = async ({ member, network }) => {
   try {
     let treasureApprovalTx
     let tokenApprovalTx
@@ -45,7 +45,7 @@ export const checkAndSetMarketApprovals = async ({ member }) => {
       })
     }
     // Approve spending ERC20
-    const tokenContract = getTokenContract()
+    const tokenContract = getUsdcContract({ network })
     const allowance = await tokenContract.allowance(
       member.address,
       process.env.CONTRACT_ADDRESS_TREASURE_MARKET

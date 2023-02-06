@@ -1,7 +1,7 @@
 import { db } from 'src/lib/db'
 import { logger } from 'src/lib/logger'
 import { fetchUser } from 'src/lib/users'
-import { getUsdcBalance as getUsdcBal } from 'src/lib/web3/tokens.js'
+import { getUsdcBalance as getUsdcBal } from 'src/lib/web3/usdc.js'
 
 export const user = ({ usernameOrAddress }) => {
   try {

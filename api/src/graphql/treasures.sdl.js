@@ -77,7 +77,8 @@ export const schema = gql`
       owner: String
     ): Int! @skipAuth
     treasure(tokenId: String!): Treasure @skipAuth
-    treasureWithMarketSales(tokenId: String!): Treasure @skipAuth
+    treasureWithMarketSales(tokenId: String!, network: Network!): Treasure
+      @skipAuth
   }
 
   enum Opening {

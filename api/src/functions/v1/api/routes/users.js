@@ -16,7 +16,10 @@ router.get('/:userId/balance', async (req, res) => {
   const { userId } = req.params
   const user = await fetchUser(userId)
 
-  const etherBalanceData = await getEtherBalance(user.address)
+  const etherBalanceData = await getEtherBalance({
+    address: user.address,
+    network: req.ctx.network,
+  })
   const usdcBalanceData = await getErc20Balance({
     tokenAddress: process.env.CONTRACT_ADDRESS_PAYMENT_TOKEN,
     address: user.address,

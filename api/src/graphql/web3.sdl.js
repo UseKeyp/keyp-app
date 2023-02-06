@@ -8,17 +8,32 @@ export const schema = gql`
       tokenAddress: String!
       tokenId: Int!
       toAddress: String!
+      network: Network!
     ): TransferResponse! @requireAuth
     transferErc20(
       tokenAddress: String!
       amount: String!
       toAddress: String!
+      network: Network!
     ): TransferResponse! @requireAuth
-    transferUsdc(amount: String!, toAddress: String!): TransferResponse!
-      @requireAuth
+    transferUsdc(
+      amount: String!
+      toAddress: String!
+      network: Network!
+    ): TransferResponse! @requireAuth
   }
   enum TransferStatus {
     SUCCESS
     FAILED
+  }
+
+  enum Network {
+    gnosis
+    matic
+    mumbai
+    goerli
+    bsc
+    "bsc-testnet"
+    mainnet
   }
 `
