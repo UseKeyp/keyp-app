@@ -48,7 +48,7 @@ export const getUsdcBalance = async ({ address, network }) => {
 
   try {
     const bal = await contract.balanceOf(address)
-    return formatUnits(bal, process.env.DECIMALS_PAYMENT_TOKEN)
+    return formatUnits(bal, USDC_DATA_BY_NETWORK[network].decimals)
   } catch (e) {
     logger.error(e)
     throw new EnvelopError('Unable to get USDC balance')
@@ -61,6 +61,6 @@ export const transferUsdc = async ({ toAddress, amount, network }) =>
     fromUserId: context.currentUser.id,
     toAddress,
     amount,
-    tokenAddress: process.env.CONTRACT_ADDRESS_PAYMENT_TOKEN,
+    tokenAddress: USDC_DATA_BY_NETWORK[network].address,
     network,
   })
