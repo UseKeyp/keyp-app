@@ -4,7 +4,7 @@ import { getExplorerBaseUrlFromName } from '@treasure-chess/web3-helpers'
 import { sendDiscordAdminAlert } from 'src/lib/discord/admin'
 import { logger } from 'src/lib/logger'
 import Sentry from 'src/lib/sentry'
-import { Web3Provider } from 'src/lib/web3/helpers'
+import { Web3Providers } from 'src/lib/web3/provider'
 import { payerSendTransaction } from 'src/lib/web3/wallets'
 import { payerAddress } from 'src/lib/web3/wallets/payer'
 
@@ -26,7 +26,7 @@ const airdropGasTransaction = async ({ address, amount, network }) => {
 }
 
 const getEtherBalance = async ({ address, network }) => {
-  const balanceBn = await Web3Provider[network].getBalance(address)
+  const balanceBn = await Web3Providers[network].getBalance(address)
   return {
     balance: balanceBn.toString(),
     balanceBn: balanceBn,
@@ -36,7 +36,7 @@ const getEtherBalance = async ({ address, network }) => {
     name: 'Ethereum',
     tokenAddress: null,
     network,
-    chainId: Web3Provider[network]._network.chainId,
+    chainId: Web3Providers[network]._network.chainId,
   }
 }
 

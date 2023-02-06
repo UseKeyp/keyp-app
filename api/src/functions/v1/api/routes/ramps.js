@@ -10,6 +10,7 @@ router.get('/on/:rampType', withUser, async (req, res) => {
   const { url } = await getRampOnUrl({
     type: rampType.toUpperCase(),
     user: req.ctx.user,
+    network: req.ctx.network,
   })
 
   res.send({ url })

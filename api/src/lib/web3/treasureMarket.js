@@ -3,7 +3,7 @@ import { Contract } from '@ethersproject/contracts'
 import { parseUnits } from '@ethersproject/units'
 
 import { logger } from 'src/lib/logger'
-import { Web3Providers } from 'src/lib/web3/helpers'
+import { Web3Providers } from 'src/lib/web3/provider'
 import { getTreasureContract } from 'src/lib/web3/treasure'
 import { getUsdcContract, USDC_DATA_BY_NETWORK } from 'src/lib/web3/usdc'
 import { memberSendTransaction } from 'src/lib/web3/wallets'

@@ -2,7 +2,7 @@ import { EnvelopError } from '@envelop/core'
 import { Contract } from '@ethersproject/contracts'
 
 import { logger } from 'src/lib/logger'
-import { web3Provider } from 'src/lib/web3/helpers'
+import { Web3Providers } from 'src/lib/web3/provider'
 import { userSendTransaction } from 'src/lib/web3/wallets'
 
 export const getJuiceBoxContract = ({ address, network }) => {
@@ -22,7 +22,7 @@ export const getJuiceBoxContract = ({ address, network }) => {
       [
         'function pay(uint256, uint256, address, address, uint256, bool, string, bytes) external returns (uint256)',
       ],
-      web3Provider
+      Web3Providers[network]
     )
   } catch (e) {
     logger.error(e)
