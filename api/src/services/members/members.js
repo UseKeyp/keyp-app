@@ -39,8 +39,11 @@ export const userLocale = async ({ locale }) => {
   }
 }
 
-export const userBalance = async () => {
-  const usdcBalance = await getUsdcBal(context.currentUser.address)
+export const userBalance = async ({ network }) => {
+  const usdcBalance = await getUsdcBal({
+    network,
+    address: context.currentUser.address,
+  })
   return {
     usdcBalance,
     mintCreditBalance:

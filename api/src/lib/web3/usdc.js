@@ -4,7 +4,7 @@ import { formatUnits } from '@ethersproject/units'
 
 import { logger } from 'src/lib/logger'
 import { transferErc20 } from 'src/lib/web3/erc20'
-import { web3Provider } from 'src/lib/web3/helpers'
+import { Web3Providers } from 'src/lib/web3/provider'
 
 export const USDC_DATA_BY_NETWORK = {
   mumbai: {
@@ -27,7 +27,7 @@ export const getUsdcContract = ({ network }) => {
         'function approve(address, uint256) external returns (bool)',
         'function transfer(address, uint256) external returns (bool)',
       ],
-      web3Provider
+      Web3Providers
     )
   } catch (e) {
     logger.error(e)

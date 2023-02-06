@@ -1,19 +1,28 @@
 import { Contract } from '@ethersproject/contracts'
 
 import { logger } from 'src/lib/logger'
-import { web3Provider } from 'src/lib/web3/helpers'
+import { Web3Providers } from 'src/lib/web3/provider'
 import { adminSendTransaction } from 'src/lib/web3/wallets'
 
 const treasureArtifact = require('@treasure-chess/treasure-contracts/artifacts/contracts/Treasure.sol/Treasure.json')
 
 const treasureAbi = treasureArtifact.abi
 
-export const getTreasureContract = () => {
+const TREASURE_DATA_BY_NETWORK = {
+  mumbai: {
+    address: '0xc9234371D7943C0A333AB1eE4e9E6583323efD5d',
+  },
+  mainnet: {
+    address: '0x9d7b22aF44D4510ED2372814f18d78Fb3eDA6C44',
+  },
+}
+
+export const getTreasureContract = ({ network }) => {
   try {
     return new Contract(
-      process.env.CONTRACT_ADDRESS_TREASURE,
+      TREASURE_DATA_BY_NETWORK[network].address,
       treasureAbi,
-      web3Provider
+      Web3Providers[network]
     )
   } catch (e) {
     logger.error(e)
@@ -34,7 +43,7 @@ export const mint = async ({
     if (!treasure) throw 'No treasure provided'
     // if (gasMultiplier > 1.25)
     //   throw `Gas multiplier cannot be higher than 1.25, value is ${gasMultiplier}`
-    const treasureContract = getTreasureContract()
+    const treasureContract = getTreasureContract({ network })
 
     // Lookup the number of each achievement
     let chievScore = [0, 0, 0]
@@ -63,10 +72,10 @@ export const mint = async ({
   }
 }
 
-export const getTokenIdFromHashId = async (hashId) => {
+export const getTokenIdFromHashId = async ({ hashId, network }) => {
   try {
     if (!hashId) throw 'No hashId provided'
-    const treasureContract = getTreasureContract()
+    const treasureContract = getTreasureContract({ network })
     const tokenId = await treasureContract.movesHashToId(hashId)
     return tokenId
   } catch (e) {
@@ -75,13 +84,21 @@ export const getTokenIdFromHashId = async (hashId) => {
   }
 }
 
-export const getERC721Balance = async ({ contractAddress, userAddress }) => {
-  const contract = new Contract(contractAddress, treasureAbi, web3Provider)
+export const getERC721Balance = async ({
+  contractAddress,
+  userAddress,
+  network,
+}) => {
+  const contract = new Contract(
+    contractAddress,
+    treasureAbi,
+    Web3Providers[network]
+  )
   return await contract.balanceOf(userAddress)
 }
 
-export const totalSupply = async () => {
-  const treasureContract = getTreasureContract()
+export const totalSupply = async ({ network }) => {
+  const treasureContract = getTreasureContract({ network })
   const supply = await treasureContract.getTotalGames()
   return supply.toString()
 }

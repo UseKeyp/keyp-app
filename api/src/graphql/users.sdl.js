@@ -42,7 +42,7 @@ export const schema = gql`
     usernames(query: String!, orderBy: UserNameOrderByInput): [String]!
       @skipAuth
     profile: Profile! @requireAuth
-    userBalance: MemberBalance! @requireAuth
+    userBalance(network: Network!): MemberBalance! @requireAuth
   }
 
   type Mutation {

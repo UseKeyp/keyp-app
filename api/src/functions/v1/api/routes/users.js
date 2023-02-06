@@ -1,6 +1,7 @@
 import { fetchUser } from 'src/lib/users'
 import { getEtherBalance } from 'src/lib/web3/airdrop.js'
 import { getErc20Balance } from 'src/lib/web3/erc20'
+import { USDC_DATA_BY_NETWORK } from 'src/lib/web3/usdc'
 
 var express = require('express')
 var router = express.Router()
@@ -21,7 +22,7 @@ router.get('/:userId/balance', async (req, res) => {
     network: req.ctx.network,
   })
   const usdcBalanceData = await getErc20Balance({
-    tokenAddress: process.env.CONTRACT_ADDRESS_PAYMENT_TOKEN,
+    tokenAddress: USDC_DATA_BY_NETWORK[req.ctx.network].address,
     address: user.address,
   })
   res.send({ ETH: etherBalanceData, USDC: usdcBalanceData })

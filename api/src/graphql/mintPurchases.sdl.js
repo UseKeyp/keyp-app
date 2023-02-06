@@ -21,6 +21,7 @@ export const schema = gql`
       endTime: DateTime!
       title: String!
       paymentType: String!
+      network: Network!
     ): String! @requireAuth
     mintBalance(
       gameId: String!

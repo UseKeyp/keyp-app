@@ -71,6 +71,7 @@ export const validateMintRequest = async ({
   endTime,
   title,
   paymentType,
+  network,
 }) => {
   if (paymentType && !AVAILABLE_CHECKOUT_PAYMENT_TYPES.includes(paymentType))
     throw new EnvelopError(`Provider "${paymentType}" currently unavailable.`)
@@ -98,7 +99,10 @@ export const validateMintRequest = async ({
     throw new EnvelopError(
       `Whoops! ${game.white.username} needs to sign in to Treasure Chess before you can mint Treasures they appear in.`
     )
-  const tokenId = await getTokenIdFromHashId(game.treasureId)
+  const tokenId = await getTokenIdFromHashId({
+    hashId: game.treasureId,
+    network,
+  })
   if (tokenId > 0)
     throw new EnvelopError(
       `This Treasure has already been minted with tokenId ${tokenId}.`
@@ -114,7 +118,7 @@ export const processMintBalanceRequest = async ({
 }) => {
   try {
     await checkGasAndAirdrop({ user: context.currentUser })
-    await checkAndSetMarketApprovals({ user: context.currentUser })
+    await checkAndSetMarketApprovals({ network, user: context.currentUser })
   } catch {
     // Do nothing
   }
@@ -127,7 +131,10 @@ export const processMintBalanceRequest = async ({
     })
   }
   if (paymentType === 'BALANCE_MUSDC') {
-    const usdcBalance = await getUsdcBalance(context.currentUser.address)
+    const usdcBalance = await getUsdcBalance({
+      network,
+      address: context.currentUser.address,
+    })
     if (usdcBalance / process.env.WYRE_MINT_USD_PURCHASE_AMOUNT < 1)
       throw new EnvelopError(`Insufficient balance`)
     // Transfer funds from wallet to admin

@@ -50,7 +50,7 @@ const validateRemoveListingRequest = ({ treasure }) => {
     throw new EnvelopError(`This Treasure is not listed.`)
 }
 
-const validatePurchaseRequest = async ({ treasure }) => {
+const validatePurchaseRequest = async ({ treasure, network }) => {
   const currentMarketSale = treasure.marketSales[0]
   if (!currentMarketSale || currentMarketSale.isClosed)
     throw new EnvelopError('This Treasure is not for sale.')
@@ -63,7 +63,10 @@ const validatePurchaseRequest = async ({ treasure }) => {
     throw new EnvelopError('This Treasure is not for sale.')
 
   // Check balance
-  const userBalance = await getUsdcBalance(context.currentUser.address)
+  const userBalance = await getUsdcBalance({
+    address: context.currentUser.address,
+    network,
+  })
   if (Number(userBalance) < currentMarketSale.amount)
     throw new EnvelopError(
       `You don't have enough funds to purchase this Treasure.`
@@ -211,7 +214,7 @@ export const createNewTreasureListing = async ({
       // Do nothing
     }
     // Submit the transaction on behalf of the user
-    const tx = await list({ treasure, amount })
+    const tx = await list({ treasure, amount, network })
     // Create the marketSale object
     const marketSale = await db.marketSale.create({
       data: {
@@ -242,7 +245,7 @@ export const removeTreasureListing = async ({ treasure, network }) => {
       // Do nothing
     }
     // Submit the transaction on behalf of the user
-    const tx = await unlist({ treasure })
+    const tx = await unlist({ treasure, network })
 
     // Update the marketSale object
     const marketSale = await db.marketSale.update({
@@ -265,7 +268,7 @@ export const purchaseTreasure = async ({ treasure, network }) => {
     treasure,
     network,
   })
-  await validatePurchaseRequest({ treasure: updatedTreasure })
+  await validatePurchaseRequest({ treasure: updatedTreasure, network })
   try {
     try {
       await checkGasAndAirdrop({ member: context.currentUser })
@@ -273,7 +276,7 @@ export const purchaseTreasure = async ({ treasure, network }) => {
       // Do nothing
     }
     // Submit the transaction on behalf of the user
-    const tx = await buy({ treasure })
+    const tx = await buy({ treasure, network })
 
     // Update the marketSale object
     const marketSale = await db.marketSale.update({

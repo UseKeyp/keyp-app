@@ -4,9 +4,11 @@ import { formatUnits, parseUnits } from '@ethersproject/units'
 
 import { logger } from 'src/lib/logger'
 import { checkGasAndAirdrop } from 'src/lib/web3/airdrop'
-import { web3Provider } from 'src/lib/web3/helpers'
+import { Web3Providers } from 'src/lib/web3/provider'
+import { USDC_DATA_BY_NETWORK } from 'src/lib/web3/usdc'
 import { userSendTransaction } from 'src/lib/web3/wallets'
-export const getTokenContract = ({ tokenAddress }) => {
+
+const getTokenContract = ({ tokenAddress, network }) => {
   try {
     return new Contract(
       tokenAddress,
@@ -19,7 +21,7 @@ export const getTokenContract = ({ tokenAddress }) => {
         'function symbol() external view returns (string)',
         'function name() external view returns (string)',
       ],
-      web3Provider
+      Web3Providers[network]
     )
   } catch (e) {
     logger.error(e)
@@ -27,15 +29,16 @@ export const getTokenContract = ({ tokenAddress }) => {
   }
 }
 
-export const getErc20Balance = async ({ tokenAddress, address }) => {
+export const getErc20Balance = async ({ tokenAddress, address, network }) => {
   if (!address) throw 'No address provided'
   if (!tokenAddress) throw 'No address provided'
+  if (!network) throw 'No network provided'
   logger.debug(
     `getErc20Balance() tokenAddress: ${tokenAddress} address: ${address}`
   )
   let contract
   try {
-    contract = getTokenContract({ tokenAddress })
+    contract = getTokenContract({ tokenAddress, network })
   } catch (e) {
     logger.error(e)
     throw new EnvelopError('Unable to get ERC20 balance')
@@ -54,8 +57,8 @@ export const getErc20Balance = async ({ tokenAddress, address }) => {
       symbol,
       name,
       tokenAddress,
-      network: process.env.ETHEREUM_NETWORK_NAME,
-      chainId: web3Provider._network.chainId,
+      network,
+      chainId: Web3Providers[network]._network.chainId,
     }
   } catch (e) {
     logger.error(e)
@@ -74,6 +77,7 @@ export const transferErc20 = async ({
   if (!fromUser) throw 'No fromUser provided'
   if (!amount) throw 'No amount provided'
   if (!tokenAddress) throw 'No tokenAddress provided'
+  if (!network) throw 'No network provided'
 
   let contract
   try {
@@ -83,18 +87,18 @@ export const transferErc20 = async ({
     if (gettingGas)
       throw "Try again in a few minutes, we're sending some gas to your wallet."
 
-    contract = getTokenContract({ tokenAddress })
+    contract = getTokenContract({ tokenAddress, network })
     const bal = await contract.balanceOf(fromAddress)
 
     let amountBn
     let balance
     if (
       tokenAddress.toLowerCase() ===
-      process.env.CONTRACT_ADDRESS_PAYMENT_TOKEN.toLowerCase()
+      USDC_DATA_BY_NETWORK[network].address.toLowerCase()
     ) {
       // USDC Error messaging
-      amountBn = parseUnits(amount, process.env.DECIMALS_PAYMENT_TOKEN)
-      balance = formatUnits(bal, process.env.DECIMALS_PAYMENT_TOKEN)
+      amountBn = parseUnits(amount, USDC_DATA_BY_NETWORK[network].decimals)
+      balance = formatUnits(bal, USDC_DATA_BY_NETWORK[network].decimals)
       if (bal.lt(amountBn))
         throw `Amount exceeds your current balance of $${
           Number(balance) > 0

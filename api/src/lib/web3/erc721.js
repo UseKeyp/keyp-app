@@ -2,10 +2,10 @@ import { EnvelopError } from '@envelop/core'
 import { Contract } from '@ethersproject/contracts'
 
 import { logger } from 'src/lib/logger'
-import { web3Provider } from 'src/lib/web3/helpers'
+import { Web3Providers } from 'src/lib/web3/helpers'
 import { userSendTransaction } from 'src/lib/web3/wallets'
 
-export const getERC721Contract = (tokenAddress) => {
+export const getERC721Contract = ({ tokenAddress, network }) => {
   try {
     return new Contract(
       tokenAddress,
@@ -13,7 +13,7 @@ export const getERC721Contract = (tokenAddress) => {
         'function ownerOf(uint256) external view returns (address)',
         'function safeTransferFrom(address, address, uint256) public virtual',
       ],
-      web3Provider
+      Web3Providers[network]
     )
   } catch (e) {
     logger.error(e)
@@ -32,7 +32,7 @@ export const transferERC721 = async ({
 }) => {
   let contract
   try {
-    contract = getERC721Contract(tokenAddress)
+    contract = getERC721Contract({ tokenAddress, network })
   } catch (e) {
     logger.error(e)
     throw new EnvelopError('Unable to transfer ERC721', e.me)
@@ -62,10 +62,14 @@ export const transferERC721 = async ({
   }
 }
 
-export const getERC721Balance = async ({ contractAddress, userAddress }) => {
+export const getERC721Balance = async ({
+  contractAddress,
+  userAddress,
+  network,
+}) => {
   let contract
   try {
-    contract = getERC721Contract(contractAddress)
+    contract = getERC721Contract({ tokenAddress: contractAddress, network })
   } catch (e) {
     logger.error(e)
     throw new EnvelopError('Unable to get ERC721 balance')
@@ -73,8 +77,8 @@ export const getERC721Balance = async ({ contractAddress, userAddress }) => {
   return await contract.balanceOf(userAddress)
 }
 
-export const totalSupply = async () => {
-  const contract = getERC721Contract()
-  const supply = await contract.getTotalGames()
+export const totalSupply = async ({ network, tokenAddress }) => {
+  const contract = getERC721Contract({ network, tokenAddress })
+  const supply = await contract.totalSupply()
   return supply.toString()
 }
