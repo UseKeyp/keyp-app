@@ -13,10 +13,10 @@ generator client {
 model User {
   id                    String
   provider              ProviderType
-  username              String?               @unique // platform username
+  username              String?
   address               String?               @unique // Torus wallet address
   locale                String?
-  email                 String?               @unique // Email address
+  email                 String? // Email address
   // --------------- LINKS --------------
   mintPurchases         MintPurchase[]        @relation("mintPurchases")
   rampWithdraws         RampWithdraw[]        @relation("rampWithdraws")
