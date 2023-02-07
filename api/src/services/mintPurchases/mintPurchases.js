@@ -28,11 +28,24 @@ export const cancelMintingPurchase = async ({ id }) => {
   return await db.mintPurchase.delete({ where: { id } })
 }
 
-export const mintBalance = async ({ gameId, endTime, title, paymentType }) => {
-  await validateMintRequest({ gameId, endTime, title })
-  logger.debug(`title: ${title}`)
-  logger.debug(`context.currentUser.id: ${context.currentUser.id}`)
-  return processMintBalanceRequest({ gameId, endTime, title, paymentType })
+export const mintBalance = async ({
+  gameId,
+  endTime,
+  title,
+  paymentType,
+  network,
+}) => {
+  await validateMintRequest({ gameId, endTime, title, network })
+  logger.debug(
+    `title: ${title}, context.currentUser.id: ${context.currentUser.id}`
+  )
+  return processMintBalanceRequest({
+    gameId,
+    endTime,
+    title,
+    paymentType,
+    network,
+  })
 }
 
 export const mintCheckoutUrl = async ({
@@ -40,8 +53,9 @@ export const mintCheckoutUrl = async ({
   endTime,
   title,
   paymentType,
+  network,
 }) => {
-  await validateMintRequest({ gameId, endTime, title, paymentType })
+  await validateMintRequest({ gameId, endTime, title, paymentType, network })
   const { username, address, id: userId } = context.currentUser
 
   const { email } = db.user.findFirst({

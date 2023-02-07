@@ -9,7 +9,6 @@ export const schema = gql`
   }
 
   type Query {
-    chainData: ChainData! @skipAuth
     metrics(password: String!): JSON @skipAuth
   }
 `

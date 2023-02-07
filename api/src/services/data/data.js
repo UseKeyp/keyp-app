@@ -1,8 +1,6 @@
 import { ForbiddenError } from '@redwoodjs/graphql-server'
 
-import { getBusinessMetrics, getChainData } from 'src/lib/metrics'
-
-export const chainData = () => getChainData()
+import { getBusinessMetrics } from 'src/lib/metrics'
 
 export const metrics = async ({ password }) => {
   if (password !== process.env.DATA_ACCESS_PASSWORD)

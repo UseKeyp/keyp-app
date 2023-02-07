@@ -1,23 +1,5 @@
 import { db } from 'src/lib/db'
 import { logger } from 'src/lib/logger'
-import { totalSupply } from 'src/lib/web3/treasure'
-
-export const getChainData = async () => {
-  let supply = ''
-  try {
-    supply = await totalSupply()
-  } catch (e) {
-    logger.error(e)
-  }
-  return {
-    treasureAddress: process.env.CONTRACT_ADDRESS_TREASURE,
-    marketAddress: process.env.CONTRACT_ADDRESS_TREASURE_MARKET,
-    totalSupply: supply,
-    networkName: process.env.ETHEREUM_NETWORK_NAME,
-    environment: process.env.ENVIRONMENT,
-    nodeEnvironment: process.env.NODE_ENV,
-  }
-}
 
 // per active user (minted or used the marketplace)
 const getMintPurchaseData = async () => {
@@ -237,14 +219,12 @@ export const getBusinessMetrics = async () => {
     const treasure = await getTreasureData()
     const member = await getMemberData()
     const marketSale = await getMarketSaleData()
-    const chainData = await getChainData()
 
     return {
       member,
       treasure,
       marketSale,
       mintPurchase,
-      chainData,
     }
   } catch (e) {
     /* eslint-disable-next-line no-console*/

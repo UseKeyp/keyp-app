@@ -14,34 +14,46 @@ var router = express.Router()
 // }
 
 router.post('/transfers', withUser, async (req, res) => {
-  const { toAddress, toUserId, amount, tokenAddress, tokenType } = req.body
+  try {
+    const { toAddress, toUserId, amount, tokenAddress, tokenType } = req.body
 
-  // TODO: validate transfer scope
+    // TODO: validate transfer scope
+    if (!toAddress && !toUserId) throw 'Invalid recipient'
+    if (!amount) throw 'Invalid amount'
+    if (!tokenAddress) throw 'Invalid token address'
+    if (!tokenType) throw 'Invalid token type'
 
-  const recipient = await fetchUser(toUserId || toAddress)
+    const recipient = await fetchUser(toUserId || toAddress)
 
-  if (!['ERC20', 'ERC721'].includes(tokenType)) throw 'Invalid token type'
+    if (!['ERC20', 'ERC721'].includes(tokenType)) throw 'Invalid token type'
 
-  let tx
-  if (tokenType === 'ERC20') {
-    tx = await transferErc20({
-      fromUser: req.ctx.user,
-      toUser: recipient,
-      amount,
-      tokenAddress,
-      tokenType,
-    })
-  } else if (tokenType === 'ERC721') {
-    tx = await transferERC721({
-      fromUser: req.ctx.user,
-      toUser: recipient,
-      amount,
-      tokenAddress,
-      tokenType,
-    })
+    let tx
+    if (tokenType === 'ERC20') {
+      tx = await transferErc20({
+        fromUser: req.ctx.user,
+        toUser: recipient,
+        amount,
+        tokenAddress,
+        tokenType,
+        network: req.ctx.network,
+      })
+    } else if (tokenType === 'ERC721') {
+      tx = await transferERC721({
+        fromUser: req.ctx.user,
+        toUser: recipient,
+        amount,
+        tokenAddress,
+        tokenType,
+        network: req.ctx.network,
+      })
+    }
+
+    res.send({ tx })
+  } catch (e) {
+    Sentry.captureException(e)
+    logger.error({ custom: e }, 'Error in POST /transfers')
+    res.status(500).send({ error: e })
   }
-
-  res.send({ tx })
 })
 
 module.exports = router

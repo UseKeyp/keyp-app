@@ -7,10 +7,10 @@ import { validateTreasureTitle } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
 import { mintTreasureAndUpdatePurchase } from 'src/lib/web3'
 import { checkGasAndAirdrop } from 'src/lib/web3/airdrop'
-import { transferUsdc } from 'src/lib/web3/tokens'
-import { getUsdcBalance } from 'src/lib/web3/tokens.js'
 import { getTokenIdFromHashId } from 'src/lib/web3/treasure'
 import { checkAndSetMarketApprovals } from 'src/lib/web3/treasureMarket'
+import { transferUsdc } from 'src/lib/web3/usdc'
+import { getUsdcBalance } from 'src/lib/web3/usdc.js'
 
 export const COMPLETE = 'COMPLETE'
 export const FAILED = 'FAILED'
@@ -71,6 +71,7 @@ export const validateMintRequest = async ({
   endTime,
   title,
   paymentType,
+  network,
 }) => {
   if (paymentType && !AVAILABLE_CHECKOUT_PAYMENT_TYPES.includes(paymentType))
     throw new EnvelopError(`Provider "${paymentType}" currently unavailable.`)
@@ -98,7 +99,10 @@ export const validateMintRequest = async ({
     throw new EnvelopError(
       `Whoops! ${game.white.username} needs to sign in to Treasure Chess before you can mint Treasures they appear in.`
     )
-  const tokenId = await getTokenIdFromHashId(game.treasureId)
+  const tokenId = await getTokenIdFromHashId({
+    hashId: game.treasureId,
+    network,
+  })
   if (tokenId > 0)
     throw new EnvelopError(
       `This Treasure has already been minted with tokenId ${tokenId}.`
@@ -110,10 +114,11 @@ export const processMintBalanceRequest = async ({
   endTime,
   title,
   paymentType,
+  network,
 }) => {
   try {
-    await checkGasAndAirdrop({ user: context.currentUser })
-    await checkAndSetMarketApprovals({ user: context.currentUser })
+    await checkGasAndAirdrop({ user: context.currentUser, network })
+    await checkAndSetMarketApprovals({ network, user: context.currentUser })
   } catch {
     // Do nothing
   }
@@ -126,7 +131,10 @@ export const processMintBalanceRequest = async ({
     })
   }
   if (paymentType === 'BALANCE_MUSDC') {
-    const usdcBalance = await getUsdcBalance(context.currentUser.address)
+    const usdcBalance = await getUsdcBalance({
+      network,
+      address: context.currentUser.address,
+    })
     if (usdcBalance / process.env.WYRE_MINT_USD_PURCHASE_AMOUNT < 1)
       throw new EnvelopError(`Insufficient balance`)
     // Transfer funds from wallet to admin
@@ -135,6 +143,7 @@ export const processMintBalanceRequest = async ({
     await transferUsdc({
       to: process.env.APP_ADMIN_WALLET_ADDRESS,
       amount: process.env.WYRE_MINT_USD_PURCHASE_AMOUNT,
+      network,
     })
   }
   const mintPurchase = await db.mintPurchase.create({
@@ -152,6 +161,7 @@ export const processMintBalanceRequest = async ({
 
 // Part of the polling system. Triggers minting.
 export const processPendingPurchases = async () => {
+  // TODO: Update to include network
   let pendingPurchases = await fetchPendingMintPurchases()
   pendingPurchases = await Promise.all(
     pendingPurchases.map(async (mintPurchase) => {
@@ -174,7 +184,7 @@ export const processPendingPurchases = async () => {
       if (![COMPLETE, FAILED].includes(mintPurchase.status)) {
         // Treasure not successfully minted. Proceed to mint!
         logger.debug(`Pending Purchase: #${mintPurchase.id}`)
-        return mintTreasureAndUpdatePurchase({ mintPurchase })
+        return mintTreasureAndUpdatePurchase({ mintPurchase, network })
       }
       return mintPurchase
     })

@@ -3,23 +3,39 @@ global.atob = require('atob')
 global.window = undefined
 global.document = undefined
 
-import NodeManager from '@toruslabs/fetch-node-details/dist/fetchNodeDetails-node'
-import TorusUtils from '@toruslabs/torus.js/dist/torusUtils-node'
-
+import { getIdentifiersFromId } from 'src/lib/db'
 import { isProduction } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
 import { getNewIdToken } from 'src/lib/oAuth/jwt'
 
-let config = {
-  network: 'ropsten',
-  proxyAddress: '0x6258c9d6c12ed3edda59a1a6527e469517744aa7',
-}
-if (isProduction)
-  config = {
-    network: 'polygon-mainnet',
-    proxyAddress: '0x9f072ba19b3370e512aa1b4bfcdaf97283168005',
-  }
-const fetchNodeDetails = new NodeManager(config)
+const NodeDetailManager =
+  require('@toruslabs/fetch-node-details/dist/fetchNodeDetails-node.js').default
+const TorusUtils =
+  require('@toruslabs/torus.js/dist/torusUtils-node.js').default
+
+const config = isProduction
+  ? {
+      network: 'cyan',
+      proxyAddress: NodeDetailManager.PROXY_ADDRESS_CYAN,
+    }
+  : {
+      network: 'testnet',
+      proxyAddress: NodeDetailManager.PROXY_ADDRESS_TESTNET,
+    }
+const nodeDetailManager = new NodeDetailManager(config)
+
+const TORUS_VERIFIER = isProduction
+  ? {
+      DISCORD: 'keyp-discord',
+      GOOGLE: 'keyp-google',
+      CHESS: 'treasure-chess-prod-1',
+    }
+  : {
+      DISCORD: 'keyp-discord',
+      GOOGLE: 'keyp-google',
+      CHESS: 'treasure-chess-sandbox-aggregate',
+    }
+
 const torusUtils = new TorusUtils(
   isProduction
     ? {
@@ -29,15 +45,23 @@ const torusUtils = new TorusUtils(
     : undefined
 )
 
+const getVerifier = (userProvider) => {
+  const verifier = TORUS_VERIFIER[userProvider]
+  if (!verifier) throw new Error(`No verifier for ${userProvider}`)
+  return verifier
+}
+
 export const getTorusPublicAddress = async (userId) => {
   try {
+    const { userProvider, userId: parsedUserId } = getIdentifiersFromId(userId)
+    const verifier = getVerifier(userProvider)
     /* eslint-disable camelcase */
     const verifierDetails = {
-      verifier: process.env.TORUS_VERIFIER,
-      verifierId: userId,
+      verifier,
+      verifierId: parsedUserId,
     }
     const { torusNodeEndpoints, torusNodePub } =
-      await fetchNodeDetails.getNodeDetails(verifierDetails)
+      await nodeDetailManager.getNodeDetails(verifierDetails)
 
     const publicAddress = await torusUtils.getPublicAddress(
       torusNodeEndpoints,
@@ -53,34 +77,29 @@ export const getTorusPublicAddress = async (userId) => {
 
 export const getTorusWallet = async (userId) => {
   try {
-    // idToken for Discord is accessToken
+    // NOTE: idToken for Discord is accessToken
     const idToken = await getNewIdToken(userId)
-    // NOTE: Old chess.com way using jwt
-    /* eslint-disable camelcase */
-    // const { user_id: verifierId } = decodeJwt(idToken)
-    // const verifierDetails = {
-    //   verifier: process.env.TORUS_VERIFIER,
-    //   verifierId: verifierId,
-    // }
-    logger.debug(`getTorusWallet ${userId}`)
+    const { userProvider, userId: parsedUserId } = getIdentifiersFromId(userId)
+    const verifier = getVerifier(userProvider)
+    logger.debug(`getTorusWallet ${parsedUserId}`)
     const verifierDetails = {
-      verifier: process.env.TORUS_VERIFIER,
-      verifierId: userId,
+      verifier,
+      verifierId: parsedUserId,
     }
 
     const { torusNodeEndpoints, torusIndexes } =
-      await fetchNodeDetails.getNodeDetails(verifierDetails)
+      await nodeDetailManager.getNodeDetails(verifierDetails)
     const retrieveSharesResponse = await torusUtils.retrieveShares(
       torusNodeEndpoints,
       torusIndexes,
-      process.env.TORUS_VERIFIER,
+      verifier,
       // NOTE: old chess.com way using jwt
       // {
       //   verify_params: [{ verifier_id: verifierId, idtoken: idToken }],
       //   sub_verifier_ids: ['chess'],
       //   verifier_id: verifierId,
       // },
-      { verifier_id: userId },
+      { verifier_id: parsedUserId },
       idToken
     )
     const { ethAddress, privKey } = retrieveSharesResponse

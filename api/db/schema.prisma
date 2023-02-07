@@ -11,35 +11,36 @@ generator client {
 }
 
 model User {
-  id               String
-  provider         ProviderType
-  username         String?               @unique // platform username
-  address          String?               @unique // Torus wallet address
-  locale           String?
-  email            String?               @unique // Email address
+  id                    String
+  provider              ProviderType
+  username              String?
+  address               String?               @unique // Torus wallet address
+  locale                String?
+  email                 String? // Email address
   // --------------- LINKS --------------
-  mintPurchases    MintPurchase[]        @relation("mintPurchases")
-  rampWithdraws    RampWithdraw[]        @relation("rampWithdraws")
-  depositOrders    DepositOrder[]        @relation("depositOrders")
-  oAuthConnections OAuthConnection[]     @relation("oAuthConnections")
+  mintPurchases         MintPurchase[]        @relation("mintPurchases")
+  rampWithdraws         RampWithdraw[]        @relation("rampWithdraws")
+  depositOrders         DepositOrder[]        @relation("depositOrders")
+  oAuthConnections      OAuthConnection[]     @relation("oAuthConnections")
   // --------------- STATE --------------
-  createdAt        DateTime              @default(now())
-  updatedAt        DateTime              @updatedAt
-  mfa_enabled      Boolean?
-  imageSrc         String? // Avatar URL
-  country          String? // Player's country  eg. US, DE
-  mintCredits      Int                   @default(3) // Mint for free!
-  banned           Boolean               @default(false)
-  blocked          Boolean? // Prevents others from interacting with this person
-  refreshToken     String?
-  accessToken      String?
-  ramps            Ramp[]
-  oAuth            OAuth[]
-  clients          ClientsOnDevelopers[]
-  promotions       PromotionsOnUsers[]
-  betaAccess       Boolean               @default(false)
-  TransferFrom     Transfer[]            @relation(name: "fromUser")
-  TransferReceived Transfer[]            @relation(name: "toUser")
+  createdAt             DateTime              @default(now())
+  updatedAt             DateTime              @updatedAt
+  mfa_enabled           Boolean?
+  imageSrc              String? // Avatar URL
+  country               String? // Player's country  eg. US, DE
+  mintCredits           Int                   @default(3) // Mint for free!
+  banned                Boolean               @default(false)
+  blocked               Boolean? // Prevents others from interacting with this person
+  refreshToken          String?
+  accessToken           String?
+  accessTokenExpiration DateTime?
+  ramps                 Ramp[]
+  oAuth                 OAuth[]
+  clients               ClientsOnDevelopers[]
+  promotions            PromotionsOnUsers[]
+  betaAccess            Boolean               @default(false)
+  TransferFrom          Transfer[]            @relation(name: "fromUser")
+  TransferReceived      Transfer[]            @relation(name: "toUser")
 
   @@id([provider, id])
 }

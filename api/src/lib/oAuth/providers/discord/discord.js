@@ -68,45 +68,6 @@ export const onSubmitCode = async (code, { codeVerifier }) => {
   }
 }
 
-export const refreshDiscordTokens = async (refreshToken) => {
-  try {
-    const body = {
-      grant_type: 'refresh_token',
-      client_id: process.env.DISCORD_CLIENT_ID,
-      client_secret: process.env.DISCORD_CLIENT_SECRET,
-      refresh_token: refreshToken,
-      scope: DISCORD_SCOPE,
-    }
-    const encodedBody = encodeBody(body)
-    const response = await fetch(DISCORD_OAUTH_URL_TOKEN, {
-      method: 'post',
-      body: encodedBody,
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    }).then((res) => {
-      if (res.status == 401)
-        throw new Error('Discord.com basic authorization failed')
-      return res.json()
-    })
-    if (response.error)
-      throw `${response.error} - ${response.hint}. ${response.message}`
-    const {
-      access_token: newAccessToken,
-      refresh_token: newRefreshToken,
-      expires_in: newExpiration,
-    } = response
-    if (!newAccessToken || !newRefreshToken)
-      throw 'Failed to refresh tokens from Discord.com'
-    const newExpirationDate = getExpiration(newExpiration)
-    return {
-      accessToken: newAccessToken,
-      accessTokenExpiration: newExpirationDate,
-      refreshToken: newRefreshToken,
-    }
-  } catch (e) {
-    throw `refreshDiscordTokens() ${e}`
-  }
-}
-
 export const onConnected = async ({ refreshToken, accessToken }) => {
   try {
     // TODO: fetch user details
@@ -164,6 +125,60 @@ export const onConnected = async ({ refreshToken, accessToken }) => {
     /* eslint-enable no-console */
     Sentry.captureException(e)
     throw `onConnected() error`
+  }
+}
+
+export const refreshDiscordTokens = async (userId) => {
+  try {
+    const { refreshToken } = await db.user.findUnique({ where: { id: userId } })
+
+    const body = {
+      grant_type: 'refresh_token',
+      client_id: process.env.DISCORD_CLIENT_ID,
+      client_secret: process.env.DISCORD_CLIENT_SECRET,
+      refresh_token: refreshToken,
+      scope: DISCORD_SCOPE,
+    }
+    const encodedBody = encodeBody(body)
+    const response = await fetch(DISCORD_OAUTH_URL_TOKEN, {
+      method: 'post',
+      body: encodedBody,
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    }).then((res) => {
+      if (res.status == 401)
+        throw new Error(
+          'Discord.com basic authorization failed for /token endpoint'
+        )
+      return res.json()
+    })
+    if (response.error)
+      throw `${response.error} - ${response.hint}. ${response.message}`
+
+    const {
+      access_token: newAccessToken,
+      refresh_token: newRefreshToken,
+      expires_in: newExpiration,
+    } = response
+    if (!newAccessToken || !newRefreshToken)
+      throw 'Failed to refresh tokens from Discord.com'
+
+    const newExpirationDate = getExpiration(newExpiration)
+
+    await db.user.update({
+      where: { id: userId },
+      data: {
+        accessToken: newAccessToken,
+        accessTokenExpiration: newExpirationDate,
+        refreshToken: newRefreshToken,
+      },
+    })
+    return {
+      accessToken: newAccessToken,
+      accessTokenExpiration: newExpirationDate,
+      refreshToken: newRefreshToken,
+    }
+  } catch (e) {
+    throw `refreshDiscordTokens() ${e}`
   }
 }
 

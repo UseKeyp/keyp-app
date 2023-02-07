@@ -6,8 +6,8 @@ import { isHexAddress } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
 import { refreshChessTokens } from 'src/lib/oAuth/providers/chess'
 import Sentry from 'src/lib/sentry'
-import { web3Provider } from 'src/lib/web3/helpers'
-import { getUsdcBalance } from 'src/lib/web3/tokens'
+import { Web3Providers } from 'src/lib/web3/provider'
+import { getUsdcBalance } from 'src/lib/web3/usdc'
 
 export const fetchUserAndGiveCredits = async (username, creditsToGive) => {
   const member = await db.member.findUnique({
@@ -308,8 +308,8 @@ export const getMemberRawData = async (username) => {
   let usdcBalance
   let etherBalance
   try {
-    usdcBalance = await getUsdcBalance(member.address)
-    etherBalance = await web3Provider.getBalance(member.address)
+    usdcBalance = await getUsdcBalance({ address: member.address, network })
+    etherBalance = await Web3Providers[network].getBalance(member.address)
     etherBalance = formatEther(etherBalance)
   } catch {
     // Do nothing

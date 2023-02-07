@@ -4,20 +4,20 @@ import { getExplorerBaseUrlFromName } from '@treasure-chess/web3-helpers'
 import { sendDiscordAdminAlert } from 'src/lib/discord/admin'
 import { logger } from 'src/lib/logger'
 import Sentry from 'src/lib/sentry'
-import { web3Provider } from 'src/lib/web3/helpers'
+import { Web3Providers } from 'src/lib/web3/provider'
 import { payerSendTransaction } from 'src/lib/web3/wallets'
 import { payerAddress } from 'src/lib/web3/wallets/payer'
 
 const MINIMUM_GAS_THRESHOLD = '0.019' // Units of Ether
 const DEFAULT_DROP_AMOUNT = '0.025' // Units of Ether
 
-const airdropGasTransaction = async ({ address, amount }) => {
+const airdropGasTransaction = async ({ address, amount, network }) => {
   try {
     const tx = {
       to: address,
       value: parseEther(amount),
     }
-    return await payerSendTransaction(tx)
+    return await payerSendTransaction({ unsigned: tx, network })
   } catch (e) {
     logger.error(e?.message || e)
     Sentry.captureException(e)
@@ -25,8 +25,8 @@ const airdropGasTransaction = async ({ address, amount }) => {
   }
 }
 
-const getEtherBalance = async (address) => {
-  const balanceBn = await web3Provider.getBalance(address)
+const getEtherBalance = async ({ address, network }) => {
+  const balanceBn = await Web3Providers[network].getBalance(address)
   return {
     balance: balanceBn.toString(),
     balanceBn: balanceBn,
@@ -35,20 +35,31 @@ const getEtherBalance = async (address) => {
     symbol: 'ETH',
     name: 'Ethereum',
     tokenAddress: null,
-    network: process.env.ETHEREUM_NETWORK_NAME,
-    chainId: web3Provider._network.chainId,
+    network,
+    chainId: Web3Providers[network]._network.chainId,
   }
 }
 
-const checkGasAndAirdrop = async ({ user, amount = DEFAULT_DROP_AMOUNT }) => {
+const checkGasAndAirdrop = async ({
+  user,
+  amount = DEFAULT_DROP_AMOUNT,
+  network,
+}) => {
   try {
     if (user.country === 'ETHER') return false // Don't airdrop to Extrernal wallets
-    const { balanceBn: balance } = await getEtherBalance(user.address)
-    const { balanceBn: payerBalance } = await getEtherBalance(payerAddress)
+    const { balanceBn: balance } = await getEtherBalance({
+      address: user.address,
+      network,
+    })
+    const { balanceBn: payerBalance } = await getEtherBalance({
+      address: payerAddress,
+      network,
+    })
     if (balance.lte(parseEther(MINIMUM_GAS_THRESHOLD))) {
       const tx = await airdropGasTransaction({
         address: user.address,
         amount,
+        network,
       })
       await notifyDiscord({
         user,
@@ -62,7 +73,7 @@ const checkGasAndAirdrop = async ({ user, amount = DEFAULT_DROP_AMOUNT }) => {
     return null
   } catch (e) {
     logger.error(e)
-    throw new Error('checkGasAndAirdrop()', e.message || e)
+    throw new Error(`checkGasAndAirdrop() ${e.message} ${e}`)
   }
 }
 

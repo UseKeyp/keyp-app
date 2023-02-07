@@ -21,12 +21,14 @@ export const schema = gql`
       endTime: DateTime!
       title: String!
       paymentType: String!
+      network: Network!
     ): String! @requireAuth
     mintBalance(
       gameId: String!
       endTime: DateTime!
       title: String!
       paymentType: String!
+      network: Network!
     ): MintPurchase! @requireAuth
 
     cancelMintingPurchase(id: Int!): MintPurchase! @requireAuth

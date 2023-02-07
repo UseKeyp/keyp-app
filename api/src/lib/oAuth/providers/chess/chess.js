@@ -1,7 +1,8 @@
 import fetch from 'cross-fetch'
 import { decode as decodeJwt } from 'jsonwebtoken'
 
-import { isDevelopment } from 'src/lib/helpers'
+import { db } from 'src/lib/db'
+import { isDevelopment, isProduction } from 'src/lib/helpers'
 import { APP_DOMAIN } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
 import { encodeBody, getExpiration } from 'src/lib/oAuth/helpers'
@@ -13,26 +14,24 @@ export const CHESS_OAUTH_URL_AUTHORIZE = 'https://oauth.chess.com/authorize'
 const CHESS_OAUTH_URL_TOKEN = 'https://oauth.chess.com/token'
 const CHESS_SCOPE = 'openid profile games:read email'
 const CHESS_REDIRECT_URI = APP_DOMAIN + '/redirect/chess'
-
+const CHESS_CLIENT_ID = isProduction
+  ? '459cd394-77cd-11ec-95cb-cfacea4084a2'
+  : '40c5d866-77cd-11ec-a560-67b86d6160ee'
 const responseType = 'id_token'
 const params = {
-  client_id: process.env.CHESS_CLIENT_ID,
+  client_id: CHESS_CLIENT_ID,
   scope: CHESS_SCOPE,
   redirect_uri: CHESS_REDIRECT_URI,
 }
 
 export const getChessBasicAuth = () =>
-  Buffer.from(
-    process.env.CHESS_BASIC_AUTH_USERNAME +
-      ':' +
-      process.env.CHESS_BASIC_AUTH_PASSWORD
-  ).toString('base64')
+  Buffer.from('bobby' + ':' + 'fischer').toString('base64')
 
 const onSubmitCode = async (code, { codeVerifier, memberId }) => {
   try {
     const body = {
       grant_type: 'authorization_code',
-      client_id: process.env.CHESS_CLIENT_ID,
+      client_id: CHESS_CLIENT_ID,
       client_secret: process.env.CHESS_CLIENT_SECRET,
       redirect_uri: CHESS_REDIRECT_URI,
       code,
@@ -87,11 +86,13 @@ const onSubmitCode = async (code, { codeVerifier, memberId }) => {
   }
 }
 
-export const refreshChessTokens = async (refreshToken) => {
+export const refreshChessTokens = async (userId) => {
   try {
+    const { refreshToken } = await db.user.findUnique({ where: { id: userId } })
+
     const body = {
       grant_type: 'refresh_token',
-      client_id: process.env.CHESS_CLIENT_ID,
+      client_id: CHESS_CLIENT_ID,
       client_secret: process.env.CHESS_CLIENT_SECRET,
       refresh_token: refreshToken,
       scope: CHESS_SCOPE,
@@ -103,7 +104,9 @@ export const refreshChessTokens = async (refreshToken) => {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     }).then((res) => {
       if (res.status == 401)
-        throw new Error('Chess.com basic authorization failed')
+        throw new Error(
+          'Chess.com basic authorization failed failed for /token endpoint'
+        )
       return res.json()
     })
     if (response.error)
@@ -119,6 +122,16 @@ export const refreshChessTokens = async (refreshToken) => {
     const newExpirationDate = getExpiration(newExpiration)
     const decoded = decodeJwt(newIdToken)
     const idTokenExpiration = new Date(decoded.exp * 1000)
+
+    await db.user.update({
+      where: { id: userId },
+      data: {
+        accessToken: newAccessToken,
+        accessTokenExpiration: newExpirationDate,
+        refreshToken: newRefreshToken,
+      },
+    })
+
     return {
       accessToken: newAccessToken,
       accessTokenExpiration: newExpirationDate,

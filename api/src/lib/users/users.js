@@ -51,6 +51,6 @@ export const fetchUser = async (idOrAddress, creationData, providerType) => {
     }
   } catch (e) {
     Sentry.captureException(e)
-    throw new Error(e)
+    throw new Error('fetchUser()', e)
   }
 }

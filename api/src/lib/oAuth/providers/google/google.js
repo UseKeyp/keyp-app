@@ -7,6 +7,7 @@ import { db } from 'src/lib/db'
 import { APP_DOMAIN } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
 import { encodeBody, getExpiration } from 'src/lib/oAuth/helpers'
+import { getTorusPublicAddress } from 'src/lib/torus/torus'
 import { fetchUser } from 'src/lib/users'
 
 export const GOOGLE = 'GOOGLE'
@@ -80,39 +81,102 @@ export const onSubmitCode = async (code, { codeVerifier }) => {
   }
 }
 
-export const onConnected = async ({ refreshToken, accessToken }) => {
+export const onConnected = async ({ refreshToken, accessToken, decoded }) => {
   try {
-    const userDetails = await fetch(
-      `https://www.googleapis.com/userinfo/v2/me`,
-      {
-        headers: { Authorization: `Bearer ${accessToken}` },
-      }
-    ).then((res) => {
-      if (res.status != 200)
-        throw 'GOOGLE authorization failed, or secret invalid'
-      return res.json()
-    })
-
-    if (!userDetails.verified_email)
+    if (!decoded.email_verified)
       throw new AuthenticationError(
         `Verify your email with Google and try again.`
       )
 
     const user = await fetchUser(
-      userDetails.id,
-      { email: userDetails.email, accessToken },
+      decoded.sub,
+      { email: decoded.email, accessToken },
       GOOGLE
     )
 
+    let publicAddress
+    if (!user.address) {
+      try {
+        publicAddress = await getTorusPublicAddress(user.id)
+      } catch (e) {
+        /* eslint-disable no-console */
+        logger.error("Error fetching user's wallet from Torus")
+        logger.error(e)
+        /* eslint-enable no-console */
+      }
+    }
+
     await db.user.update({
       where: { id: user.id },
-      data: { email: userDetails.email, accessToken, refreshToken },
+      data: {
+        ...(publicAddress && { address: publicAddress }),
+        email: decoded.email,
+        accessToken,
+        refreshToken,
+        imageSrc: decoded.picture,
+        locale: decoded.locale,
+        username: decoded.name,
+      },
     })
 
     return user
   } catch (e) {
     logger.error(e)
     throw `onConnected() ${e}`
+  }
+}
+
+export const refreshGoogleTokens = async (userId) => {
+  try {
+    const { refreshToken } = await db.user.findUnique({ where: { id: userId } })
+
+    const body = {
+      grant_type: 'refresh_token',
+      client_id: process.env.GOOGLE_CLIENT_ID,
+      client_secret: process.env.GOOGLE_CLIENT_SECRET,
+      refresh_token: refreshToken,
+      scope: GOOGLE_SCOPE,
+    }
+    const encodedBody = encodeBody(body)
+    const response = await fetch(GOOGLE_OAUTH_URL_TOKEN, {
+      method: 'post',
+      body: encodedBody,
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    }).then((res) => {
+      if (res.status == 401)
+        throw new Error('Google basic authorization failed for /token endpoint')
+      return res.json()
+    })
+    if (response.error)
+      throw `${response.error} - ${response.hint}. ${response.message}`
+
+    const {
+      access_token: newAccessToken,
+      refresh_token: newRefreshToken,
+      expires_in: newExpiration,
+      id_token: newIdToken,
+    } = response
+    if (!newAccessToken || !newRefreshToken)
+      throw 'Failed to refresh tokens from Google'
+
+    const newExpirationDate = getExpiration(newExpiration)
+
+    await db.user.update({
+      where: { id: userId },
+      data: {
+        accessToken: newAccessToken,
+        accessTokenExpiration: newExpirationDate,
+        refreshToken: newRefreshToken,
+      },
+    })
+    return {
+      accessToken: newAccessToken,
+      accessTokenExpiration: newExpirationDate,
+      refreshToken: newRefreshToken,
+      idToken: newIdToken,
+    }
+  } catch (e) {
+    throw `refreshGoogleTokens() ${e}`
   }
 }
 

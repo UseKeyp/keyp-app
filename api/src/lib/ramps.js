@@ -23,7 +23,7 @@ export const getRampOffUrl = async ({ type, user }) => {
   return { url }
 }
 
-export const getRampOnUrl = async ({ type, user }) => {
+export const getRampOnUrl = async ({ type, user, network }) => {
   try {
     if (!RAMP_DEPOSIT_TYPES_ENABLED.includes(type))
       throw new EnvelopError(
@@ -37,6 +37,7 @@ export const getRampOnUrl = async ({ type, user }) => {
       const signature = await userSignMesage({
         userId: user.id,
         message,
+        network,
       })
       const hash = Buffer.from(signature.replace('0x', ''), 'hex').toString(
         'base64'

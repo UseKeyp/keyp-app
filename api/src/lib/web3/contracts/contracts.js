@@ -2,14 +2,18 @@ import { EnvelopError } from '@envelop/core'
 import { Contract } from '@ethersproject/contracts'
 
 import { logger } from 'src/lib/logger'
-import { web3Provider } from 'src/lib/web3/helpers'
+import { Web3Providers } from 'src/lib/web3/provider'
 import { userSendTransaction } from 'src/lib/web3/wallets'
 
 export const getJuiceBoxContract = ({ address, network }) => {
   // Validate address does not match correct network
-  const JB_CONTRACT_ADDRESS = { goerli: '', mainnet: '' }
+
+  const JB_CONTRACT_ADDRESS = {
+    goerli: '0x55d4dfb578daa4d60380995fff7a706471d7c719',
+    mainnet: '0x594cb208b5bb48db1bcbc9354d1694998864ec63',
+  }
   const jbContractAddress = JB_CONTRACT_ADDRESS[network]
-  if (address.toLowercase() !== jbContractAddress.toLowercase())
+  if (address.toLowerCase() !== jbContractAddress.toLowerCase())
     throw 'Contract address does not match network'
 
   try {
@@ -18,7 +22,7 @@ export const getJuiceBoxContract = ({ address, network }) => {
       [
         'function pay(uint256, uint256, address, address, uint256, bool, string, bytes) external returns (uint256)',
       ],
-      web3Provider
+      Web3Providers[network]
     )
   } catch (e) {
     logger.error(e)
@@ -57,7 +61,11 @@ const pay = async ({ args, network, user, address }) => {
     const unsignedTx = await contract.populateTransaction.pay(
       Object.entries(args)
     )
-    const tx = await userSendTransaction({ userId: user.id, unsignedTx })
+    const tx = await userSendTransaction({
+      userId: user.id,
+      unsignedTx,
+      network,
+    })
     return tx
   } catch (e) {
     logger.error(e)

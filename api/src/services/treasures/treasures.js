@@ -24,7 +24,7 @@ export const treasure = async ({ tokenId }) => {
   })
 }
 // Used to get the latest market sale, without slowing down the normal query
-export const treasureWithMarketSales = async ({ tokenId }) => {
+export const treasureWithMarketSales = async ({ tokenId, network }) => {
   let id
   if (tokenId.startsWith('0x')) id = tokenId
   const treasure = await db.treasure.findUnique({
@@ -38,7 +38,7 @@ export const treasureWithMarketSales = async ({ tokenId }) => {
     },
   })
   if (!treasure) return null
-  return processPendingMarketTransactions({ treasure })
+  return processPendingMarketTransactions({ treasure, network })
 }
 
 export const Treasure = {

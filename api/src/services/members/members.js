@@ -1,7 +1,7 @@
 import { db } from 'src/lib/db'
 import { logger } from 'src/lib/logger'
 import { fetchUser } from 'src/lib/users'
-import { getUsdcBalance as getUsdcBal } from 'src/lib/web3/tokens.js'
+import { getUsdcBalance as getUsdcBal } from 'src/lib/web3/usdc.js'
 
 export const user = ({ usernameOrAddress }) => {
   try {
@@ -39,8 +39,11 @@ export const userLocale = async ({ locale }) => {
   }
 }
 
-export const userBalance = async () => {
-  const usdcBalance = await getUsdcBal(context.currentUser.address)
+export const userBalance = async ({ network }) => {
+  const usdcBalance = await getUsdcBal({
+    network,
+    address: context.currentUser.address,
+  })
   return {
     usdcBalance,
     mintCreditBalance:

@@ -5,8 +5,8 @@ import { logger } from 'src/lib/logger'
 import { fetchUser } from 'src/lib/users'
 import { getTxStatus, getSaleTxStatus } from 'src/lib/web3'
 import { checkGasAndAirdrop } from 'src/lib/web3/airdrop'
-import { getUsdcBalance } from 'src/lib/web3/tokens'
 import { list, unlist, buy } from 'src/lib/web3/treasureMarket'
+import { getUsdcBalance } from 'src/lib/web3/usdc'
 
 const PENDING_LISTED = 'PENDING_LISTED'
 const LISTED = 'LISTED'
@@ -50,7 +50,7 @@ const validateRemoveListingRequest = ({ treasure }) => {
     throw new EnvelopError(`This Treasure is not listed.`)
 }
 
-const validatePurchaseRequest = async ({ treasure }) => {
+const validatePurchaseRequest = async ({ treasure, network }) => {
   const currentMarketSale = treasure.marketSales[0]
   if (!currentMarketSale || currentMarketSale.isClosed)
     throw new EnvelopError('This Treasure is not for sale.')
@@ -63,19 +63,21 @@ const validatePurchaseRequest = async ({ treasure }) => {
     throw new EnvelopError('This Treasure is not for sale.')
 
   // Check balance
-  const userBalance = await getUsdcBalance(context.currentUser.address)
+  const userBalance = await getUsdcBalance({
+    address: context.currentUser.address,
+    network,
+  })
   if (Number(userBalance) < currentMarketSale.amount)
     throw new EnvelopError(
       `You don't have enough funds to purchase this Treasure.`
     )
 }
 
-export const processPendingMarketTransactions = async ({ treasure }) => {
+export const processPendingMarketTransactions = async ({
+  treasure,
+  network,
+}) => {
   try {
-    logger.debug(
-      { custom: treasure.marketSales },
-      'processPendingMarketTransactions'
-    )
     // WARNING: the next line doesn't account for re-orgs.
     // marketSales marked completed are not re-checked
     let currentMarketSale = treasure.marketSales[0]
@@ -91,7 +93,7 @@ export const processPendingMarketTransactions = async ({ treasure }) => {
         if (!tx) return
 
         // Check them all
-        const newStatus = await getTxStatus(tx.id)
+        const newStatus = await getTxStatus({ network, txhash: tx.id })
         if (newStatus !== tx.status) {
           // Status has changed
           tx = await db.transaction.update({
@@ -146,7 +148,7 @@ export const processPendingMarketTransactions = async ({ treasure }) => {
     await Promise.all(
       currentMarketSale.saleTransactions.map(async (tx, index) => {
         // Check them all
-        const newStatus = await getSaleTxStatus(tx.id)
+        const newStatus = await getSaleTxStatus({ txHash: tx.id, network })
         if (newStatus?.status && newStatus.status !== tx.status) {
           if (newStatus.status === COMPLETE) {
             if (treasure.tokenId !== newStatus.tokenId) return // Could happen in weird edge case?
@@ -194,20 +196,25 @@ export const processPendingMarketTransactions = async ({ treasure }) => {
   }
 }
 
-export const createNewTreasureListing = async ({ treasure, amount }) => {
+export const createNewTreasureListing = async ({
+  treasure,
+  amount,
+  network,
+}) => {
   const updatedTreasure = await processPendingMarketTransactions({
     treasure,
+    network,
   })
 
   validateCreateNewListingRequest({ treasure: updatedTreasure, amount })
   try {
     try {
-      await checkGasAndAirdrop({ member: context.currentUser })
+      await checkGasAndAirdrop({ member: context.currentUser, network })
     } catch {
       // Do nothing
     }
     // Submit the transaction on behalf of the user
-    const tx = await list({ treasure, amount })
+    const tx = await list({ treasure, amount, network })
     // Create the marketSale object
     const marketSale = await db.marketSale.create({
       data: {
@@ -225,17 +232,20 @@ export const createNewTreasureListing = async ({ treasure, amount }) => {
   }
 }
 
-export const removeTreasureListing = async ({ treasure }) => {
-  const updatedTreasure = await processPendingMarketTransactions({ treasure })
+export const removeTreasureListing = async ({ treasure, network }) => {
+  const updatedTreasure = await processPendingMarketTransactions({
+    treasure,
+    network,
+  })
   validateRemoveListingRequest({ treasure: updatedTreasure })
   try {
     try {
-      await checkGasAndAirdrop({ member: context.currentUser })
+      await checkGasAndAirdrop({ member: context.currentUser, network })
     } catch {
       // Do nothing
     }
     // Submit the transaction on behalf of the user
-    const tx = await unlist({ treasure })
+    const tx = await unlist({ treasure, network })
 
     // Update the marketSale object
     const marketSale = await db.marketSale.update({
@@ -253,17 +263,20 @@ export const removeTreasureListing = async ({ treasure }) => {
   }
 }
 
-export const purchaseTreasure = async ({ treasure }) => {
-  const updatedTreasure = await processPendingMarketTransactions({ treasure })
-  await validatePurchaseRequest({ treasure: updatedTreasure })
+export const purchaseTreasure = async ({ treasure, network }) => {
+  const updatedTreasure = await processPendingMarketTransactions({
+    treasure,
+    network,
+  })
+  await validatePurchaseRequest({ treasure: updatedTreasure, network })
   try {
     try {
-      await checkGasAndAirdrop({ member: context.currentUser })
+      await checkGasAndAirdrop({ member: context.currentUser, network })
     } catch {
       // Do nothing
     }
     // Submit the transaction on behalf of the user
-    const tx = await buy({ treasure })
+    const tx = await buy({ treasure, network })
 
     // Update the marketSale object
     const marketSale = await db.marketSale.update({

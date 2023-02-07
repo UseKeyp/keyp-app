@@ -14,6 +14,8 @@ export const getIdentifiersFromId = (id) => ({
 
 const parseWhere = (where) => {
   const { id } = where
+  // if (!id)
+  //   throw new Error('parseWhere() id was not found in the query "where" object')
   let { userProvider, userId } = getIdentifiersFromId(id)
 
   if (where.provider) {
@@ -21,7 +23,9 @@ const parseWhere = (where) => {
     userProvider = where.provider
   }
   if (!userId && !userProvider)
-    throw new Error('User id and provider must be provided')
+    throw new Error(
+      'parseWhere() Both userId and userProvider where not found in the query "where" object'
+    )
   return { userProvider, userId }
 }
 
@@ -32,6 +36,7 @@ const prisma = new PrismaClient({
   log: emitLogLevels(['info', 'warn', 'error']),
 })
 
+// All incoming queries for the User model should have the following format for id "<provider>-<id>"
 export const db = prisma.$extends({
   query: {
     user: {
@@ -44,7 +49,16 @@ export const db = prisma.$extends({
         if (!args.where)
           throw new Error('User id and provider must be provided')
 
-        let { userId, userProvider } = parseWhere(args.where)
+        let userId, userProvider
+
+        if (args.where.address) {
+          // If address is provided, skip the ID parsing.
+          if (args.where.provider || args.where.id)
+            // Ensure no overloaded queries are made.
+            throw new Error('Address and provider cannot be provided together')
+        } else {
+          ;({ userId, userProvider } = parseWhere(args.where))
+        }
 
         delete args.where.provider
         delete args.where.id
@@ -52,14 +66,17 @@ export const db = prisma.$extends({
         const user = await query({
           ...args,
           where: {
-            provider_id: {
-              id: userId,
-              provider: userProvider,
-            },
+            ...(userId &&
+              userProvider && {
+                provider_id: {
+                  id: userId,
+                  provider: userProvider,
+                },
+              }),
             ...args.where,
           },
         })
-        return user ? { ...user, id: `${userProvider}-${userId}` } : null
+        return user ? { ...user, id: `${user.provider}-${user.id}` } : null
       },
     },
   },
