@@ -62,7 +62,10 @@ const pay = async ({ args, network, user, address }) => {
   }
 }
 
-const methods = [pay]
+const methods = {
+  // Add more methods here
+  pay,
+}
 
 export const METHODS_BY_NETWORK = {
   goerli: { [CONTRACT_ADDRESS_GOERLI]: methods },
