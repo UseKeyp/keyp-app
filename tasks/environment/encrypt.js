@@ -38,7 +38,7 @@ const testDecryption = ({ environment, key }) => {
   console.log(`(Duration: ${(endTime - startTime).toFixed(2)} ms)`)
 }
 
-const main = () => {
+const encryptEnv = () => {
   ENVIRONMENT_LIST.map(({ environment, key }) => {
     console.log(`\n######## ${environment} ########`)
     console.log(`\nEncrypting .env.${environment}.js.enc`)
@@ -48,6 +48,7 @@ const main = () => {
       .trim()
     const dateString = new Date().toString()
 
+    // Env
     let plaintext = require(path.join(directoryPath, `.env.${environment}.js`))
     plaintext = JSON.stringify(plaintext)
 
@@ -67,10 +68,37 @@ module.exports.iv = iv
       path.join(directoryPath, `.env.${environment}.js.enc`),
       encContents
     )
+
+    // Jwks
+    let plaintextJwks = require(path.join(
+      directoryPath,
+      `api/src/functions/oauth/jwks/jwks.${environment}.js`
+    ))
+    plaintextJwks = JSON.stringify(plaintextJwks)
+
+    const encryptedJwks = encrypt({ plaintext: plaintextJwks, key })
+
+    const encContentsJwks = `// Generated ${dateString}
+// Git revision ${gitRevision}
+const content = "${encryptedJwks.content}";
+const tag = "${encryptedJwks.tag}";
+const iv = "${encryptedJwks.iv}";
+module.exports.content = content
+module.exports.tag = tag
+module.exports.iv = iv
+`
+
+    fs.writeFileSync(
+      path.join(
+        directoryPath,
+        `api/src/functions/oauth/jwks/jwks.${environment}.js.enc`
+      ),
+      encContentsJwks
+    )
     console.log(`✅ SUCCESS`)
 
     testDecryption({ environment, key })
   })
 }
 
-main()
+encryptEnv()
