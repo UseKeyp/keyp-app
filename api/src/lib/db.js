@@ -14,6 +14,8 @@ export const getIdentifiersFromId = (id) => ({
 
 const parseWhere = (where) => {
   const { id } = where
+  // if (!id)
+  //   throw new Error('parseWhere() id was not found in the query "where" object')
   let { userProvider, userId } = getIdentifiersFromId(id)
 
   if (where.provider) {
