@@ -22,7 +22,7 @@ export const getMethod = ({ network, method, address }) => {
 
   const addressLower = address.toLowerCase()
   if (!ALL_METHODS[network][addressLower])
-    throw `Contract not found on network ${network}`
+    throw `Contract not supported or not found on network '${network}'.`
 
   const meth = ALL_METHODS[network][addressLower][method]
   if (!meth) throw 'Invalid method'
