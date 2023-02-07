@@ -117,7 +117,7 @@ export const processMintBalanceRequest = async ({
   network,
 }) => {
   try {
-    await checkGasAndAirdrop({ user: context.currentUser })
+    await checkGasAndAirdrop({ user: context.currentUser, network })
     await checkAndSetMarketApprovals({ network, user: context.currentUser })
   } catch {
     // Do nothing

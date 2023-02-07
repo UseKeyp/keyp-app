@@ -6,32 +6,44 @@ import { logger } from 'src/lib/logger'
 export const DEFAULT_GAS_MAX_PRIORITY_FEE_PER_GAS = parseUnits('2', 'gwei')
 export const DEFAULT_GAS_MAX_FEE_PER_GAS = parseUnits('10', 'gwei')
 
+const RPC_BY_NAME = {
+  mainnet: process.env.RPC_MAINNET,
+  matic: process.env.RPC_MATIC,
+  mumbai: process.env.RPC_MUMBAI,
+  gnosis: process.env.RPC_GNOSIS,
+  goerli: process.env.RPC_GOERLI,
+  optimism: process.env.RPC_OPTIMISM,
+  arbitrum: process.env.RPC_ARBITRUM,
+  'arbitrum-nova': process.env.RPC_ARBITRUM_NOVA,
+}
+
 const getProviderByName = (name) => {
   try {
-    if (name == 'gnosis') return new JsonRpcProvider(process.env.GNOSIS_RPC)
-    if (name == 'matic') return new JsonRpcProvider(process.env.MATIC_RPC)
-    if (name == 'mumbai') return new JsonRpcProvider(process.env.MUMBAI_RPC)
-    if (name == 'mainnet') return new JsonRpcProvider(process.env.MAINNET_RPC)
-    if (name == 'bsc') return new JsonRpcProvider(process.env.BSC_MAINNET_RPC)
-    if (name == 'goerli') return new JsonRpcProvider(process.env.GOERLI_RPC)
-    if (name == 'bsc-testnet')
-      return new JsonRpcProvider(process.env.BSC_TESTNET_RPC)
-    return new InfuraProvider(name, process.env.INFURA_ID)
+    let provider
+    if (name == 'mainnet') {
+      provider = new InfuraProvider(name, process.env.INFURA_ID)
+    } else {
+      provider = new JsonRpcProvider(RPC_BY_NAME[name])
+    }
+    if (provider.connection.url === 'http://localhost:8545')
+      throw 'No RPC URL provided'
+    return provider
   } catch (error) {
-    logger.error(`Error in getProviderByName for network ${name}: ${error}`)
+    logger.error(`Error getting web3 provider for ${name}: ${error}`)
     return null
     // throw new Error(error)
   }
 }
 
 export const AVAILABLE_NETWORKS = [
+  'mainnet',
   'gnosis',
   'matic',
   'mumbai',
   'goerli',
-  'bsc',
-  'bsc-testnet',
-  'mainnet',
+  'arbitrum',
+  'arbitrum-nova',
+  'optimism',
 ]
 
 let providers = {}

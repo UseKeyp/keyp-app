@@ -16,7 +16,6 @@ router.get('/:userId', async (req, res) => {
 router.get('/:userId/balance', async (req, res) => {
   const { userId } = req.params
   const user = await fetchUser(userId)
-
   const etherBalanceData = await getEtherBalance({
     address: user.address,
     network: req.ctx.network,

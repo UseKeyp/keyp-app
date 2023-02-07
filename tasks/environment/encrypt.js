@@ -1,16 +1,18 @@
 const fs = require('fs')
 const path = require('path')
-const { decrypt, encrypt } = require('./cryptography')
-const dotenv = require('dotenv')
 const { performance } = require('perf_hooks')
+
+const dotenv = require('dotenv')
+
+const { decrypt, encrypt } = require('./cryptography')
 
 const directoryPath = path.join(__dirname, '../../')
 
 // WARNING: DO NOT CHANGE THESE
 const ENVIRONMENT_LIST = [
   { environment: 'dev', key: process.env.DEV_ENCRYPTION_KEY },
-  { environment: 'sandbox', key: process.env.DEV_ENCRYPTION_KEY },
-  { environment: 'staging', key: process.env.STAGING_ENCRYPTION_KEY },
+  // { environment: 'sandbox', key: process.env.DEV_ENCRYPTION_KEY },
+  // { environment: 'staging', key: process.env.STAGING_ENCRYPTION_KEY },
   { environment: 'prod', key: process.env.PROD_ENCRYPTION_KEY },
 ]
 

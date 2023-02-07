@@ -83,7 +83,7 @@ export const transferErc20 = async ({
   try {
     const { address: toAddress } = toUser
     const { address: fromAddress } = fromUser
-    const gettingGas = await checkGasAndAirdrop({ user: fromUser })
+    const gettingGas = await checkGasAndAirdrop({ user: fromUser, network })
     if (gettingGas)
       throw "Try again in a few minutes, we're sending some gas to your wallet."
 

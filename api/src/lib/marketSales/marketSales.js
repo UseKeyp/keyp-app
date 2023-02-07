@@ -209,7 +209,7 @@ export const createNewTreasureListing = async ({
   validateCreateNewListingRequest({ treasure: updatedTreasure, amount })
   try {
     try {
-      await checkGasAndAirdrop({ member: context.currentUser })
+      await checkGasAndAirdrop({ member: context.currentUser, network })
     } catch {
       // Do nothing
     }
@@ -240,7 +240,7 @@ export const removeTreasureListing = async ({ treasure, network }) => {
   validateRemoveListingRequest({ treasure: updatedTreasure })
   try {
     try {
-      await checkGasAndAirdrop({ member: context.currentUser })
+      await checkGasAndAirdrop({ member: context.currentUser, network })
     } catch {
       // Do nothing
     }
@@ -271,7 +271,7 @@ export const purchaseTreasure = async ({ treasure, network }) => {
   await validatePurchaseRequest({ treasure: updatedTreasure, network })
   try {
     try {
-      await checkGasAndAirdrop({ member: context.currentUser })
+      await checkGasAndAirdrop({ member: context.currentUser, network })
     } catch {
       // Do nothing
     }
