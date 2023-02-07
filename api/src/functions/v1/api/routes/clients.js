@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid'
 
 import { db } from 'src/lib/db'
+import { logger } from 'src/lib/logger'
 
 var express = require('express')
 var router = express.Router()
@@ -21,67 +22,85 @@ const validateOwnerAccess = (developers, userId) => {
 }
 
 router.get('/', async (req, res) => {
-  const { userProvider, userId } = req.ctx
-  const clients = await db.oidc.findMany({
-    where: { developers: { some: { userProvider, userId } } },
-    include: { developers: true },
-  })
-  res.send(
-    clients
-      .filter((client) => !client.disabled)
-      .map((client) => ({
-        ...client,
-        accessLevel: getAccessLevel(client.developers, req.ctx.userId),
-      }))
-  )
+  try {
+    const { userProvider, userId } = req.ctx
+    const clients = await db.oidc.findMany({
+      where: { developers: { some: { userProvider, userId } } },
+      include: { developers: true },
+    })
+    res.send(
+      clients
+        .filter((client) => !client.disabled)
+        .map((client) => ({
+          ...client,
+          accessLevel: getAccessLevel(client.developers, req.ctx.userId),
+        }))
+    )
+  } catch (e) {
+    logger.error(e)
+    res.status(500).send({ error: e })
+  }
 })
 
 router.patch('/:clientId', async (req, res) => {
-  const { clientId } = req.params
-  const { redirect_uris, clientURI, clientName, tosURI, logoURI, policyURI } = req.body
+  try {
+    const { clientId } = req.params
+    const { redirect_uris, clientURI, clientName, tosURI, logoURI, policyURI } =
+      req.body
 
-  if (!redirect_uris) throw new Error('Missing redirect_uris')
+    if (!redirect_uris) throw new Error('Missing redirect_uris')
 
-  let client = await db.oidc.findUnique({
-    where: { id_type: { id: clientId, type: 7 } },
-    select: { developers: true, payload: true },
-  })
-  if (!client) throw new Error('Client not found')
-  validateEditAccess(client.developers, req.ctx.userId)
-  // TODO validate list as https urls, or http for localhost
-  client = await db.oidc.update({
-    where: { id_type: { id: clientId, type: 7 } },
-    data: { payload: {
-        ...client.payload,
-        ...(clientURI && { client_uri: clientURI }),
-        ...(clientName && { client_name: clientName }),
-        ...(tosURI && { tos_uri: tosURI }),
-        ...(logoURI && { logo_uri: logoURI }),
-        ...(policyURI && { policy_uri: policyURI }),
-        redirect_uris: redirect_uris,
-      }, },
-    select: { developers: true, payload: true, id: true },
-  })
-  res.send(client)
+    let client = await db.oidc.findUnique({
+      where: { id_type: { id: clientId, type: 7 } },
+      select: { developers: true, payload: true },
+    })
+    if (!client) throw new Error('Client not found')
+    validateEditAccess(client.developers, req.ctx.userId)
+    // TODO validate list as https urls, or http for localhost
+    client = await db.oidc.update({
+      where: { id_type: { id: clientId, type: 7 } },
+      data: {
+        payload: {
+          ...client.payload,
+          ...(clientURI && { client_uri: clientURI }),
+          ...(clientName && { client_name: clientName }),
+          ...(tosURI && { tos_uri: tosURI }),
+          ...(logoURI && { logo_uri: logoURI }),
+          ...(policyURI && { policy_uri: policyURI }),
+          redirect_uris: redirect_uris,
+        },
+      },
+      select: { developers: true, payload: true, id: true },
+    })
+    res.send(client)
+  } catch (e) {
+    logger.error(e)
+    res.status(500).send({ error: e })
+  }
 })
 
 // Create client
 router.post('/', async (req, res) => {
-  const id = uuidv4()
-  const client = await db.oidc.create({
-    data: { id, type: 7, payload: { client_id: id, redirect_uris: [] } },
-  })
-  const { userProvider, userId } = req.ctx
-  await db.clientsOnDevelopers.create({
-    data: {
-      user: {
-        connect: { provider_id: { provider: userProvider, id: userId } },
+  try {
+    const id = uuidv4()
+    const client = await db.oidc.create({
+      data: { id, type: 7, payload: { client_id: id, redirect_uris: [] } },
+    })
+    const { userProvider, userId } = req.ctx
+    await db.clientsOnDevelopers.create({
+      data: {
+        user: {
+          connect: { provider_id: { provider: userProvider, id: userId } },
+        },
+        oidc: { connect: { id_type: { id: client.id, type: 7 } } },
+        accessLevel: 'OWNER',
       },
-      oidc: { connect: { id_type: { id: client.id, type: 7 } } },
-      accessLevel: 'OWNER',
-    },
-  })
-  res.send(client)
+    })
+    res.send(client)
+  } catch (e) {
+    logger.error(e)
+    res.status(500).send({ error: e })
+  }
 })
 
 module.exports = router

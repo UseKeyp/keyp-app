@@ -1,3 +1,4 @@
+import { logger } from 'src/lib/logger'
 import { fetchUser } from 'src/lib/users'
 import { getEtherBalance } from 'src/lib/web3/airdrop.js'
 import { getErc20Balance } from 'src/lib/web3/erc20'
@@ -7,36 +8,51 @@ var express = require('express')
 var router = express.Router()
 
 router.get('/:userId', async (req, res) => {
-  const { userId } = req.params
-  const user = await fetchUser(userId)
+  try {
+    const { userId } = req.params
+    const user = await fetchUser(userId)
 
-  res.send(user)
+    res.send(user)
+  } catch (e) {
+    logger.error(e)
+    res.status(500).send({ error: e })
+  }
 })
 
 router.get('/:userId/balance', async (req, res) => {
-  const { userId } = req.params
-  const user = await fetchUser(userId)
-  const etherBalanceData = await getEtherBalance({
-    address: user.address,
-    network: req.ctx.network,
-  })
-  const usdcBalanceData = await getErc20Balance({
-    tokenAddress: USDC_DATA_BY_NETWORK[req.ctx.network].address,
-    address: user.address,
-  })
-  res.send({ ETH: etherBalanceData, USDC: usdcBalanceData })
+  try {
+    const { userId } = req.params
+    const user = await fetchUser(userId)
+    const etherBalanceData = await getEtherBalance({
+      address: user.address,
+      network: req.ctx.network,
+    })
+    const usdcBalanceData = await getErc20Balance({
+      tokenAddress: USDC_DATA_BY_NETWORK[req.ctx.network].address,
+      address: user.address,
+    })
+    res.send({ ETH: etherBalanceData, USDC: usdcBalanceData })
+  } catch (e) {
+    logger.error(e)
+    res.status(500).send({ error: e })
+  }
 })
 
 router.get('/:userId/balance/:tokenAddress', async (req, res) => {
-  const { userId, tokenAddress } = req.params
-  const user = await fetchUser(userId)
+  try {
+    const { userId, tokenAddress } = req.params
+    const user = await fetchUser(userId)
 
-  const tokenBalanceData = await getErc20Balance({
-    tokenAddress,
-    address: user.address,
-  })
+    const tokenBalanceData = await getErc20Balance({
+      tokenAddress,
+      address: user.address,
+    })
 
-  res.send({ [tokenAddress.toLowerCase()]: tokenBalanceData })
+    res.send({ [tokenAddress.toLowerCase()]: tokenBalanceData })
+  } catch (e) {
+    logger.error(e)
+    res.status(500).send({ error: e })
+  }
 })
 
 module.exports = router
