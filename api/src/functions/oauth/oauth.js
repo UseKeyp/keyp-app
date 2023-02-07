@@ -1,7 +1,7 @@
 import oauth2Server from 'oauth2-server-redwood'
 import serverless from 'serverless-http'
 
-import jwks from 'src/functions/oauth/jwks/jwks.dev'
+import jwks from 'src/functions/oauth/jwks/jwks'
 import { db } from 'src/lib/db'
 import { APP_DOMAIN } from 'src/lib/helpers'
 

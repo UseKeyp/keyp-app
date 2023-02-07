@@ -49,9 +49,10 @@ const setupEnvironment = () => {
   })
 
   // Save jwks to file
+  const jwksContents = `module.exports = ${decryptedJwks}`
   fs.writeFileSync(
     path.join(directoryPath, `api/src/functions/oauth/jwks/jwks.js`),
-    decryptedJwks
+    jwksContents
   )
 }
 
