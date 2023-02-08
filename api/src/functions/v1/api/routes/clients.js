@@ -45,10 +45,19 @@ router.get('/', async (req, res) => {
 router.patch('/:clientId', async (req, res) => {
   try {
     const { clientId } = req.params
-    const { redirect_uris, clientURI, clientName, tosURI, logoURI, policyURI } =
-      req.body
+    const {
+      redirect_uris,
+      clientURI,
+      clientName,
+      tosURI,
+      logoURI,
+      policyURI,
+      network,
+    } = req.body
 
     if (!redirect_uris) throw new Error('Missing redirect_uris')
+    if (network !== 'goerli' && network !== 'mainnet')
+      throw new Error(`Network ${network} not supported`)
 
     let client = await db.oidc.findUnique({
       where: { id_type: { id: clientId, type: 7 } },
@@ -67,6 +76,7 @@ router.patch('/:clientId', async (req, res) => {
           ...(tosURI && { tos_uri: tosURI }),
           ...(logoURI && { logo_uri: logoURI }),
           ...(policyURI && { policy_uri: policyURI }),
+          ...(network && { network: network }),
           redirect_uris: redirect_uris,
         },
       },
@@ -84,7 +94,11 @@ router.post('/', async (req, res) => {
   try {
     const id = uuidv4()
     const client = await db.oidc.create({
-      data: { id, type: 7, payload: { client_id: id, redirect_uris: [] } },
+      data: {
+        id,
+        type: 7,
+        payload: { client_id: id, network: 'goerli', redirect_uris: [] },
+      },
     })
     const { userProvider, userId } = req.ctx
     await db.clientsOnDevelopers.create({
@@ -92,8 +106,6 @@ router.post('/', async (req, res) => {
         user: {
           connect: { provider_id: { provider: userProvider, id: userId } },
         },
-        oidc: { connect: { id_type: { id: client.id, type: 7 } } },
-        accessLevel: 'OWNER',
       },
     })
     res.send(client)
