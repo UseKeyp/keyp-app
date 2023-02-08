@@ -11,8 +11,8 @@ const HomePage = () => {
           </div>
           <h2 className="font-sans text-black">More coming soon...</h2>
           <div className="mt-8 grid grid-cols-1 gap-2 md:grid-cols-2">
-          <div className="w-85 rounded-md border border-blue-1200 p-4">
-                <a
+            <div className="w-85 rounded-md border border-blue-1200 p-4">
+              <a
                 href="https://docs.UseKeyp.com"
                 target="_blank"
                 className="flex font-bold hover:underline"
@@ -39,7 +39,7 @@ const HomePage = () => {
               </div>
             </div>
             <div className="w-85 rounded-md border border-blue-1200 p-4">
-                <a
+              <a
                 href="https://github.com/UseKeyp"
                 target="_blank"
                 className="flex font-bold hover:underline"
@@ -53,7 +53,7 @@ const HomePage = () => {
               </div>
             </div>
             <div className="w-85 rounded-md border border-blue-1200 p-4">
-               <a
+              <a
                 href="https://UseKeyp.com/jobs"
                 target="_blank"
                 className="flex font-bold hover:underline"
