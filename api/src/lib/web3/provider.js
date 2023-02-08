@@ -6,6 +6,17 @@ import { logger } from 'src/lib/logger'
 export const DEFAULT_GAS_MAX_PRIORITY_FEE_PER_GAS = parseUnits('2', 'gwei')
 export const DEFAULT_GAS_MAX_FEE_PER_GAS = parseUnits('10', 'gwei')
 
+export const AVAILABLE_NETWORKS = [
+  'mainnet',
+  'gnosis',
+  'matic',
+  'mumbai',
+  'goerli',
+  'arbitrum',
+  'arbitrum-nova',
+  'optimism',
+]
+
 const RPC_BY_NAME = {
   mainnet: process.env.RPC_MAINNET,
   matic: process.env.RPC_MATIC,
@@ -34,17 +45,6 @@ const getProviderByName = (name) => {
     // throw new Error(error)
   }
 }
-
-export const AVAILABLE_NETWORKS = [
-  'mainnet',
-  'gnosis',
-  'matic',
-  'mumbai',
-  'goerli',
-  'arbitrum',
-  'arbitrum-nova',
-  'optimism',
-]
 
 let providers = {}
 AVAILABLE_NETWORKS.map((name) => {
