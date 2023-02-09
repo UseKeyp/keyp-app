@@ -31,19 +31,20 @@ const MAX_RESUBMIT_ATTEMPTS = 0
 const alertDiscord = async ({ treasure, network }) => {
   try {
     let balanceObjects = []
-    await Promise.all(
-      Web3Providers.map(async (provider) => {
-        const balance = await getAdminBalance({ network: provider.network })
-        balanceObjects.push({
-          network,
-          field: {
-            name: `Admin wallet - ${provider.network}`,
-            value: `${formatEther(balance).substring(0, 6)} ETH`,
-            inline: true,
-          },
-        })
-      })
-    )
+    // TODO add back when admin wallet is back
+    // await Promise.all(
+    //   Web3Providers.map(async (provider) => {
+    //     const balance = await getAdminBalance({ network: provider.network })
+    //     balanceObjects.push({
+    //       network,
+    //       field: {
+    //         name: `Admin wallet - ${provider.network}`,
+    //         value: `${formatEther(balance).substring(0, 6)} ETH`,
+    //         inline: true,
+    //       },
+    //     })
+    //   })
+    // )
     await sendDiscordAdminAlert({
       embed: {
         color: 8963403,

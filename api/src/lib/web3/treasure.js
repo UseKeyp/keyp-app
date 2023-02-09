@@ -64,9 +64,10 @@ export const mint = async ({
       logger.error(e)
     }
     logger.debug({ custom: { ...unsignedTx } }, 'unsignedTx')
-    const tx = await adminSendTransaction({ unsigned: unsignedTx, network })
-    logger.debug({ custom: { ...tx } }, 'tx')
-    return tx
+    // const tx = await adminSendTransaction({ unsigned: unsignedTx, network })
+    // logger.debug({ custom: { ...tx } }, 'tx')
+    // return tx
+    return null
   } catch (e) {
     throw new Error(`mint() ${e}`)
   }

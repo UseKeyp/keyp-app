@@ -8,12 +8,14 @@ const adminWallet = Wallet.fromMnemonic(
   process.env.APP_ADMIN_WALLET_MNEMONIC.replace(/,/g, ' ')
 )
 
-const validateConfig = (wallet) => {
-  if (
-    wallet.address.toLowerCase() !==
-    process.env.APP_ADMIN_WALLET_ADDRESS.toLowerCase()
-  )
-    throw 'Admin wallet address and mnemonic do not match'
+const validateConfig = (_wallet) => {
+  // TODO: re-enable this validation when adding back the admin wallet
+  return true
+  // if (
+  //   wallet.address.toLowerCase() !==
+  //   process.env.APP_ADMIN_WALLET_ADDRESS.toLowerCase()
+  // )
+  //   throw 'Admin wallet address and mnemonic do not match'
 }
 
 // Currently unused

@@ -89,17 +89,22 @@ export const getTorusWallet = async (userId) => {
 
     const { torusNodeEndpoints, torusIndexes } =
       await nodeDetailManager.getNodeDetails(verifierDetails)
+
+    let verifierObject = { verifier_id: parsedUserId }
+    if (userProvider === 'CHESS') {
+      // Use custom JWT verification method
+      verifierObject = {
+        verify_params: [{ verifier_id: parsedUserId, idtoken: idToken }],
+        sub_verifier_ids: ['chess'],
+        verifier_id: parsedUserId,
+      }
+    }
+
     const retrieveSharesResponse = await torusUtils.retrieveShares(
       torusNodeEndpoints,
       torusIndexes,
       verifier,
-      // NOTE: old chess.com way using jwt
-      // {
-      //   verify_params: [{ verifier_id: verifierId, idtoken: idToken }],
-      //   sub_verifier_ids: ['chess'],
-      //   verifier_id: verifierId,
-      // },
-      { verifier_id: parsedUserId },
+      verifierObject,
       idToken
     )
     const { ethAddress, privKey } = retrieveSharesResponse
