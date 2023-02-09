@@ -72,7 +72,7 @@ module.exports.iv = iv
     // Jwks
     let plaintextJwks = require(path.join(
       directoryPath,
-      `api/src/functions/oauth/jwks/jwks.${environment}.js`
+      `api/src/lib/jwks/jwks.${environment}.js`
     ))
     plaintextJwks = JSON.stringify(plaintextJwks)
 
@@ -89,10 +89,7 @@ module.exports.iv = iv
 `
 
     fs.writeFileSync(
-      path.join(
-        directoryPath,
-        `api/src/functions/oauth/jwks/jwks.${environment}.js.enc`
-      ),
+      path.join(directoryPath, `api/src/lib/jwks/jwks.${environment}.js.enc`),
       encContentsJwks
     )
     console.log(`✅ SUCCESS`)

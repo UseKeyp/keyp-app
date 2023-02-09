@@ -1,4 +1,5 @@
 #!/bin/bash -ve
+$(node tasks/environment/setupJwks)
 $(node tasks/environment/setupEnv)
 yarn build-packages
 yarn rw dev api
