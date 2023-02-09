@@ -2,7 +2,7 @@ import fetch from 'node-fetch'
 
 import { db } from 'src/lib/db'
 import { sendDiscordAdminAlert } from 'src/lib/discord/admin'
-import { isProduction } from 'src/lib/helpers'
+import { isProdOrStaging } from 'src/lib/helpers'
 import { APP_DOMAIN } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
 import { processMintPurchaseOrder } from 'src/lib/mintPurchases'
@@ -10,16 +10,16 @@ import Sentry from 'src/lib/sentry'
 
 const CryptoJS = require('crypto-js')
 
-const DISCORD_WYRE_DASHBOARD_URL = isProduction
+const DISCORD_WYRE_DASHBOARD_URL = isProdOrStaging
   ? 'https://www.sendwyre.com/#/dashboard'
   : 'https://www.testwyre.com/#/dashboard'
 
 const WYRE_SECRET_KEY = process.env.WYRE_SECRET_KEY
 const WYRE_API_KEY = process.env.WYRE_API_KEY
-const API_URL = isProduction
+const API_URL = isProdOrStaging
   ? 'https://api.sendwyre.com/v3'
   : 'https://api.testwyre.com/v3'
-const API_URL_V2 = isProduction
+const API_URL_V2 = isProdOrStaging
   ? 'https://api.sendwyre.com/v2'
   : 'https://api.testwyre.com/v2'
 const WYRE_WEBHOOK_URL = APP_DOMAIN + '/api/wyre'

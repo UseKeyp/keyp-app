@@ -1,7 +1,7 @@
 import { parseUnits } from '@ethersproject/units'
 import fetch from 'cross-fetch'
 
-import { isProduction } from 'src/lib/helpers'
+import { isProdOrStaging } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
 
 export const getGasSettings = async ({ network }) => {
@@ -9,7 +9,7 @@ export const getGasSettings = async ({ network }) => {
   let maxPriorityFeePerGas = parseUnits('40', 'gwei') // fallback to 40 gwei
   try {
     const res = await fetch(
-      isProduction
+      isProdOrStaging
         ? 'https://gasstation-mainnet.matic.network/v2'
         : 'https://gasstation-mumbai.matic.today/v2'
     ).then((res) => {

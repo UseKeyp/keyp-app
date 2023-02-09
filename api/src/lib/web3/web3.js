@@ -4,7 +4,7 @@ import { getExplorerBaseUrlFromName } from '@treasure-chess/web3-helpers'
 import { db } from 'src/lib/db'
 import { sendDiscordAdminAlert } from 'src/lib/discord/admin'
 import { fetchGame } from 'src/lib/games'
-import { isProduction, isOlderThanResubmitTimeout } from 'src/lib/helpers'
+import { isProdOrStaging, isOlderThanResubmitTimeout } from 'src/lib/helpers'
 import { APP_DOMAIN } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
 import { updateMauticContactMinted } from 'src/lib/mautic'
@@ -25,25 +25,26 @@ const SUBMITTED = 'SUBMITTED'
 const COMPLETE = 'COMPLETE'
 const FAILED = 'FAILED'
 
-const MINIMUM_CONFIRMATIONS = isProduction ? 15 : 1
+const MINIMUM_CONFIRMATIONS = isProdOrStaging ? 15 : 1
 const MAX_RESUBMIT_ATTEMPTS = 0
 
 const alertDiscord = async ({ treasure, network }) => {
   try {
     let balanceObjects = []
-    await Promise.all(
-      Web3Providers.map(async (provider) => {
-        const balance = await getAdminBalance({ network: provider.network })
-        balanceObjects.push({
-          network,
-          field: {
-            name: `Admin wallet - ${provider.network}`,
-            value: `${formatEther(balance).substring(0, 6)} ETH`,
-            inline: true,
-          },
-        })
-      })
-    )
+    // TODO add back when admin wallet is back
+    // await Promise.all(
+    //   Web3Providers.map(async (provider) => {
+    //     const balance = await getAdminBalance({ network: provider.network })
+    //     balanceObjects.push({
+    //       network,
+    //       field: {
+    //         name: `Admin wallet - ${provider.network}`,
+    //         value: `${formatEther(balance).substring(0, 6)} ETH`,
+    //         inline: true,
+    //       },
+    //     })
+    //   })
+    // )
     await sendDiscordAdminAlert({
       embed: {
         color: 8963403,

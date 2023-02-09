@@ -12,7 +12,7 @@ const directoryPath = path.join(__dirname, '../../')
 const ENVIRONMENT_LIST = [
   { environment: 'dev', key: process.env.DEV_ENCRYPTION_KEY },
   // { environment: 'sandbox', key: process.env.DEV_ENCRYPTION_KEY },
-  // { environment: 'staging', key: process.env.STAGING_ENCRYPTION_KEY },
+  { environment: 'staging', key: process.env.STAGING_ENCRYPTION_KEY },
   { environment: 'prod', key: process.env.PROD_ENCRYPTION_KEY },
 ]
 
@@ -72,7 +72,7 @@ module.exports.iv = iv
     // Jwks
     let plaintextJwks = require(path.join(
       directoryPath,
-      `api/src/functions/oauth/jwks/jwks.${environment}.js`
+      `api/src/lib/jwks/jwks.${environment}.js`
     ))
     plaintextJwks = JSON.stringify(plaintextJwks)
 
@@ -89,10 +89,7 @@ module.exports.iv = iv
 `
 
     fs.writeFileSync(
-      path.join(
-        directoryPath,
-        `api/src/functions/oauth/jwks/jwks.${environment}.js.enc`
-      ),
+      path.join(directoryPath, `api/src/lib/jwks/jwks.${environment}.js.enc`),
       encContentsJwks
     )
     console.log(`✅ SUCCESS`)

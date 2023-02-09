@@ -2,7 +2,7 @@ import fetch from 'cross-fetch'
 import { decode as decodeJwt } from 'jsonwebtoken'
 
 import { db } from 'src/lib/db'
-import { isDevelopment, isProduction } from 'src/lib/helpers'
+import { isDevelopment } from 'src/lib/helpers'
 import { APP_DOMAIN } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
 import { encodeBody, getExpiration } from 'src/lib/oAuth/helpers'
@@ -14,7 +14,7 @@ export const CHESS_OAUTH_URL_AUTHORIZE = 'https://oauth.chess.com/authorize'
 const CHESS_OAUTH_URL_TOKEN = 'https://oauth.chess.com/token'
 const CHESS_SCOPE = 'openid profile games:read email'
 const CHESS_REDIRECT_URI = APP_DOMAIN + '/redirect/chess'
-const CHESS_CLIENT_ID = isProduction
+const CHESS_CLIENT_ID = ['staging', 'prod'].includes(process.env.ENVIRONMENT)
   ? '459cd394-77cd-11ec-95cb-cfacea4084a2'
   : '40c5d866-77cd-11ec-a560-67b86d6160ee'
 const responseType = 'id_token'

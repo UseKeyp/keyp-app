@@ -7,7 +7,7 @@ import {
 } from 'plaid'
 
 import { db } from 'src/lib/db'
-import { isProduction } from 'src/lib/helpers'
+import { isProdOrStaging } from 'src/lib/helpers'
 import { APP_DOMAIN } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
 import Sentry from 'src/lib/sentry'
@@ -20,11 +20,11 @@ export const PLAID = 'PLAID'
 export const WYRE = 'WYRE'
 
 const PLAID_SCOPE = [Products.Auth, Products.Identity]
-const PLAID_REDIRECT_URI = isProduction
+const PLAID_REDIRECT_URI = isProdOrStaging
   ? APP_DOMAIN + '/redirect/plaid'
   : 'https://0.0.0.0:8910/redirect/plaid'
 
-const PLAID_WEBHOOK_URL = isProduction
+const PLAID_WEBHOOK_URL = isProdOrStaging
   ? 'https://treasure.chess.com/api/plaid'
   : 'https://tc-checkout-dev.ngrok.io/api/plaid'
 

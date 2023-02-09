@@ -8,7 +8,7 @@ services:
 - name: keyp-app-web
   type: web
   env: static
-  buildCommand: yarn install && yarn rw deploy render web
+  buildCommand: yarn install && node tasks/environment/setupJwks && yarn rw deploy render web
   staticPublishPath: ./web/dist
   envVars:
   - key: NODE_VERSION

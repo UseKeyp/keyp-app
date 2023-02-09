@@ -21,7 +21,7 @@ const setupEnvironment = () => {
   ))
   const encryptedJwks = require(path.join(
     directoryPath,
-    `api/src/functions/oauth/jwks/jwks.${environment}.js.enc`
+    `api/src/lib/jwks/jwks.${environment}.js.enc`
   ))
   let decrypted
   let decryptedJwks
@@ -50,10 +50,7 @@ const setupEnvironment = () => {
 
   // Save jwks to file
   const jwksContents = `module.exports = ${decryptedJwks}`
-  fs.writeFileSync(
-    path.join(directoryPath, `api/dist/functions/oauth/jwks/jwks.js`),
-    jwksContents
-  )
+  fs.writeFileSync(`./api/dist/lib/jwks/jwks.js`, jwksContents)
 }
 
 setupEnvironment()

@@ -5,7 +5,7 @@ import { InputError } from '@redwoodjs/graphql-server'
 
 import { validateLoginRequest } from 'src/lib/auth/validation'
 import { db } from 'src/lib/db'
-import { isProduction, cors } from 'src/lib/helpers'
+import { isProdOrStaging, cors } from 'src/lib/helpers'
 import { APP_DOMAIN } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
 import { oAuthUrl, submitCodeGrant } from 'src/lib/oAuth'
@@ -58,8 +58,8 @@ export const handler = async (event, context) => {
       HttpOnly: true,
       Path: '/',
       SameSite: 'Strict',
-      Secure: isProduction,
-      ...(isProduction && {
+      Secure: isProdOrStaging,
+      ...(isProdOrStaging && {
         Domain: APP_DOMAIN.split('://')[1],
       }),
     },

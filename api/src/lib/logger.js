@@ -1,6 +1,6 @@
 import { createLogger, redactionsList } from '@redwoodjs/api/logger'
 
-import { isProduction } from 'src/lib/helpers'
+import { isProdOrStaging } from 'src/lib/helpers'
 /**
  * Creates a logger with RedwoodLoggerOptions
  *
@@ -18,7 +18,7 @@ import { isProduction } from 'src/lib/helpers'
 export const logger = createLogger({
   options: {
     redact: [...redactionsList, 'refreshToken', 'accessToken'],
-    level: isProduction && !process.env.IMPERSONATE_USERNAME ? 'warn' : 'debug', // These are the redwoodJS defaults
-    // showConfig: !isProduction, // Helpful for debugging
+    level: isProdOrStaging && !process.env.IMPERSONATE_USERNAME ? 'warn' : 'debug', // These are the redwoodJS defaults
+    // showConfig: !isProdOrStaging, // Helpful for debugging
   },
 })
