@@ -4,9 +4,10 @@ import { logger } from 'src/lib/logger'
 import { getGasSettings } from 'src/lib/web3/gas'
 import { Web3Providers } from 'src/lib/web3/provider'
 
-const adminWallet = Wallet.fromMnemonic(
-  process.env.APP_ADMIN_WALLET_MNEMONIC.replace(/,/g, ' ')
-)
+// const adminWallet = Wallet.fromMnemonic(
+//   process.env.APP_ADMIN_WALLET_MNEMONIC.replace(/,/g, ' ')
+// )
+let adminWallet
 
 const validateConfig = (_wallet) => {
   // TODO: re-enable this validation when adding back the admin wallet

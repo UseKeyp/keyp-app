@@ -26,3 +26,5 @@ deleteme/
 locales/
 .vercel
 build-storybook.log
+jwks.js
+jwks.*.js
