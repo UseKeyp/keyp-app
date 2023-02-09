@@ -12,7 +12,7 @@ const directoryPath = path.join(__dirname, '../../')
 const ENVIRONMENT_LIST = [
   { environment: 'dev', key: process.env.DEV_ENCRYPTION_KEY },
   // { environment: 'sandbox', key: process.env.DEV_ENCRYPTION_KEY },
-  // { environment: 'staging', key: process.env.STAGING_ENCRYPTION_KEY },
+  { environment: 'staging', key: process.env.STAGING_ENCRYPTION_KEY },
   { environment: 'prod', key: process.env.PROD_ENCRYPTION_KEY },
 ]
 

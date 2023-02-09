@@ -4,7 +4,7 @@ global.window = undefined
 global.document = undefined
 
 import { getIdentifiersFromId } from 'src/lib/db'
-import { isProduction } from 'src/lib/helpers'
+import { isProdOrStaging } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
 import { getNewIdToken } from 'src/lib/oAuth/jwt'
 
@@ -13,7 +13,7 @@ const NodeDetailManager =
 const TorusUtils =
   require('@toruslabs/torus.js/dist/torusUtils-node.js').default
 
-const config = isProduction
+const config = isProdOrStaging
   ? {
       network: 'cyan',
       proxyAddress: NodeDetailManager.PROXY_ADDRESS_CYAN,
@@ -24,7 +24,7 @@ const config = isProduction
     }
 const nodeDetailManager = new NodeDetailManager(config)
 
-const TORUS_VERIFIER = isProduction
+const TORUS_VERIFIER = isProdOrStaging
   ? {
       DISCORD: 'keyp-discord',
       GOOGLE: 'keyp-google',
@@ -37,7 +37,7 @@ const TORUS_VERIFIER = isProduction
     }
 
 const torusUtils = new TorusUtils(
-  isProduction
+  isProdOrStaging
     ? {
         signerHost: 'https://signer-polygon.tor.us/api/sign',
         allowHost: 'https://signer-polygon.tor.us/api/allow',

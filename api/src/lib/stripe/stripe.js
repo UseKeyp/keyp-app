@@ -1,5 +1,5 @@
 import { db } from 'src/lib/db'
-import { isProduction } from 'src/lib/helpers'
+import { isProdOrStaging } from 'src/lib/helpers'
 import { APP_DOMAIN } from 'src/lib/helpers'
 import { processMintPurchaseOrder } from 'src/lib/mintPurchases'
 import Sentry from 'src/lib/sentry'
@@ -7,7 +7,7 @@ import Sentry from 'src/lib/sentry'
 const stripe = require('stripe')(
   'sk_test_51IVOfvKppq5fi3qACb9WM00CtaWa2Bx9zKSLaMNIcDCJYQGWXqCNvLtUtOgx5VTaASG6jkRjmlR31EKO3x5DlOVr00K2VzJsxP'
 )
-const STRIPE_WEBHOOK_SECRET = isProduction
+const STRIPE_WEBHOOK_SECRET = isProdOrStaging
   ? process.env.STRIPE_WEBHOOK_SECRET
   : 'whsec_9b44ae98a6e0e6b55e47482362f86e6d03f0aaabc0a971d589e14eb2f45cd055'
 const YOUR_DOMAIN = APP_DOMAIN
@@ -18,7 +18,7 @@ export const createCheckoutSession = async ({ metadata, email }) => {
     metadata,
     line_items: [
       {
-        price: isProduction
+        price: isProdOrStaging
           ? 'price_1L6dfmKppq5fi3qAkryxOkEG'
           : 'price_1L6piIKppq5fi3qAhZBdEK0A',
         quantity: 1,

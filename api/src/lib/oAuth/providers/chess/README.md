@@ -37,3 +37,29 @@ Staging/Prod client ID: `459cd394-77cd-11ec-95cb-cfacea4084a2`
   "termsOfServiceUrl": "https://www.usekeyp.com/terms-of-use-privacy-policy"
 }
 ```
+
+
+In "diff format" he requested
+
+## Dev/Sandbox client ID: `40c5d866-77cd-11ec-a560-67b86d6160ee`
+
+Name change to "Keyp Dev"
+Logo change to "https://app.usekeyp.com/logo-test.png"
+Append these redirectUris:
+- "http://localhost/redirect/chess",
+- "https://dev.treasurechess.com/redirect/chess",
+- "https://app.dev-env.usekeyp.com/redirect/chess",
+privacyPolicyUrl change to "https://www.usekeyp.com/terms-of-use-privacy-policy"
+termsOfServiceUrl change to "https://www.usekeyp.com/terms-of-use-privacy-policy"
+
+## Staging/Prod client ID: `459cd394-77cd-11ec-95cb-cfacea4084a2`
+
+Name change to "Keyp"
+Logo change to "https://app.usekeyp.com/logo.png"
+Append these redirectUris:
+- "https://app.usekeyp.com/redirect/chess",
+- "https://staging-app.usekeyp.com/redirect/chess",
+- "https://app.staging-env.usekeyp.com/redirect/chess",
+- "https://treasurechess.com/redirect/chess",
+privacyPolicyUrl change to "https://www.usekeyp.com/terms-of-use-privacy-policy"
+termsOfServiceUrl change to "https://www.usekeyp.com/terms-of-use-privacy-policy"
