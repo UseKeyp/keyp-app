@@ -13,11 +13,8 @@
   includeEnvironmentVariables = [
     "ENVIRONMENT",
     "VERSION",
-    "APP_DOMAIN",
-    "REDWOOD_API_URL",
+    "APP_DOMAIN", # Needed for Twitch integration
     "BASIC_AUTH_PASSWORD",
-    "ETHEREUM_NETWORK_NAME",
-    "SENTRY_DSN"
   ]
 [api]
   port = 3001
