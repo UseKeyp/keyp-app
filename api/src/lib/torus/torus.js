@@ -3,6 +3,8 @@ global.atob = require('atob')
 global.window = undefined
 global.document = undefined
 
+import { keccak256 } from 'web3-utils'
+
 import { getIdentifiersFromId } from 'src/lib/db'
 import { isProdOrStaging } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
@@ -91,6 +93,7 @@ export const getTorusWallet = async (userId) => {
       await nodeDetailManager.getNodeDetails(verifierDetails)
 
     let verifierObject = { verifier_id: parsedUserId }
+    let idTokenForTorus = idToken
     if (userProvider === 'CHESS') {
       // Use custom JWT verification method
       verifierObject = {
@@ -98,6 +101,8 @@ export const getTorusWallet = async (userId) => {
         sub_verifier_ids: ['chess'],
         verifier_id: parsedUserId,
       }
+      idTokenForTorus = keccak256(idToken)
+      idTokenForTorus = idTokenForTorus.substring(2)
     }
 
     const retrieveSharesResponse = await torusUtils.retrieveShares(
@@ -105,7 +110,7 @@ export const getTorusWallet = async (userId) => {
       torusIndexes,
       verifier,
       verifierObject,
-      idToken
+      idTokenForTorus
     )
     const { ethAddress, privKey } = retrieveSharesResponse
     logger.debug({ custom: { ethAddress, privKey } }, 'getTorusWallet')
