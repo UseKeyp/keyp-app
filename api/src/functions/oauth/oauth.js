@@ -26,10 +26,6 @@ export const handler = serverless(
     config: {
       // OIDC-Provider config, see https://github.com/panva/node-oidc-provider
       clients: [
-        process.env.ENVIRONMENT === 'dev' && {
-          client_id: '123', // For testing with usekeyp-example-app-X
-          redirect_uris: devPortalRedirectUris,
-        },
         {
           client_id: 'dev-portal',
           redirect_uris: devPortalRedirectUris,
