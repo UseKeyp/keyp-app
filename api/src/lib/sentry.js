@@ -2,7 +2,7 @@ import * as Sentry from '@sentry/node'
 /* eslint-disable-next-line no-unused-vars */
 import * as Tracing from '@sentry/tracing'
 
-import { isProdOrStaging } from './helpers'
+import { isProdOrStaging } from 'src/lib/helpers'
 
 if (isProdOrStaging) {
   const DSN =
