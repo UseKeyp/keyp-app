@@ -7,6 +7,17 @@ import { AVAILABLE_NETWORKS } from 'src/lib/web3/provider'
 var express = require('express')
 var router = express.Router()
 
+//////////////////
+// Pre-Middleware
+const onlyDevPortalClient = (req, res, next) => {
+  if (req.ctx.clientId !== 'dev-portal')
+    return res
+      .status(401)
+      .send('/clients endpoints are only available via the dev-portal')
+  next()
+}
+router.use(onlyDevPortalClient)
+
 const getAccessLevel = (developers, userId) => {
   if (!developers) return 'NONE'
   const developer = developers.find((developer) => developer.userId === userId)

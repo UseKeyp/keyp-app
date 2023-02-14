@@ -39,7 +39,9 @@ ngrok http --host-header=rewrite 10.61.141.234:3000
 
 ## Create OAuth Client
 
-To quickly create an test oauth client app you can run `yarn rw prisma studio` and create a new `OIDC` object with the following data:
+A Test Client is created automatically with client ID: `test-client`
+
+Alternativey, you can run `yarn rw prisma studio` and create a new `OIDC` object with the following data:
 
 ```js
 client_id: "a08dd22e-e05c-4314-ae7c-cda1af389a34",

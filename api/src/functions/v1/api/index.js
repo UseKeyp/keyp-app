@@ -20,13 +20,16 @@ const app = (db, settings) => {
   // Express docs https://expressjs.com/en/5x/api.html#app.settings.table
   const app = express()
 
+  //////////////////
   // Configuration
   app.set('trust proxy', true)
 
-  // Middleware
+  //////////////////
+  // Pre-Middleware
   app.use(validateToken(settings))
   app.use(bodyParser.json())
 
+  //////////////////
   // Routes
   app.use(`/${settings.version}/tokens`, tokens)
   app.use(`/${settings.version}/clients`, clients)
@@ -35,6 +38,9 @@ const app = (db, settings) => {
   app.use(`/${settings.version}/ramps`, ramps)
 
   app.use(`/${settings.version}`, health) // sanity-check
+
+  //////////////////
+  // Post-Middleware
 
   return app
 }
