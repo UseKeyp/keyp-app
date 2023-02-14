@@ -13,6 +13,24 @@ let devPortalRedirectUris = [
 if (process.env.ENVIRONMENT === 'prod')
   devPortalRedirectUris = ['https://dev.usekeyp.com/redirect/keyp']
 
+let clients = [
+  {
+    client_id: 'dev-portal',
+    redirect_uris: devPortalRedirectUris,
+  },
+]
+if (process.env.ENVIRONMENT === 'dev') {
+  clients.push({
+    client_id: 'test-client',
+    redirect_uris: devPortalRedirectUris,
+    tos_uri: 'http://0.0.0.0:8910/tos',
+    logo_uri: 'http://0.0.0.0:8910/logo.png',
+    client_uri: 'http://0.0.0.0:8910',
+    policy_uri: 'http://0.0.0.0:8910/policy',
+    client_name: 'Test Client',
+  })
+}
+
 export const handler = serverless(
   oauth2Server(db, {
     SECURE_KEY: process.env.OAUTH_SECRET_KEY,
@@ -25,12 +43,7 @@ export const handler = serverless(
     middlewares,
     config: {
       // OIDC-Provider config, see https://github.com/panva/node-oidc-provider
-      clients: [
-        {
-          client_id: 'dev-portal',
-          redirect_uris: devPortalRedirectUris,
-        },
-      ],
+      clients,
       claims: {
         openid: ['sub', 'provider', 'username', 'address'],
         email: ['email', 'email_verified'],
