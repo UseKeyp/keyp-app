@@ -2,6 +2,7 @@ import { v4 as uuidv4 } from 'uuid'
 
 import { db } from 'src/lib/db'
 import { logger } from 'src/lib/logger'
+import { AVAILABLE_NETWORKS } from 'src/lib/web3/provider'
 
 var express = require('express')
 var router = express.Router()
@@ -56,7 +57,7 @@ router.patch('/:clientId', async (req, res) => {
     } = req.body
 
     if (!redirect_uris) throw new Error('Missing redirect_uris')
-    if (network !== 'goerli' && network !== 'mainnet')
+    if (!network || !AVAILABLE_NETWORKS.includes(network))
       throw new Error(`Network ${network} not supported`)
 
     let client = await db.oidc.findUnique({
@@ -106,6 +107,8 @@ router.post('/', async (req, res) => {
         user: {
           connect: { provider_id: { provider: userProvider, id: userId } },
         },
+        oidc: { connect: { id_type: { id: client.id, type: 7 } } },
+        accessLevel: 'OWNER',
       },
     })
     res.send(client)
