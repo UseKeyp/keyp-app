@@ -73,7 +73,7 @@ export const onConnected = async ({ refreshToken, accessToken }) => {
     // TODO: fetch user details
     const userDetails = await fetchDiscord({ path: `users/@me`, accessToken })
     logger.debug({ custom: userDetails }, 'userDetails')
-    if (!userDetails.verified)
+    if (!userDetails.verified || !userDetails.email)
       throw new AuthenticationError(
         `Verify your email with Discord and try again.`
       )

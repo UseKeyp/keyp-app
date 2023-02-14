@@ -9,6 +9,7 @@ export const fetchUser = async (idOrAddress, creationData, providerType) => {
     let user
     let id
     let address
+    console.log(idOrAddress, creationData, providerType)
     isHexAddress(idOrAddress)
       ? (address = idOrAddress.toLowerCase())
       : (id = idOrAddress)
@@ -51,6 +52,7 @@ export const fetchUser = async (idOrAddress, creationData, providerType) => {
     }
   } catch (e) {
     Sentry.captureException(e)
+    logger.error(e)
     throw new Error('fetchUser()', e)
   }
 }

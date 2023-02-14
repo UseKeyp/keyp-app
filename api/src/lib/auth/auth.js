@@ -12,6 +12,7 @@ export const getCurrentUser = async (session) => {
     // Warning: don't send any confidential data here
     select: {
       id: true,
+      provider: true,
       username: true,
       address: true,
       imageSrc: true,

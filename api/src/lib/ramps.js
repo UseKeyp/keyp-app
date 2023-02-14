@@ -64,9 +64,12 @@ export const getRampOnUrl = async ({ type, user, network }) => {
       url =
         'https://buy.ramp.network/?' +
         encodeBody({
+          // hostApiKey: process.env.RAMP_NETWORK_API_KEY,
           userAddress: address,
-          hostLogoUrl: 'https://treasure.chess.com/logo.png',
-          hostAppName: 'Treasure Chess',
+          hostLogoUrl: `${APP_DOMAIN}/logo.png`,
+          hostAppName: 'Keyp',
+          enabledFlows: ['ONRAMP'], // Default for hosted mode only.
+          userEmailAddress: context.currentUser.email,
           // swapAsset: 'MATIC_USDC',
           finalUrl: APP_DOMAIN + '/redirect/ramp_network',
           // Use for testing

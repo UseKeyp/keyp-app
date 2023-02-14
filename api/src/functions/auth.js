@@ -16,8 +16,7 @@ export const handler = async (event, context) => {
     db: db,
     cors,
     authModelAccessor: 'user',
-    // Fixes issue where DbAuthHandler.js selects only id and username fields
-    authFields: { id: 'id', username: 'provider' },
+    authFields: { id: 'id', username: 'username' },
     login: {
       handler: (user) => {
         return user

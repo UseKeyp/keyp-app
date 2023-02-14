@@ -7,17 +7,19 @@ import { APP_DOMAIN } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
 import { encodeBody, getExpiration } from 'src/lib/oAuth/helpers'
 import Sentry from 'src/lib/sentry'
-
+import {isProdOrStaging} from 'src/lib/helpers'
 export const CHESS = 'CHESS'
 export const CHESS_OAUTH_URL_AUTHORIZE = 'https://oauth.chess.com/authorize'
 
 const CHESS_OAUTH_URL_TOKEN = 'https://oauth.chess.com/token'
 const CHESS_SCOPE = 'openid profile games:read email'
 const CHESS_REDIRECT_URI = APP_DOMAIN + '/redirect/chess'
-const CHESS_CLIENT_ID = ['staging', 'prod'].includes(process.env.ENVIRONMENT)
+
+const CHESS_CLIENT_ID = isProdOrStaging
   ? '459cd394-77cd-11ec-95cb-cfacea4084a2'
   : '40c5d866-77cd-11ec-a560-67b86d6160ee'
-const responseType = 'id_token'
+
+const responseType = 'code'
 const params = {
   client_id: CHESS_CLIENT_ID,
   scope: CHESS_SCOPE,

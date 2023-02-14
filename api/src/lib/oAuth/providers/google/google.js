@@ -83,7 +83,7 @@ export const onSubmitCode = async (code, { codeVerifier }) => {
 
 export const onConnected = async ({ refreshToken, accessToken, decoded }) => {
   try {
-    if (!decoded.email_verified)
+    if (!decoded.email_verified || !decoded.email)
       throw new AuthenticationError(
         `Verify your email with Google and try again.`
       )
