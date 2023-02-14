@@ -6,9 +6,9 @@ import { GOOGLE } from 'src/lib/oAuth/providers/google'
 import { NODE_OIDC } from 'src/lib/oAuth/providers/node-oidc'
 import { TWITTER } from 'src/lib/oAuth/providers/twitter'
 
-const APPROVED_LOGIN_PROVIDERS = ['staging', 'prod'].includes(
-  process.env.ENVIRONMENT
-)
+import { isProdOrStaging } from 'src/lib/helpers'
+
+const APPROVED_LOGIN_PROVIDERS = isProdOrStaging
   ? [CHESS, DISCORD, GOOGLE]
   : [CHESS, DISCORD, NODE_OIDC, GOOGLE, TWITTER]
 
