@@ -63,12 +63,14 @@ export function getProviderIconFromCurrentUser(currentUser) {
           <Icon height="18" width="18" name="twitter" />
         </div>
       )
-    default:
+    case 'node_oidc':
       return (
         <div className="mt-1 flex">
           <Icon height="18px" width="18px" name="keypcircle" />
         </div>
       )
+    default:
+      return <></>
   }
 }
 const UserAccount = ({ currentUser, logOut }) => {

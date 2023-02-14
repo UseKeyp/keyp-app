@@ -80,25 +80,22 @@ function Authorize() {
             </div>
           </div>
         </div>
-        <div className="flex flex-row mt-8">
-          <div className="flex font-light text-2xl text-gray-1600 items-start">
-            {client.name} wants the following permissions
-          </div>
-          <div className="flex flex-row text-2xl">
-            {client.logoUri && (
-              <div className="flex bg-white m-4 p-4 w-24 h-24 rounded-md">
+        <div className="flex flex-col mt-8">
+          <div className="flex text-2xl">
+            {client.logoUri ? (
+              <div className="flex">
                 <img
                   src={client.logoUri}
-                  alt={client.name}
-                  className="flex h-16 mx-auto"
+                  alt="client logo"
+                  className="flex max-h-24 max-w-[466px]"
                 />
               </div>
+            ) : (
+              <></>
             )}
-            <div className="flex flex-col">
-              {client.name && (
-                <div className="flex font-bold">{client.name}</div>
-              )}
-            </div>
+          </div>
+          <div className="flex font-light text-xl text-gray-1600 items-start mt-2">
+            {client.name} wants the following permissions
           </div>
         </div>
         <div className="flex flex-col w-full text-2xl font-light text-gray-1600 mb-4 mt-4">
@@ -106,7 +103,7 @@ function Authorize() {
             {scopes.map((scope) => (
               <li
                 key={scope}
-                className="flex flex-row border-t border-b text-2xl py-2 items-center gap-x-4"
+                className="flex flex-row border-t border-b text-xl py-2 items-center gap-x-4"
               >
                 {getIconFromScope(scope)}
                 {getStyledNameFromScope(scope)}
