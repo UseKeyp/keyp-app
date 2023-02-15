@@ -22,10 +22,10 @@ function Authorize() {
     let url
     try {
       url = new URL(
-        searchParams.get('clientRedirectUrls').replace(/[\[\]‘’']/g, '')
+        searchParams.get('clientRedirectUri').replace(/[\[\]‘’']/g, '')
       )
     } catch (error) {
-      const tempUrl = searchParams.get('clientRedirectUrls')
+      const tempUrl = searchParams.get('clientRedirectUri')
       url = tempUrl
         ?.substring(2, tempUrl.indexOf(','))
         .replace(/[\[\]‘’']/g, '')
@@ -34,7 +34,7 @@ function Authorize() {
     if (url?.hostname) {
       url = url.hostname
     } else if (typeof url === 'string') {
-      // If clientRedirectUrls cannot be parsed into a URL, we should treat it as a string to avoid errors
+      // If clientRedirectUri cannot be parsed into a URL, we should treat it as a string to avoid errors
     } else if (typeof url === 'object' && url?.href.includes('localhost')) {
       // localhost URLs will be parsed as a URL but will have an href rather than a hostname
       const tempUrl = url.href
