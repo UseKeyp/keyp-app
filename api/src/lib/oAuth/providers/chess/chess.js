@@ -36,6 +36,7 @@ const onSubmitCode = async (code, { codeVerifier, memberId }) => {
       redirect_uri: CHESS_REDIRECT_URI,
       code,
       code_verifier: codeVerifier,
+      prompt: 'none',
     }
     const encodedBody = encodeBody(body)
     const response = await fetch(CHESS_OAUTH_URL_TOKEN, {

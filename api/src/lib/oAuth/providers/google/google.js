@@ -35,6 +35,7 @@ export const onSubmitCode = async (code, { codeVerifier }) => {
       redirect_uri: GOOGLE_REDIRECT_URI,
       code_verifier: codeVerifier,
       code,
+      prompt: 'none',
     }
     const encodedBody = encodeBody(body)
     logger.debug({ custom: body }, '/token request body')
