@@ -11857,7 +11857,7 @@ __metadata:
     email-templates: ^9.0.0
     form-data: ^4.0.0
     jwks-rsa: ^2.0.4
-    oauth2-server-redwood: 0.3.11
+    oauth2-server-redwood: 0.3.12
     pkce-challenge: ^3.0.0
     plaid: ^10.2.0
     react: ^17.0.2
@@ -27491,9 +27491,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"oauth2-server-redwood@npm:0.3.11":
-  version: 0.3.11
-  resolution: "oauth2-server-redwood@npm:0.3.11"
+"oauth2-server-redwood@npm:0.3.12":
+  version: 0.3.12
+  resolution: "oauth2-server-redwood@npm:0.3.12"
   dependencies:
     deepmerge: ^4.2.2
     ejs: ^3.1.8
@@ -27501,7 +27501,7 @@ __metadata:
     oidc-provider: ^7.14.3
   bin:
     oauth2-server-redwood: bin/oauth2-server-redwood.js
-  checksum: f2984ff35b1fb227f8df895bab58d5be4eaab302745253a666a9d0c2add2525f728ed88882f16913eabb3b35b82e54382bfe91480dd1cb0c56a12cbc8a64d915
+  checksum: 781fb69ea8ab46b010a291ee2f78b7f75b6c354d13a8a023c7add0971016ef130718d805bb58c9e98071b6c6ac070f3eb97b02bd7558a99bc4df12d09d6ea063
   languageName: node
   linkType: hard
 

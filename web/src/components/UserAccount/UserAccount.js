@@ -14,7 +14,7 @@ export function getStyledUsernameFromCurrentUser(currentUser) {
     case 'google':
       return (
         <div className="flex">
-          <div className="text-gray-2000">{currentUser?.email}</div>
+          <div className="text-gray-2000">{currentUser?.username}</div>
         </div>
       )
     case 'chess':
@@ -77,9 +77,7 @@ const UserAccount = ({ currentUser, logOut }) => {
   return (
     <div
       className={`my-auto flex flex-row gap-x-16 rounded-md border border-gray-400 p-2 ${
-        currentUser?.username || currentUser?.email
-          ? 'sm:gap-x-4'
-          : 'sm:gap-x-2'
+        currentUser?.username ? 'sm:gap-x-4' : 'sm:gap-x-2'
       }`}
     >
       {getProviderIconFromCurrentUser(currentUser)}
