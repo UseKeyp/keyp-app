@@ -4,10 +4,11 @@ import { decode as decodeJwt } from 'jsonwebtoken'
 import { db } from 'src/lib/db'
 import { isDevelopment } from 'src/lib/helpers'
 import { APP_DOMAIN } from 'src/lib/helpers'
+import { isProdOrStaging } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
 import { encodeBody, getExpiration } from 'src/lib/oAuth/helpers'
 import Sentry from 'src/lib/sentry'
-import {isProdOrStaging} from 'src/lib/helpers'
+
 export const CHESS = 'CHESS'
 export const CHESS_OAUTH_URL_AUTHORIZE = 'https://oauth.chess.com/authorize'
 
@@ -24,6 +25,7 @@ const params = {
   client_id: CHESS_CLIENT_ID,
   scope: CHESS_SCOPE,
   redirect_uri: CHESS_REDIRECT_URI,
+  prompt: 'none',
 }
 
 export const getChessBasicAuth = () =>
