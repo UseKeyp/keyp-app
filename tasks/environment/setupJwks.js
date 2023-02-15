@@ -25,7 +25,7 @@ const setupJwks = () => {
     decryptedJwks = decrypt({ encrypted: encryptedJwks, key })
   } catch (e) {
     return console.log(
-      `Decryption failed! Check encryption key\nNODE_ENV: ${environment}\nkey: ${key.substring(
+      `Jwks Decryption failed! Check encryption key\nNODE_ENV: ${environment}\nkey: ${key.substring(
         0,
         3
       )}...`
