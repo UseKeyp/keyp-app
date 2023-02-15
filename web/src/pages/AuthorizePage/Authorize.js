@@ -19,11 +19,37 @@ function Authorize() {
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search)
+    let url
+    try {
+      url = new URL(
+        searchParams.get('clientRedirectUrls').replace(/[\[\]‘’']/g, '')
+      )
+    } catch (error) {
+      const tempUrl = searchParams.get('clientRedirectUrls')
+      url = tempUrl
+        ?.substring(2, tempUrl.indexOf(','))
+        .replace(/[\[\]‘’']/g, '')
+    }
+    // Normal, correctly parsed URLs will have a hostname
+    if (url?.hostname) {
+      url = url.hostname
+    } else if (typeof url === 'string') {
+      // If clientRedirectUrls cannot be parsed into a URL, we should treat it as a string to avoid errors
+    } else if (typeof url === 'object' && url?.href.includes('localhost')) {
+      // localhost URLs will be parsed as a URL but will have an href rather than a hostname
+      const tempUrl = url.href
+      url = tempUrl.substring(0, tempUrl.indexOf(',')).replace(/[\[\]‘’']/g, '')
+    } else {
+      // If all else fails then no url will be shown
+      url = ''
+    }
+
     setClient({
       name: searchParams.get('clientName'),
       logoUri: searchParams.get('clientLogoUri'),
       policyUri: searchParams.get('clientPolicyUri'),
       tosUri: searchParams.get('clientTosUri'),
+      redirectUrl: url ? url : '',
     })
     searchParams.get('scope') && setScopes(searchParams.get('scope').split(','))
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -81,21 +107,27 @@ function Authorize() {
           </div>
         </div>
         <div className="flex flex-col mt-8">
-          <div className="flex text-2xl">
+          <div className="flex text-2xl items-center gap-x-2">
             {client.logoUri ? (
               <div className="flex">
                 <img
                   src={client.logoUri}
                   alt="client logo"
-                  className="flex max-h-24 max-w-[466px]"
+                  className="flex w-16 h-16"
                 />
               </div>
             ) : (
-              <></>
+              <Icon name="fallback" />
             )}
+            <div className="flex flex-col">
+              <div className="text-3xl font-bold text-gray-2400">
+                {client.name}
+              </div>
+              <div className="text-sm text-gray-2400">{client.redirectUrl}</div>
+            </div>
           </div>
           <div className="flex font-light text-xl text-gray-1600 items-start mt-2">
-            {client.name} wants the following permissions
+            {client.redirectUrl} wants access to the following:
           </div>
         </div>
         <div className="flex flex-col w-full text-2xl font-light text-gray-1600 mb-4 mt-4">
@@ -131,20 +163,28 @@ function Authorize() {
           </Button>
         </div>
         <div className="text-gray-800 text-sm mt-8">
-          By confirming, you allow this app and Keyp to use your information in
-          accordance with {client.name}'s{' '}
+          By confirming you allow this app and Keyp to use your information in
+          accordance with {client.redirectUrl}'s{' '}
           {client.tosUri ? (
-            <a className="inline text-blue-1200" href={client.tosUri}>
+            <a
+              className="inline text-blue-800"
+              target="_blank"
+              href={client.tosUri}
+              rel="noreferrer"
+            >
               Terms of Service
             </a>
           ) : (
-            <div className="inline" href={client.tosUri}>
-              Terms of Service
-            </div>
+            <div className="inline">Terms of Service</div>
           )}{' '}
           &{' '}
           {client.policyUri ? (
-            <a className="inline text-blue-1200" href={client.policyUri}>
+            <a
+              className="inline text-blue-800"
+              target="_blank"
+              href={client.policyUri}
+              rel="noreferrer"
+            >
               Privacy Policy
             </a>
           ) : (
@@ -152,21 +192,21 @@ function Authorize() {
           )}
           &nbsp;and Keyp's{' '}
           <a
-            className="inline text-blue-1200"
-            target="_blank"
-            href="https://www.usekeyp.com/terms-of-use-privacy-policy"
-            rel="noreferrer"
-          >
-            Privacy Policy
-          </a>
-          &nbsp;&{' '}
-          <a
-            className="inline text-blue-1200"
+            className="inline text-blue-800"
             target="_blank"
             href="https://www.usekeyp.com/terms-of-use-privacy-policy"
             rel="noreferrer"
           >
             Terms of Service
+          </a>
+          &nbsp;&{' '}
+          <a
+            className="inline text-blue-800"
+            target="_blank"
+            href="https://www.usekeyp.com/terms-of-use-privacy-policy"
+            rel="noreferrer"
+          >
+            Privacy Policy
           </a>
         </div>
       </div>
