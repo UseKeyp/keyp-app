@@ -3,43 +3,27 @@ import { AuthenticationError, ForbiddenError } from '@redwoodjs/graphql-server'
 import { db } from 'src/lib/db'
 import Sentry from 'src/lib/sentry'
 
-import { logger } from '../logger'
-
 export const getCurrentUser = async (session) => {
   let user
-  if (process.env.IMPERSONATE_USERNAME) {
-    user = await db.user.findUnique({
-      where: { username: process.env.IMPERSONATE_USERNAME },
-      // Warning: don't send any confidential data here
-      select: {
-        id: true,
-        username: true,
-        address: true,
-        imageSrc: true,
-        locale: true,
-        mintCredits: true,
-        country: true,
-        banned: true,
-        betaAccess: true,
-      },
-    })
-  } else {
-    user = await db.user.findUnique({
-      where: { id: session.id },
-      // Warning: don't send any confidential data here
-      select: {
-        id: true,
-        username: true,
-        address: true,
-        imageSrc: true,
-        locale: true,
-        mintCredits: true,
-        country: true,
-        banned: true,
-        betaAccess: true,
-      },
-    })
-  }
+  let id = session.id
+  if (process.env.IMPERSONATE_ID) id = process.env.IMPERSONATE_ID
+  user = await db.user.findUnique({
+    where: { id },
+    // Warning: don't send any confidential data here
+    select: {
+      id: true,
+      provider: true,
+      username: true,
+      address: true,
+      imageSrc: true,
+      locale: true,
+      mintCredits: true,
+      country: true,
+      banned: true,
+      betaAccess: true,
+    },
+  })
+
   if (!user) return null
   // WARNING: Returned values here are exposed to the FE
   // Don't include any Chess.com access tokens here

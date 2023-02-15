@@ -73,7 +73,7 @@ export const onConnected = async ({ refreshToken, accessToken }) => {
     // TODO: fetch user details
     const userDetails = await fetchDiscord({ path: `users/@me`, accessToken })
     logger.debug({ custom: userDetails }, 'userDetails')
-    if (!userDetails.verified)
+    if (!userDetails.verified || !userDetails.email)
       throw new AuthenticationError(
         `Verify your email with Discord and try again.`
       )
@@ -88,6 +88,10 @@ export const onConnected = async ({ refreshToken, accessToken }) => {
     }
     logger.debug({ custom: user }, 'user')
 
+    const imageSrc = avatar
+      ? `https://cdn.discordapp.com/avatars/${id}/${avatar}.png`
+      : null
+
     await db.user.update({
       where: { id: user.id },
       data: {
@@ -95,7 +99,7 @@ export const onConnected = async ({ refreshToken, accessToken }) => {
         accessToken,
         // NOTE: Updates current avatar and locale
         email,
-        imageSrc: `https://cdn.discordapp.com/avatars/${id}/${avatar}.png`,
+        imageSrc: imageSrc,
         locale,
         // eslint-disable-next-line camelcase
         mfa_enabled,

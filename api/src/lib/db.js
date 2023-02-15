@@ -63,6 +63,10 @@ export const db = prisma.$extends({
         delete args.where.provider
         delete args.where.id
 
+        if (args.select) {
+          args.select = { ...args.select, id: true, provider: true }
+        }
+
         const user = await query({
           ...args,
           where: {
