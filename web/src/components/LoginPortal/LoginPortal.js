@@ -90,7 +90,7 @@ const LoginPortal = () => {
             <Icon height="300px" width="400px" name="twitter"></Icon>
           </div>
         </Button> */}
-        {process.env.ENVIRONMENT !== 'prod' && (
+        {!['staging', 'prod'].includes(process.env.ENVIRONMENT) && (
           <Button
             onClick={() => onSubmitSignUp('NODE_OIDC')}
             classNameVariant="hover:bg-[#4285F4] hover:border-[#4285F4] w-[327px] "

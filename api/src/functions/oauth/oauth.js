@@ -17,6 +17,8 @@ let clients = [
   {
     client_id: 'dev-portal',
     redirect_uris: devPortalRedirectUris,
+    logo_uri: 'https://dev.usekeyp.com/logo.png',
+    client_name: 'Keyp Dev Portal',
   },
 ]
 if (process.env.ENVIRONMENT === 'dev') {
