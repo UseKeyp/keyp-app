@@ -116,7 +116,7 @@ export const onConnected = async ({ refreshToken, accessToken, decoded }) => {
         refreshToken,
         imageSrc: decoded.picture,
         locale: decoded.locale,
-        username: decoded.name,
+        username: decoded.email,
       },
     })
 
