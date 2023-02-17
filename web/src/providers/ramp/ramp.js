@@ -2,7 +2,7 @@ import { useMutation, useQuery } from '@apollo/client'
 
 import { useAuth } from '@redwoodjs/auth'
 import { isBrowser } from '@redwoodjs/prerender/browserUtils'
-import { routes, Link } from '@redwoodjs/router'
+import { Link } from '@redwoodjs/router'
 
 import Icon from 'src/components/Icon/Icon'
 import { TxToast } from 'src/providers/market/toasts'
@@ -77,10 +77,7 @@ const RampProvider = ({ children }) => {
       <p className="italic">
         <Trans i18nkey="web:requestBetaAccess">
           <b>Beta feature</b>. Request to be a Beta Tester in{' '}
-          <Link className="underline" to={routes.settings()}>
-            Settings
-          </Link>
-          .
+          <Link className="underline">Settings</Link>.
         </Trans>
       </p>
     ),

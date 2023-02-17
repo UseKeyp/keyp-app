@@ -74,12 +74,7 @@ const UserDetails = ({ user, isAccount }) => {
               </Button>
             </div>
             <div>
-              <Button
-                to={routes.settings()}
-                variant="grey"
-                size="small"
-                className="w-32 mt-4"
-              >
+              <Button variant="grey" size="small" className="w-32 mt-4">
                 <div className="flex py-1 justify-center items-center">
                   <Gear className="w-6 h-6 mr-3" />
                   <div>{t('Settings')}</div>

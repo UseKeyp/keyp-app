@@ -4,10 +4,9 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 import { Button, Icon } from '@usekeyp/components-soft-ui'
+import { APP_DOMAIN } from 'api/src/lib/helpers'
 
 import { useAuth } from '@redwoodjs/auth'
-import { Link, routes } from '@redwoodjs/router'
-import { MetaTags } from '@redwoodjs/web'
 
 import UserAccount from 'src/components/UserAccount/UserAccount'
 import DefaultLayout from 'src/layouts/DefaultLayout'
@@ -18,10 +17,6 @@ export default RedwoodDevFatalErrorPage ||
     const { isAuthenticated, currentUser } = useAuth()
     return (
       <DefaultLayout>
-        <MetaTags
-          title="Fatal Error"
-          description="Something unexpected happened"
-        />
         <div className="flex sm:flex-row justify-between flex-col items-start gap-x-4 gap-y-2 mt-8">
           <div className="flex flex-col gap-y-2 gap-x-4 sm:flex-row sm:gap-y-0">
             <Icon name="keypnameandlogo" height="48px" width="164px" />
@@ -49,7 +44,7 @@ export default RedwoodDevFatalErrorPage ||
               />
               <div className="flex flex-col sm:flex-row text-gray-1200 text-lg items-center">
                 <div className="flex font-light">Back to the</div>
-                <Link to={routes.account()}>
+                <a href={`${APP_DOMAIN}/account`}>
                   <Button
                     variant="transparent"
                     classNameVariant="m-2"
@@ -59,7 +54,7 @@ export default RedwoodDevFatalErrorPage ||
                   >
                     <div className="text-blue-1200">Dashboard</div>
                   </Button>
-                </Link>
+                </a>
                 <div className="flex font-light">
                   or get in touch with us on
                 </div>
