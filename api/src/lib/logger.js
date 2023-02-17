@@ -18,7 +18,8 @@ import { isProdOrStaging } from 'src/lib/helpers'
 export const logger = createLogger({
   options: {
     redact: [...redactionsList, 'refreshToken', 'accessToken'],
-    level: isProdOrStaging && !process.env.IMPERSONATE_USERNAME ? 'warn' : 'debug', // These are the redwoodJS defaults
+    level:
+      isProdOrStaging && !process.env.IMPERSONATE_USERNAME ? 'warn' : 'debug', // These are the redwoodJS defaults
     // showConfig: !isProdOrStaging, // Helpful for debugging
   },
 })

@@ -323,10 +323,7 @@ export const DepositModal = ({ isVisible, toggleModal }) => {
     description: (
       <p className="mt-4">
         <Trans i18nkey="FaroviteOnRampDetails">
-          Have a suggestion?{' '}
-          <Link to={routes.settings()} className="underline">
-            Let us know!
-          </Link>
+          Have a suggestion? <Link className="underline">Let us know!</Link>
         </Trans>
       </p>
     ),
