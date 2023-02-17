@@ -53,7 +53,7 @@ const Account = () => {
             </div>
           }
           tokenOrAddress={currentUser?.address}
-          description="Using Keyp's OAuth creates a wallet for you. We use MPC and this wallet can be used like any other EVM compatible address."
+          description="Keyp's OAuth creates a wallet for you. This wallet uses MPC and can be used like any other EVM compatible address."
         />
       </div>
       <div className="bg-gray-100 p-4 w-full h-46">
