@@ -1,15 +1,16 @@
 import { useEffect } from 'react'
 
-import { Button, Icon } from '@usekeyp/components-soft-ui'
+import { Button } from '@usekeyp/components-soft-ui'
 
 import { useAuth } from '@redwoodjs/auth'
-import { routes, navigate, useParams } from '@redwoodjs/router'
+import { useParams } from '@redwoodjs/router'
 
+import Icon from 'src/components/Icon/Icon'
 import { saveRedirectTo } from 'src/providers/redirection'
 import { useToast } from 'src/providers/toast'
 
 const LoginPortal = () => {
-  const { signUp, isAuthenticated, reauthenticate } = useAuth()
+  const { signUp, reauthenticate } = useAuth()
   const { error, redirectTo } = useParams()
   const { toast } = useToast()
   const [errorText, setErrorText] = React.useState('')
@@ -36,71 +37,114 @@ const LoginPortal = () => {
     if (error) setErrorText(getErrorText(error))
   }, [error])
 
-  console.log(global)
   // useEffect(() => {
   //   if (isAuthenticated) {
-  //     navigate(routes.profile())
+  //     navigate(routes.account())
   //   }
   // }, [isAuthenticated])
 
   return (
-    <div className="flex flex-col justify-center items-center">
-      <div className="flex max-w-2">
-        <Icon height="264px" width="264px" name="keypnameandlogo" />
+    <div className="flex h-screen flex-col justify-center sm:items-center">
+      <div className="max-w-2 sm:justify-middle flex justify-start">
+        <h1 className="mb-20 flex flex-col items-start gap-x-4 gap-y-2 text-center sm:flex-row sm:items-center">
+          <Icon height="60px" width="200px" name="keypnameandlogo" />
+          <div className="mb-0 flex text-6xl font-light text-blue-1200 sm:mb-2">
+            App
+          </div>
+        </h1>
       </div>
-      <div className="flex flex-col gap-y-2">
-        <div className="text-gray-1200">{t('Sign In')}</div>
+      <div className="mt-8 flex flex-col gap-y-4">
+        <div className="text-start text-lg font-light text-gray-1600">
+          Log In or Sign Up
+        </div>
         <Button
           onClick={() => onSubmitSignUp('DISCORD')}
-          classNameVariant="hover:bg-[#5865F2] hover:border-[#5865F2] w-[327px]"
+          classNameVariant="hover:bg-[#5865F2] hover:border-[#5865F2]"
           borderColor="border-[#E5E7EB]"
           fluid={true}
+          alt="discord"
         >
-          <Icon name="discord" />
+          <div className="group flex flex-row items-center gap-x-4 hover:text-white">
+            <div className="flex sm:pl-4">
+              <Icon name="discord" />
+            </div>
+            <div className="mr-60 flex font-light text-gray-1200 group-hover:text-white sm:mr-72">
+              Discord
+            </div>
+          </div>
         </Button>
         <Button
           onClick={() => onSubmitSignUp('GOOGLE')}
-          classNameVariant="hover:bg-[#4285F4] hover:border-[#4285F4] w-[327px]"
+          classNameVariant="hover:bg-[#4285F4] hover:border-[#4285F4]"
           borderColor="border-[#E5E7EB]"
           fluid={true}
+          alt="google"
         >
-          <Icon name="google" />
+          <div className="group flex flex-row items-center gap-x-6 hover:text-white sm:gap-x-4">
+            <div className="mb-2 flex sm:ml-1">
+              <Icon height="14" name="google" />
+            </div>
+            <div className="mr-64 flex font-light text-gray-1200 group-hover:text-white sm:mr-[18rem] sm:pl-2">
+              Google
+            </div>
+          </div>
         </Button>
         <Button
           onClick={() => onSubmitSignUp('CHESS')}
-          classNameVariant="hover:bg-[#6c9d41] hover:border-[#6c9d41] w-[327px]"
-          borderColor="border-[#E5E7EB]"
-          fluid={false}
-        >
-          <Icon
-            height="300px"
-            width="400px"
-            color="fill-black group-hover:fill-white"
-            name="chess_com"
-          />
-        </Button>
-        {/* <Button
-          onClick={() => onSubmitSignUp('TWITTER')}
-          classNameVariant="hover:bg-[#1DA1F2] hover:border-[#1DA1F2]"
+          classNameVariant="hover:bg-[#6c9d41] hover:border-[#6c9d41]"
           borderColor="border-[#E5E7EB]"
           fluid={true}
-          alt="twitter"
+          alt="chess"
         >
-          <div className="flex justify-center">
-            <Icon height="300px" width="400px" name="twitter"></Icon>
+          <div className="group flex flex-row items-center gap-x-4 hover:text-white">
+            <div className="flex sm:pl-2">
+              <Icon height="24" width="24" name="chess_pawn" />
+            </div>
+            <div className="mr-54 flex font-light text-gray-1200 group-hover:text-white sm:mr-64">
+              Chess.com
+            </div>
           </div>
-        </Button> */}
-        {!['staging', 'prod'].includes(process.env.ENVIRONMENT) && (
+        </Button>
+        {!['staging', 'prod'].includes(process.env.ENVIRONMENT) ? (
           <Button
             onClick={() => onSubmitSignUp('NODE_OIDC')}
-            classNameVariant="hover:bg-[#4285F4] hover:border-[#4285F4] w-[327px] "
+            classNameVariant="hover:bg-[#005285] hover:border-[#005285]"
             borderColor="border-[#E5E7EB]"
             fluid={true}
+            alt="discord"
           >
-            <p className="text-black">Test Provider</p>
+            <div className="group flex flex-row items-center gap-x-4 hover:text-white">
+              <div className="flex sm:pl-4">
+                <Icon height="24px" width="24px" name="keypcircle" />
+              </div>
+              <div className="mr-48 flex font-light text-gray-1200 group-hover:text-white sm:mr-60">
+                Test Provider
+              </div>
+            </div>
           </Button>
+        ) : (
+          <></>
         )}
-        {errorText && <div className="mt-2 rw-cell-error">{errorText}</div>}
+        {errorText && <div className="mt-2">{errorText}</div>}
+        <h4 className="mt-20 text-center">
+          <a
+            className="mr-4 text-sm font-light text-blue-1200"
+            target="_blank"
+            href="https://www.usekeyp.com/terms-of-use-privacy-policy#Terms-of-Use"
+            rel="noreferrer"
+          >
+            Terms of Service
+          </a>
+          ·
+          <a
+            className="ml-4 text-sm font-light text-blue-1200"
+            target="_blank"
+            href="https://www.usekeyp.com/terms-of-use-privacy-policy#Privacy-Policy"
+            rel="noreferrer"
+          >
+            Privacy Policy
+          </a>
+        </h4>
       </div>
     </div>
   )

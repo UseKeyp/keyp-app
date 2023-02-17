@@ -23,7 +23,7 @@ export const profileTwitchConnected = () => {
     twitchUsername: 'example_twitch_username',
   })
 
-  return <UserDetails user={users[2]} isProfile />
+  return <UserDetails user={users[2]} isAccount />
 }
 
 export const profileTwitchNotConnected = () => {
@@ -31,7 +31,7 @@ export const profileTwitchNotConnected = () => {
     twitchUsername: 'example_twitch_username',
   })
 
-  return <UserDetails user={users[3]} isProfile />
+  return <UserDetails user={users[3]} isAccount />
 }
 
 export default { title: 'Components/UserDetails' }

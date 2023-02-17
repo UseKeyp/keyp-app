@@ -1,5 +1,5 @@
 import { useAuth } from '@redwoodjs/auth'
-import { Link, routes } from '@redwoodjs/router'
+import { Link } from '@redwoodjs/router'
 
 import Icon from 'src/components/Icon'
 import RampProvider from 'src/components/Ramp/RampProvider'
@@ -19,10 +19,7 @@ const OnRamps = () => {
     description: (
       <p className="mt-4">
         <Trans i18nkey="FavoriteOnRampDetails">
-          Have a suggestion?{' '}
-          <Link to={routes.settings()} className="underline">
-            Let us know!
-          </Link>
+          Have a suggestion? <Link className="underline">Let us know!</Link>
         </Trans>
       </p>
     ),

@@ -8,7 +8,7 @@ import UserBalance from 'src/components/User/UserBalance'
 import UserMintCredits from 'src/components/User/UserMintCredits'
 import globalConfig from 'src/global.config'
 
-const UserDetails = ({ user, isProfile }) => {
+const UserDetails = ({ user, isAccount }) => {
   return (
     <section className="user-details p-4">
       <div className="user-details--inner">
@@ -34,27 +34,27 @@ const UserDetails = ({ user, isProfile }) => {
                 <p className="font-bold">{user.masterTitle}</p>
               </div>
             )}
-            <TwitchLink username={user.twitchUsername} isProfile={isProfile} />
+            <TwitchLink username={user.twitchUsername} isAccount={isAccount} />
           </div> */}
-          {!isProfile && user.address && (
+          {!isAccount && user.address && (
             <div className="mt-4 w-full content-center user-details--user-content">
               <Button variant="green" size="small" className="w-40">
                 {t('Donate')}
               </Button>
             </div>
           )}
-          {isProfile && (
+          {isAccount && (
             <div className="mt-4 grid  gap-4  user-details--user-content">
               <p>
                 <Link to={routes.user({ usernameOrAddress: user.id })}>
-                  {t('Public Profile')}
+                  {t('Public Account')}
                 </Link>
               </p>
             </div>
           )}
         </div>
 
-        {isProfile && (
+        {isAccount && (
           <div className="user-details--funds-actions">
             <UserBalance />
             <div className="mt-2">
@@ -74,12 +74,7 @@ const UserDetails = ({ user, isProfile }) => {
               </Button>
             </div>
             <div>
-              <Button
-                to={routes.settings()}
-                variant="grey"
-                size="small"
-                className="w-32 mt-4"
-              >
+              <Button variant="grey" size="small" className="w-32 mt-4">
                 <div className="flex py-1 justify-center items-center">
                   <Gear className="w-6 h-6 mr-3" />
                   <div>{t('Settings')}</div>

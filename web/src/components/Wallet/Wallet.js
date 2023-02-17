@@ -5,7 +5,7 @@ import {
 } from 'framework7-icons/react'
 
 import { useAuth } from '@redwoodjs/auth'
-import { routes, Link } from '@redwoodjs/router'
+import { Link } from '@redwoodjs/router'
 
 import Accordion from 'src/components/Accordion/Accordion'
 import Button from 'src/components/Button'
@@ -103,10 +103,7 @@ const Wallet = () => {
         <p className="italic">
           <Trans i18nkey="web:requestBetaAccess">
             <b>Beta feature</b>. Request to be a Beta Tester in{' '}
-            <Link className="underline" to={routes.settings()}>
-              Settings
-            </Link>
-            .
+            <Link className="underline">Settings</Link>.
           </Trans>
         </p>
       ),
