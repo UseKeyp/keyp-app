@@ -15,7 +15,7 @@ const Routes = () => {
         <Route path="/redirect/{type}" page={RedirectPage} name="redirect" />
         <Set wrap={DefaultLayout}>
           <Private unauthenticated="login">
-            <Route path="/profile" page={ProfilePage} name="profile" />
+            <Route path="/account" page={AccountPage} name="account" />
           </Private>
           <Route path="/users/{usernameOrAddress}" page={UserPage} name="user" />
           <Route path="/" page={HomePage} name="home" />

@@ -25,9 +25,7 @@ export default RedwoodDevFatalErrorPage ||
         <div className="flex sm:flex-row justify-between flex-col items-start gap-x-4 gap-y-2 mt-8">
           <div className="flex flex-col gap-y-2 gap-x-4 sm:flex-row sm:gap-y-0">
             <Icon name="keypnameandlogo" height="48px" width="164px" />
-            <h1 className="flex text-5xl font-light text-blue-1200">
-              Dev Portal
-            </h1>
+            <h1 className="flex text-5xl font-light text-blue-1200">App</h1>
           </div>
           {isAuthenticated ? (
             <UserAccount currentUser={currentUser} logOut={logOut} />
@@ -51,7 +49,7 @@ export default RedwoodDevFatalErrorPage ||
               />
               <div className="flex flex-col sm:flex-row text-gray-1200 text-lg items-center">
                 <div className="flex font-light">Back to the</div>
-                <Link to={routes.profile()}>
+                <Link to={routes.account()}>
                   <Button
                     variant="transparent"
                     classNameVariant="m-2"
