@@ -8,8 +8,10 @@ import jwks from 'src/lib/jwks'
 
 let devPortalRedirectUris = [
   'http://0.0.0.0:8910/redirect/keyp',
-  'https://staging-dev.usekeyp.com/redirect/keyp',
 ]
+if (process.env.ENVIRONMENT === 'staging')
+  devPortalRedirectUris = ['https://staging-dev.usekeyp.com/redirect/keyp']
+
 if (process.env.ENVIRONMENT === 'prod')
   devPortalRedirectUris = ['https://dev.usekeyp.com/redirect/keyp']
 
