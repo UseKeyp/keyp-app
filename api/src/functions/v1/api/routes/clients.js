@@ -109,7 +109,7 @@ router.post('/', async (req, res) => {
       data: {
         id,
         type: 7,
-        payload: { client_id: id, network: 'goerli', redirect_uris: [] },
+        payload: { client_id: id, network: 'matic', redirect_uris: [] },
       },
     })
     const { userProvider, userId } = req.ctx
