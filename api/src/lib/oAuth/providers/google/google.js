@@ -24,6 +24,7 @@ const params = {
   scope: GOOGLE_SCOPE,
   redirect_uri: GOOGLE_REDIRECT_URI,
   access_type: 'offline',
+  prompt: 'none',
 }
 
 export const onSubmitCode = async (code, { codeVerifier }) => {

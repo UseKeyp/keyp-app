@@ -9,7 +9,7 @@ export const DEFAULT_GAS_MAX_FEE_PER_GAS = parseUnits('10', 'gwei')
 export const AVAILABLE_NETWORKS = [
   'mainnet',
   'gnosis',
-  'matic',
+  'polygon',
   'mumbai',
   'goerli',
   'arbitrum',
@@ -19,7 +19,7 @@ export const AVAILABLE_NETWORKS = [
 
 const RPC_BY_NAME = {
   mainnet: process.env.RPC_MAINNET,
-  matic: process.env.RPC_MATIC,
+  polygon: process.env.RPC_POLYGON,
   mumbai: process.env.RPC_MUMBAI,
   gnosis: process.env.RPC_GNOSIS,
   goerli: process.env.RPC_GOERLI,

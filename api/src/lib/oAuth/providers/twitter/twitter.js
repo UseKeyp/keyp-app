@@ -20,6 +20,7 @@ const params = {
   client_id: process.env.TWITTER_CLIENT_ID,
   scope: TWITTER_SCOPE,
   redirect_uri: TWITTER_REDIRECT_URI,
+  prompt: 'none',
 }
 export const onSubmitCode = async (code, { codeVerifier }) => {
   try {

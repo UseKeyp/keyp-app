@@ -1,6 +1,8 @@
 import { EnvelopError } from '@envelop/core'
 
-import { APP_DOMAIN } from 'src/lib/helpers'
+import { isProduction } from '@redwoodjs/api/dist/logger'
+
+import { APP_DOMAIN, isProdOrStaging } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
 import { oAuthUrl } from 'src/lib/oAuth'
 import { encodeBody } from 'src/lib/oAuth/helpers'
@@ -61,19 +63,22 @@ export const getRampOnUrl = async ({ type, user, network }) => {
           hash,
         })
     } else if (type === RAMP_NETWORK) {
+      let baseUrl = isProdOrStaging
+        ? 'https://buy.ramp.network/?'
+        : 'https://ri-widget-staging.firebaseapp.com/?'
       url =
-        'https://buy.ramp.network/?' +
+        baseUrl +
         encodeBody({
-          // hostApiKey: process.env.RAMP_NETWORK_API_KEY,
+          hostApiKey: isProdOrStaging
+            ? ''
+            : 'hq9wkss729zojoxkmro64vowbe2zd4jrm3wtsn55',
+          hostAppName: 'Keyp',
           userAddress: address,
           hostLogoUrl: `${APP_DOMAIN}/logo.png`,
-          hostAppName: 'Keyp',
           enabledFlows: ['ONRAMP'], // Default for hosted mode only.
-          userEmailAddress: context.currentUser.email,
+          userEmailAddress: user.email,
           // swapAsset: 'MATIC_USDC',
           finalUrl: APP_DOMAIN + '/redirect/ramp_network',
-          // Use for testing
-          //'https://ri-widget-staging.firebaseapp.com/',
         })
     } else if (type === WERT) {
       url = `${APP_DOMAIN}/wert?address=${address}`
@@ -81,7 +86,7 @@ export const getRampOnUrl = async ({ type, user, network }) => {
 
     // TODO:  implement database update
     // const { url, reservation, paymentMethod, destCurrency } =
-    //   await createDepositReservation(context.currentUser.address)
+    //   await createDepositReservation(user.address)
     // try {
     //   await db.depositOrder.create({
     //     data: {
@@ -89,7 +94,7 @@ export const getRampOnUrl = async ({ type, user, network }) => {
     //       paymentMethod,
     //       reservation,
     //       destCurrency,
-    //       member: { connect: { id: context.currentUser.id } },
+    //       member: { connect: { id: user.id } },
     //     },
     //   })
     // } catch (e) {

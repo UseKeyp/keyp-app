@@ -9,7 +9,7 @@ import Sentry from 'src/lib/sentry'
 import { getTorusPublicAddress } from 'src/lib/torus/torus'
 import { fetchUser } from 'src/lib/users'
 
-const CHESS= "CHESS"
+const CHESS = 'CHESS'
 
 export const onConnected = async ({ refreshToken, accessToken, decoded }) => {
   try {
@@ -17,17 +17,29 @@ export const onConnected = async ({ refreshToken, accessToken, decoded }) => {
     /* eslint-disable camelcase */
     logger.debug({ custom: decoded }, 'onConnected() decoded')
     // Create member if needed, and get current avatar
-    const { preferred_username, user_id, email, email_verified, locale, picture, country } = decoded
+    const {
+      preferred_username,
+      user_id,
+      email,
+      email_verified,
+      locale,
+      picture,
+      country,
+    } = decoded
 
-    const user = await fetchUser(user_id, { username: preferred_username }, CHESS)
+    const user = await fetchUser(
+      user_id,
+      { username: preferred_username },
+      CHESS
+    )
     if (user.banned) {
       throw new AuthenticationError('user is banned')
     }
 
     if (!email || !email_verified)
-    throw new AuthenticationError(
-      `Verify your email with Chess.com and try again.`
-    )
+      throw new AuthenticationError(
+        `Verify your email with Chess.com and try again.`
+      )
 
     // await createMauticContact({
     //   member: {

@@ -1,4 +1,3 @@
-import { isBrowser } from '@redwoodjs/prerender/browserUtils'
 import { toast } from '@redwoodjs/web/toast'
 
 import { getErrorResponse } from 'src/utils/auth/helpers'
@@ -32,8 +31,6 @@ export const logOut = async () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ method: 'logout' }),
     })
-
-    isBrowser && window.$chatwoot.reset()
   } catch (e) {
     /* eslint-disable-next-line no-console */
     const errorMessage = getErrorResponse(`${e}.`, 'logout').error.message
