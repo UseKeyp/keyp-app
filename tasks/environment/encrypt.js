@@ -69,6 +69,7 @@ module.exports.iv = iv
       encContents
     )
 
+    ////////////////
     // Jwks
     let plaintextJwks = require(path.join(
       directoryPath,
