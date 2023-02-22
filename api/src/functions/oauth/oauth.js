@@ -22,6 +22,9 @@ let clients = [
     redirect_uris: devPortalRedirectUris,
     logo_uri: 'https://dev.usekeyp.com/favicon.png',
     client_name: 'Keyp Dev Portal',
+    tos_uri: 'https://www.usekeyp.com/terms-of-use-privacy-policy#Terms-of-Use',
+    policy_uri:
+      'https://www.usekeyp.com/terms-of-use-privacy-policy#Privacy-Policy',
   },
 ]
 if (process.env.ENVIRONMENT === 'dev') {
