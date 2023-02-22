@@ -11,7 +11,7 @@ let devPortalRedirectUris = [
   'https://dev.staging-env.usekeyp.com/redirect/keyp',
 ]
 if (process.env.ENVIRONMENT === 'staging')
-  devPortalRedirectUris = ['https://staging-dev.usekeyp.com/redirect/keyp']
+  devPortalRedirectUris = ['https://dev.staging-env.usekeyp.com/redirect/keyp']
 
 if (process.env.ENVIRONMENT === 'prod')
   devPortalRedirectUris = ['https://dev.usekeyp.com/redirect/keyp']
