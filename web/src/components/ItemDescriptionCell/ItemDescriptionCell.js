@@ -20,7 +20,7 @@ export const ItemDescriptionCell = ({
 
   return (
     <>
-      <div className="mt-4 flex flex-col items-start justify-between gap-y-2 gap-x-4 overflow-scroll rounded-md border border-gray-800 p-4 sm:flex-row sm:p-6">
+      <div className="mt-4 grid grid-cols-2 overflow-scroll rounded-md border border-gray-800 p-4 sm:p-6">
         <div className="flex flex-col">
           <div className="flex font-bold text-gray-1600">{title}</div>
           <div className="flex flex-row gap-x-1">
@@ -59,9 +59,7 @@ export const ItemDescriptionCell = ({
           </div>
           {children}
         </div>
-        <div className="flex max-w-3xl font-light text-gray-1600">
-          {description}
-        </div>
+        <div className="flex font-light text-gray-1600">{description}</div>
       </div>
     </>
   )

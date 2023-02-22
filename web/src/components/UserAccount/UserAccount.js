@@ -7,30 +7,34 @@ export function getStyledUsernameFromCurrentUser(currentUser) {
   switch (currentUser.id.split('-')[0].toLowerCase()) {
     case 'discord':
       return (
-        <div className="flex text-[#5865F2]">
+        <div className="flex text-[#5865F2] text-[12px]">
           <div>{currentUser?.username}</div>
         </div>
       )
     case 'google':
       return (
-        <div className="flex">
+        <div className="flex text-[12px]">
           <div className="text-gray-2000">{currentUser?.username}</div>
         </div>
       )
     case 'chess':
       return (
-        <div className="flex">
+        <div className="flex text-[12px]">
           <div className="text-gray-2000">{currentUser?.username}</div>
         </div>
       )
     case 'twitter':
       return (
-        <div className="flex">
+        <div className="flex text-[12px]">
           <div className="text-[#1DA1F2]">{currentUser?.username}</div>
         </div>
       )
     default:
-      return <div className="flex text-gray-2000">{currentUser?.username}</div>
+      return (
+        <div className="flex text-gray-2000 text-[12px]">
+          {currentUser?.username}
+        </div>
+      )
   }
 }
 
@@ -41,32 +45,32 @@ export function getProviderIconFromCurrentUser(currentUser) {
   switch (currentUser.id.split('-')[0].toLowerCase()) {
     case 'discord':
       return (
-        <div className="mt-1 flex">
-          <Icon width="24" name="discord" />
+        <div className="flex">
+          <Icon height="9.75" width="12" name="discord" />
         </div>
       )
     case 'google':
       return (
-        <div className="mt-1 flex">
-          <Icon height="10" width="20" name="google" />
+        <div className="flex">
+          <Icon height="9.75" width="12" name="google" />
         </div>
       )
     case 'chess':
       return (
-        <div className="mt-1 flex">
-          <Icon height="18" name="chess_pawn" />
+        <div className="flex">
+          <Icon height="9.75" width="12" name="chess_pawn" />
         </div>
       )
     case 'twitter':
       return (
-        <div className="mt-1 flex">
-          <Icon height="18" width="18" name="twitter" />
+        <div className="flex">
+          <Icon height="9.75" width="12" name="twitter" />
         </div>
       )
     case 'node_oidc':
       return (
-        <div className="mt-1 flex">
-          <Icon height="18px" width="18px" name="keypcircle" />
+        <div className="flex">
+          <Icon height="9.75" width="12" name="keypcircle" />
         </div>
       )
     default:
@@ -76,14 +80,14 @@ export function getProviderIconFromCurrentUser(currentUser) {
 const UserAccount = ({ currentUser, logOut }) => {
   return (
     <div
-      className={`my-auto flex flex-row gap-x-16 rounded-md border border-gray-400 p-2 ${
+      className={`my-auto flex flex-row gap-x-16 rounded-md border border-gray-400 items-center p-2 ${
         currentUser?.username ? 'sm:gap-x-4' : 'sm:gap-x-2'
       }`}
     >
       {getProviderIconFromCurrentUser(currentUser)}
       {getStyledUsernameFromCurrentUser(currentUser) || <></>}
       <button
-        className="text-sm font-light text-gray-400 hover:text-gray-800"
+        className="text-[12px] font-light text-gray-400 hover:text-red-1200"
         onClick={logOut}
       >
         Logout
