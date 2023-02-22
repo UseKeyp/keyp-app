@@ -39,6 +39,7 @@ const Account = () => {
           ]}
         />
         <ItemDescriptionCell
+          tooltipID="wallet-address"
           title={
             <div className="flex flex-row gap-x-2 text-gray-1600">
               Your{' '}
