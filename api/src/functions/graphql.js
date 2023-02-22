@@ -18,14 +18,14 @@ import services from 'src/services/**/*.{js,ts}'
 
 let extraPlugins = []
 if (isProdOrStaging) {
-  extraPlugins.push(
-    useSentry({
-      includeRawResult: false, // set to `true` in order to include the execution result in the metadata collected
-      includeResolverArgs: false, // set to `true` in order to include the args passed to resolvers
-      includeExecuteVariables: false, // set to `true` in order to include the operation variables values
-      // appendTags: (args) => { return { ... }} // if you wish to add custom "tags" to the Sentry transaction created per operation
-    })
-  )
+  // extraPlugins.push(
+  //   useSentry({
+  //     includeRawResult: false, // set to `true` in order to include the execution result in the metadata collected
+  //     includeResolverArgs: false, // set to `true` in order to include the args passed to resolvers
+  //     includeExecuteVariables: false, // set to `true` in order to include the operation variables values
+  //     // appendTags: (args) => { return { ... }} // if you wish to add custom "tags" to the Sentry transaction created per operation
+  //   })
+  // )
 }
 
 export const handler = createGraphQLHandler({
