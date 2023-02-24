@@ -41,10 +41,10 @@ const Account = () => {
         <ItemDescriptionCell
           tooltipID="wallet-address"
           title={
-            <div className="flex flex-row gap-x-2 text-gray-1600">
+            <div className="flex flex-col items-start sm:flex-row gap-x-1 text-gray-1600 sm:items-center">
               Your{' '}
               {currentUser?.username ? (
-                <div className="font-normal">
+                <div className="font-bold">
                   {getStyledUsernameFromCurrentUser(currentUser)}
                 </div>
               ) : (

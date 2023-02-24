@@ -33,7 +33,13 @@ export default function NotFoundPage() {
             <p className="text-gray-1200 text-lg font-light">
               (But you did find a 404)
             </p>
-            <img src="/no-go.png" className="flex" alt="" />
+            <img
+              src="/no-go.png"
+              height="812"
+              width="812"
+              className="flex"
+              alt="page not found"
+            />
             <div className="flex flex-col sm:flex-row text-gray-1200 text-lg items-center">
               <div className="flex font-light">Back to the</div>
               <Link to={routes.account()}>
