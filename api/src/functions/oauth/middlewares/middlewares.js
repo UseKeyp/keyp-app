@@ -1,7 +1,12 @@
+import { APP_DOMAIN } from 'src/lib/helpers'
+
 const middlewares = (oidc) => async (ctx, next) => {
   // PRE MIDDLEWARE
   await next()
   // POST MIDDLEWARE
+  if (ctx.response?.body?.authorization_endpoint)
+    ctx.response.body.authorization_endpoint = `${APP_DOMAIN}/oauth/authorize`
+
   // console.log('post middleware', ctx.method, ctx.oidc.route)
   if (ctx.method === 'GET' && ctx.oidc.route === 'authorization') {
     // Verify the provider requested is the same as the one the user logged in with
