@@ -5,7 +5,7 @@ const middlewares = (oidc) => async (ctx, next) => {
   await next()
   // POST MIDDLEWARE
   if (ctx.response?.body?.authorization_endpoint)
-    ctx.response.body.authorization_endpoint = `${APP_DOMAIN}/oauth/authorize`
+    ctx.response.body.authorization_endpoint = `${APP_DOMAIN}/oauth/auth`
 
   // console.log('post middleware', ctx.method, ctx.oidc.route)
   if (ctx.method === 'GET' && ctx.oidc.route === 'authorization') {
