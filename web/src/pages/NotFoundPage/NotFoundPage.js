@@ -42,7 +42,7 @@ export default function NotFoundPage() {
             />
             <div className="flex flex-col sm:flex-row text-gray-1200 text-lg items-center">
               <div className="flex font-light">Back to the</div>
-              <Link to={routes.account()}>
+              <Link to={routes.profile()}>
                 <Button
                   variant="transparent"
                   classNameVariant="m-2"

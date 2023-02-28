@@ -38,7 +38,7 @@ const LoginPortal = () => {
 
   // useEffect(() => {
   //   if (isAuthenticated) {
-  //     navigate(routes.account())
+  //     navigate(routes.profile())
   //   }
   // }, [isAuthenticated])
 
