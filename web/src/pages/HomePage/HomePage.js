@@ -1,6 +1,14 @@
 import { Icon } from '@usekeyp/components-soft-ui'
 
+import { useAuth } from '@redwoodjs/auth'
+import { navigate, routes } from '@redwoodjs/router'
+
 const HomePage = () => {
+  const { isAuthenticated } = useAuth()
+  if (isAuthenticated) {
+    navigate(routes.profile())
+  }
+
   return (
     <>
       <div className="flex h-screen flex-col text-center">

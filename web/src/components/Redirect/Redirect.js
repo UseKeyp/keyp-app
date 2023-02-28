@@ -28,7 +28,7 @@ const Redirect = ({ type }) => {
     }
     if (successMessage) {
       callToAction = (
-        <Link to={routes.account()}>
+        <Link to={routes.profile()}>
           <Button
             classNameVariant="hover:bg-[#005285]"
             borderColor="border-black"

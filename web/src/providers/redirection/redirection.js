@@ -78,7 +78,7 @@ const RedirectionProvider = ({ children }) => {
           errorMessage: error || 'Something went wrong',
         })
     } else {
-      window.location = routes.account()
+      window.location = routes.profile()
     }
   }
 

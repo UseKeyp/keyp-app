@@ -8,7 +8,7 @@ import UserBalance from 'src/components/User/UserBalance'
 import UserMintCredits from 'src/components/User/UserMintCredits'
 import globalConfig from 'src/global.config'
 
-const UserDetails = ({ user, isAccount }) => {
+const UserDetails = ({ user, isProfile }) => {
   return (
     <section className="user-details p-4">
       <div className="user-details--inner">
@@ -34,27 +34,27 @@ const UserDetails = ({ user, isAccount }) => {
                 <p className="font-bold">{user.masterTitle}</p>
               </div>
             )}
-            <TwitchLink username={user.twitchUsername} isAccount={isAccount} />
+            <TwitchLink username={user.twitchUsername} isProfile={isProfile} />
           </div> */}
-          {!isAccount && user.address && (
+          {!isProfile && user.address && (
             <div className="mt-4 w-full content-center user-details--user-content">
               <Button variant="green" size="small" className="w-40">
                 {t('Donate')}
               </Button>
             </div>
           )}
-          {isAccount && (
+          {isProfile && (
             <div className="mt-4 grid  gap-4  user-details--user-content">
               <p>
                 <Link to={routes.user({ usernameOrAddress: user.id })}>
-                  {t('Public Account')}
+                  {t('Public Profile')}
                 </Link>
               </p>
             </div>
           )}
         </div>
 
-        {isAccount && (
+        {isProfile && (
           <div className="user-details--funds-actions">
             <UserBalance />
             <div className="mt-2">

@@ -8,7 +8,7 @@ import UserAccount, {
   getStyledUsernameFromCurrentUser,
 } from 'src/components/UserAccount/UserAccount'
 
-const Account = () => {
+const Profile = () => {
   const { currentUser, isAuthenticated, logOut } = useAuth()
 
   if (!currentUser) {
@@ -16,7 +16,7 @@ const Account = () => {
   }
   return (
     <div className="max-width-container">
-      <MetaTags title="Account" description="Account Page" />
+      <MetaTags title="Profile" description="Profile Page" />
       <div className="flex sm:flex-row justify-between flex-col items-start gap-x-4 gap-y-2 mt-8">
         <div className="flex flex-col gap-y-2 mb-2 gap-x-4 sm:flex-row sm:gap-y-0">
           <Icon name="keypnameandlogo" height="48px" width="164px" />
@@ -71,4 +71,4 @@ const Account = () => {
   )
 }
 
-export default Account
+export default Profile
