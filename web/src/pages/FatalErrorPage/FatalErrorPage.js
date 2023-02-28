@@ -39,8 +39,10 @@ export default RedwoodDevFatalErrorPage ||
               </p>
               <img
                 src="/fatal-error.png"
-                className="flex object-scale-down"
-                alt=""
+                className="flex"
+                height="812"
+                width="812"
+                alt="fatal error"
               />
               <div className="flex flex-col sm:flex-row text-gray-1200 text-lg items-center">
                 <div className="flex font-light">Back to the</div>

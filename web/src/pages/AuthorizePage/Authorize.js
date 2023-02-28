@@ -61,7 +61,7 @@ function Authorize() {
     }
     switch (scope) {
       case 'email':
-        return <Icon height="29" width="26" name="email_icon" />
+        return <Icon height="12" width="16" name="email_icon" />
       default:
         return ''
     }
@@ -76,7 +76,7 @@ function Authorize() {
       case 'profile':
         return 'Profile'
       case 'email':
-        return 'Email Address'
+        return 'Your Email Address'
       default:
         return scope
     }
@@ -87,7 +87,15 @@ function Authorize() {
       <div className="flex flex-col items-start border border-gray-800 max-w-2xl p-4 rounded-lg">
         <div className="flex flex-row w-full justify-between items-center">
           <div className="flex items-center gap-x-1">
-            <div className="text-gray-800 text-sm">Login with</div>
+            <div className="flex">
+              {getProviderIconFromCurrentUser(currentUser)}
+            </div>
+            <div className="flex font-light">
+              {getStyledUsernameFromCurrentUser(currentUser)}
+            </div>
+          </div>
+          <div className="flex items-center gap-x-1">
+            <div className="text-gray-800 text-[9px]">Powered by</div>
             <div className="mt-1">
               <Icon
                 height="16"
@@ -95,14 +103,6 @@ function Authorize() {
                 color="fill-gray-800"
                 name="keypnameandlogogray"
               />
-            </div>
-          </div>
-          <div className="flex flex-row gap-x-2">
-            <div className="flex">
-              {getProviderIconFromCurrentUser(currentUser)}
-            </div>
-            <div className="flex font-light">
-              {getStyledUsernameFromCurrentUser(currentUser)}
             </div>
           </div>
         </div>
@@ -113,29 +113,31 @@ function Authorize() {
                 <img
                   src={client.logoUri}
                   alt="client logo"
-                  className="flex w-16 h-16"
+                  className="flex w-12 h-12"
                 />
               </div>
             ) : (
               <Icon name="fallback" />
             )}
             <div className="flex flex-col">
-              <div className="text-3xl font-bold text-gray-2400">
+              <div className="text-[24px] font-bold text-gray-2400">
                 {client.name}
               </div>
-              <div className="text-sm text-gray-2400">{client.redirectUrl}</div>
+              <div className="text-[12px] text-gray-2400">
+                {client.redirectUrl}
+              </div>
             </div>
           </div>
-          <div className="flex font-light text-xl text-gray-1600 items-start mt-2">
-            {client.redirectUrl} wants access to the following:
+          <div className="flex font-light text-[16px] text-gray-1600 items-start mt-2">
+            {client.redirectUrl} wants the following permissions
           </div>
         </div>
-        <div className="flex flex-col w-full text-2xl font-light text-gray-1600 mb-4 mt-4">
+        <div className="flex flex-col w-full text-lg font-light text-gray-1600 mb-4 mt-4">
           <ul>
             {scopes.map((scope) => (
               <li
                 key={scope}
-                className="flex flex-row border-t border-b text-xl py-2 items-center gap-x-4"
+                className="flex flex-row border-t border-b text-[16px] py-2 items-center gap-x-4"
               >
                 {getIconFromScope(scope)}
                 {getStyledNameFromScope(scope)}
@@ -162,7 +164,7 @@ function Authorize() {
             </div>
           </Button>
         </div>
-        <div className="text-gray-800 text-sm mt-8">
+        <div className="text-gray-800 text-[9px] mt-8">
           By confirming you allow this app and Keyp to use your information in
           accordance with {client.redirectUrl}'s{' '}
           {client.tosUri ? (
@@ -194,7 +196,7 @@ function Authorize() {
           <a
             className="inline text-blue-800"
             target="_blank"
-            href="https://www.usekeyp.com/terms-of-use-privacy-policy"
+            href="https://www.usekeyp.com/terms-of-use-privacy-policy#Terms-of-Use"
             rel="noreferrer"
           >
             Terms of Service
@@ -203,7 +205,7 @@ function Authorize() {
           <a
             className="inline text-blue-800"
             target="_blank"
-            href="https://www.usekeyp.com/terms-of-use-privacy-policy"
+            href="https://www.usekeyp.com/terms-of-use-privacy-policy#Privacy-Policy"
             rel="noreferrer"
           >
             Privacy Policy

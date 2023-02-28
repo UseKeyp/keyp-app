@@ -43,7 +43,6 @@ const LocaleProvider = ({ children }) => {
           locale,
         },
       })
-      toast.success(<div>{t('Changes Saved')}</div>)
       localStorage.setItem('i18nextLng', locale.toString())
       if (localeError) {
         setLocaleError('')
