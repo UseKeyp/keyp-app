@@ -16,7 +16,7 @@ if (process.env.ENVIRONMENT === 'staging')
 if (process.env.ENVIRONMENT === 'prod')
   devPortalRedirectUris = ['https://dev.usekeyp.com/redirect/keyp']
 
-let clients = [
+export let clients = [
   {
     client_id: 'dev-portal',
     redirect_uris: devPortalRedirectUris,
@@ -25,6 +25,9 @@ let clients = [
     tos_uri: 'https://www.usekeyp.com/terms-of-use-privacy-policy#Terms-of-Use',
     policy_uri:
       'https://www.usekeyp.com/terms-of-use-privacy-policy#Privacy-Policy',
+    payload: {
+      network: 'mumbai',
+    },
   },
 ]
 if (process.env.ENVIRONMENT === 'dev') {

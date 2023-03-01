@@ -110,7 +110,7 @@ export const transferErc20 = async ({
         }`
     } else {
       const decimals = await contract.decimals()
-      const amountBn = parseUnits(amount, decimals)
+      amountBn = parseUnits(amount, decimals)
       const balance = formatUnits(bal, decimals)
       if (bal.lt(amountBn))
         throw `Amount exceeds your current balance of ${
@@ -122,7 +122,6 @@ export const transferErc20 = async ({
             : 0
         }`
     }
-
     const unsignedTx = await contract.populateTransaction.transfer(
       toAddress,
       amountBn
