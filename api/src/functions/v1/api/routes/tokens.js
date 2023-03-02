@@ -60,11 +60,11 @@ router.post('/transfers', withUser, async (req, res) => {
       })
     }
 
-    res.send({ tx })
+    res.send({ status: 'SUCCESS', hash: tx.hash })
   } catch (e) {
     Sentry.captureException(e)
     logger.error({ custom: e }, 'Error in POST /transfers')
-    res.status(500).send({ error: e })
+    res.status(500).send({status: 'FAILED', hash: '', error: e })
   }
 })
 

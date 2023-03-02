@@ -27,11 +27,13 @@ export const TRANSFER_ERC20_MUTATION = gql`
     $tokenAddress: String!
     $amount: String!
     $toAddress: String!
+    $network: Network!
   ) {
     transferErc20(
       tokenAddress: $tokenAddress
       amount: $amount
       toAddress: $toAddress
+      network: $network
     ) {
       status
       hash
