@@ -1453,18 +1453,6 @@ const Wert = ({ color = 'white' }) => (
   </svg>
 )
 
-const Fallback = () => (
-  <svg
-    width="48"
-    height="48"
-    viewBox="0 0 48 48"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <rect width="48" height="48" fill="#C5C8CC" />
-  </svg>
-)
-
 const SilhouetteHeadAndBody = () => (
   <svg
     width="16"
@@ -1491,7 +1479,6 @@ const SilhouetteHeadAndBody = () => (
 export default {
   account_page_card: AccountPageCard,
   chess_pawn: ChessPawn,
-  fallback: Fallback,
   wert: Wert,
   treasure_chess: TreasureChess,
   treasure_chess_full: TreasureChessFull,

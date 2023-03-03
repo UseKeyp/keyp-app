@@ -122,7 +122,7 @@ function Authorize() {
                 />
               </div>
             ) : (
-              <Icon name="fallback" />
+              <></>
             )}
             <div className="flex flex-col">
               <div className="text-[24px] font-bold text-gray-2400">
