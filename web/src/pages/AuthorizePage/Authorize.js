@@ -154,7 +154,7 @@ function Authorize() {
           <Button
             onClick={() => continueInteraction({ type: 'abort' })}
             borderColor="border-red-1200 hover:bg-red-1200"
-            fluid={isMobile ? true : false}
+            fluid={isMobile}
             classNameVariant="group sm:order-1 order-2"
           >
             <div className="text-red-1200 group-hover:text-white font-bold">
@@ -164,7 +164,7 @@ function Authorize() {
           <Button
             onClick={() => continueInteraction({ type: 'confirm' })}
             variant="green"
-            fluid={isMobile ? true : false}
+            fluid={isMobile}
             classNameVariant="order-1 sm:order-2"
           >
             <div className="text-white">
