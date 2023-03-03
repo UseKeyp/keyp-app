@@ -45,6 +45,7 @@ const WalletProvider = ({ children }) => {
     error: balanceError,
     loading: balanceLoading,
   } = useQuery(USER_BALANCE_QUERY, {
+    variables: { network: 'polygon' },
     pollInterval: 30000,
     skip: !isAuthenticated,
     fetchPolicy: 'network-only',
@@ -119,7 +120,7 @@ const WalletProvider = ({ children }) => {
   React.useEffect(() => {
     setState({
       ...state,
-      ...userBalance,
+      ...(userBalance || {}),
     })
     /* eslint-disable-next-line react-hooks/exhaustive-deps */
   }, [userBalance])

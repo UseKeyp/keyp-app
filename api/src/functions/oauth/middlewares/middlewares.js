@@ -25,6 +25,8 @@ const middlewares = (oidc) => async (ctx, next) => {
       await ctx.oidc.session.destroy()
       // Start over with same url
       return ctx.res.redirect(`/oauth/${ctx.request.url}`)
+    } else if (!loginProvider) {
+      return ctx.res.redirect(`/authorize?uid=${session?.uid}`)
     }
   }
 }

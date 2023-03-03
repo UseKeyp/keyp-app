@@ -28,6 +28,7 @@ export const schema = gql`
   }
 
   enum Network {
+    polygon
     gnosis
     matic
     mumbai

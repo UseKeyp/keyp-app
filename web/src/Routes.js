@@ -19,10 +19,8 @@ const Routes = () => {
           </Private>
           <Route path="/login" page={LoginPage} name="login" />
           <Route notfound page={NotFoundPage} />
-          <Private unauthenticated="login">
-            <Route path="/authorize" page={AuthorizePage} name="authorize" />
-            {/*<Route path="/wallet" page={WalletPage} name="wallet" />*/}
-          </Private>
+          <Route path="/authorize" page={AuthorizePage} name="authorize" />
+          <Private unauthenticated="login">{/*<Route path="/wallet" page={WalletPage} name="wallet" />*/}</Private>
         </Set>
       </AllContextProviders>
     </Router>

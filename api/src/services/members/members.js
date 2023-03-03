@@ -44,6 +44,15 @@ export const userBalance = async ({ network }) => {
     network,
     address: context.currentUser.address,
   })
+  if (!(usdcBalance >= 0)) {
+    throw new Error('userBalance() Unable to fetch USDC balance')
+  }
+  if (!process.env.WYRE_MINT_USD_PURCHASE_AMOUNT) {
+    throw new Error('userBalance() WYRE_MINT_USD_PURCHASE_AMOUNT not set')
+  }
+  if (!context.currentUser.mintCredits) {
+    throw new Error('userBalance() mintCredits not set')
+  }
   return {
     usdcBalance,
     mintCreditBalance:
