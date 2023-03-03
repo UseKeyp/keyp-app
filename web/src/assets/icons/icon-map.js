@@ -1453,22 +1453,32 @@ const Wert = ({ color = 'white' }) => (
   </svg>
 )
 
-const Fallback = () => (
+const SilhouetteHeadAndBody = () => (
   <svg
-    width="48"
-    height="48"
-    viewBox="0 0 48 48"
+    width="16"
+    height="16"
+    viewBox="0 0 16 16"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <rect width="48" height="48" fill="#C5C8CC" />
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M2 14.5334C2 12.4362 3.63963 10.6667 5.71429 10.6667H10.2857C12.3604 10.6667 14 12.4362 14 14.5334V16.0001H2V14.5334ZM5.71429 12.0001C4.43656 12.0001 3.33333 13.1106 3.33333 14.5334V14.6667H12.6667V14.5334C12.6667 13.1106 11.5634 12.0001 10.2857 12.0001H5.71429Z"
+      fill="#B0B6C1"
+    />
+    <path
+      fillRule="evenodd"
+      clipRule="evenodd"
+      d="M8 1.33333C6.50895 1.33333 5.33333 2.50024 5.33333 3.86667V5.46667C5.33333 6.83309 6.50895 8 8 8C9.49105 8 10.6667 6.83309 10.6667 5.46667V3.86667C10.6667 2.50024 9.49105 1.33333 8 1.33333ZM4 3.86667C4 1.71309 5.82439 0 8 0C10.1756 0 12 1.71309 12 3.86667V5.46667C12 7.62024 10.1756 9.33333 8 9.33333C5.82439 9.33333 4 7.62024 4 5.46667V3.86667Z"
+      fill="#B0B6C1"
+    />
   </svg>
 )
 
 export default {
   account_page_card: AccountPageCard,
   chess_pawn: ChessPawn,
-  fallback: Fallback,
   wert: Wert,
   treasure_chess: TreasureChess,
   treasure_chess_full: TreasureChessFull,
@@ -1509,4 +1519,5 @@ export default {
   stripe: Stripe,
   ramp_network: RampNetwork,
   mt_pelerin: MtPelerin,
+  silhouette_head_and_body: SilhouetteHeadAndBody,
 }
