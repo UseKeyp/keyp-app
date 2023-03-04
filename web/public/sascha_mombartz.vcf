@@ -1,0 +1,23 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Mombartz;Sascha;;;
+FN:Sascha Mombartz
+ORG:;
+TITLE:
+EMAIL;TYPE=PREF,INTERNET:sascha@usekeyp.com
+TEL;TYPE=CELL,voice:+19174639415
+TEL;TYPE=WORK,voice:
+TEL;TYPE=WORK,fax:
+ADR;TYPE=WORK;type=pref:;; ;;;;
+URL:http://usekeyp.com
+url1.URL:https://github.com/smombartz
+url1.X-ABLabel: GitHub
+url2.URL:http://twitter.com/supermombartz
+url2.X-ABLabel: Twitter
+url3.URL:http://linkedin.com/in/smombartz/
+url3.X-ABLabel: Linkedin
+
+NOTE:
+
+REV:2008-04-24T19:52:43Z
+END:VCARD

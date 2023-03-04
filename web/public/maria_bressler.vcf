@@ -1,0 +1,19 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Bressler;Maria;;;
+FN:Maria Bressler
+ORG:Keyp;
+TITLE:Associate Director of Operations
+EMAIL;TYPE=PREF,INTERNET:maria@usekeyp.com
+TEL;TYPE=CELL,voice:
+TEL;TYPE=WORK,voice:
+TEL;TYPE=WORK,fax:
+ADR;TYPE=WORK;type=pref:;; ;;;;
+URL:http://usekeyp.com
+url1.URL:https://www.linkedin.com/in/mmbressler/
+url1.X-ABLabel: Linkedin
+
+NOTE:
+
+REV:2008-04-24T19:52:43Z
+END:VCARD

@@ -1,0 +1,23 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Schiarizzi;Joseph;;;
+FN:Joseph Schiarizzi
+ORG:;
+TITLE:
+EMAIL;TYPE=PREF,INTERNET:joseph@usekeyp.com
+TEL;TYPE=CELL,voice:
+TEL;TYPE=WORK,voice:
+TEL;TYPE=WORK,fax:
+ADR;TYPE=WORK;type=pref:;; ;;;;
+URL:http://usekeyp.com
+url1.URL:https://github.com/cupOJoseph
+url1.X-ABLabel: GitHub
+url2.URL:https://twitter.com/cupOJoseph
+url2.X-ABLabel: Twitter
+url3.URL:https://www.linkedin.com/in/joseph-schiarizzi/
+url3.X-ABLabel: Linkedin
+
+NOTE:
+
+REV:2008-04-24T19:52:43Z
+END:VCARD
