@@ -4,7 +4,6 @@ import { useTranslation, Trans } from 'react-i18next'
 import { useAuth } from '@redwoodjs/auth'
 import { isBrowser } from '@redwoodjs/prerender/browserUtils'
 import { useMutation } from '@redwoodjs/web'
-import { toast } from '@redwoodjs/web/toast'
 
 import { USER_LOCALE_MUTATION } from './graphql'
 

@@ -63,8 +63,8 @@ const MobileNav = () => {
             ) : (
               <>
                 <li className={navItemClasses}>
-                  <Button className={navAnchorClasses} to={routes.account()}>
-                    {t('Account')}
+                  <Button className={navAnchorClasses} to={routes.profile()}>
+                    {t('Profile')}
                   </Button>
                 </li>
                 <li className={navItemClasses}>
@@ -125,7 +125,7 @@ const Header = () => {
             <div className="mr-4">
               <div className="flex flex-col text-sm text-left">
                 <Button
-                  to={routes.account()}
+                  to={routes.profile()}
                   textColor="blue"
                   className="header__nav__username"
                 >

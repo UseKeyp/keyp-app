@@ -1,11 +1,11 @@
 import { render } from '@redwoodjs/testing/web'
 
-import Account from './Account'
+import Profile from './Profile'
 
-describe('Account', () => {
+describe('Profile', () => {
   it('renders successfully', () => {
     expect(() => {
-      render(<Account />)
+      render(<Profile />)
     }).not.toThrow()
   })
 })
