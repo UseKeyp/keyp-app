@@ -73,6 +73,7 @@ const checkGasAndAirdrop = async ({
     return null
   } catch (e) {
     logger.error(e)
+    logger.debug({ custom: { user, amount, network } })
     throw new Error(`checkGasAndAirdrop() ${e.message} ${e}`)
   }
 }

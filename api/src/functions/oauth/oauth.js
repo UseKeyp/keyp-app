@@ -25,9 +25,7 @@ export let clients = [
     tos_uri: 'https://www.usekeyp.com/terms-of-use-privacy-policy#Terms-of-Use',
     policy_uri:
       'https://www.usekeyp.com/terms-of-use-privacy-policy#Privacy-Policy',
-    payload: {
-      network: 'mumbai',
-    },
+    payload: { network: 'polygon' },
   },
 ]
 if (process.env.ENVIRONMENT === 'dev') {

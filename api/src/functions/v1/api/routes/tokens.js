@@ -26,7 +26,13 @@ router.post('/transfers', withUser, async (req, res) => {
     if (!tokenAddress) throw 'Invalid token address'
     if (!tokenType) throw 'Invalid token type'
 
-    const recipient = await fetchUser(toUserId || toAddress)
+    let recipient
+    try {
+      recipient = await fetchUser(toUserId || toAddress)
+    } catch (e) {
+      logger.debug(e)
+      throw 'Recipient not found'
+    }
 
     if (!['ERC20', 'ERC721'].includes(tokenType)) throw 'Invalid token type'
 
@@ -64,7 +70,7 @@ router.post('/transfers', withUser, async (req, res) => {
   } catch (e) {
     Sentry.captureException(e)
     logger.error({ custom: e }, 'Error in POST /transfers')
-    res.status(500).send({status: 'FAILED', hash: '', error: e })
+    res.status(500).send({ status: 'FAILED', hash: '', error: e })
   }
 })
 
