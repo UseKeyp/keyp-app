@@ -20,42 +20,46 @@ export const ItemDescriptionCell = ({
 
   return (
     <>
-      <div className="mt-4 grid grid-cols-2 overflow-scroll rounded-md border border-gray-800 p-4 sm:p-6">
+      <div className="mt-4 grid gap-y-8 overflow-scroll rounded-md border border-gray-800 p-4 sm:p-6 lg:grid-cols-2">
         <div className="flex flex-col">
-          <div className="flex font-bold text-gray-1600">{title}</div>
+          <div className="flex text-[16px] font-bold text-gray-1600">
+            {title}
+          </div>
           <div className="flex flex-row gap-x-1">
-            <div className="flex text-sm text-gray-1600 sm:text-base">
-              {tokenOrAddress ? tokenOrAddress : <div>Unavailable</div>}
+            <div className="flex break-all border border-gray-100 bg-gray-100 p-2 text-[16px] text-gray-2400 sm:break-normal sm:text-base">
+              <div className="flex items-center gap-x-2">
+                {tokenOrAddress ? tokenOrAddress : <div>Unavailable</div>}
+                {tokenOrAddress ? (
+                  <button
+                    className="group flex"
+                    onClick={() => {
+                      handleCopy()
+                    }}
+                  >
+                    <Tooltip
+                      id={tooltipID}
+                      delayHideTime={250}
+                      effect="solid"
+                      borderColor="#C6CED2"
+                      bgColor="#eef0f2"
+                      position="top"
+                      tooltipChild={
+                        <div className="p-0.5 text-gray-2400">
+                          {copySuccess}
+                        </div>
+                      }
+                    >
+                      <Icon
+                        color="fill-blue-1200 group-hover:fill-blue-1600 h-[32px] w-[26px] sm:h-[16px] sm:w-[13px]"
+                        name="copy"
+                      />
+                    </Tooltip>
+                  </button>
+                ) : (
+                  <></>
+                )}
+              </div>
             </div>
-            {tokenOrAddress ? (
-              <button
-                className="group flex"
-                onClick={() => {
-                  handleCopy()
-                }}
-              >
-                <Tooltip
-                  id={tooltipID}
-                  delayHideTime={250}
-                  effect="solid"
-                  borderColor="#C6CED2"
-                  bgColor="#eef0f2"
-                  position="top"
-                  tooltipChild={
-                    <div className="p-0.5 text-gray-2400">{copySuccess}</div>
-                  }
-                >
-                  <Icon
-                    color="fill-blue-1200 group-hover:fill-blue-1600 mt-1"
-                    height="20"
-                    width="20"
-                    name="copy"
-                  />
-                </Tooltip>
-              </button>
-            ) : (
-              <></>
-            )}
           </div>
           {children}
         </div>
