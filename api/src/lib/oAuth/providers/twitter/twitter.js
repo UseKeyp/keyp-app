@@ -12,7 +12,7 @@ export const TWITTER_OAUTH_URL_AUTHORIZE = `https://twitter.com/i/oauth2/authori
 
 const TWITTER_OAUTH_URL_TOKEN = `https://api.twitter.com/2/oauth2/token`
 
-const TWITTER_SCOPE = 'tweet.read users.read offline.access'
+const TWITTER_SCOPE = 'users.read'
 const TWITTER_REDIRECT_URI = APP_DOMAIN + '/redirect/twitter'
 
 const responseType = 'code'

@@ -8,7 +8,7 @@ import { NODE_OIDC } from 'src/lib/oAuth/providers/node-oidc'
 import { TWITTER } from 'src/lib/oAuth/providers/twitter'
 
 const APPROVED_LOGIN_PROVIDERS = isProdOrStaging
-  ? [CHESS, DISCORD, GOOGLE]
+  ? [CHESS, DISCORD, GOOGLE, TWITTER]
   : [CHESS, DISCORD, NODE_OIDC, GOOGLE, TWITTER]
 
 export const validateLoginRequest = ({ type }) => {

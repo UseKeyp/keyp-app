@@ -31,11 +31,13 @@ const TORUS_VERIFIER = isProdOrStaging
       DISCORD: 'keyp-discord',
       GOOGLE: 'keyp-google',
       CHESS: 'treasure-chess-prod-1',
+      TWITTER: "keyp-oauth-provider-1"
     }
   : {
       DISCORD: 'keyp-discord',
       GOOGLE: 'keyp-google',
       CHESS: 'treasure-chess-sandbox-aggregate',
+      TWITTER: "keyp-oauth-provider-1"
     }
 
 const torusUtils = new TorusUtils(
