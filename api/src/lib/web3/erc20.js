@@ -134,6 +134,6 @@ export const transferErc20 = async ({
     return tx
   } catch (e) {
     logger.error(e)
-    throw new EnvelopError(`Request failed - ${e?.message || e}`)
+    throw new EnvelopError(`Unable to transfer ERC20 - ${e?.message || e}`)
   }
 }

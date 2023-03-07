@@ -56,21 +56,27 @@ router.post('/transfers', withUser, async (req, res) => {
         throw e
       }
     } else if (tokenType === 'ERC721') {
-      tx = await transferERC721({
-        fromUser: req.ctx.user,
-        toUser: recipient,
-        tokenId,
-        tokenAddress,
-        tokenType,
-        network: req.ctx.network,
-      })
+      try {
+        tx = await transferERC721({
+          fromUser: req.ctx.user,
+          toUser: recipient,
+          tokenId,
+          tokenAddress,
+          tokenType,
+          network: req.ctx.network,
+        })
+      } catch (e) {
+        logger.error({ custom: e }, 'Error in transferErc721')
+        Sentry.captureException(e)
+        throw e
+      }
     }
-
     res.send({ status: 'SUCCESS', hash: tx.hash })
   } catch (e) {
     Sentry.captureException(e)
     logger.error({ custom: e }, 'Error in POST /transfers')
-    res.status(500).send({ status: 'FAILED', hash: '', error: e })
+    const errorAsString = e.toString()
+    res.send({ status: 'FAILED', hash: '', error: e?.message || errorAsString })
   }
 })
 
