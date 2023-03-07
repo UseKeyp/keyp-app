@@ -17,7 +17,6 @@ router.post('/transfers', withUser, async (req, res) => {
   try {
     const { toAddress, toUserId, amount, tokenAddress, tokenType, tokenId } =
       req.body
-    logger.debug({ custom: req.body }, 'req.body')
 
     // TODO: validate transfer scope
     if (!toAddress && !toUserId) throw 'Invalid recipient'
@@ -35,9 +34,6 @@ router.post('/transfers', withUser, async (req, res) => {
     }
 
     if (!['ERC20', 'ERC721'].includes(tokenType)) throw 'Invalid token type'
-
-    logger.debug({ custom: req.ctx.network }, 'req.ctx.network')
-    logger.debug({ custom: req.ctx.user }, 'req.ctx.user')
 
     let tx
     if (tokenType === 'ERC20') {
