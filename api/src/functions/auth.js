@@ -91,7 +91,7 @@ export const handler = async (event, context) => {
         ...authHandler._createSessionHeader(sessionData, csrfToken),
       },
     ]
-    logger.debug({ custom: response }, 'login() cookie')
+    // logger.debug({ custom: response }, 'login() cookie')
     return response
   }
 

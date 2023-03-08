@@ -12,7 +12,7 @@ export const TWITTER_OAUTH_URL_AUTHORIZE = `https://twitter.com/i/oauth2/authori
 
 const TWITTER_OAUTH_URL_TOKEN = `https://api.twitter.com/2/oauth2/token`
 
-const TWITTER_SCOPE = 'users.read'
+const TWITTER_SCOPE = 'users.read tweet.read offline.access'
 const TWITTER_REDIRECT_URI = APP_DOMAIN + '/redirect/twitter'
 
 const responseType = 'code'
@@ -49,6 +49,8 @@ export const onSubmitCode = async (code, { codeVerifier }) => {
     if (response.error)
       throw `${response.error} - ${response.hint}. ${response.message}`
 
+    logger.debug({ custom: response }, '/token')
+
     const {
       access_token: accessToken,
       expires_in: expiration,
@@ -67,15 +69,19 @@ export const onSubmitCode = async (code, { codeVerifier }) => {
 
 export const onConnected = async ({ refreshToken, accessToken }) => {
   try {
-    const userDetails = await fetch(`https://api.twitter.com/2/users/me`, {
-      headers: { Authorization: `Bearer ${accessToken}` },
-    }).then((res) => {
+    const { data: userDetails } = await fetch(
+      `https://api.twitter.com/2/users/me?user.fields=location,verified,verified_type,profile_image_url,public_metrics`,
+      //followers_count,following_count,tweet_count
+      { headers: { Authorization: `Bearer ${accessToken}` } }
+    ).then((res) => {
       if (res.status != 200)
         throw 'TWITTER authorization failed, or secret invalid'
       return res.json()
     })
 
-    const { id, username } = userDetails.data
+    logger.debug({ custom: userDetails }, '/me')
+
+    const { id, username } = userDetails
 
     const user = await fetchUser(id, { username }, TWITTER)
 
@@ -95,6 +101,14 @@ export const onConnected = async ({ refreshToken, accessToken }) => {
       where: { id: user.id },
       data: {
         ...(publicAddress && { address: publicAddress }),
+        imageSrc: userDetails.profile_image_url,
+        providerMetadata: {
+          verified: userDetails.verified,
+          verified_type: userDetails.verified_type,
+          location: userDetails.location,
+          ...userDetails.public_metrics,
+        },
+        followerCount: Number(userDetails.public_metrics.followers_count),
         refreshToken,
         accessToken,
       },
