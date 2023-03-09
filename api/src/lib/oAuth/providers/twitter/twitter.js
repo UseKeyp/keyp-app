@@ -13,7 +13,12 @@ export const TWITTER_OAUTH_URL_AUTHORIZE = `https://twitter.com/i/oauth2/authori
 const TWITTER_OAUTH_URL_TOKEN = `https://api.twitter.com/2/oauth2/token`
 
 const TWITTER_SCOPE = 'users.read tweet.read offline.access'
+
 const TWITTER_REDIRECT_URI = APP_DOMAIN + '/redirect/twitter'
+
+const TWITTER_BASIC_SECRET = Buffer.from(
+  `${process.env.TWITTER_CLIENT_ID}:${process.env.TWITTER_CLIENT_SECRET}`
+).toString('base64')
 
 const responseType = 'code'
 const params = {
@@ -38,7 +43,7 @@ export const onSubmitCode = async (code, { codeVerifier }) => {
       method: 'post',
       body: encodedBody,
       headers: {
-        Authorization: `Basic ${process.env.REDWOOD_ENV_TWITTER_BASIC_SECRET}`,
+        Authorization: `Basic ${TWITTER_BASIC_SECRET}`,
         'Content-Type': 'application/x-www-form-urlencoded',
       },
     }).then((res) => {
