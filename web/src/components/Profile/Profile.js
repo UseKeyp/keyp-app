@@ -67,7 +67,7 @@ const Profile = () => {
         </div>
       </div>
       <Footer
-        title="test"
+        title="App"
         links={[
           {
             title: 'Docs',
