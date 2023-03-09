@@ -15,6 +15,7 @@ import { isMobile } from 'src/utils/helpers'
 function Authorize() {
   const [client, setClient] = useState({})
   const [scopes, setScopes] = useState([])
+  const [loading, setLoading] = useState(false)
   const { currentUser } = useAuth()
   const { continueInteraction } = useOAuthAuthority()
 
@@ -152,7 +153,10 @@ function Authorize() {
         </div>
         <div className="flex flex-col gap-y-4 sm:flex-row w-full items-center justify-center sm:justify-between gap-x-4 mt-8">
           <Button
-            onClick={() => continueInteraction({ type: 'abort' })}
+            onClick={() => {
+              setLoading(true)
+              continueInteraction({ type: 'abort' })
+            }}
             borderColor="border-red-1200 hover:bg-red-1200"
             fluid={isMobile}
             classNameVariant="group sm:order-1 order-2"
@@ -162,14 +166,22 @@ function Authorize() {
             </div>
           </Button>
           <Button
-            onClick={() => continueInteraction({ type: 'confirm' })}
-            variant="green"
+            type="button"
+            onClick={() => {
+              setLoading(true)
+              continueInteraction({ type: 'confirm' })
+            }}
+            variant={`${loading ? 'white' : 'green'}`}
+            textColor={!loading ? 'text-white' : 'text-gray-800'}
+            disabled={loading}
             fluid={isMobile}
-            classNameVariant="order-1 sm:order-2"
+            classNameVariant={
+              !loading
+                ? 'order-1 sm:order-2'
+                : 'order-1 sm:order-2 text-gray-800 bg-white hover:bg-white border border-gray-400'
+            }
           >
-            <div className="text-white">
-              <div className="font-bold">Confirm</div>
-            </div>
+            <div className="font-bold">Confirm</div>
           </Button>
         </div>
         <div className="text-gray-800 text-[9px] mt-8">
