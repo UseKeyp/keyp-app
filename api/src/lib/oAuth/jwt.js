@@ -15,6 +15,7 @@ import {
 import { refreshChessTokens } from 'src/lib/oAuth/providers/chess'
 import { refreshDiscordTokens } from 'src/lib/oAuth/providers/discord'
 import { refreshGoogleTokens } from 'src/lib/oAuth/providers/google'
+import { getKeypIdToken } from 'src/lib/oAuth/providers/keyp'
 
 export const getNewIdToken = async (userId) => {
   try {
@@ -26,6 +27,7 @@ export const getNewIdToken = async (userId) => {
       ({ idToken } = await refreshChessTokens(userId))
     else if (userProvider === 'GOOGLE')
       ({ idToken } = await refreshGoogleTokens(userId))
+    else if (userProvider === 'TWITTER') idToken = await getKeypIdToken(userId)
     else
       throw new AuthenticationError(
         `getNewIdToken() Unknown userProvider: ${userProvider}`

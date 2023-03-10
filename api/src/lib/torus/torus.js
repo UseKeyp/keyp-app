@@ -138,5 +138,6 @@ export const getTorusWallet = async (userId) => {
   } catch (e) {
     /* eslint-disable-next-line no-console */
     logger.error(e)
+    throw 'Unable to load wallet'
   }
 }
