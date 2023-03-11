@@ -81,7 +81,7 @@ export const getTorusPublicAddress = async (userId) => {
       torusNodePub,
       verifierDetails
     )
-    logger.debug(`getTorusPublicAddress ${publicAddress}`)
+    logger.debug(`getTorusPublicAddress() for ${userId} ${publicAddress}`)
     return publicAddress.toLowerCase()
   } catch (e) {
     logger.error(e)
@@ -90,7 +90,6 @@ export const getTorusPublicAddress = async (userId) => {
 
 export const getTorusWallet = async (userId) => {
   try {
-    // NOTE: idToken for Discord is accessToken
     const idToken = await getNewIdToken(userId)
     const { userProvider, userId: parsedUserId } = getIdentifiersFromId(userId)
     const verifier = getVerifier(userProvider)
@@ -111,7 +110,7 @@ export const getTorusWallet = async (userId) => {
 
     let verifierObject = { verifier_id: verifierId }
     let idTokenForTorus = idToken
-    if (['CHESS', 'KEYP'].includes(userProvider)) {
+    if (userProvider === 'CHESS') {
       // Use custom JWT verification method
       verifierObject = {
         verify_params: [{ verifier_id: verifierId, idtoken: idToken }],

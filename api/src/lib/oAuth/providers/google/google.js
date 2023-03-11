@@ -153,12 +153,10 @@ export const refreshGoogleTokens = async (userId) => {
 
     const {
       access_token: newAccessToken,
-      refresh_token: newRefreshToken,
       expires_in: newExpiration,
       id_token: newIdToken,
     } = response
-    if (!newAccessToken || !newRefreshToken)
-      throw 'Failed to refresh tokens from Google'
+    if (!newAccessToken) throw 'Failed to refresh tokens from Google'
 
     const newExpirationDate = getExpiration(newExpiration)
 
@@ -167,16 +165,15 @@ export const refreshGoogleTokens = async (userId) => {
       data: {
         accessToken: newAccessToken,
         accessTokenExpiration: newExpirationDate,
-        refreshToken: newRefreshToken,
       },
     })
     return {
       accessToken: newAccessToken,
       accessTokenExpiration: newExpirationDate,
-      refreshToken: newRefreshToken,
       idToken: newIdToken,
     }
   } catch (e) {
+    logger.error(e)
     throw `refreshGoogleTokens() ${e}`
   }
 }

@@ -11856,6 +11856,7 @@ __metadata:
     discord.js: ^13.6.0
     email-templates: ^9.0.0
     form-data: ^4.0.0
+    jose: ^4.13.1
     jwks-rsa: ^2.0.4
     oauth2-server-redwood: 0.3.13
     pkce-challenge: ^3.0.0
@@ -23965,6 +23966,13 @@ __metadata:
   version: 4.11.2
   resolution: "jose@npm:4.11.2"
   checksum: 12938d891f8e1396433549520c6628afe624a84cf4630036bc65091afb13f3254a9b36e646f0e3243743576d9e6565c6941b2987f2e9c22a83d181c8e4c46587
+  languageName: node
+  linkType: hard
+
+"jose@npm:^4.13.1":
+  version: 4.13.1
+  resolution: "jose@npm:4.13.1"
+  checksum: b517a38ca06601aaadcdce0ab5231b0a5969bbb9f99f37f4120e608aafb34e1a941179893d4ecedd295d122f37dac74e08f73fc723c523d7a2530928f10d3a2d
   languageName: node
   linkType: hard
 

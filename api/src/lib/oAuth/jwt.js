@@ -1,12 +1,13 @@
 import { promisify } from 'util'
 
+import * as jose from 'jose'
 import { verify as verifyJwt, decode as decodeJwt } from 'jsonwebtoken'
 import jwksClient from 'jwks-rsa'
 
 import { AuthenticationError } from '@redwoodjs/graphql-server'
 
-import { db } from 'src/lib/db'
 import { getIdentifiersFromId } from 'src/lib/db'
+import jwks from 'src/lib/jwks'
 import productionJwks from 'src/lib/oAuth/jwks'
 import {
   getChessBasicAuth,
@@ -15,7 +16,6 @@ import {
 import { refreshChessTokens } from 'src/lib/oAuth/providers/chess'
 import { refreshDiscordTokens } from 'src/lib/oAuth/providers/discord'
 import { refreshGoogleTokens } from 'src/lib/oAuth/providers/google'
-import { getKeypIdToken } from 'src/lib/oAuth/providers/keyp'
 
 export const getNewIdToken = async (userId) => {
   try {
@@ -27,7 +27,7 @@ export const getNewIdToken = async (userId) => {
       ({ idToken } = await refreshChessTokens(userId))
     else if (userProvider === 'GOOGLE')
       ({ idToken } = await refreshGoogleTokens(userId))
-    else if (userProvider === 'TWITTER') idToken = await getKeypIdToken(userId)
+    else if (userProvider === 'TWITTER') idToken = await generateIdToken(userId)
     else
       throw new AuthenticationError(
         `getNewIdToken() Unknown userProvider: ${userProvider}`
@@ -39,6 +39,40 @@ export const getNewIdToken = async (userId) => {
     console.log(e)
     throw new AuthenticationError('getNewIdToken() Unable to refresh session')
   }
+}
+
+// Generate a signed JWT from Keyp. Used for providers without a Torus Verifier eg. Twitter
+const generateIdToken = async (userId) => {
+  const alg = 'RS256'
+  const mostRecentKey = jwks.keys.find((key) => key.alg === alg)
+  if (!mostRecentKey) throw 'generateIdToken() JWK config error'
+  const kid = mostRecentKey.kid
+
+  const audience = 'urn:api-signing-service'
+  const issuer = 'https://api.usekeyp.com' //change to api
+  const keyObject = await jose.importJWK(mostRecentKey, alg)
+
+  const jwt = await new jose.SignJWT({ sub: userId })
+    .setProtectedHeader({ alg, kid })
+    .setIssuedAt()
+    .setIssuer(issuer)
+    .setAudience(audience)
+    .setExpirationTime('2m')
+    .sign(keyObject)
+
+  // NOTE: Leave for debugging purposes
+  // const JWKS = jose.createRemoteJWKSet(
+  //   new URL(
+  //     'https://gist.githubusercontent.com/pi0neerpat/1e03942f7ccb58a2a6dd2ee33caa38b5/raw/5fb6c74cf82f6148750f970829bc590008bdce33/keyp%2520dev%2520jwks.json'
+  //   )
+  // )
+  // const { payload, protectedHeader } = await jose.jwtVerify(jwt, JWKS, {
+  //   issuer,
+  //   audience,
+  // })
+  // console.log(protectedHeader)
+  // console.log(payload)
+  return jwt
 }
 
 // NOTE: below is unused from Chess
@@ -70,7 +104,7 @@ export const verifyChessJwt = async (jwt) => {
   const decoded = verifyJwt(
     idToken,
     pubKey,
-    { algorithms: ['RS256'] },
+    { algs: ['RS256'] },
     (err, _decoded) => {
       if (err) throw err
       return _decoded
