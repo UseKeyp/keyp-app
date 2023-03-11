@@ -32,7 +32,6 @@ export const getNewIdToken = async (userId) => {
       throw new AuthenticationError(
         `getNewIdToken() Unknown userProvider: ${userProvider}`
       )
-
     return idToken
   } catch (e) {
     /* eslint-disable-next-line no-console */

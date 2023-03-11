@@ -17,7 +17,7 @@ export const getGasSettings = async ({ network }) => {
     })
     if (!res?.fast?.maxFee)
       return logger.error(`Can't get gas settings for ${network}`)
-    logger.debug({ custom: res }, 'gasstation response')
+    // logger.debug({ custom: res }, 'gasstation response')
     maxFeePerGas = parseUnits(Math.ceil(res.fast.maxFee) + '', 'gwei')
     maxPriorityFeePerGas = parseUnits(
       Math.ceil(res.fast.maxPriorityFee) + '',

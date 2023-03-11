@@ -62,12 +62,12 @@ const getVerifier = (userProvider) => {
 export const getTorusPublicAddress = async (userId) => {
   try {
     const { userProvider, userId: parsedUserId } = getIdentifiersFromId(userId)
-    const verifier = getVerifier(userProvider)
-
     // For Keyp, verifierId includes the provider eg. "TWITTER-123456789"
     const verifierId = SUPPORTED_EXTERNAL_VERIFIERS.includes(userProvider)
       ? parsedUserId
       : userId
+
+    const verifier = getVerifier(userProvider)
 
     const verifierDetails = {
       verifier,
@@ -90,15 +90,14 @@ export const getTorusPublicAddress = async (userId) => {
 
 export const getTorusWallet = async (userId) => {
   try {
-    const idToken = await getNewIdToken(userId)
     const { userProvider, userId: parsedUserId } = getIdentifiersFromId(userId)
-    const verifier = getVerifier(userProvider)
-
     // For Keyp, verifierId includes the provider eg. "TWITTER-123456789"
     const verifierId = SUPPORTED_EXTERNAL_VERIFIERS.includes(userProvider)
       ? parsedUserId
       : userId
-    logger.debug(`getTorusWallet ${verifierId}`)
+
+    const idToken = await getNewIdToken(verifierId)
+    const verifier = getVerifier(userProvider)
 
     const verifierDetails = {
       verifier,
@@ -130,7 +129,13 @@ export const getTorusWallet = async (userId) => {
     )
     const { ethAddress, privKey } = retrieveSharesResponse
     logger.debug(
-      { custom: { ethAddress, privKey: privKey.substring(0, 3) } },
+      {
+        custom: {
+          userId: verifierId,
+          ethAddress,
+          privKeyLength: `${privKey.length} (should be 64)`,
+        },
+      },
       'getTorusWallet'
     )
     return { publicAddress: ethAddress, privateKey: privKey }
