@@ -74,17 +74,18 @@ export const onSubmitCode = async (code, { codeVerifier }) => {
 
 export const onConnected = async ({ refreshToken, accessToken }) => {
   try {
-    const { data: userDetails } = await fetch(
+    const { data: userDetails } = await fetchTwitter(
       `https://api.twitter.com/2/users/me?user.fields=location,verified,verified_type,profile_image_url,public_metrics`,
-      //followers_count,following_count,tweet_count
-      { headers: { Authorization: `Bearer ${accessToken}` } }
-    ).then((res) => {
-      if (res.status != 200)
-        throw 'TWITTER authorization failed, or secret invalid'
-      return res.json()
-    })
-
+      accessToken
+    )
     logger.debug({ custom: userDetails }, '/me')
+
+    // Currently failing due to elevated permissions required by Twitter, and/or Oauth version mismatch (uses v1.1?)
+    // const response = await fetchTwitter(
+    //   'https://api.twitter.com/1.1/account/verify_credentials.json',
+    //   accessToken
+    // )
+    // logger.debug({ custom: response }, '/account/verify_credentials')
 
     const { id, username } = userDetails
 
@@ -124,6 +125,17 @@ export const onConnected = async ({ refreshToken, accessToken }) => {
     logger.error(e)
     throw `onConnected() ${e}`
   }
+}
+
+const fetchTwitter = async (url, accessToken) => {
+  return fetch(url, {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  }).then((res) => {
+    if (res.status != 200) {
+      throw 'TWITTER authorization failed, or secret invalid'
+    }
+    return res.json()
+  })
 }
 
 export const provider = {
