@@ -105,7 +105,7 @@ export const verifyChessJwt = async (jwt) => {
   const decoded = verifyJwt(
     idToken,
     pubKey,
-    { algs: ['RS256'] },
+    { algorithms: ['RS256'] },
     (err, _decoded) => {
       if (err) throw err
       return _decoded
