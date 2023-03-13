@@ -94,7 +94,7 @@ export const transferErc20 = async ({
     let balance
     if (
       tokenAddress.toLowerCase() ===
-      USDC_DATA_BY_NETWORK[network].address.toLowerCase()
+      USDC_DATA_BY_NETWORK[network]?.address.toLowerCase()
     ) {
       // USDC Error messaging
       amountBn = parseUnits(amount, USDC_DATA_BY_NETWORK[network].decimals)

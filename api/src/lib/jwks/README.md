@@ -24,6 +24,6 @@ To manually decrypt run `node tasks/environment/setupJwks`
 npx oauth2-server-redwood
 ```
 
-2. Place the output in `/api/src/lib/jwks`
+2. Place the output in `/api/src/lib/jwks`, and rename to the appropriate environment eg. `jwks.dev.js`
 
 3. Encrypt using `node tasks/environment/encrypt`

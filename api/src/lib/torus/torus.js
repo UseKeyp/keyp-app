@@ -26,16 +26,20 @@ const config = isProdOrStaging
     }
 const nodeDetailManager = new NodeDetailManager(config)
 
+const SUPPORTED_EXTERNAL_VERIFIERS = ['DISCORD', 'GOOGLE', 'CHESS']
+
 const TORUS_VERIFIER = isProdOrStaging
   ? {
       DISCORD: 'keyp-discord',
       GOOGLE: 'keyp-google',
       CHESS: 'treasure-chess-prod-1',
+      KEYP: 'keyp-oauth-provider-1',
     }
   : {
       DISCORD: 'keyp-discord',
       GOOGLE: 'keyp-google',
       CHESS: 'treasure-chess-sandbox-aggregate',
+      KEYP: 'keyp-oauth-provider-1',
     }
 
 const torusUtils = new TorusUtils(
@@ -48,7 +52,9 @@ const torusUtils = new TorusUtils(
 )
 
 const getVerifier = (userProvider) => {
-  const verifier = TORUS_VERIFIER[userProvider]
+  let verifier = TORUS_VERIFIER.KEYP
+  if (SUPPORTED_EXTERNAL_VERIFIERS.includes(userProvider))
+    verifier = TORUS_VERIFIER[userProvider]
   if (!verifier) throw new Error(`No verifier for ${userProvider}`)
   return verifier
 }
@@ -56,11 +62,16 @@ const getVerifier = (userProvider) => {
 export const getTorusPublicAddress = async (userId) => {
   try {
     const { userProvider, userId: parsedUserId } = getIdentifiersFromId(userId)
+    // For Keyp, verifierId includes the provider eg. "TWITTER-123456789"
+    const verifierId = SUPPORTED_EXTERNAL_VERIFIERS.includes(userProvider)
+      ? parsedUserId
+      : userId
+
     const verifier = getVerifier(userProvider)
-    /* eslint-disable camelcase */
+
     const verifierDetails = {
       verifier,
-      verifierId: parsedUserId,
+      verifierId,
     }
     const { torusNodeEndpoints, torusNodePub } =
       await nodeDetailManager.getNodeDetails(verifierDetails)
@@ -70,7 +81,7 @@ export const getTorusPublicAddress = async (userId) => {
       torusNodePub,
       verifierDetails
     )
-    logger.debug(`getTorusPublicAddress ${publicAddress}`)
+    logger.debug(`getTorusPublicAddress() for ${userId} ${publicAddress}`)
     return publicAddress.toLowerCase()
   } catch (e) {
     logger.error(e)
@@ -79,27 +90,31 @@ export const getTorusPublicAddress = async (userId) => {
 
 export const getTorusWallet = async (userId) => {
   try {
-    // NOTE: idToken for Discord is accessToken
-    const idToken = await getNewIdToken(userId)
     const { userProvider, userId: parsedUserId } = getIdentifiersFromId(userId)
+    // For Keyp, verifierId includes the provider eg. "TWITTER-123456789"
+    const verifierId = SUPPORTED_EXTERNAL_VERIFIERS.includes(userProvider)
+      ? parsedUserId
+      : userId
+
+    const idToken = await getNewIdToken(verifierId)
     const verifier = getVerifier(userProvider)
-    logger.debug(`getTorusWallet ${parsedUserId}`)
+
     const verifierDetails = {
       verifier,
-      verifierId: parsedUserId,
+      verifierId,
     }
 
     const { torusNodeEndpoints, torusIndexes } =
       await nodeDetailManager.getNodeDetails(verifierDetails)
 
-    let verifierObject = { verifier_id: parsedUserId }
+    let verifierObject = { verifier_id: verifierId }
     let idTokenForTorus = idToken
     if (userProvider === 'CHESS') {
       // Use custom JWT verification method
       verifierObject = {
-        verify_params: [{ verifier_id: parsedUserId, idtoken: idToken }],
+        verify_params: [{ verifier_id: verifierId, idtoken: idToken }],
         sub_verifier_ids: ['chess'],
-        verifier_id: parsedUserId,
+        verifier_id: verifierId,
       }
       idTokenForTorus = keccak256(idToken)
       idTokenForTorus = idTokenForTorus.substring(2)
@@ -113,10 +128,20 @@ export const getTorusWallet = async (userId) => {
       idTokenForTorus
     )
     const { ethAddress, privKey } = retrieveSharesResponse
-    logger.debug({ custom: { ethAddress, privKey } }, 'getTorusWallet')
+    logger.debug(
+      {
+        custom: {
+          userId: verifierId,
+          ethAddress,
+          privKeyLength: `${privKey.length} (should be 64)`,
+        },
+      },
+      'getTorusWallet'
+    )
     return { publicAddress: ethAddress, privateKey: privKey }
   } catch (e) {
     /* eslint-disable-next-line no-console */
     logger.error(e)
+    throw 'Unable to load wallet'
   }
 }

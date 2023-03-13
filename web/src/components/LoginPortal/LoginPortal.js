@@ -126,6 +126,23 @@ const LoginPortal = () => {
           </div>
         </Button>
         <Button
+          onClick={() => onSubmitSignUp('TWITTER')}
+          classNameVariant="hover:bg-[#4285F4] hover:border-[#4285F4] sm:w-[320px]"
+          borderColor="border-[#E5E7EB]"
+          fluid={true}
+          position="start"
+          alt="twitter"
+        >
+          <div className="group flex flex-row items-center gap-x-6 hover:text-white sm:gap-x-4">
+            <div className="flex pl-1.5">
+              <Icon height="24" name="twitter" />
+            </div>
+            <div className="flex font-light text-gray-1200 group-hover:text-white">
+              Twitter
+            </div>
+          </div>
+        </Button>
+        <Button
           onClick={() => onSubmitSignUp('CHESS')}
           disabled={loading === 'CHESS'}
           classNameVariant={`${

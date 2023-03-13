@@ -40,12 +40,14 @@ if (process.env.ENVIRONMENT === 'dev') {
   })
 }
 
+const API_URL =
+  process.env.REDWOOD_API_URL || `${APP_DOMAIN}/.redwood/functions`
+
 export const handler = serverless(
   oauth2Server(db, {
     SECURE_KEY: process.env.OAUTH_SECRET_KEY,
-    ISSUER_URL: APP_DOMAIN,
-    REDWOOD_API_URL:
-      process.env.REDWOOD_API_URL || `${APP_DOMAIN}/.redwood/functions`,
+    ISSUER_URL: API_URL,
+    REDWOOD_API_URL: API_URL,
     INTROSPECTION_SECRET: process.env.INTROSPECTION_SECRET,
     routes: { login: '/login', authorize: '/authorize' },
     jwks,
