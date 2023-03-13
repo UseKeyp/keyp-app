@@ -9,6 +9,7 @@ import { AuthenticationError } from '@redwoodjs/graphql-server'
 import { getIdentifiersFromId } from 'src/lib/db'
 import jwks from 'src/lib/jwks'
 import productionJwks from 'src/lib/oAuth/jwks'
+import { LOGIN_ENABLED_PROVIDERS } from 'src/lib/oAuth/providers'
 import {
   getChessBasicAuth,
   CHESS_OAUTH_URL,
@@ -27,7 +28,8 @@ export const getNewIdToken = async (userId) => {
       ({ idToken } = await refreshChessTokens(userId))
     else if (userProvider === 'GOOGLE')
       ({ idToken } = await refreshGoogleTokens(userId))
-    else if (userProvider === 'TWITTER') idToken = await generateIdToken(userId)
+    else if (LOGIN_ENABLED_PROVIDERS.includes(userProvider))
+      idToken = await generateIdToken(userId)
     else
       throw new AuthenticationError(
         `getNewIdToken() Unknown userProvider: ${userProvider}`
