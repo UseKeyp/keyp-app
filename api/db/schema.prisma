@@ -26,6 +26,8 @@ model User {
   createdAt             DateTime              @default(now())
   updatedAt             DateTime              @updatedAt
   mfa_enabled           Boolean?
+  providerMetadata      Json?
+  followerCount         Int?
   imageSrc              String? // Avatar URL
   country               String? // Player's country  eg. US, DE
   mintCredits           Int                   @default(3) // Mint for free!

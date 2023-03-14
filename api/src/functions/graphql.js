@@ -30,17 +30,16 @@ if (isProdOrStaging) {
 
 export const handler = createGraphQLHandler({
   getCurrentUser,
-  loggerConfig: { logger, options: {} },
-  // loggerConfig: {
-  //   logger,
-  //   options: {
-  //     tracing: false,
-  //     operationName: false,
-  //     query: false,
-  //     data: false,
-  //     excludeOperations: ['gamesWithFilter'],
-  //   },
-  // },
+  loggerConfig: {
+    logger,
+    options: {
+      requestId: false,
+      tracing: false,
+      data: false,
+      operationName: false,
+      query: false,
+    },
+  },
   directives,
   sdls,
   services,

@@ -15,6 +15,7 @@ export const AVAILABLE_NETWORKS = [
   'arbitrum',
   'arbitrum-nova',
   'optimism',
+  'sepolia',
 ]
 
 const RPC_BY_NAME = {
@@ -26,6 +27,7 @@ const RPC_BY_NAME = {
   optimism: process.env.RPC_OPTIMISM,
   arbitrum: process.env.RPC_ARBITRUM,
   'arbitrum-nova': process.env.RPC_ARBITRUM_NOVA,
+  sepolia: process.env.RPC_SEPOLIA,
 }
 
 const getProviderByName = (name) => {

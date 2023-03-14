@@ -58,7 +58,7 @@ export const transferERC721 = async ({
     return tx
   } catch (e) {
     logger.error(e)
-    throw new EnvelopError(`Unable to transfer ERC721 - ${e.message}`)
+    throw new EnvelopError(`Unable to transfer ERC721 - ${e.message || e}`)
   }
 }
 
