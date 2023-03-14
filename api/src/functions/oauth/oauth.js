@@ -31,7 +31,10 @@ export let clients = [
 if (process.env.ENVIRONMENT === 'dev') {
   clients.push({
     client_id: 'test-client',
-    redirect_uris: devPortalRedirectUris,
+    redirect_uris: [
+      ...devPortalRedirectUris,
+      `http://localhost:4000/redirect/keyp`,
+    ],
     tos_uri: 'http://0.0.0.0:8910/tos',
     logo_uri: 'http://0.0.0.0:8910/favicon.png',
     client_uri: 'http://0.0.0.0:8910',
