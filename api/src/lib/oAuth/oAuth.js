@@ -58,11 +58,11 @@ export const oAuthUrl = async (type, stateExtraData, user) => {
 
 export const processCodeGrant = async ({ state, code, type, _accountId }) => {
   try {
-    logger.debug(`code grant - ${type}`)
+    // logger.debug(`code grant - ${type}`)
     if (!types.includes(type)) throw `Unknown OAuth Provider - ${type}`
 
     const tokens = await submitCodeGrant({ state, code, type })
-    logger.debug({ custom: tokens }, 'onSubmitCode() response')
+    // logger.debug({ custom: tokens }, 'onSubmitCode() response')
     return providers[type].onConnected(tokens)
   } catch (e) {
     logger.error(e)

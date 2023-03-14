@@ -1,5 +1,6 @@
 import fetch from 'node-fetch'
 
+import { clients } from 'src/functions/oauth/oauth'
 import { getIdentifiersFromId, db } from 'src/lib/db'
 import { logger } from 'src/lib/logger'
 
@@ -32,16 +33,19 @@ export const validateToken = (settings) => async (req, res, next) => {
 
     let client
     // Inject client details
-    try {
-      client = await db.oidc.findUnique({
-        where: { id_type: { id: response.client_id, type: 7 } },
-      })
-    } catch (e) {
-      next(
-        new Error(
-          "No client found. Are you sure you're using a generated client and not the dev-portal client?"
+    client = clients.find((c) => c.id === response.clientId)
+    if (!client) {
+      try {
+        client = await db.oidc.findUnique({
+          where: { id_type: { id: response.client_id, type: 7 } },
+        })
+      } catch (e) {
+        next(
+          new Error(
+            "No client found. Are you sure you're using a generated client and not the dev-portal client?"
+          )
         )
-      )
+      }
     }
 
     req.ctx = {

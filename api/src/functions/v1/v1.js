@@ -2,7 +2,6 @@ import serverless from 'serverless-http'
 
 import { db } from 'src/lib/db'
 import { APP_DOMAIN } from 'src/lib/helpers'
-import { logger } from 'src/lib/logger'
 
 import publicApi from './api'
 

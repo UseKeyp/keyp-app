@@ -1,18 +1,18 @@
 import { parseUnits } from '@ethersproject/units'
 import fetch from 'cross-fetch'
 
-import { isProdOrStaging } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
+
+const GAS_STATION_URLS = {
+  polygon: 'https://gasstation-mainnet.matic.network/v2',
+  mumbai: 'https://gasstation-mumbai.matic.today/v2',
+}
 
 export const getGasSettings = async ({ network }) => {
   let maxFeePerGas = parseUnits('40', 'gwei') // fallback to 40 gwei
   let maxPriorityFeePerGas = parseUnits('40', 'gwei') // fallback to 40 gwei
   try {
-    const res = await fetch(
-      isProdOrStaging
-        ? 'https://gasstation-mainnet.matic.network/v2'
-        : 'https://gasstation-mumbai.matic.today/v2'
-    ).then((res) => {
+    const res = await fetch(GAS_STATION_URLS[network]).then((res) => {
       return res.json()
     })
     if (!res?.fast?.maxFee)
