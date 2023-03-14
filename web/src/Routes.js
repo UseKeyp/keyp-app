@@ -1,6 +1,7 @@
 import { Set, Router, Route, Private } from '@redwoodjs/router'
 
 import DefaultLayout from 'src/layouts/DefaultLayout'
+import HeaderAndFooterDefaultLayout from 'src/layouts/HeaderAndFooterLayout/HeaderAndFooterDefaultLayout'
 import AllContextProviders from 'src/providers'
 
 import AppUrlListener from './utils/AppUrlListener'
@@ -10,15 +11,17 @@ const Routes = () => {
     <Router>
       <AllContextProviders>
         <AppUrlListener />
+        <Set wrap={HeaderAndFooterDefaultLayout}>
+          <Route path="/redirect/{type}" page={RedirectPage} name="redirect" />
+          <Route notfound page={NotFoundPage} />
+        </Set>
         <Route path="/restricted" page={RestrictedPage} name="restricted" />
-        <Route path="/redirect/{type}" page={RedirectPage} name="redirect" />
         <Set wrap={DefaultLayout}>
-          <Private unauthenticated="login">
+          <Private wrap={HeaderAndFooterDefaultLayout} unauthenticated="login">
             <Route path="/profile" page={ProfilePage} name="profile" />
             <Route path="/" page={HomePage} name="home" />
           </Private>
           <Route path="/login" page={LoginPage} name="login" />
-          <Route notfound page={NotFoundPage} />
           <Private unauthenticated="login">
             <Route path="/authorize" page={AuthorizePage} name="authorize" />
             {/*<Route path="/wallet" page={WalletPage} name="wallet" />*/}
