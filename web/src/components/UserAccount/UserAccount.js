@@ -80,7 +80,7 @@ export function getProviderIconFromCurrentUser(currentUser) {
 const UserAccount = ({ currentUser, logOut }) => {
   return (
     <div
-      className={`my-auto flex flex-row items-center justify-between gap-x-16 rounded-md border border-gray-400 p-2 ${
+      className={`my-auto flex w-full sm:w-auto flex-row items-center justify-between gap-x-16 rounded-md border border-gray-400 p-2 ${
         currentUser?.username ? 'sm:gap-x-4' : 'sm:gap-x-2'
       }`}
     >
