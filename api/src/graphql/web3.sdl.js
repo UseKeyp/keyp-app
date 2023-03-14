@@ -38,6 +38,5 @@ export const schema = gql`
     bsc
     "bsc-testnet"
     mainnet
-    polygon
   }
 `
