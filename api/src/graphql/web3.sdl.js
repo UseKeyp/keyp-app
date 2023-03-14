@@ -1,7 +1,8 @@
 export const schema = gql`
   type TransferResponse {
     status: TransferStatus!
-    hash: String!
+    hash: String
+    error: String
   }
   type Mutation {
     transferErc721(
@@ -22,6 +23,7 @@ export const schema = gql`
       network: Network!
     ): TransferResponse! @requireAuth
   }
+
   enum TransferStatus {
     SUCCESS
     FAILED
@@ -36,5 +38,6 @@ export const schema = gql`
     bsc
     "bsc-testnet"
     mainnet
+    polygon
   }
 `

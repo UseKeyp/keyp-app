@@ -15,44 +15,64 @@ var router = express.Router()
 
 router.post('/transfers', withUser, async (req, res) => {
   try {
-    const { toAddress, toUserId, amount, tokenAddress, tokenType } = req.body
+    const { toAddress, toUserId, amount, tokenAddress, tokenType, tokenId } =
+      req.body
 
     // TODO: validate transfer scope
     if (!toAddress && !toUserId) throw 'Invalid recipient'
-    if (!amount) throw 'Invalid amount'
+    if (!amount && tokenType === 'ERC20') throw 'Invalid amount'
+    if (!tokenId && tokenType === 'ERC721') throw 'Invalid tokenId'
     if (!tokenAddress) throw 'Invalid token address'
     if (!tokenType) throw 'Invalid token type'
 
-    const recipient = await fetchUser(toUserId || toAddress)
+    let recipient
+    try {
+      recipient = await fetchUser(toUserId || toAddress)
+    } catch (e) {
+      logger.debug(e)
+      throw 'Recipient not found'
+    }
 
     if (!['ERC20', 'ERC721'].includes(tokenType)) throw 'Invalid token type'
 
     let tx
     if (tokenType === 'ERC20') {
-      tx = await transferErc20({
-        fromUser: req.ctx.user,
-        toUser: recipient,
-        amount,
-        tokenAddress,
-        tokenType,
-        network: req.ctx.network,
-      })
+      try {
+        tx = await transferErc20({
+          fromUser: req.ctx.user,
+          toUser: recipient,
+          amount,
+          tokenAddress,
+          tokenType,
+          network: req.ctx.network,
+        })
+      } catch (e) {
+        logger.error({ custom: e }, 'Error in transferErc20')
+        Sentry.captureException(e)
+        throw e
+      }
     } else if (tokenType === 'ERC721') {
-      tx = await transferERC721({
-        fromUser: req.ctx.user,
-        toUser: recipient,
-        amount,
-        tokenAddress,
-        tokenType,
-        network: req.ctx.network,
-      })
+      try {
+        tx = await transferERC721({
+          fromUser: req.ctx.user,
+          toUser: recipient,
+          tokenId,
+          tokenAddress,
+          tokenType,
+          network: req.ctx.network,
+        })
+      } catch (e) {
+        logger.error({ custom: e }, 'Error in transferErc721')
+        Sentry.captureException(e)
+        throw e
+      }
     }
-
-    res.send({ tx })
+    res.send({ status: 'SUCCESS', hash: tx.hash })
   } catch (e) {
     Sentry.captureException(e)
     logger.error({ custom: e }, 'Error in POST /transfers')
-    res.status(500).send({ error: e })
+    const errorAsString = e.toString()
+    res.send({ status: 'FAILED', hash: '', error: e?.message || errorAsString })
   }
 })
 

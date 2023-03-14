@@ -90,13 +90,18 @@ export const onConnected = async ({ accessToken }) => {
 
     const user = await fetchUser(
       userDetails.sub,
-      { email: userDetails.email, accessToken },
+      { username: userDetails.email, email: userDetails.email, accessToken },
       NODE_OIDC
     )
 
     await db.user.update({
       where: { id: user.id },
-      data: { email: userDetails.email, accessToken },
+      data: {
+        address: '0x000000000000000000000000void',
+        username: userDetails.email,
+        email: userDetails.email,
+        accessToken,
+      },
     })
 
     return user

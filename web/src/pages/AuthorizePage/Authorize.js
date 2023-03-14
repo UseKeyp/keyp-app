@@ -10,10 +10,12 @@ import {
   getProviderIconFromCurrentUser,
 } from 'src/components/UserAccount/UserAccount'
 import { useOAuthAuthority } from 'src/providers/oAuthAuthority'
+import { isMobile } from 'src/utils/helpers'
 
 function Authorize() {
   const [client, setClient] = useState({})
   const [scopes, setScopes] = useState([])
+  const [loading, setLoading] = useState(false)
   const { currentUser } = useAuth()
   const { continueInteraction } = useOAuthAuthority()
 
@@ -62,6 +64,8 @@ function Authorize() {
     switch (scope) {
       case 'email':
         return <Icon height="12" width="16" name="email_icon" />
+      case 'wallet':
+        return <Icon height="12" width="16" name="silhouette_head_and_body" />
       default:
         return ''
     }
@@ -77,13 +81,15 @@ function Authorize() {
         return 'Profile'
       case 'email':
         return 'Your Email Address'
+      case 'wallet':
+        return 'Your Wallet Address'
       default:
         return scope
     }
   }
 
   return (
-    <div className="flex flex-col justify-center items-center h-screen align-middle">
+    <div className="flex flex-col justify-center sm:items-center h-screen align-middle w-full">
       <div className="flex flex-col items-start border border-gray-800 max-w-2xl p-4 rounded-lg">
         <div className="flex flex-row w-full justify-between items-center">
           <div className="flex items-center gap-x-1">
@@ -117,7 +123,7 @@ function Authorize() {
                 />
               </div>
             ) : (
-              <Icon name="fallback" />
+              <></>
             )}
             <div className="flex flex-col">
               <div className="text-[24px] font-bold text-gray-2400">
@@ -129,7 +135,7 @@ function Authorize() {
             </div>
           </div>
           <div className="flex font-light text-[16px] text-gray-1600 items-start mt-2">
-            {client.redirectUrl} wants the following permissions
+            {client.redirectUrl} wants access to the following:
           </div>
         </div>
         <div className="flex flex-col w-full text-lg font-light text-gray-1600 mb-4 mt-4">
@@ -145,23 +151,37 @@ function Authorize() {
             ))}
           </ul>
         </div>
-        <div className="flex w-full justify-center md:justify-between gap-x-4 mt-8">
+        <div className="flex flex-col gap-y-4 sm:flex-row w-full items-center justify-center sm:justify-between gap-x-4 mt-8">
           <Button
-            onClick={() => continueInteraction({ type: 'abort' })}
+            onClick={() => {
+              setLoading(true)
+              continueInteraction({ type: 'abort' })
+            }}
             borderColor="border-red-1200 hover:bg-red-1200"
-            classNameVariant="group"
+            fluid={isMobile}
+            classNameVariant="group sm:order-1 order-2"
           >
             <div className="text-red-1200 group-hover:text-white font-bold">
               Cancel
             </div>
           </Button>
           <Button
-            onClick={() => continueInteraction({ type: 'confirm' })}
-            variant="green"
+            type="button"
+            onClick={() => {
+              setLoading(true)
+              continueInteraction({ type: 'confirm' })
+            }}
+            variant={`${loading ? 'white' : 'green'}`}
+            textColor={!loading ? 'text-white' : 'text-gray-800'}
+            disabled={loading}
+            fluid={isMobile}
+            classNameVariant={
+              !loading
+                ? 'order-1 sm:order-2'
+                : 'order-1 sm:order-2 text-gray-800 bg-white hover:bg-white border border-gray-400'
+            }
           >
-            <div className="text-white">
-              <div className="font-bold">Confirm</div>
-            </div>
+            <div className="font-bold">Confirm</div>
           </Button>
         </div>
         <div className="text-gray-800 text-[9px] mt-8">
