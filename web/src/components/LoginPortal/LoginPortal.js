@@ -182,6 +182,35 @@ const LoginPortal = () => {
             </div>
           </div>
         </Button>
+        <Button
+          onClick={() => onSubmitSignUp('TWITCH')}
+          disabled={loading === 'TWITCH'}
+          classNameVariant={`${
+            loading === 'TWITCH'
+              ? 'bg-[#5865F2] border-[#5865F2] sm:w-[320px]'
+              : 'hover:bg-[#5865F2] hover:border-[#5865F2] sm:w-[320px]'
+          }`}
+          borderColor="border-[#E5E7EB]"
+          fluid={true}
+          position="start"
+          alt="discord"
+        >
+          <div className="group flex flex-row gap-x-4 hover:text-white">
+            <div className="flex pl-2">
+              <Icon height="24" width="24" loading={loading} name="twitch" />
+            </div>
+            <div
+              className={`${
+                loading === 'TWITCH'
+                  ? 'flex font-light text-white'
+                  : 'flex font-light text-gray-1200 group-hover:text-white'
+              }`}
+            >
+              {' '}
+              Twitch
+            </div>
+          </div>
+        </Button>
         {!['staging', 'prod'].includes(process.env.ENVIRONMENT) ? (
           <Button
             onClick={() => onSubmitSignUp('NODE_OIDC')}
