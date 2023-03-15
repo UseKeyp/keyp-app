@@ -1031,21 +1031,42 @@ const TreasureChessFull = ({ height = 13 }) => (
     />
   </svg>
 )
-const ArrowUp = () => (
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    height="30"
-    width="30"
-    viewBox="0 0 20 20"
-    fill="#312E2B"
-  >
-    <path
-      fillRule="evenodd"
-      d="M3.293 9.707a1 1 0 010-1.414l6-6a1 1 0 011.414 0l6 6a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L4.707 9.707a1 1 0 01-1.414 0z"
-      clipRule="evenodd"
-    />
-  </svg>
-)
+const ArrowUp = ({ height, width }) => {
+  return (
+    <svg
+      width={width}
+      height={height}
+      viewBox="0 0 15 8"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M0.333374 6.71849L7.33338 -3.57351e-08L14.3334 6.71849L12.9982 8L7.33338 2.56302L1.66858 8L0.333374 6.71849Z"
+        fill="#B0B6C1"
+      />
+    </svg>
+  )
+}
+const ArrowDown = ({ height, width }) => {
+  return (
+    <svg
+      width={width}
+      height={height}
+      viewBox="0 0 14 8"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M14 1.28151L7 8L-5.60165e-08 1.28151L1.3352 -5.53596e-07L7 5.43698L12.6648 -5.83637e-08L14 1.28151Z"
+        fill="#B0B6C1"
+      />
+    </svg>
+  )
+}
 const FeatherBook = () => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
@@ -1114,18 +1135,50 @@ const Coinbase = ({ color = '#fff', ...rest }) => (
     />
   </svg>
 )
-const Twitter = ({ height = 10, width = 12 }) => {
+const Twitter = ({ height = 24, width = 24, loading }) => {
   return (
     <svg
       width={width}
       height={height}
       viewBox="0 0 12 10"
+      className={`${
+        loading?.includes('TWITTER')
+          ? 'overflow-visible fill-white'
+          : 'overflow-visible group-hover:fill-white'
+      }`}
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
         d="M12 1.1544C11.5585 1.35024 11.084 1.48254 10.586 1.54206C11.0943 1.23738 11.4847 0.754922 11.6685 0.180001C11.1928 0.462181 10.6659 0.66702 10.1051 0.777421C9.65604 0.29892 9.01619 0 8.30807 0C6.94847 0 5.84609 1.10226 5.84609 2.46186C5.84609 2.65482 5.86787 2.84275 5.90987 3.02293C3.86375 2.92027 2.0497 1.9401 0.835421 0.4506C0.623501 0.814201 0.50206 1.23708 0.50206 1.68828C0.50206 2.54244 0.936701 3.29598 1.5973 3.73747C1.19374 3.72469 0.814121 3.61393 0.4822 3.42955C0.48192 3.43981 0.481921 3.45012 0.481921 3.46051C0.481921 4.65331 1.33056 5.64829 2.45682 5.87461C2.25024 5.93089 2.03274 5.96095 1.80822 5.96095C1.64958 5.96095 1.49538 5.94547 1.34502 5.91679C1.65834 6.89485 2.56752 7.60663 3.64489 7.62643C2.8023 8.28679 1.74078 8.68039 0.587281 8.68039C0.388561 8.68039 0.192601 8.6687 0 8.64596C1.08954 9.34454 2.38362 9.75212 3.77395 9.75212C8.30233 9.75212 10.7787 6.00073 10.7787 2.74728C10.7787 2.64054 10.7763 2.5344 10.7716 2.42874C11.2525 2.0817 11.6699 1.64814 12 1.1544H12Z"
-        fill="#1DA1F2"
+        className={`${
+          loading?.includes('TWITTER')
+            ? 'overflow-visible fill-white'
+            : 'overflow-visible fill-[#1DA1F2] group-hover:fill-white'
+        }`}
+      />
+    </svg>
+  )
+}
+
+const TwitchLogoPurple = ({ height = 24, width = 24, loading }) => {
+  return (
+    <svg
+      width={width}
+      height={height}
+      viewBox="0 0 21 24"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        fillRule="evenodd"
+        clipRule="evenodd"
+        d="M4.28571 0L0 4.28571V19.7143H5.14286V24L9.42857 19.7143H12.8571L20.5714 12V0H4.28571ZM18.8571 11.1429L15.4286 14.5714H12L9 17.5714V14.5714H5.14286V1.71429H18.8571V11.1429ZM16.2856 4.71429H14.5713V9.85714H16.2856V4.71429ZM9.85742 4.71429H11.5717V9.85714H9.85742V4.71429Z"
+        className={`${
+          loading?.includes('TWITCH')
+            ? 'overflow-visible fill-white'
+            : 'overflow-visible group-hover:fill-white fill-[#9146FF]'
+        }`}
       />
     </svg>
   )
@@ -1580,6 +1633,8 @@ export default {
   facebook: Facebook,
   google: Google,
   arrow_up: ArrowUp,
+  arrow_down: ArrowDown,
+  twitch_logo_purple: TwitchLogoPurple,
   search: Search,
   play: Play,
   create: Create,

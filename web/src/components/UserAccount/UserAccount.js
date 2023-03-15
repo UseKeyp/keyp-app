@@ -29,6 +29,12 @@ export function getStyledUsernameFromCurrentUser(currentUser, sizeVariant) {
           <div className="text-[#1DA1F2]">{currentUser?.username}</div>
         </div>
       )
+    case 'twitch':
+      return (
+        <div className={`flex ${sizeVariant || 'text-[12px]'}`}>
+          <div className="text-[#9146FF]">{currentUser?.username}</div>
+        </div>
+      )
     default:
       return (
         <div className={`flex text-gray-2000 ${sizeVariant || 'text-[12px]'}`}>
@@ -65,6 +71,12 @@ export function getProviderIconFromCurrentUser(currentUser) {
       return (
         <div className="flex">
           <Icon height="9.75" width="12" name="twitter" />
+        </div>
+      )
+    case 'twitch':
+      return (
+        <div className="flex">
+          <Icon height="9.75" width="12" name="twitch_logo_purple" />
         </div>
       )
     case 'node_oidc':

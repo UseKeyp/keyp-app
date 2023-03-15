@@ -87,12 +87,10 @@ export const onConnected = async ({
         throw 'Twitch authorization failed, or secret invalid'
       return res.json()
     })
-    logger.debug({ custom: usersList }, 'Twitch user details')
 
-    const username = usersList?.data[0]?.login
     const user = await fetchUser(
       usersList?.data[0]?.id,
-      { username: username },
+      { username: usersList?.data[0]?.login },
       TWITCH
     )
 
