@@ -12,6 +12,7 @@ const APPROVED_LOGIN_PROVIDERS = [
   'NODE_OIDC',
   'GOOGLE',
   'TWITTER',
+  'TWITCH',
 ]
 
 const saveRedirectTo = (redirect) =>
