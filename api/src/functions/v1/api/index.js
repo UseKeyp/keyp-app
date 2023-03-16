@@ -9,6 +9,8 @@ import ramps from './routes/ramps'
 import tokens from './routes/tokens'
 import users from './routes/users'
 
+const cors = require('cors')
+
 const app = (db, settings) => {
   // TODO: set cache policy
   // function cachePolicy(req, res, next) {
@@ -22,6 +24,7 @@ const app = (db, settings) => {
 
   //////////////////
   // Configuration
+  app.use(cors())
   app.set('trust proxy', true)
 
   //////////////////

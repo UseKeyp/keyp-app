@@ -23,6 +23,7 @@
     "atob": "^2.1.2",
     "bad-words": "^3.0.4",
     "chess.js": "^0.12.1",
+    "cors": "^2.8.5",
     "deepmerge": "^4.3.0",
     "email-templates": "^9.0.0",
     "form-data": "^4.0.0",
