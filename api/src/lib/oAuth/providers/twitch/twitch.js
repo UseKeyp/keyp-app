@@ -1,12 +1,12 @@
 import fetch from 'cross-fetch'
 
 import { db } from 'src/lib/db'
-import { isDevelopment } from 'src/lib/helpers'
 import { APP_DOMAIN } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
 import { encodeBody, getExpiration } from 'src/lib/oAuth/helpers'
-import { processPromotion } from 'src/lib/promotions'
 import Sentry from 'src/lib/sentry'
+import { getTorusPublicAddress } from 'src/lib/torus/torus'
+import { fetchUser } from 'src/lib/users'
 
 export const TWITCH = 'TWITCH'
 export const TWITCH_OAUTH_URL_AUTHORIZE =
@@ -15,9 +15,7 @@ export const TWITCH_OAUTH_URL_AUTHORIZE =
 const TWITCH_OAUTH_URL_TOKEN = 'https://id.twitch.tv/oauth2/token'
 const TWITCH_OAUTH_URL_REVOKE = 'https://id.twitch.tv/oauth2/revoke'
 const TWITCH_SCOPE = 'user:read:email'
-const TWITCH_REDIRECT_URI = isDevelopment
-  ? 'http://localhost:8910/redirect/twitch'
-  : APP_DOMAIN + '/redirect/twitch'
+const TWITCH_REDIRECT_URI = APP_DOMAIN + '/redirect/twitch'
 
 const responseType = 'code'
 const params = {
@@ -77,7 +75,6 @@ export const onConnected = async ({
   accessToken,
   accessTokenExpiration,
   refreshToken,
-  memberId,
 }) => {
   try {
     const usersList = await fetch(`https://api.twitch.tv/helix/users`, {
@@ -90,23 +87,39 @@ export const onConnected = async ({
         throw 'Twitch authorization failed, or secret invalid'
       return res.json()
     })
-    logger.debug({ custom: usersList }, 'Twitch user details')
-    await db.member.update({
-      where: { id: memberId },
+
+    const user = await fetchUser(
+      usersList?.data[0]?.id,
+      { username: usersList?.data[0]?.login },
+      TWITCH
+    )
+
+    let publicAddress
+    if (!user.address) {
+      try {
+        publicAddress = await getTorusPublicAddress(user.id)
+      } catch (e) {
+        /* eslint-disable no-console */
+        logger.error("Error fetching user's wallet from Torus")
+        logger.error(e)
+        /* eslint-enable no-console */
+      }
+    }
+
+    await db.user.update({
+      where: { id: user.id },
       data: {
-        twitchUsername: usersList.data[0].login,
-        oAuthConnections: {
-          create: {
-            accessToken,
-            expiration: accessTokenExpiration,
-            refreshToken,
-            type: 'TWITCH',
-          },
-        },
+        ...(publicAddress && { address: publicAddress }),
+        email: usersList?.data[0]?.email,
+        accessToken,
+        accessTokenExpiration,
+        refreshToken,
+        imageSrc: usersList?.data[0]?.profile_image_url,
+        username: usersList?.data[0]?.login,
       },
     })
-    await processPromotion('TWITCH_CONNECTION')
-    return { status: 'SUCCESS' }
+
+    return user
   } catch (e) {
     Sentry.captureException(e)
     throw `onConnected() ${e}`
@@ -118,8 +131,8 @@ export const refreshTokens = async (refreshToken) => {
   try {
     const body = {
       grant_type: 'refresh_token',
-      client_id: process.env.CHESS_CLIENT_ID,
-      client_secret: process.env.CHESS_CLIENT_SECRET,
+      client_id: process.env.TWITCH_CLIENT_ID,
+      client_secret: process.env.TWITCH_CLIENT_SECRET,
       refresh_token: refreshToken,
     }
     const encodedBody = encodeBody(body)

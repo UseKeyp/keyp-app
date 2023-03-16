@@ -271,6 +271,7 @@ enum ProviderType {
   NATIVE // WebAuthn
   ETHEREUM // Metamask
   NODE_OIDC // Test provider
+  TWITCH
 }
 
 enum OAuthConnectionType {
