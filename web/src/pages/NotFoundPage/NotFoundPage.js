@@ -3,11 +3,11 @@ import { Button } from '@usekeyp/components-soft-ui'
 import { Link, routes } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 
-import HeaderAndFooterDefaultLayout from 'src/layouts/HeaderAndFooterLayout/HeaderAndFooterDefaultLayout'
+import DefaultLayout from 'src/layouts/DefaultLayout/DefaultLayout'
 
 export default function NotFoundPage() {
   return (
-    <HeaderAndFooterDefaultLayout>
+    <DefaultLayout>
       <MetaTags title="No Go" description="Page not found" />
       <main className="flex justify-center items-center text-center">
         <section className="flex">
@@ -53,6 +53,6 @@ export default function NotFoundPage() {
           </div>
         </section>
       </main>
-    </HeaderAndFooterDefaultLayout>
+    </DefaultLayout>
   )
 }

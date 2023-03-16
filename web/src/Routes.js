@@ -1,7 +1,7 @@
-import { Set, Router, Route, Private } from '@redwoodjs/router'
+import { Router, Route, Set, Private } from '@redwoodjs/router'
 
 import DefaultLayout from 'src/layouts/DefaultLayout'
-import HeaderAndFooterDefaultLayout from 'src/layouts/HeaderAndFooterLayout/HeaderAndFooterDefaultLayout'
+import DefaultLayoutNoHeaderOrFooter from 'src/layouts/DefaultLayoutNoHeaderOrFooter/DefaultLayoutNoHeaderOrFooter'
 import AllContextProviders from 'src/providers'
 
 import AppUrlListener from './utils/AppUrlListener'
@@ -11,21 +11,19 @@ const Routes = () => {
     <Router>
       <AllContextProviders>
         <AppUrlListener />
-        <Set wrap={HeaderAndFooterDefaultLayout}>
-          <Route path="/redirect/{type}" page={RedirectPage} name="redirect" />
-          <Route notfound page={NotFoundPage} />
-        </Set>
-        <Route path="/restricted" page={RestrictedPage} name="restricted" />
-        <Set wrap={DefaultLayout}>
-          <Private wrap={HeaderAndFooterDefaultLayout} unauthenticated="login">
-            <Route path="/profile" page={ProfilePage} name="profile" />
-            <Route path="/" page={HomePage} name="home" />
-          </Private>
+        <Set wrap={DefaultLayoutNoHeaderOrFooter}>
           <Route path="/login" page={LoginPage} name="login" />
           <Private unauthenticated="login">
             <Route path="/authorize" page={AuthorizePage} name="authorize" />
-            {/*<Route path="/wallet" page={WalletPage} name="wallet" />*/}
           </Private>
+          <Set wrap={DefaultLayout}>
+            <Private unauthenticated="login">
+              <Route path="/profile" page={ProfilePage} name="profile" />
+              <Route path="/" page={HomePage} name="home" />
+            </Private>
+            <Route path="/redirect/{type}" page={RedirectPage} name="redirect" />
+            <Route notfound page={NotFoundPage} />
+          </Set>
         </Set>
       </AllContextProviders>
     </Router>
