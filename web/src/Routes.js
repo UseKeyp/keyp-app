@@ -16,14 +16,14 @@ const Routes = () => {
           <Private unauthenticated="login">
             <Route path="/authorize" page={AuthorizePage} name="authorize" />
           </Private>
-          <Set wrap={DefaultLayout}>
-            <Private unauthenticated="login">
-              <Route path="/profile" page={ProfilePage} name="profile" />
-              <Route path="/" page={HomePage} name="home" />
-            </Private>
-            <Route path="/redirect/{type}" page={RedirectPage} name="redirect" />
-            <Route notfound page={NotFoundPage} />
-          </Set>
+        </Set>
+        <Set wrap={DefaultLayout}>
+          <Private unauthenticated="login">
+            <Route path="/profile" page={ProfilePage} name="profile" />
+            <Route path="/" page={HomePage} name="home" />
+          </Private>
+          <Route path="/redirect/{type}" page={RedirectPage} name="redirect" />
+          <Route notfound page={NotFoundPage} />
         </Set>
       </AllContextProviders>
     </Router>
