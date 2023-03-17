@@ -4,12 +4,10 @@ import { MetaTags } from '@redwoodjs/web'
 import AppHeader from 'src/components/AppHeader/AppHeader'
 import Icon from 'src/components/Icon/Icon'
 import { ItemDescriptionCell } from 'src/components/ItemDescriptionCell/ItemDescriptionCell'
-import UserAccount, {
-  getStyledUsernameFromCurrentUser,
-} from 'src/components/UserAccount/UserAccount'
+import { getStyledUsernameFromCurrentUser } from 'src/components/UserAccount/UserAccount'
 
 const Profile = () => {
-  const { currentUser, isAuthenticated, logOut } = useAuth()
+  const { currentUser } = useAuth()
 
   if (!currentUser) {
     return <></>
@@ -17,15 +15,6 @@ const Profile = () => {
   return (
     <div className="max-width-container">
       <MetaTags title="Profile" description="Profile Page" />
-      <div className="mt-8 mb-8 flex flex-col justify-between gap-y-8 sm:flex-row">
-        <div className="flex flex-col gap-y-2 gap-x-4 sm:flex-row sm:gap-y-0">
-          <Icon name="keypnameandlogo" height="48px" width="164px" />
-          <h1 className="flex text-5xl font-light text-blue-1200">Account</h1>
-        </div>
-        {isAuthenticated && (
-          <UserAccount currentUser={currentUser} logOut={logOut} />
-        )}
-      </div>
       <div className="mb-12 mt-12 flex flex-col">
         <AppHeader
           title="Wallet"
@@ -55,8 +44,8 @@ const Profile = () => {
           description="Keyp's OAuth creates a wallet for you. This wallet uses MPC and can be used like any other EVM compatible address."
         />
       </div>
-      <div className="flex bg-gray-100 p-4 w-full justify-center h-46">
-        <div className="flex flex-col sm:flex-row gap-x-8 gap-y-4 items-center justify-center h-full">
+      <div className="flex bg-gray-100 p-4 w-full justify-center h-46 mb-12">
+        <div className="flex flex-col sm:flex-row gap-x-12 gap-y-4 items-center justify-center h-full">
           <div className="flex text-blue-1200 font-light text-xl sm:text-3xl break-words">
             Stay tuned for more exciting features
           </div>
