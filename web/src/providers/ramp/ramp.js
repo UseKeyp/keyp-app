@@ -17,9 +17,7 @@ import {
 } from './graphql'
 
 const EXTERNAL_TRANSFER = 'EXTERNAL_TRANSFER'
-const PLAID = 'PLAID'
 const COINBASE = 'COINBASE'
-const WYRE = 'WYRE'
 
 const RampContext = React.createContext({
   isLoading: true,
@@ -31,12 +29,7 @@ const RampProvider = ({ children }) => {
   const { isAuthenticated, currentUser } = useAuth()
 
   const { toast } = useToast()
-  const {
-    getOAuthUrl,
-    openOAuthUrl,
-    submitCodeGrant,
-    error: errorOAuth,
-  } = useOAuth()
+  const { openOAuthUrl } = useOAuth()
 
   const [state, setState] = React.useState({
     isLoading: false,
@@ -44,7 +37,6 @@ const RampProvider = ({ children }) => {
   })
   const [coinbase, setCoinbase] = React.useState({})
   const [pelerin] = React.useState({})
-  const [wyre, setWyre] = React.useState({})
   const externalTransfer = {
     name: 'Web3 Wallet',
     isLoading: false,
@@ -97,9 +89,7 @@ const RampProvider = ({ children }) => {
       },
       onCompleted: async ({ ramps } = {}) => {
         const coinbaseRamp = ramps.find((ramp) => ramp.type === COINBASE)
-        const wyreRamp = ramps.find((ramp) => ramp.type === WYRE)
         setCoinbase({ ...coinbaseRamp, ...coinbase })
-        setWyre({ ...wyreRamp, ...wyre })
       },
     }
   )
@@ -116,9 +106,7 @@ const RampProvider = ({ children }) => {
     if (direction === 'OFF') {
       if (amount && !reconnect) {
         if (type === 'COINBASE') return withdrawCoinbase(amount)
-        if (type === 'WYRE') return withdrawWyre(amount)
       }
-      if (type === 'WYRE') return connectWyre()
       if (type === 'COINBASE') return connectCoinbase()
     }
   }
@@ -154,103 +142,6 @@ const RampProvider = ({ children }) => {
       }, 3000)
     }
   }
-
-  const connectWyre = async () => {
-    let oAuthUrl
-    try {
-      await setWyre({ ...wyre, isLoading: true, error: '', successText: '' })
-      oAuthUrl = await getOAuthUrl(PLAID)
-      if (
-        (oAuthUrl == null || oAuthUrl == '') &&
-        errorOAuth != '' &&
-        errorOAuth != null
-      ) {
-        if (errorOAuth.contains('WYRE')) {
-          wyre.error = errorOAuth
-          return setWyre({ ...wyre, error: errorOAuth })
-        }
-      }
-    } catch (error) {
-      wyre.error = error
-      return setWyre({ ...wyre, isLoading: false, error: error })
-    }
-    setWyre({ ...wyre, successText: t('Waiting for connection...') })
-    /* eslint-disable-next-line no-undef */
-    const linkHandler = Plaid.create({
-      token: oAuthUrl.text,
-      /* eslint-disable camelcase*/
-      onSuccess: async (public_token, metadata) => {
-        const accountId = metadata.accounts[0].id
-        try {
-          const { data, error } = await submitCodeGrant({
-            code: public_token,
-            accountId,
-            type: PLAID,
-          })
-          if (error) throw error
-          const { ramp: wyreRamp } = data
-          setWyre({
-            ...wyre,
-            isLoading: false,
-            successText: t('Connection successful!'),
-            ...wyreRamp,
-          })
-        } catch (e) {
-          setWyre({
-            ...wyre,
-            isLoading: false,
-            error: e.message,
-          })
-        }
-      },
-      onExit: function (err, _metadata) {
-        if (err != null) {
-          // TODO: Trigger some error notification
-          // The user encountered a Plaid API error prior to exiting.
-          wyre.error = err
-          setWyre({
-            ...wyre,
-            isLoading: false,
-            error: err,
-          })
-        }
-      },
-    })
-    linkHandler.open()
-  }
-
-  const withdrawWyre = async (amount) => {
-    try {
-      if (amount < 1)
-        return setWyre({
-          ...wyre,
-          isLoading: false,
-          error: t('Amount must be greater than 0'),
-        })
-      await setWyre({ isLoading: true, error: null, ...wyre })
-      const {
-        data: { rampWithdraw },
-      } = await rampWithdrawMutation({
-        variables: { type: WYRE, amount },
-      })
-      toast.success(
-        <TxToast text="Withdraw submitted" txHash={rampWithdraw.id} />,
-        { id: rampWithdraw.id }
-      )
-      await setWyre({
-        ...wyre,
-        isLoading: false,
-        disabled: true,
-        buttonText: t('In progress'),
-        successText: t(
-          'Funds are on their way! Please allow 3 days for the transfer to complete.'
-        ),
-      })
-    } catch (e) {
-      await setWyre({ ...wyre, isLoading: false, error: e.message })
-    }
-  }
-
   const connectCoinbase = async () => {
     try {
       setCoinbase({
@@ -309,7 +200,7 @@ const RampProvider = ({ children }) => {
         isLoading: state.isLoading || rampsLoading,
         rampError: rampError || state.rampError,
         submitRamp,
-        offRamps: [wyre, coinbase, pelerin, externalTransfer],
+        offRamps: [coinbase, pelerin, externalTransfer],
       }}
     >
       {children}

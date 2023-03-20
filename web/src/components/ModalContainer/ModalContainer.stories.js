@@ -1,5 +1,4 @@
 import GameCard from 'src/components/Game/GameCard'
-import Icon from 'src/components/Icon'
 import { ConfettiExplosion } from 'src/providers/minting/modals'
 
 import ModalContainer from './ModalContainer'
@@ -37,9 +36,6 @@ const game = {
   title: null,
 }
 
-const bodyWyreDeposit =
-  'Fund your wallet using Wyre. Funds are typically added in less than 3 minutes, and can be withdrawn anytime according to the limits set by Wyre.'
-
 const bodyStyle = { fontSize: '16px' }
 
 const bodyDeposit = (
@@ -65,29 +61,6 @@ const bigBodyText =
 const backgroundText = []
 for (let i = 0; i < 50; i++) {
   backgroundText.push(<div id={i}>blah blah blah home content</div>)
-}
-
-export const wyreDeposit = () => {
-  return (
-    <div>
-      <ModalContainer
-        headerText="Deposit Funds"
-        content={bodyWyreDeposit}
-        submitText="Deposit with Wyre"
-        icon={<Icon name="wyre" size="29" />}
-        isVisible={true}
-        hideModal={() => {
-          /* eslint-disable-next-line no-console */
-          console.log('CLOSED MODAL')
-        }}
-        onSubmit={() => {
-          /* eslint-disable-next-line no-console */
-          console.log('ONSUBMIT MODAL')
-        }}
-      />
-      {backgroundText}
-    </div>
-  )
 }
 
 export const usdcDeposit = () => {

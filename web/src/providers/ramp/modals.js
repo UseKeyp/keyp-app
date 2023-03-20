@@ -190,46 +190,6 @@ export const DepositModal = ({ isVisible, toggleModal }) => {
       ),
     },
     {
-      type: 'WYRE',
-      iconName: 'wyre',
-      name: 'Wyre',
-      helperText: (
-        <p>
-          {t(`Tip: Do not use auto-complete, a password manager, or copy/paste. Try
-          using a different email if your first attempt fails.`)}
-        </p>
-      ),
-      description: (
-        <p className="mt-4">
-          <Trans i18nkey="web:WyreOnRampDetails">
-            Regions: Most places (
-            <a
-              href="https://docs.sendwyre.com/reference/hosted-checkout#supported-states-and-countries"
-              target="_blank"
-              className="underline"
-              rel="noreferrer"
-            >
-              list
-            </a>
-            )
-            <br />
-            Limit: $100/day
-            <br />
-            Fee: 2.9% + $0.30 (
-            <a
-              href="https://support.sendwyre.com/hc/en-us/articles/360059565013-Wyre-card-processing-fees"
-              target="_blank"
-              className="underline"
-              rel="noreferrer"
-            >
-              details
-            </a>
-            )
-          </Trans>
-        </p>
-      ),
-    },
-    {
       iconName: 'mt_pelerin',
       name: 'Mt Pelerin',
       type: 'MT_PELERIN',
