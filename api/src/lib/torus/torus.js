@@ -96,7 +96,7 @@ export const getTorusWallet = async (userId) => {
       ? parsedUserId
       : userId
 
-    const idToken = await getNewIdToken(verifierId)
+    const idToken = await getNewIdToken(userId)
     const verifier = getVerifier(userProvider)
 
     const verifierDetails = {
