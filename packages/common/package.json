@@ -1,0 +1,10 @@
+{
+  "name": "@usekeyp/common",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Common utility functions and constants used across web and api packages",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js"
+  }
+}

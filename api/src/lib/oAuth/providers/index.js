@@ -1,3 +1,5 @@
+import { LOGIN_ENABLED_PROVIDERS } from '@usekeyp/common'
+
 import { isProdOrStaging } from 'src/lib/helpers'
 
 import { CHESS, provider as chessProvider } from './chess'
@@ -22,7 +24,6 @@ const providers = {
 }
 
 // Providers where creating a wallet is allowed
-let LOGIN_ENABLED_PROVIDERS = [DISCORD, CHESS, TWITTER, GOOGLE, TWITCH]
 if (!isProdOrStaging) LOGIN_ENABLED_PROVIDERS.push(NODE_OIDC)
 
 const types = [
@@ -36,4 +37,4 @@ const types = [
   GOOGLE,
 ]
 
-export { LOGIN_ENABLED_PROVIDERS, providers, types }
+export { providers, types }
