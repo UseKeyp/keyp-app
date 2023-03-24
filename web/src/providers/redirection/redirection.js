@@ -13,6 +13,7 @@ const APPROVED_LOGIN_PROVIDERS = [
   'GOOGLE',
   'TWITTER',
   'TWITCH',
+  'EPIC_GAMES',
 ]
 
 const saveRedirectTo = (redirect) =>
