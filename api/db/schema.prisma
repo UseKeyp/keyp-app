@@ -272,6 +272,7 @@ enum ProviderType {
   ETHEREUM // Metamask
   NODE_OIDC // Test provider
   TWITCH
+  EPIC_GAMES
 }
 
 enum OAuthConnectionType {
