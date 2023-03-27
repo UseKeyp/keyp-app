@@ -1,5 +1,4 @@
 import fetch from 'cross-fetch'
-import { decode as decodeJwt } from 'jsonwebtoken'
 
 import { db } from 'src/lib/db'
 import { isDevelopment } from 'src/lib/helpers'
