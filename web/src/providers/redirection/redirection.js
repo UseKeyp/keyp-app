@@ -4,16 +4,9 @@ import { routes } from '@redwoodjs/router'
 
 import { useOAuth } from 'src/providers/oAuth'
 import { useOAuthAuthority } from 'src/providers/oAuthAuthority'
+import { LOGIN_ENABLED_PROVIDERS } from "@usekeyp/common";
 
 const LOCAL_REDIRECT_TO_KEY = 'redirect_to'
-const APPROVED_LOGIN_PROVIDERS = [
-  'CHESS',
-  'DISCORD',
-  'NODE_OIDC',
-  'GOOGLE',
-  'TWITTER',
-  'TWITCH',
-]
 
 const saveRedirectTo = (redirect) =>
   redirect &&
@@ -140,7 +133,7 @@ const RedirectionProvider = ({ children }) => {
         isLoading: false,
         errorMessage: 'Invalid redirect parameters',
       })
-    if (APPROVED_LOGIN_PROVIDERS.includes(type.toUpperCase()))
+    if (LOGIN_ENABLED_PROVIDERS.includes(type.toUpperCase()))
       return submitLoginCodeGrant()
     completeOAuth()
     /* eslint-disable-next-line react-hooks/exhaustive-deps */
