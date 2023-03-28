@@ -27,7 +27,6 @@ export const schema = gql`
     OFF
   }
   enum RampType {
-    WYRE
     COINBASE
   }
 `

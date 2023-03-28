@@ -10742,6 +10742,12 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@usekeyp/common@1.0.0, @usekeyp/common@workspace:packages/common":
+  version: 0.0.0-use.local
+  resolution: "@usekeyp/common@workspace:packages/common"
+  languageName: unknown
+  linkType: soft
+
 "@usekeyp/components-soft-ui@npm:0.1.0":
   version: 0.1.0
   resolution: "@usekeyp/components-soft-ui@npm:0.1.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40usekeyp%2Fcomponents-soft-ui%2F0.1.0%2Fb25e10dfc639ab4ca7f6463752eaceb74ee90df6"
@@ -11849,6 +11855,7 @@ __metadata:
     "@toruslabs/torus.js": ^6.3.2
     "@treasure-chess/treasure-contracts": ^0.1.0
     "@treasure-chess/web3-helpers": ^1.2.0
+    "@usekeyp/common": 1.0.0
     atob: ^2.1.2
     bad-words: ^3.0.4
     chess.js: ^0.12.1
@@ -36624,6 +36631,7 @@ __metadata:
     "@redwoodjs/web": ^3.8.0
     "@sentry/browser": ^6.17.3
     "@storybook/addon-essentials": ^6.5.15
+    "@usekeyp/common": 1.0.0
     "@usekeyp/components-soft-ui": 0.1.0
     "@usekeyp/tailwind-presets": 0.1.0
     "@wert-io/module-react-component": ^0.2.0

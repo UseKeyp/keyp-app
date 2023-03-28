@@ -1,8 +1,8 @@
+import { AVAILABLE_NETWORKS } from '@usekeyp/common'
 import { v4 as uuidv4 } from 'uuid'
 
 import { db } from 'src/lib/db'
 import { logger } from 'src/lib/logger'
-import { AVAILABLE_NETWORKS } from 'src/lib/web3/provider'
 
 var express = require('express')
 var router = express.Router()

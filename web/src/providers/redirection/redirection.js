@@ -4,17 +4,9 @@ import { routes } from '@redwoodjs/router'
 
 import { useOAuth } from 'src/providers/oAuth'
 import { useOAuthAuthority } from 'src/providers/oAuthAuthority'
+import { LOGIN_ENABLED_PROVIDERS } from "@usekeyp/common";
 
 const LOCAL_REDIRECT_TO_KEY = 'redirect_to'
-const APPROVED_LOGIN_PROVIDERS = [
-  'CHESS',
-  'DISCORD',
-  'NODE_OIDC',
-  'GOOGLE',
-  'TWITTER',
-  'TWITCH',
-  'EPIC_GAMES',
-]
 
 const saveRedirectTo = (redirect) =>
   redirect &&
@@ -42,7 +34,6 @@ const RedirectionProvider = ({ children }) => {
   /* eslint-disable camelcase */
   let error_description
   let error
-  let orderId
   let type
 
   if (isBrowser) {
@@ -51,7 +42,6 @@ const RedirectionProvider = ({ children }) => {
     grantState = url.searchParams.get('state')
     error = url.searchParams.get('error')
     error_description = url.searchParams.get('error_description')
-    orderId = url.searchParams.get('orderId')
     type = url.pathname.split('/redirect/')[1]
   }
 
@@ -92,19 +82,6 @@ const RedirectionProvider = ({ children }) => {
     setState({ successMessage: successMessageCodeGrant, isLoading: false })
   }
 
-  const completeWyreOrder = () => {
-    if (!orderId || error)
-      return setState({
-        isLoading: false,
-        errorMessage:
-          "Your debit-card wasn't accepted by Wyre. If this keeps happening, please contact us for help.",
-      })
-    setState({
-      isLoading: false,
-      orderSubmitted: true,
-      successMessage: 'Thanks for your order!',
-    })
-  }
   const completeStripeOrder = () => {
     if (error === 'cancelled')
       return setState({
@@ -128,7 +105,6 @@ const RedirectionProvider = ({ children }) => {
   React.useEffect(() => {
     if (!isBrowser) return
     if (!url.pathname.includes('/redirect')) return
-    if (type === 'wyre') return completeWyreOrder()
     if (type === 'stripe') return completeStripeOrder()
     if (type === 'rampnetwork') return completeRampOrder()
     if (error)
@@ -141,7 +117,7 @@ const RedirectionProvider = ({ children }) => {
         isLoading: false,
         errorMessage: 'Invalid redirect parameters',
       })
-    if (APPROVED_LOGIN_PROVIDERS.includes(type.toUpperCase()))
+    if (LOGIN_ENABLED_PROVIDERS.includes(type.toUpperCase()))
       return submitLoginCodeGrant()
     completeOAuth()
     /* eslint-disable-next-line react-hooks/exhaustive-deps */
