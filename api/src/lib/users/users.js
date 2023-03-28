@@ -9,7 +9,7 @@ export const fetchUser = async (idOrAddress, creationData, providerType) => {
     let user
     let id
     let address
-    // console.log(idOrAddress, creationData, providerType)
+
     isHexAddress(idOrAddress)
       ? (address = idOrAddress.toLowerCase())
       : (id = idOrAddress)

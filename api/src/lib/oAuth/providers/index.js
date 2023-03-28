@@ -6,12 +6,12 @@ import { CHESS, provider as chessProvider } from './chess'
 import { onConnected as onConnectedChess } from './chess/login'
 import { COINBASE, provider as coinbaseProvider } from './coinbase'
 import { DISCORD, provider as discordProvider } from './discord'
+import { EPIC_GAMES, provider as epicGamesProvider } from './epic-games'
 import { GOOGLE, provider as googleProvider } from './google'
 import { NODE_OIDC, provider as nodeOIDCProvider } from './node-oidc/node-oidc'
 import { PLAID, provider as plaidProvider } from './plaid'
 import { TWITCH, provider as twitchProvider } from './twitch'
 import { TWITTER, provider as twitterProvider } from './twitter'
-
 const providers = {
   [CHESS]: { ...chessProvider, onConnected: onConnectedChess },
   [COINBASE]: coinbaseProvider,
@@ -21,6 +21,7 @@ const providers = {
   [NODE_OIDC]: nodeOIDCProvider,
   [TWITTER]: twitterProvider,
   [GOOGLE]: googleProvider,
+  [EPIC_GAMES]: epicGamesProvider,
 }
 
 // Providers where creating a wallet is allowed
@@ -35,6 +36,7 @@ const types = [
   NODE_OIDC,
   TWITTER,
   GOOGLE,
+  EPIC_GAMES,
 ]
 
 export { providers, types }
