@@ -166,37 +166,3 @@ export const sendTreasureMarketSaleToSeller = async ({
     },
   })
 }
-
-export const sendWyreDepositSuccess = async ({ amount, member }) => {
-  //
-  if (typeof amount !== 'string')
-    throw new Error('Missing amount of funds added.')
-
-  // --
-
-  await sendEmail({
-    member,
-    locals: { amount },
-    template: 'WYRE_DEPOSIT_SUCCESS',
-  })
-}
-
-export const sendWyreWithdrawSuccess = async ({
-  amount,
-  member,
-  txReceipt,
-}) => {
-  //
-  if (typeof amount !== 'string') throw new Error('Missing cash out amount.')
-
-  if (typeof txReceipt !== 'string')
-    throw new Error('Missing blockchain transaction receipt.')
-
-  // --
-
-  await sendEmail({
-    member,
-    locals: { amount, txReceipt },
-    template: 'WYRE_WITHDRAW_SUCCESS',
-  })
-}

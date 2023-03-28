@@ -46,9 +46,6 @@ export const userBalance = async ({ network }) => {
   })
   return {
     usdcBalance,
-    mintCreditBalance:
-      context.currentUser.mintCredits *
-      process.env.WYRE_MINT_USD_PURCHASE_AMOUNT,
   }
 }
 
