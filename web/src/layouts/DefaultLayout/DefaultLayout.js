@@ -30,7 +30,7 @@ const DefaultLayout = ({ children }) => {
             </div>
             <div className="mx-4 md:mb-0">
               <Footer
-                title="Dev Portal"
+                title="App"
                 links={[
                   {
                     title: 'Docs',
