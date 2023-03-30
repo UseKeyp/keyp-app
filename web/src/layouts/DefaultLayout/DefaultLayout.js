@@ -1,8 +1,8 @@
+import { Icon, UserAccount } from '@usekeyp/components-soft-ui'
+
 import { useAuth } from '@redwoodjs/auth'
 
 import { Footer } from 'src/components/Footer/Footer'
-import Icon from 'src/components/Icon/Icon'
-import UserAccount from 'src/components/UserAccount/UserAccount'
 
 const DefaultLayout = ({ children }) => {
   const { logOut, currentUser, isAuthenticated } = useAuth()
@@ -30,7 +30,7 @@ const DefaultLayout = ({ children }) => {
             </div>
             <div className="mx-4 md:mb-0">
               <Footer
-                title="Dev Portal"
+                title="App"
                 links={[
                   {
                     title: 'Docs',

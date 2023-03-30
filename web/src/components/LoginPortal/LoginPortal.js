@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
 
+import { Button, Icon } from '@usekeyp/components-soft-ui'
+
 import { useAuth } from '@redwoodjs/auth'
 import { useParams } from '@redwoodjs/router'
 
-import Button from 'src/components/Button/Button'
-import Icon from 'src/components/Icon/Icon'
 import { MoreAccordion } from 'src/components/MoreAccordion/MoreAccordion'
 import { saveRedirectTo } from 'src/providers/redirection'
 import { useToast } from 'src/providers/toast'

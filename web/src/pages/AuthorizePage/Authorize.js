@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react'
 
-import { Button } from '@usekeyp/components-soft-ui'
+import { Button, Icon } from '@usekeyp/components-soft-ui'
 
 import { useAuth } from '@redwoodjs/auth'
 
-import Icon from 'src/components/Icon/Icon'
 import {
   getStyledUsernameFromCurrentUser,
   getProviderIconFromCurrentUser,
