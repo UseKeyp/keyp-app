@@ -2,12 +2,11 @@ import {
   AppHeader,
   Icon,
   ItemDescriptionCell,
+  getStyledUsernameFromCurrentUser,
 } from '@usekeyp/components-soft-ui'
 
 import { useAuth } from '@redwoodjs/auth'
 import { MetaTags } from '@redwoodjs/web'
-
-import { getStyledUsernameFromCurrentUser } from 'src/components/UserAccount/UserAccount'
 
 const Profile = () => {
   const { currentUser } = useAuth()

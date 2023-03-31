@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react'
 
-import { Button, Icon } from '@usekeyp/components-soft-ui'
+import {
+  Button,
+  Icon,
+  getStyledUsernameFromCurrentUser,
+  getProviderIconFromCurrentUser,
+} from '@usekeyp/components-soft-ui'
 
 import { useAuth } from '@redwoodjs/auth'
 
-import {
-  getStyledUsernameFromCurrentUser,
-  getProviderIconFromCurrentUser,
-} from 'src/components/UserAccount/UserAccount'
 import { useOAuthAuthority } from 'src/providers/oAuthAuthority'
 import { isMobile } from 'src/utils/helpers'
 
