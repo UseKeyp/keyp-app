@@ -1,5 +1,5 @@
 VERSION 0.6
-FROM node:16
+FROM node:18
 WORKDIR /app
 
 deps:
@@ -14,7 +14,7 @@ deps:
     COPY lerna.json .
     COPY redwood.toml .
     COPY graphql.config.js .
-    RUN yarn -v
+    RUN npm install --global yarn
     RUN yarn
     # Output these back in case yarn install changes them.
     SAVE ARTIFACT package.json AS LOCAL ./package.json
