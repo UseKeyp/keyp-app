@@ -13,6 +13,7 @@ deps:
     COPY redwood.toml .
     COPY graphql.config.js .
     COPY .nvmrc .
+    COPY .yarn .
     RUN yarn && yarn cache clean
     # Output these back in case yarn install changes them.
     SAVE ARTIFACT package.json AS LOCAL ./package.json
