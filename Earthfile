@@ -6,7 +6,7 @@ deps:
     COPY package.json .
     COPY yarn.lock .
     COPY .nvmrc .
-    COPY .yarn .
+    COPY .yarn .yarn
     COPY api api
     COPY web web
     COPY packages packages
