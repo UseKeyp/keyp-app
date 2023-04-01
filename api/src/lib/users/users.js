@@ -4,6 +4,27 @@ import { logger } from 'src/lib/logger'
 import Sentry from 'src/lib/sentry'
 import { getTorusPublicAddress } from 'src/lib/torus'
 
+export const safeFetchUser = async (
+  idOrAddress,
+  creationData,
+  providerType
+) => {
+  try {
+    const user = await fetchUser(idOrAddress, creationData, providerType)
+    return {
+      id: user.id,
+      provider: user.provider,
+      username: user.username,
+      address: user.address,
+      imageSrc: user.imageSrc,
+    }
+  } catch (e) {
+    Sentry.captureException(e)
+    logger.error(e)
+    throw new Error('safeFetchUser()', e)
+  }
+}
+
 export const fetchUser = async (idOrAddress, creationData, providerType) => {
   try {
     let user

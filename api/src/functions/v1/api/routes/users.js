@@ -1,5 +1,5 @@
 import { logger } from 'src/lib/logger'
-import { fetchUser } from 'src/lib/users'
+import { safeFetchUser } from 'src/lib/users'
 import { getEtherBalance } from 'src/lib/web3/airdrop.js'
 import { getErc20Balance } from 'src/lib/web3/erc20'
 import { USDC_DATA_BY_NETWORK } from 'src/lib/web3/usdc'
@@ -10,7 +10,7 @@ var router = express.Router()
 router.get('/:userId', async (req, res) => {
   try {
     const { userId } = req.params
-    const user = await fetchUser(userId)
+    const user = await safeFetchUser(userId)
 
     res.send(user)
   } catch (e) {
@@ -22,7 +22,7 @@ router.get('/:userId', async (req, res) => {
 router.get('/:userId/balance', async (req, res) => {
   try {
     const { userId } = req.params
-    const user = await fetchUser(userId)
+    const user = await safeFetchUser(userId)
     const etherBalanceData = await getEtherBalance({
       address: user.address,
       network: req.ctx.network,
@@ -41,7 +41,7 @@ router.get('/:userId/balance', async (req, res) => {
 router.get('/:userId/balance/:tokenAddress', async (req, res) => {
   try {
     const { userId, tokenAddress } = req.params
-    const user = await fetchUser(userId)
+    const user = await safeFetchUser(userId)
 
     const tokenBalanceData = await getErc20Balance({
       tokenAddress,
