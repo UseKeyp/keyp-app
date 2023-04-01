@@ -5,6 +5,8 @@ WORKDIR /app
 deps:
     COPY package.json .
     COPY yarn.lock .
+    COPY .nvmrc .
+    COPY .yarn .
     COPY api api
     COPY web web
     COPY packages packages
@@ -12,9 +14,8 @@ deps:
     COPY lerna.json .
     COPY redwood.toml .
     COPY graphql.config.js .
-    COPY .nvmrc .
-    COPY .yarn .
-    RUN yarn && yarn cache clean
+    RUN yarn -v
+    RUN yarn
     # Output these back in case yarn install changes them.
     SAVE ARTIFACT package.json AS LOCAL ./package.json
     SAVE ARTIFACT yarn.lock AS LOCAL ./yarn.lock
