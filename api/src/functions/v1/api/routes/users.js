@@ -34,6 +34,7 @@ router.get('/:userId/balance', async (req, res) => {
         usdcBalanceData = await getErc20Balance({
           tokenAddress,
           address: user.address,
+          network: req.ctx.network,
         })
     } catch (e) {
       logger.error(e)
@@ -56,7 +57,8 @@ router.get('/:userId/balance/:tokenAddress', async (req, res) => {
 
     const tokenBalanceData = await getErc20Balance({
       tokenAddress,
-      address: user.address,
+      address: '0x62de034b1a69ef853c9d0d8a33d26df5cf26682e',
+      network: req.ctx.network,
     })
 
     res.send({ [tokenAddress.toLowerCase()]: tokenBalanceData })
