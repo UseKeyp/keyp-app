@@ -88,13 +88,17 @@ export const getTorusPublicAddress = async (userId) => {
   }
 }
 
-export const getTorusWallet = async (userId) => {
+export const getTorusWallet = async (user) => {
   try {
+    const { id: userId } = user
     const { userProvider, userId: parsedUserId } = getIdentifiersFromId(userId)
     // For Keyp, verifierId includes the provider eg. "TWITTER-123456789"
     const verifierId = SUPPORTED_EXTERNAL_VERIFIERS.includes(userProvider)
       ? parsedUserId
       : userId
+
+    // TODO: get user email addressss
+    if (userProvider === 'GOOGLE') verifierId = user.email
 
     const idToken = await getNewIdToken(userId)
     const verifier = getVerifier(userProvider)
