@@ -27,7 +27,7 @@ export const getNewIdToken = async (userId) => {
     else if (userProvider === 'CHESS')
       ({ idToken } = await refreshChessTokens(userId))
     else if (userProvider === 'GOOGLE')
-      ({ idToken } = await refreshGoogleTokens(userId))
+      ({ accessToken: idToken } = await refreshGoogleTokens(userId))
     else if (LOGIN_ENABLED_PROVIDERS.includes(userProvider))
       idToken = await generateIdToken(userId)
     else

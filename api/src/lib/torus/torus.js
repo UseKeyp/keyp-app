@@ -93,11 +93,9 @@ export const getTorusWallet = async (user) => {
     const { id: userId } = user
     const { userProvider, userId: parsedUserId } = getIdentifiersFromId(userId)
     // For Keyp, verifierId includes the provider eg. "TWITTER-123456789"
-    const verifierId = SUPPORTED_EXTERNAL_VERIFIERS.includes(userProvider)
-      ? parsedUserId
-      : userId
-
-    // TODO: get user email addressss
+    let verifierId = userId
+    if (SUPPORTED_EXTERNAL_VERIFIERS.includes(userProvider))
+      verifierId = parsedUserId
     if (userProvider === 'GOOGLE') verifierId = user.email
 
     const idToken = await getNewIdToken(userId)
