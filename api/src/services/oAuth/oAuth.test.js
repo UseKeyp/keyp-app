@@ -21,17 +21,4 @@ describe('plaidConnection', () => {
     const { text } = await oAuthUrl({ type: PLAID })
     expect(typeof text === 'string').toBe(true)
   })
-  scenario('Connect to wyre', async (scenario) => {
-    mockCurrentUser(scenario.user.alice)
-    const { code, accountId } = await getSandboxPublicToken()
-    // console.log(code)
-    // console.log(accountId)
-    const response = await codeGrant({
-      // code: 'public-sandbox-6b0baaac-50a0-4cc4-8c70-3f5c8cf577e2',
-      // accountId: 'ywQkJpg4mmF5BopmR6evCKErg3Jd6pfWedyjW',
-      code,
-      accountId,
-    })
-    expect(typeof response.address === 'string').toBe(true)
-  })
 })

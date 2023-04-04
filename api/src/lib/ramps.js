@@ -1,7 +1,5 @@
 import { EnvelopError } from '@envelop/core'
 
-import { isProduction } from '@redwoodjs/api/dist/logger'
-
 import { APP_DOMAIN, isProdOrStaging } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
 import { oAuthUrl } from 'src/lib/oAuth'
@@ -83,24 +81,6 @@ export const getRampOnUrl = async ({ type, user, network }) => {
     } else if (type === WERT) {
       url = `${APP_DOMAIN}/wert?address=${address}`
     }
-
-    // TODO:  implement database update
-    // const { url, reservation, paymentMethod, destCurrency } =
-    //   await createDepositReservation(user.address)
-    // try {
-    //   await db.depositOrder.create({
-    //     data: {
-    //       paymentType: 'WYRE',
-    //       paymentMethod,
-    //       reservation,
-    //       destCurrency,
-    //       member: { connect: { id: user.id } },
-    //     },
-    //   })
-    // } catch (e) {
-    //   logger.error(e)
-    //   // Do nothing
-    // }
 
     return { url }
   } catch (e) {

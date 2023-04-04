@@ -7,7 +7,7 @@
 
 [web]
   title = "Keyp"
-  port = 3000
+  port = 4000
   host = "0.0.0.0"
   apiUrl = "/.redwood/functions"
   includeEnvironmentVariables = [
@@ -17,7 +17,7 @@
     "BASIC_AUTH_PASSWORD",
   ]
 [api]
-  port = 3001
+  port = 4001
   schemaPath = "./api/db/schema.prisma"
 [browser]
   open = true

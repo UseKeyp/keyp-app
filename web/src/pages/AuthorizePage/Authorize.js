@@ -1,20 +1,20 @@
 import React, { useEffect, useState } from 'react'
 
-import { Button } from '@usekeyp/components-soft-ui'
+import {
+  Button,
+  Icon,
+  getStyledUsernameFromCurrentUser,
+  getProviderIconFromCurrentUser,
+} from '@usekeyp/components-soft-ui'
 
 import { useAuth } from '@redwoodjs/auth'
 
-import Icon from 'src/components/Icon/Icon'
-import {
-  getStyledUsernameFromCurrentUser,
-  getProviderIconFromCurrentUser,
-} from 'src/components/UserAccount/UserAccount'
 import { useOAuthAuthority } from 'src/providers/oAuthAuthority'
 import { isMobile } from 'src/utils/helpers'
 
 function Authorize() {
   const [client, setClient] = useState({})
-  const [scopes, setScopes] = useState([])
+  const [scopes, setScopes] = useState(['wallet'])
   const [loading, setLoading] = useState(false)
   const { currentUser } = useAuth()
   const { continueInteraction } = useOAuthAuthority()
@@ -139,11 +139,15 @@ function Authorize() {
           </div>
         </div>
         <div className="flex flex-col w-full text-lg font-light text-gray-1600 mb-4 mt-4">
-          <ul>
+          <ul className="border-t border-b">
             {scopes.map((scope) => (
               <li
                 key={scope}
-                className="flex flex-row border-t border-b text-[16px] py-2 items-center gap-x-4"
+                className={`${
+                  scopes[scopes.length - 1] === scope
+                    ? 'flex flex-row text-[16px] py-2 items-center gap-x-4'
+                    : 'flex flex-row border-b text-[16px] py-2 items-center gap-x-4'
+                }`}
               >
                 {getIconFromScope(scope)}
                 {getStyledNameFromScope(scope)}

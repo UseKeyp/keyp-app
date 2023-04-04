@@ -1,5 +1,7 @@
 /* eslint-disable-next-line no-unused-vars */
 
+import { LOGIN_ENABLED_PROVIDERS } from '@usekeyp/common'
+
 import { DbAuthHandler } from '@redwoodjs/api'
 import { InputError } from '@redwoodjs/graphql-server'
 import { AuthenticationError } from '@redwoodjs/graphql-server'
@@ -9,7 +11,7 @@ import { isProdOrStaging, cors } from 'src/lib/helpers'
 import { APP_DOMAIN } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
 import { oAuthUrl, submitCodeGrant } from 'src/lib/oAuth'
-import { providers, LOGIN_ENABLED_PROVIDERS } from 'src/lib/oAuth/providers'
+import { providers } from 'src/lib/oAuth/providers'
 
 export const validateLoginRequest = ({ type }) => {
   if (!LOGIN_ENABLED_PROVIDERS.includes(type)) {

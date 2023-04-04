@@ -9,6 +9,7 @@ import jwks from 'src/lib/jwks'
 let devPortalRedirectUris = [
   'http://0.0.0.0:8910/redirect/keyp',
   'https://dev.staging-env.usekeyp.com/redirect/keyp',
+  'http://localhost:4000/api/auth/callback/keyp',
 ]
 if (process.env.ENVIRONMENT === 'staging')
   devPortalRedirectUris = ['https://dev.staging-env.usekeyp.com/redirect/keyp']

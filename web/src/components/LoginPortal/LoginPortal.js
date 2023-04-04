@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
 
+import { Button, Icon, MoreAccordion } from '@usekeyp/components-soft-ui'
+
 import { useAuth } from '@redwoodjs/auth'
 import { useParams } from '@redwoodjs/router'
 
-import Button from 'src/components/Button/Button'
-import Icon from 'src/components/Icon/Icon'
 import { saveRedirectTo } from 'src/providers/redirection'
 import { useToast } from 'src/providers/toast'
 
@@ -48,14 +48,14 @@ const LoginPortal = () => {
   return (
     <div className="flex h-screen flex-col justify-center">
       <div className="max-w-2 flex sm:justify-center">
-        <h1 className="flex mb-20 sm:flex-row flex-col gap-x-4 gap-y-2 text-center">
+        <h1 className="flex mb-20 gap-x-4 gap-y-2 text-center">
           <Icon height="60px" width="200px" name="keypnameandlogo" />
           <div className="mb-0 flex text-6xl font-light text-blue-1200 sm:mb-2">
             App
           </div>
         </h1>
       </div>
-      <div className="mt-8 flex flex-col gap-y-4 items-start sm:items-center">
+      <div className="flex flex-col gap-y-4 items-start sm:items-center">
         <div className="flex flex-col w-full sm:w-[320px]">
           <div className="text-[16px] font-light text-gray-1600 pb-4">
             Log In or Sign Up
@@ -127,58 +127,30 @@ const LoginPortal = () => {
         </Button>
         <Button
           onClick={() => onSubmitSignUp('TWITTER')}
-          classNameVariant="hover:bg-[#4285F4] hover:border-[#4285F4] sm:w-[320px]"
+          disabled={loading === 'TWITTER'}
+          classNameVariant={`${
+            loading === 'TWITTER'
+              ? 'bg-[#4285F4] border-[#4285F4] sm:w-[320px]'
+              : 'hover:bg-[#4285F4] hover:border-[#4285F4] sm:w-[320px]'
+          }`}
           borderColor="border-[#E5E7EB]"
           fluid={true}
           position="start"
           alt="twitter"
         >
           <div className="group flex flex-row items-center gap-x-6 hover:text-white sm:gap-x-4">
-            <div className="flex pl-1.5">
-              <Icon height="24" name="twitter" />
-            </div>
-            <div className="flex font-light text-gray-1200 group-hover:text-white">
-              Twitter
-            </div>
-          </div>
-        </Button>
-        <Button
-          onClick={() => onSubmitSignUp('CHESS')}
-          disabled={loading === 'CHESS'}
-          classNameVariant={`${
-            loading === 'CHESS'
-              ? 'bg-[#6c9d41] border-[#6c9d41] sm:w-[320px]'
-              : 'hover:bg-[#6c9d41] hover:border-[#6c9d41] sm:w-[320px]'
-          }`}
-          borderColor="border-[#E5E7EB]"
-          fluid={true}
-          position="start"
-          alt="chess"
-        >
-          <div
-            className={`${
-              loading === 'CHESS'
-                ? 'group flex flex-row items-center gap-x-4 text-white'
-                : 'group flex flex-row items-center gap-x-4 hover:text-white'
-            }`}
-          >
             <div className="flex pl-2">
-              <Icon
-                height="24"
-                width="24"
-                loading={loading}
-                name="chess_pawn"
-              />
+              <Icon loading={loading} height="24" name="twitter" />
             </div>
             <div
               className={`${
-                loading === 'CHESS'
+                loading === 'TWITTER'
                   ? 'flex font-light text-white'
                   : 'flex font-light text-gray-1200 group-hover:text-white'
               }`}
             >
               {' '}
-              Chess.com
+              Twitter
             </div>
           </div>
         </Button>
@@ -227,6 +199,103 @@ const LoginPortal = () => {
           <></>
         )}
         {errorText && <div className="mt-2">{errorText}</div>}
+        <div className="flex flex-col w-full sm:w-[320px]">
+          <MoreAccordion title="More">
+            <div className="flex gap-x-2 pl-3">
+              <Button
+                onClick={() => onSubmitSignUp('CHESS')}
+                disabled={loading === 'CHESS'}
+                classNameVariant={`${
+                  loading === 'CHESS'
+                    ? 'bg-[#6c9d41] border-[#6c9d41] justify-center'
+                    : 'hover:bg-[#6c9d41] hover:border-[#6c9d41] justify-center'
+                }`}
+                borderColor="border-[#E5E7EB]"
+                size="square"
+                fluid={false}
+                position="start"
+                alt="chess"
+              >
+                <div
+                  className={`${
+                    loading === 'CHESS'
+                      ? 'group flex flex-row items-center text-white'
+                      : 'group flex flex-row items-center hover:text-white'
+                  }`}
+                >
+                  <div className="flex">
+                    <Icon
+                      height="24"
+                      width="24"
+                      loading={loading}
+                      name="chess_pawn"
+                    />
+                  </div>
+                </div>
+              </Button>
+              <Button
+                onClick={() => onSubmitSignUp('TWITCH')}
+                disabled={loading === 'TWITCH'}
+                classNameVariant={`${
+                  loading === 'TWITCH'
+                    ? 'bg-[#5865F2] border-[#5865F2] justify-center'
+                    : 'hover:bg-[#5865F2] hover:border-[#5865F2] justify-center'
+                }`}
+                borderColor="border-[#E5E7EB]"
+                fluid={false}
+                size="square"
+                position="start"
+                alt="discord"
+              >
+                <div className="group flex flex-row gap-x-4 hover:text-white">
+                  <div className="flex">
+                    <Icon
+                      height="24"
+                      width="24"
+                      loading={loading}
+                      name="twitch_logo_purple"
+                    />
+                  </div>
+                </div>
+              </Button>
+              <Button
+                onClick={() => onSubmitSignUp('EPIC_GAMES')}
+                disabled={loading === 'EPIC_GAMES'}
+                classNameVariant={`${
+                  loading === 'EPIC_GAMES'
+                    ? 'bg-[#2F2D2E] border-[#2F2D2E] justify-center'
+                    : 'hover:bg-[#2F2D2E] hover:border-[#2F2D2E] justify-center'
+                }`}
+                borderColor="border-[#E5E7EB]"
+                fluid={false}
+                size="square"
+                position="start"
+                alt="epic_games"
+              >
+                <div className="group flex flex-row gap-x-4 hover:text-white">
+                  <Icon
+                    color="fill-[#2F2D2E]"
+                    loading={loading}
+                    height="24px"
+                    width="24px"
+                    name="epic_games"
+                  />{' '}
+                </div>
+              </Button>
+            </div>
+          </MoreAccordion>
+          <div className="flex items-center text-[9px] text-gray-800 gap-x-1 mt-2">
+            Powered by{' '}
+            <div className="pt-0.5">
+              <Icon
+                color="fill-[#B0B6C1]"
+                height="10.5px"
+                width="30px"
+                name="keypnameandlogogray"
+              />
+            </div>
+          </div>
+        </div>
         <h4 className="mt-20 text-center justify-center w-full">
           <a
             className="mr-4 text-[12px] font-light text-blue-1200"

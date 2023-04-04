@@ -4,15 +4,6 @@ import { logger } from 'src/lib/logger'
 // per active user (minted or used the marketplace)
 const getMintPurchaseData = async () => {
   const total = await db.mintPurchase.count()
-  const WYRE_ORDER_RESERVATION = await db.mintPurchase.count({
-    where: { orderStatus: 'RESERVATION' },
-  })
-  const WYRE_ORDER_COMPLETE = await db.mintPurchase.count({
-    where: { orderStatus: 'COMPLETE' },
-  })
-  const WYRE = await db.mintPurchase.count({
-    where: { paymentType: 'WYRE' },
-  })
   const MINTCREDIT = await db.mintPurchase.count({
     where: { paymentType: 'MINTCREDIT' },
   })
@@ -41,17 +32,12 @@ const getMintPurchaseData = async () => {
     },
     count: {
       total,
-      orderStatus: {
-        COMPLETE: WYRE_ORDER_COMPLETE,
-        RESERVATION: WYRE_ORDER_RESERVATION,
-      },
       status: {
         COMPLETE,
         PENDING,
         FAILED,
       },
       paymentType: {
-        WYRE,
         MINTCREDIT,
       },
       txStatus: {
