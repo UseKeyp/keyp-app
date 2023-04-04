@@ -1,0 +1,116 @@
+{
+  "info": {
+    "_postman_id": "",
+    "name": "Client Creation Service",
+    "description": "Creates a new OpenID Connect client for a user.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create Client",
+      "request": {
+        "description": "Creates a new OpenID Connect client for a user.",
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "{{URL}}/",
+          "host": ["{{URL}}"],
+          "path": []
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{    \"redirect_uris\": [        \"http://localhost:3000/callback\"    ],    \"client_name\": \"My App\"}"
+        },
+        "description": {
+          "content": [
+            {
+              "type": "text/plain",
+              "text": "Client creation request object."
+            }
+          ]
+        }
+      },
+      "response": [
+        {
+          "name": "Success 200",
+          "originalRequest": {
+            "description": "Creates a new OpenID Connect client for a user.",
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "https://api.usekeyp.com/",
+              "host": ["https://api.usekeyp.com/"],
+              "path": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{    \"redirect_uris\": [        \"http://localhost:3000/callback\"    ],    \"client_name\": \"My App\"}"
+            },
+            "description": {
+              "content": [
+                {
+                  "type": "text/plain",
+                  "text": "Client creation request object."
+                }
+              ]
+            }
+          },
+          "status": "200",
+          "code": 200,
+          "header": [
+            {
+              "key": "content-type",
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\"id\":\"13F08854-37D4-4A52-A1EB-B33369C7468E\",\"type\":7,\"payload\":{\"client_id\":\"13F08854-37D4-4A52-A1EB-B33369C7468E\",\"network\":\"polygon\",\"redirect_uris\":[\"http://localhost:3000/callback\"],\"client_name\":\"My App\"}}",
+          "cookie": [],
+          "headerSize": 82,
+          "bodySize": 115,
+          "_postman_previewlanguage": "json"
+        },
+        {
+          "name": "Error 500",
+          "originalRequest": {
+            "description": "Creates a new OpenID Connect client for a user.",
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{URL}}/",
+              "host": ["{{URL}}"],
+              "path": []
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{    \"redirect_uris\": [        \"http://localhost:3000/callback\"    ],    \"client_name\": \"My App\"}"
+            },
+            "description": {
+              "content": [
+                {
+                  "type": "text/plain",
+                  "text": "Client creation request object."
+                }
+              ]
+            }
+          },
+          "status": "500",
+          "code": 500,
+          "header": [
+            {
+              "key": "content-type",
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ],
+          "body": "{\"error\":\"Internal server error occurred.\"}",
+          "cookie": [],
+          "headerSize": 82,
+          "bodySize": 49,
+          "_postman_previewlanguage": "json"
+        }
+      ]
+    }
+  ],
+  "protocolProfileBehavior": {}
+}

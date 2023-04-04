@@ -29,11 +29,14 @@ router.get('/:userId/balance', async (req, res) => {
     })
     let usdcBalanceData
     try {
-      usdcBalanceData = await getErc20Balance({
-        tokenAddress: USDC_DATA_BY_NETWORK[req.ctx.network].address,
-        address: user.address,
-      })
+      const tokenAddress = USDC_DATA_BY_NETWORK[req.ctx.network]?.address
+      if (tokenAddress)
+        usdcBalanceData = await getErc20Balance({
+          tokenAddress,
+          address: user.address,
+        })
     } catch (e) {
+      logger.error(e)
       // Do nothing, just don't send USDC balance data
     }
     res.send({
