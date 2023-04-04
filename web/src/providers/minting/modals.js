@@ -112,14 +112,6 @@ export const MintModal = ({ isVisible, toggleModal, onSubmit }) => {
       helperText: '',
       // disabled: usdcBalance < 5 ? 'Insufficient balance' : false,
     },
-    {
-      name: 'Wyre',
-      type: 'WYRE',
-      description: 'Pay with card',
-      helperText:
-        'Tip: Do not use auto-complete, a password manager, or copy/paste. Try using a different email if your first attempt fails.',
-      iconName: 'wyre',
-    },
     // {
     //   name: 'Stripe',
     //   type: 'STRIPE',

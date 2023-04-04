@@ -1,5 +1,6 @@
 import { formatUnits, formatEther } from '@ethersproject/units'
 import { getExplorerBaseUrlFromName } from '@treasure-chess/web3-helpers'
+import { AVAILABLE_NETWORKS } from '@usekeyp/common'
 
 import { db } from 'src/lib/db'
 import { sendDiscordAdminAlert } from 'src/lib/discord/admin'
@@ -12,7 +13,7 @@ import { pinTreasure } from 'src/lib/pinata/pinata'
 import Sentry from 'src/lib/sentry'
 import { generateTreasureData } from 'src/lib/treasures'
 import { fetchUser } from 'src/lib/users'
-import { Web3Providers, AVAILABLE_NETWORKS } from 'src/lib/web3/provider'
+import { Web3Providers } from 'src/lib/web3/provider'
 import { mint } from 'src/lib/web3/treasure'
 
 import { getAdminBalance } from './wallets/admin'

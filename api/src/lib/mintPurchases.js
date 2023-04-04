@@ -16,13 +16,11 @@ export const COMPLETE = 'COMPLETE'
 export const FAILED = 'FAILED'
 export const PENDING = 'PENDING'
 
-const AVAILABLE_CHECKOUT_PAYMENT_TYPES = ['WYRE', 'STRIPE']
+const AVAILABLE_CHECKOUT_PAYMENT_TYPES = ['STRIPE']
 
 export const processMintPurchaseOrder = async ({ mintPurchase, orderId }) => {
   await db.mintPurchase.update({
     where: { id: mintPurchase.id },
-    // For Wyre, we must update the orderId
-    data: { ...(orderId && { orderId }), orderStatus: 'COMPLETE' },
   })
   await sendDiscordAdminAlert({
     embed: {
@@ -131,18 +129,15 @@ export const processMintBalanceRequest = async ({
     })
   }
   if (paymentType === 'BALANCE_MUSDC') {
-    const usdcBalance = await getUsdcBalance({
+    await getUsdcBalance({
       network,
       address: context.currentUser.address,
     })
-    if (usdcBalance / process.env.WYRE_MINT_USD_PURCHASE_AMOUNT < 1)
-      throw new EnvelopError(`Insufficient balance`)
     // Transfer funds from wallet to admin
     // NOTE: There is an exploit which allows minting many times while
     // the balance change tx is pending. We should check for pending purchases in the future.
     await transferUsdc({
       to: process.env.APP_ADMIN_WALLET_ADDRESS,
-      amount: process.env.WYRE_MINT_USD_PURCHASE_AMOUNT,
       network,
     })
   }

@@ -24,28 +24,6 @@ const OffRamps = () => {
   }
   const offRampList = [
     {
-      type: 'WYRE',
-      icon: (
-        <div className="flex justify-center">
-          <img
-            alt="Wyre and Plaid logos"
-            src="/icons/wyre_plaid.png"
-            className="h-[38px]"
-          />
-        </div>
-      ),
-      name: 'Wyre + Plaid',
-      description: (
-        <>
-          <p className="mt-4">
-            <b>Fee: 0.2%</b> <br />
-            Available in US, MX, AU, EU, CN, BR
-          </p>
-        </>
-      ),
-      helperText: <p className="italic">{t('Available on desktop-only')}</p>,
-    },
-    {
       type: 'COINBASE',
       iconName: 'coinbase',
       name: 'Coinbase',

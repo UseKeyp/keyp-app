@@ -34,7 +34,6 @@ export const schema = gql`
 
   type MemberBalance {
     usdcBalance: String!
-    mintCreditBalance: Int!
   }
 
   type Query {

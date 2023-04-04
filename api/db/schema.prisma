@@ -64,8 +64,6 @@ model Ramp {
   isoCurrencyCode    String?
   itemId             String? // Used to identify an Item in a webhook
   verificationStatus String? // Only used for Auth Item initiated through Automated or Manual micro-deposits
-  // Wyre
-  paymentMethodId    String? // Wyre
   // Coinbase
   // TODO: Replace with oAuthConnection
   accessToken        String?
@@ -74,26 +72,17 @@ model Ramp {
 }
 
 model DepositOrder {
-  id             Int          @id @default(autoincrement())
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
+  id           Int          @id @default(autoincrement())
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
   // --------------- LINKS --------------
-  user           User         @relation("depositOrders", fields: [userId, userProvider], references: [id, provider])
-  userProvider   ProviderType
-  userId         String
+  user         User         @relation("depositOrders", fields: [userId, userProvider], references: [id, provider])
+  userProvider ProviderType
+  userId       String
   // --------------- STATE --------------
-  amount         Float?
-  paymentType    RampType
-  status         TxStatus     @default(UNSUBMITTED)
-  // Wyre
-  sourceCurrency String?
-  sourceAmount   Float?
-  purchaseAmount Float?
-  destCurrency   String?
-  paymentMethod  String?
-  orderType      String? // DOMESTIC or INTERNATIONAL
-  orderId        String?      @unique // Wyre orderId
-  reservation    String?      @unique // Wyre reservation
+  amount       Float?
+  paymentType  RampType
+  status       TxStatus     @default(UNSUBMITTED)
 }
 
 model MintPurchase {
@@ -109,12 +98,10 @@ model MintPurchase {
   gameEndTime       String
   title             String // Treasure title
   // Order details
-  paymentType       String                   @default("WYRE") // WYRE, MINTCREDIT
+  paymentType       String                   @default("MINTCREDIT") // MINTCREDIT
   status            RampStatus               @default(PENDING)
-  // Wyre or Stripe
+  // Stripe
   orderStatus       MintPurchaseOrderStatus?
-  orderId           String?                  @unique // Wyre orderId
-  reservation       String?                  @unique // Wyre reservation
   // Blockchain
   staleTransactions Transaction[]            @relation("staleMintTransactions")
   transaction       Transaction?             @relation(fields: [transactionId], references: [id])
@@ -259,7 +246,6 @@ enum ClientAccessLevel {
 
 enum RampType {
   COINBASE
-  WYRE
 }
 
 enum ProviderType {
@@ -272,6 +258,7 @@ enum ProviderType {
   ETHEREUM // Metamask
   NODE_OIDC // Test provider
   TWITCH
+  EPIC_GAMES
 }
 
 enum OAuthConnectionType {
