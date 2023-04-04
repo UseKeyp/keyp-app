@@ -35,7 +35,7 @@ export const getRampOnUrl = async ({ type, user, network }) => {
       const code = Math.floor(Math.random() * 9999)
       const message = `MtPelerin-${code}`
       const signature = await userSignMesage({
-        userId: user.id,
+        user,
         message,
         network,
       })

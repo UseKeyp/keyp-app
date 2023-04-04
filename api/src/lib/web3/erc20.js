@@ -127,7 +127,7 @@ export const transferErc20 = async ({
       amountBn
     )
     const tx = await userSendTransaction({
-      userId: fromUser.id,
+      user: fromUser,
       unsignedTx,
       network,
     })
