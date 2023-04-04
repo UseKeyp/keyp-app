@@ -14,7 +14,7 @@ deps:
     COPY lerna.json .
     COPY redwood.toml .
     COPY graphql.config.js .
-    RUN yarn set version 3.x
+    RUN yarn set version 3.2
     RUN yarn
     # Output these back in case yarn install changes them.
     SAVE ARTIFACT package.json AS LOCAL ./package.json
