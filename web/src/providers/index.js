@@ -29,15 +29,15 @@ const AllContextProviders = ({ children }) => {
                 <OAuthProvider>
                   <OAuthAuthorityProvider>
                     <RedirectionProvider>
-                      {/* <WalletProvider> */}
-                      {/* <RampProvider> */}
-                      <GamesContextProvider>
-                        {/* <MintingProvider> */}
-                        <MarketProvider>{children}</MarketProvider>
-                        {/* </MintingProvider> */}
-                      </GamesContextProvider>
-                      {/* </RampProvider> */}
-                      {/* </WalletProvider> */}
+                      <WalletProvider>
+                        {/* <RampProvider> */}
+                        <GamesContextProvider>
+                          {/* <MintingProvider> */}
+                          <MarketProvider>{children}</MarketProvider>
+                          {/* </MintingProvider> */}
+                        </GamesContextProvider>
+                        {/* </RampProvider> */}
+                      </WalletProvider>
                     </RedirectionProvider>
                   </OAuthAuthorityProvider>
                 </OAuthProvider>
