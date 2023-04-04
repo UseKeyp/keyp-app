@@ -1,5 +1,5 @@
 VERSION 0.6
-FROM node:18
+FROM node:16
 WORKDIR /app
 
 deps:
