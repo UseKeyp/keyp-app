@@ -27,7 +27,7 @@ const RedirectionProvider = ({ children }) => {
 
   const { logIn } = useAuth()
   const { continueInteraction } = useOAuthAuthority()
-  const { submitCodeGrant } = useOAuth()
+  const { submitCodeGrant, reauthenticate } = useOAuth()
 
   let url
   let code
@@ -59,6 +59,7 @@ const RedirectionProvider = ({ children }) => {
         errorMessage: response.error || 'Something went wrong',
       })
     const uid = grantState.split(':')[1]
+    // await reauthenticate()
     if (uid) {
       const { error } = await continueInteraction({
         type: 'login',
