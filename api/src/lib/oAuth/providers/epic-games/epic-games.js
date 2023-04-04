@@ -49,10 +49,8 @@ const onSubmitCode = async (code, { codeVerifier, memberId }) => {
       body: encodedBody,
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        // Basic auth required for api.epicgames.dev development server
-        ...(isDevelopment && {
+        // Basic auth required for api.epicgames.dev
           Authorization: `Basic ${getEpicGamesBasicAuth()}`,
-        }),
       },
     }).then((res) => {
       if (res.status == 401)
