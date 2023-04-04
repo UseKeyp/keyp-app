@@ -1,7 +1,7 @@
+import { AVAILABLE_NETWORKS } from '@usekeyp/common'
 import merge from 'deepmerge'
 
 import { METHODS_BY_NETWORK as JB_METHODS_BY_NETWORK } from 'src/lib/web3/contracts/apps/juicebox'
-import { AVAILABLE_NETWORKS } from 'src/lib/web3/provider'
 
 const EMPTY_METHODS = AVAILABLE_NETWORKS.reduce((acc, network) => {
   acc[network] = {}

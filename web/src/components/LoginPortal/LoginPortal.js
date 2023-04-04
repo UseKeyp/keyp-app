@@ -1,11 +1,10 @@
 import { useEffect } from 'react'
 
+import { Button, Icon, MoreAccordion } from '@usekeyp/components-soft-ui'
+
 import { useAuth } from '@redwoodjs/auth'
 import { useParams } from '@redwoodjs/router'
 
-import Button from 'src/components/Button/Button'
-import Icon from 'src/components/Icon/Icon'
-import { MoreAccordion } from 'src/components/MoreAccordion/MoreAccordion'
 import { saveRedirectTo } from 'src/providers/redirection'
 import { useToast } from 'src/providers/toast'
 
@@ -128,7 +127,12 @@ const LoginPortal = () => {
         </Button>
         <Button
           onClick={() => onSubmitSignUp('TWITTER')}
-          classNameVariant="hover:bg-[#4285F4] hover:border-[#4285F4] sm:w-[320px]"
+          disabled={loading === 'TWITTER'}
+          classNameVariant={`${
+            loading === 'TWITTER'
+              ? 'bg-[#4285F4] border-[#4285F4] sm:w-[320px]'
+              : 'hover:bg-[#4285F4] hover:border-[#4285F4] sm:w-[320px]'
+          }`}
           borderColor="border-[#E5E7EB]"
           fluid={true}
           position="start"
@@ -136,9 +140,16 @@ const LoginPortal = () => {
         >
           <div className="group flex flex-row items-center gap-x-6 hover:text-white sm:gap-x-4">
             <div className="flex pl-2">
-              <Icon height="24" name="twitter" />
+              <Icon loading={loading} height="24" name="twitter" />
             </div>
-            <div className="flex font-light text-gray-1200 group-hover:text-white">
+            <div
+              className={`${
+                loading === 'TWITTER'
+                  ? 'flex font-light text-white'
+                  : 'flex font-light text-gray-1200 group-hover:text-white'
+              }`}
+            >
+              {' '}
               Twitter
             </div>
           </div>
@@ -245,6 +256,30 @@ const LoginPortal = () => {
                       name="twitch_logo_purple"
                     />
                   </div>
+                </div>
+              </Button>
+              <Button
+                onClick={() => onSubmitSignUp('EPIC_GAMES')}
+                disabled={loading === 'EPIC_GAMES'}
+                classNameVariant={`${
+                  loading === 'EPIC_GAMES'
+                    ? 'bg-[#2F2D2E] border-[#2F2D2E] justify-center'
+                    : 'hover:bg-[#2F2D2E] hover:border-[#2F2D2E] justify-center'
+                }`}
+                borderColor="border-[#E5E7EB]"
+                fluid={false}
+                size="square"
+                position="start"
+                alt="epic_games"
+              >
+                <div className="group flex flex-row gap-x-4 hover:text-white">
+                  <Icon
+                    color="fill-[#2F2D2E]"
+                    loading={loading}
+                    height="24px"
+                    width="24px"
+                    name="epic_games"
+                  />{' '}
                 </div>
               </Button>
             </div>

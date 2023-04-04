@@ -3,34 +3,18 @@ if (process.env.NODE_ENV === 'development') {
   RedwoodDevFatalErrorPage = require('@redwoodjs/web').DevFatalErrorPage
 }
 
-import { Button, Icon } from '@usekeyp/components-soft-ui'
+import { Button } from '@usekeyp/components-soft-ui'
 import { APP_DOMAIN } from 'api/src/lib/helpers'
 
-import { useAuth } from '@redwoodjs/auth'
-
-import UserAccount from 'src/components/UserAccount/UserAccount'
-import DefaultLayout from 'src/layouts/DefaultLayout'
-import { logOut } from 'src/utils/auth/client'
+import DefaultLayout from 'src/layouts/DefaultLayout/DefaultLayout'
 
 export default RedwoodDevFatalErrorPage ||
   function FatalErrorPage() {
-    const { isAuthenticated, currentUser } = useAuth()
     return (
       <DefaultLayout>
-        <div className="flex sm:flex-row justify-between flex-col items-start gap-x-4 gap-y-2 mt-8">
-          <div className="flex flex-col gap-y-2 gap-x-4 sm:flex-row sm:gap-y-0">
-            <Icon name="keypnameandlogo" height="48px" width="164px" />
-            <h1 className="flex text-5xl font-light text-blue-1200">App</h1>
-          </div>
-          {isAuthenticated ? (
-            <UserAccount currentUser={currentUser} logOut={logOut} />
-          ) : (
-            <></>
-          )}
-        </div>
-        <main className="flex h-screen justify-center items-center text-center">
+        <main className="flex justify-center items-center text-center">
           <section className="flex">
-            <div className="flex flex-col gap-y-4 text-center items-center justify-center">
+            <div className="flex mt-8 flex-col gap-y-4 text-center items-center justify-center">
               <h1 className="text-gray-1200 text-2xl font-light">
                 Mhhh, something unexpected happened.
               </h1>
@@ -46,7 +30,7 @@ export default RedwoodDevFatalErrorPage ||
               />
               <div className="flex flex-col sm:flex-row text-gray-1200 text-lg items-center">
                 <div className="flex font-light">Back to the</div>
-                <a href={`${APP_DOMAIN}/account`}>
+                <a href={`${APP_DOMAIN}/profile`}>
                   <Button
                     variant="transparent"
                     classNameVariant="m-2"

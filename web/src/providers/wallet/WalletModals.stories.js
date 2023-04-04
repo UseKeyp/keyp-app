@@ -9,7 +9,6 @@ export const address = () => (
   />
 )
 
-// const wyreDetails = { name: 'Wyre', isConnected: false }
 // const coinbaseDetails = { name: 'Coinbase', isConnected: false }
 
 export default { title: 'Modals/WalletModals' }

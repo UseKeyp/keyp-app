@@ -16,11 +16,11 @@ Now start the app. This command injects necessary environment variables. See doc
 ./dev.sh
 ```
 
-Your browser should open automatically to `http://localhost:3000` to see the web app. The Fastify server which serves the backend functions is on `http://localhost:3001`.
+Your browser should open automatically to `http://localhost:4000` to see the web app. The Fastify server which serves the backend functions is on `http://localhost:4001`.
 
 ## Graphql Playground
 
-Access the Graphql playground at http://localhost:3001/graphql
+Access the Graphql playground at http://localhost:4001/graphql
 
 ## Storybook
 
@@ -34,7 +34,7 @@ Eventually you'll need a local database. See docs for [Local Postgres Setup](htt
 
 ```bash
 # Example
-ngrok http --host-header=rewrite 10.61.141.234:3000
+ngrok http --host-header=rewrite 10.61.141.234:4000
 ```
 
 ## Create OAuth Client

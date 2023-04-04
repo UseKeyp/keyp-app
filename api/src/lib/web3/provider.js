@@ -1,22 +1,11 @@
 import { JsonRpcProvider, InfuraProvider } from '@ethersproject/providers'
 import { parseUnits } from '@ethersproject/units'
+import { AVAILABLE_NETWORKS } from '@usekeyp/common'
 
 import { logger } from 'src/lib/logger'
 
 export const DEFAULT_GAS_MAX_PRIORITY_FEE_PER_GAS = parseUnits('2', 'gwei')
 export const DEFAULT_GAS_MAX_FEE_PER_GAS = parseUnits('10', 'gwei')
-
-export const AVAILABLE_NETWORKS = [
-  'mainnet',
-  'gnosis',
-  'polygon',
-  'mumbai',
-  'goerli',
-  'arbitrum',
-  'arbitrum-nova',
-  'optimism',
-  'sepolia',
-]
 
 const RPC_BY_NAME = {
   mainnet: process.env.RPC_MAINNET,

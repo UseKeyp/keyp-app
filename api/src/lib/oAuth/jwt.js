@@ -1,5 +1,6 @@
 import { promisify } from 'util'
 
+import { LOGIN_ENABLED_PROVIDERS } from '@usekeyp/common'
 import * as jose from 'jose'
 import { verify as verifyJwt, decode as decodeJwt } from 'jsonwebtoken'
 import jwksClient from 'jwks-rsa'
@@ -9,7 +10,6 @@ import { AuthenticationError } from '@redwoodjs/graphql-server'
 import { getIdentifiersFromId } from 'src/lib/db'
 import jwks from 'src/lib/jwks'
 import productionJwks from 'src/lib/oAuth/jwks'
-import { LOGIN_ENABLED_PROVIDERS } from 'src/lib/oAuth/providers'
 import {
   getChessBasicAuth,
   CHESS_OAUTH_URL,
