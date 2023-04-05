@@ -103,7 +103,8 @@ jobs:
 
   create-release-draft:
     name: Create Release Draft
-    needs: [build, update-version]
+    needs: [update-version]
+    # needs: [build, update-version]
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout Source
