@@ -40,10 +40,10 @@ jobs:
         with:
           token: ${{ secrets.PAT_GITHUB }}
 
-      - name: Use Node.js 12.x
+      - name: Use Node.js 18.x
         uses: actions/setup-node@v1
         with:
-          node-version: 12.x
+          node-version: 18.x
           registry-url: https://registry.npmjs.org/
 
       - name: Update version
@@ -55,14 +55,22 @@ jobs:
           git config user.name "GITHUB-ACTION-CI-RELEASE"
           git config user.email "${{ github.actor }}@users.noreply.github.com"
           if [ ${{ github.ref_name }} == "main" ] ; then
-             npx lerna version --conventional-graduate --conventional-commits --yes || npx lerna version --conventional-graduate --conventional-commits --yes || npx lerna version --conventional-commits --yes
-             IS_PRERELEASE=false
+            npx lerna version --conventional-graduate --conventional-commits --yes || npx lerna version --conventional-commits --yes
+            IS_PRERELEASE=false
           else
-             npx lerna version prerelease --yes --preid staging
+            npx lerna version prerelease --yes --preid staging
           fi
+          npx lerna version prerelease --yes --preid staging
           VERSION=v$(jq -r .version lerna.json)
           echo "::set-output name=VERSION::$VERSION"
           echo "::set-output name=IS_PRERELEASE::$IS_PRERELEASE"
+      - name: Update version Fallback
+        # If no prerelease exists, then --conventional-graduate would fail
+        if: ${{ format('{0} == "failure" && {1} == "main"', steps.update_version.outcome, github.ref_name) }}
+        run: |
+          echo Falling back to non-graduate release due to https://github.com/lerna/lerna/issues/2532
+          git stash
+          npx lerna version --conventional-commits --yes
 
   build:
     name: Build and Push Images
