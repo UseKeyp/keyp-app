@@ -1,6 +1,6 @@
 {
   "name": "web",
-  "version": "1.2.2-staging.2",
+  "version": "1.2.2",
   "private": true,
   "browserslist": {
     "development": [
@@ -25,7 +25,7 @@
     "@redwoodjs/router": "^3.8.0",
     "@redwoodjs/web": "^3.8.0",
     "@sentry/browser": "^6.17.3",
-    "@usekeyp/common": "^1.2.2-staging.2",
+    "@usekeyp/common": "^1.2.2",
     "@usekeyp/components-soft-ui": "^0.1.16",
     "@usekeyp/tailwind-presets": "^0.1.16",
     "@wert-io/module-react-component": "^0.2.0",
