@@ -59,13 +59,15 @@ const getVerifier = (userProvider) => {
   return verifier
 }
 
-export const getTorusPublicAddress = async (userId) => {
+export const getTorusPublicAddress = async (user) => {
   try {
+    const { id: userId } = user
     const { userProvider, userId: parsedUserId } = getIdentifiersFromId(userId)
     // For Keyp, verifierId includes the provider eg. "TWITTER-123456789"
-    const verifierId = SUPPORTED_EXTERNAL_VERIFIERS.includes(userProvider)
-      ? parsedUserId
-      : userId
+    let verifierId = userId
+    if (SUPPORTED_EXTERNAL_VERIFIERS.includes(userProvider))
+      verifierId = parsedUserId
+    if (userProvider === 'GOOGLE') verifierId = user.email
 
     const verifier = getVerifier(userProvider)
 
@@ -93,11 +95,9 @@ export const getTorusWallet = async (user) => {
     const { id: userId } = user
     const { userProvider, userId: parsedUserId } = getIdentifiersFromId(userId)
     // For Keyp, verifierId includes the provider eg. "TWITTER-123456789"
-    const verifierId = SUPPORTED_EXTERNAL_VERIFIERS.includes(userProvider)
-      ? parsedUserId
-      : userId
-
-    // TODO: get user email addressss
+    let verifierId = userId
+    if (SUPPORTED_EXTERNAL_VERIFIERS.includes(userProvider))
+      verifierId = parsedUserId
     if (userProvider === 'GOOGLE') verifierId = user.email
 
     const idToken = await getNewIdToken(userId)
@@ -113,6 +113,7 @@ export const getTorusWallet = async (user) => {
 
     let verifierObject = { verifier_id: verifierId }
     let idTokenForTorus = idToken
+
     if (userProvider === 'CHESS') {
       // Use custom JWT verification method
       verifierObject = {
