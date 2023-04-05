@@ -1,8 +1,4 @@
 {
-  "packages": [
-    "packages/*",
-    "web",
-    "api"
-  ],
-  "version": "1.2.1"
+  "useWorkspaces": true,
+  "version": "1.2.2-staging.2"
 }

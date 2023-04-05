@@ -36,7 +36,7 @@
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-jest-dom": "^4.0.3",
     "eslint-plugin-prettier": "^4.0.0",
-    "lerna": "^4.0.0",
+    "lerna": "^6.6.0",
     "random-username-generator": "^1.0.4",
     "sharp": "^0.29.3"
   },
