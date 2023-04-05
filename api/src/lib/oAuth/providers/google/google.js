@@ -169,7 +169,6 @@ export const refreshGoogleTokens = async (userId) => {
         accessTokenExpiration: newExpirationDate,
       },
     })
-    console.log(response)
     return {
       accessToken: newAccessToken,
       accessTokenExpiration: newExpirationDate,
