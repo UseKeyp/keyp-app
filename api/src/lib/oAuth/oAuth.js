@@ -62,7 +62,7 @@ export const processCodeGrant = async ({ state, code, type, _accountId }) => {
     if (!types.includes(type)) throw `Unknown OAuth Provider - ${type}`
 
     const tokens = await submitCodeGrant({ state, code, type })
-    // logger.debug({ custom: tokens }, 'onSubmitCode() response')
+
     return providers[type].onConnected(tokens)
   } catch (e) {
     logger.error(e)

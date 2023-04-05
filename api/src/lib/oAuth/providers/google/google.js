@@ -24,7 +24,7 @@ const params = {
   scope: GOOGLE_SCOPE,
   redirect_uri: GOOGLE_REDIRECT_URI,
   access_type: 'offline',
-  // prompt: 'none', // This breaks google login
+  prompt: 'consent', // Required to get refresh_token. https://github.com/googleapis/google-auth-library-nodejs#obtaining-a-new-refresh-token
 }
 
 export const onSubmitCode = async (code, { codeVerifier }) => {
@@ -98,7 +98,7 @@ export const onConnected = async ({ refreshToken, accessToken, decoded }) => {
     let publicAddress
     if (!user.address) {
       try {
-        publicAddress = await getTorusPublicAddress(user.id)
+        publicAddress = await getTorusPublicAddress(user)
       } catch (e) {
         /* eslint-disable no-console */
         logger.error("Error fetching user's wallet from Torus")
@@ -130,13 +130,13 @@ export const onConnected = async ({ refreshToken, accessToken, decoded }) => {
 export const refreshGoogleTokens = async (userId) => {
   try {
     const { refreshToken } = await db.user.findUnique({ where: { id: userId } })
-
     const body = {
       grant_type: 'refresh_token',
       client_id: process.env.GOOGLE_CLIENT_ID,
       client_secret: process.env.GOOGLE_CLIENT_SECRET,
       refresh_token: refreshToken,
       scope: GOOGLE_SCOPE,
+      redirect_uri: GOOGLE_REDIRECT_URI,
     }
     const encodedBody = encodeBody(body)
     const response = await fetch(GOOGLE_OAUTH_URL_TOKEN, {
@@ -149,7 +149,9 @@ export const refreshGoogleTokens = async (userId) => {
       return res.json()
     })
     if (response.error)
-      throw `${response.error} - ${response.hint}. ${response.message}`
+      throw `${response.error} ${
+        response.hint ? `- ${response.hint}. ${response.message}` : ''
+      }`
 
     const {
       access_token: newAccessToken,

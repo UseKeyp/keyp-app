@@ -108,7 +108,7 @@ export const onConnected = async ({
     let publicAddress
     if (!user.address) {
       try {
-        publicAddress = await getTorusPublicAddress(user.id)
+        publicAddress = await getTorusPublicAddress(user)
       } catch (e) {
         /* eslint-disable no-console */
         logger.error("Error fetching user's wallet from Torus")
