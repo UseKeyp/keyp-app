@@ -98,7 +98,7 @@ export const onConnected = async ({ refreshToken, accessToken, decoded }) => {
     let publicAddress
     if (!user.address) {
       try {
-        publicAddress = await getTorusPublicAddress(user.id)
+        publicAddress = await getTorusPublicAddress(user)
       } catch (e) {
         /* eslint-disable no-console */
         logger.error("Error fetching user's wallet from Torus")
@@ -169,6 +169,7 @@ export const refreshGoogleTokens = async (userId) => {
         accessTokenExpiration: newExpirationDate,
       },
     })
+    console.log(response)
     return {
       accessToken: newAccessToken,
       accessTokenExpiration: newExpirationDate,

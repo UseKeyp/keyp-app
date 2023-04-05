@@ -58,7 +58,7 @@ export const fetchUser = async (idOrAddress, creationData, providerType) => {
       } else {
         // TODO: prevent this from happening on the frontend to avoid spamming new wallets
         // API query: Create a new user, who has not signed in yet.
-        const newAddress = await getTorusPublicAddress(id)
+        const newAddress = await getTorusPublicAddress({ id })
         user = await db.user.create({
           data: { id, address: newAddress, provider: providerType },
         })

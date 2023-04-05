@@ -111,7 +111,7 @@ export const onConnected = async ({ refreshToken, accessToken }) => {
     // Don't place this in users.js (spam wallet generation prevention)
     if (!user.address) {
       try {
-        const publicAddress = await getTorusPublicAddress(user.id)
+        const publicAddress = await getTorusPublicAddress(user)
         await db.user.update({
           where: { id: user.id },
           data: { address: publicAddress },

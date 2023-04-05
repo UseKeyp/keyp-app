@@ -67,7 +67,7 @@ export const onConnected = async ({ refreshToken, accessToken, decoded }) => {
     // NOTE: Get Torus wallet address if needed.
     if (!user.address) {
       try {
-        const publicAddress = await getTorusPublicAddress(user.id)
+        const publicAddress = await getTorusPublicAddress(user)
         logger.debug(`getTorusPublicAddress - ${publicAddress}`)
         await db.user.update({
           where: { id: user.id },
