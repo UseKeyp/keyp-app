@@ -45,6 +45,7 @@ model User {
   TransferReceived      Transfer[]            @relation(name: "toUser")
 
   @@id([provider, id])
+  @@unique([username, provider])
 }
 
 model Ramp {
