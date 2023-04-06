@@ -56,6 +56,8 @@ export const db = prisma.$extends({
           if (args.where.provider || args.where.id)
             // Ensure no overloaded queries are made.
             throw new Error('Address and provider cannot be provided together')
+        } else if (args.where.username_provider) {
+          // do not parse where
         } else {
           ;({ userId, userProvider } = parseWhere(args.where))
         }
@@ -64,6 +66,7 @@ export const db = prisma.$extends({
         delete args.where.id
 
         if (args.select) {
+          // Ensure provider and id are always returned.
           args.select = { ...args.select, id: true, provider: true }
         }
 
