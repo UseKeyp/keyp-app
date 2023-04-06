@@ -18,6 +18,7 @@ const Routes = () => {
           </Private>
         </Set>
         <Set wrap={DefaultLayout}>
+          <Route path="/restricted" page={RestrictedPage} name="restricted" />
           <Private unauthenticated="login">
             <Route path="/profile" page={ProfilePage} name="profile" />
             <Route path="/" page={HomePage} name="home" />
