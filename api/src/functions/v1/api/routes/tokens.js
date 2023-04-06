@@ -30,7 +30,7 @@ router.post('/transfers', withUser, async (req, res) => {
     const {
       toAddress,
       toUserId,
-      toUsername,
+      toUserUsername,
       toUserProviderType,
       amount,
       tokenAddress,
@@ -44,13 +44,13 @@ router.post('/transfers', withUser, async (req, res) => {
     if (!tokenAddress) throw 'Invalid token address'
     if (!tokenType) throw 'Invalid token type'
 
-    validateToUser({ toAddress, toUserId, toUsername, toUserProviderType })
+    validateToUser({ toAddress, toUserId, toUserUsername, toUserProviderType })
 
     let recipient
     try {
-      if (toUsername) {
+      if (toUserUsername) {
         recipient = await safeFetchUserByUsername({
-          username: toUsername,
+          username: toUserUsername,
           providerType: toUserProviderType,
         })
       } else {
