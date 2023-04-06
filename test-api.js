@@ -60,7 +60,7 @@ const ACCESS_TOKEN = '1ue628VFALll8fUUc7jl_6mbTQS0V1ixLp-1s7Pank2'
 // POST Transfer Token
 
 const data = {
-  toUsername: 'pi0neerpat#1337',
+  toUserUsername: 'pi0neerpat#1337',
   toUserProviderType: 'DISCORD',
   tokenAddress: '0x9CA6a77C8B38159fd2dA9Bd25bc3E259C33F5E39',
   tokenType: 'ERC20',
