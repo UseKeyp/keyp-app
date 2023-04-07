@@ -22,7 +22,7 @@ export const validateLoginRequest = ({ type }) => {
 export const cookieSettings = {
   HttpOnly: true,
   Path: '/',
-  SameSite: 'Strict',
+  SameSite: 'Lax',
   Secure: isProdOrStaging,
   ...(isProdOrStaging && {
     Domain: APP_DOMAIN.split('://')[1],
