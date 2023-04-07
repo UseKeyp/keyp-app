@@ -9551,11 +9551,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@usekeyp/common@workspace:packages/common":
+"@usekeyp/common@^1.2.2-staging.2, @usekeyp/common@workspace:packages/common":
   version: 0.0.0-use.local
   resolution: "@usekeyp/common@workspace:packages/common"
   languageName: unknown
   linkType: soft
+
+"@usekeyp/tailwind-presets@npm:^0.1.16":
+  version: 0.1.16
+  resolution: "@usekeyp/tailwind-presets@npm:0.1.16::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40usekeyp%2Ftailwind-presets%2F0.1.16%2F1e4bbe9edd402bfb8ba6b615deca5c38e987345f"
+  checksum: af078ab80e53d14c787b5a08e9130603f1c770e197a2585f7dd9d0681696993b8fb4a385a12fe5e673b9c8cd2b9ec80ab4bf874aea8195e93c511dada5ab80be
+  languageName: node
+  linkType: hard
 
 "@webassemblyjs/ast@npm:1.11.1":
   version: 1.11.1
@@ -10620,6 +10627,7 @@ __metadata:
     "@toruslabs/torus.js": ^6.3.2
     "@treasure-chess/treasure-contracts": ^0.1.0
     "@treasure-chess/web3-helpers": ^1.2.2-staging.2
+    "@usekeyp/common": ^1.2.2-staging.2
     atob: ^2.1.2
     bad-words: ^3.0.4
     chess.js: ^0.12.1
@@ -33230,6 +33238,8 @@ __metadata:
     "@redwoodjs/web": ^3.8.0
     "@sentry/browser": ^6.17.3
     "@storybook/addon-essentials": ^6.5.15
+    "@usekeyp/common": ^1.2.2-staging.2
+    "@usekeyp/tailwind-presets": ^0.1.16
     "@wert-io/module-react-component": ^0.2.0
     autoprefixer: ^10.4.13
     bad-words: ^3.0.4
