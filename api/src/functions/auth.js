@@ -19,6 +19,16 @@ export const validateLoginRequest = ({ type }) => {
   }
 }
 
+export const cookieSettings = {
+  HttpOnly: true,
+  Path: '/',
+  SameSite: 'Strict',
+  Secure: isProdOrStaging,
+  ...(isProdOrStaging && {
+    Domain: APP_DOMAIN.split('://')[1],
+  }),
+}
+
 export const handler = async (event, context) => {
   const authHandler = new DbAuthHandler(event, context, {
     db: db,
@@ -62,16 +72,7 @@ export const handler = async (event, context) => {
         reusedPassword: 'You must choose a new password',
       },
     },
-    cookie: {
-      HttpOnly: true,
-      Path: '/',
-      SameSite: 'Strict',
-      Secure: isProdOrStaging,
-
-      ...(isProdOrStaging && {
-        Domain: APP_DOMAIN.split('://')[1],
-      }),
-    },
+    cookie: cookieSettings,
   })
 
   authHandler.login = async () => {

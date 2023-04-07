@@ -1,3 +1,4 @@
+import { cookieSettings } from 'src/lib/auth'
 import { APP_DOMAIN } from 'src/lib/helpers'
 
 const middlewares = (oidc) => async (ctx, next) => {
@@ -23,7 +24,7 @@ const middlewares = (oidc) => async (ctx, next) => {
       // End the OAuth session
       await ctx.oidc.session.destroy()
       // End the Redwood session
-      ctx.res.clearCookie('session')
+      ctx.res.clearCookie('session', cookieSettings) // Must pass the same options during creation
       // Start over with same url
       return ctx.res.redirect(`/oauth/${ctx.request.url}`)
     }
