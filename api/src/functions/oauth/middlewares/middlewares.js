@@ -3,13 +3,7 @@ import { APP_DOMAIN } from 'src/lib/helpers'
 
 const middlewares = (oidc) => async (ctx, next) => {
   // PRE MIDDLEWARE
-  await next()
-  // POST MIDDLEWARE
-  if (ctx.response?.body?.authorization_endpoint)
-    ctx.response.body.authorization_endpoint = `${APP_DOMAIN}/oauth/auth`
-
-  // console.log('post middleware', ctx.method, ctx.oidc.route)
-  if (ctx.method === 'GET' && ctx.oidc.route === 'authorization') {
+  if (ctx.req.method === 'GET' && ctx.req.originalUrl.includes('oauth/auth')) {
     // Verify the provider requested is the same as the one the user logged in with
     const session = await oidc.Session.get(ctx)
     const params = new URLSearchParams(ctx.request.url)
@@ -22,13 +16,18 @@ const middlewares = (oidc) => async (ctx, next) => {
       !session?.accountId?.startsWith(loginProvider)
     ) {
       // End the OAuth session
-      await ctx.oidc.session.destroy()
+      await session.destroy()
       // End the Redwood session
       ctx.res.clearCookie('session', cookieSettings)
       // Start over with same url
       return ctx.res.redirect(`/oauth/${ctx.request.url}`)
     }
   }
+
+  await next()
+  // POST MIDDLEWARE
+  if (ctx.response?.body?.authorization_endpoint)
+    ctx.response.body.authorization_endpoint = `${APP_DOMAIN}/oauth/auth`
 }
 
 export default middlewares
