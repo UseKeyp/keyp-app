@@ -19,5 +19,4 @@ jobs:
         uses: ./.github/actions/setup_earthly
 
       - name: Build, lint, test, and run diagnostics
-        # run: earthly --ci -P +build-app
-        run: earthly --ci +deps
+        run: earthly --ci -P +build-app
