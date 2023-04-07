@@ -19,15 +19,26 @@ export const validateLoginRequest = ({ type }) => {
   }
 }
 
-export const cookieSettings = {
+const cookie = {
   HttpOnly: true,
   Path: '/',
-  SameSite: 'Lax',
+  SameSite: 'Strict',
   Secure: isProdOrStaging,
   ...(isProdOrStaging && {
     Domain: APP_DOMAIN.split('://')[1],
   }),
 }
+
+const convertObjectKeysToLowerCase = (obj) => {
+  const newObj = {}
+  Object.keys(obj).forEach((key) => {
+    const newKey = key.charAt(0).toLowerCase() + key.slice(1)
+    newObj[newKey] = obj[key]
+  })
+  return newObj
+}
+
+export const cookieSettings = convertObjectKeysToLowerCase(cookie)
 
 export const handler = async (event, context) => {
   const authHandler = new DbAuthHandler(event, context, {
@@ -72,7 +83,7 @@ export const handler = async (event, context) => {
         reusedPassword: 'You must choose a new password',
       },
     },
-    cookie: cookieSettings,
+    cookie,
   })
 
   authHandler.login = async () => {

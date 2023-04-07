@@ -24,7 +24,6 @@ const middlewares = (oidc) => async (ctx, next) => {
       // End the OAuth session
       await ctx.oidc.session.destroy()
       // End the Redwood session
-      // To clear a cookie, you must pass the same options during creation
       ctx.res.clearCookie('session', cookieSettings)
       // Start over with same url
       return ctx.res.redirect(`/oauth/${ctx.request.url}`)
