@@ -5,7 +5,8 @@ WORKDIR /app
 deps:
     COPY package.json .
     COPY yarn.lock .
-    # COPY .nvmrc .
+    COPY .nvmrc .
+    COPY .yarnrc.yml .yarnrc.yml
     COPY .yarn .yarn
     COPY api api
     COPY web web
