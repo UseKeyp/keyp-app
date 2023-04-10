@@ -12,7 +12,11 @@ export const USDC_DATA_BY_NETWORK = {
     decimals: 18,
   },
   mainnet: {
-    address: '0x2791bca1f2de4661ed88a30c99a7a9449aa84174',
+    address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
+    decimals: 6,
+  },
+  polygon: {
+    address: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
     decimals: 6,
   },
 }
@@ -27,16 +31,16 @@ export const getUsdcContract = ({ network }) => {
         'function approve(address, uint256) external returns (bool)',
         'function transfer(address, uint256) external returns (bool)',
       ],
-      Web3Providers
+      Web3Providers[network]
     )
   } catch (e) {
-    logger.error(e)
     throw new Error(e)
   }
 }
 
 export const getUsdcBalance = async ({ address, network }) => {
   if (!address) throw 'No address provided'
+  if (!network) throw 'No network provided'
   logger.debug(`getUsdcBalance() address: ${address}`)
   let contract
   try {

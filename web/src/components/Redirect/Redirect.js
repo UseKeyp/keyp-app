@@ -1,19 +1,14 @@
-import { Icon, Button } from '@usekeyp/components-soft-ui'
+import { Button } from '@usekeyp/components-soft-ui'
 
-import { useAuth } from '@redwoodjs/auth'
 import { routes, navigate } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 
 import LoadingScreen from 'src/components/LoadingCards/LoadingScreen'
-import UserAccount from 'src/components/UserAccount/UserAccount'
-import DefaultLayout from 'src/layouts/DefaultLayout/DefaultLayout'
 import { useRedirection } from 'src/providers/redirection'
-import { logOut } from 'src/utils/auth/client'
 
 const Redirect = () => {
   const { errorMessage, isLoading } = useRedirection()
   const customErrorObject = getCustomErrorObject(errorMessage)
-  const { isAuthenticated, currentUser } = useAuth()
 
   const url = new URL(window.location.href)
   const state = decodeURIComponent(url.searchParams.get('state'))
@@ -110,23 +105,8 @@ const Redirect = () => {
   if (isLoading) return <LoadingScreen />
 
   return (
-    <DefaultLayout>
+    <>
       <MetaTags title="Redirect" description="Redirecting" />
-      <div className="mt-8 flex justify-center">
-        <div className="flex flex-col justify-between gap-y-4  sm:w-full sm:flex-row">
-          <div className="flex w-fit flex-row items-center gap-y-2 gap-x-3 sm:gap-y-0">
-            <Icon name="keypnameandlogo" height="48px" width="164px" />
-            <h1 className="flex whitespace-nowrap text-5xl font-light text-blue-1200">
-              App
-            </h1>
-          </div>
-          <div className="flex justify-end sm:w-full">
-            {isAuthenticated && (
-              <UserAccount currentUser={currentUser} logOut={logOut} />
-            )}
-          </div>
-        </div>
-      </div>
       <main className="flex justify-center">
         <section className="flex items-center justify-center text-center">
           <div className="flex flex-col items-center justify-center gap-y-4 text-center">
@@ -149,7 +129,7 @@ const Redirect = () => {
           </div>
         </section>
       </main>
-    </DefaultLayout>
+    </>
   )
 }
 

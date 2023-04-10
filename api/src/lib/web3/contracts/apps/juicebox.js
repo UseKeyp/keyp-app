@@ -51,7 +51,7 @@ const pay = async ({ args, network, user, address }) => {
       Object.entries(args)
     )
     const tx = await userSendTransaction({
-      userId: user.id,
+      user: user,
       unsignedTx,
       network,
     })

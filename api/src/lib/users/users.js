@@ -4,6 +4,51 @@ import { logger } from 'src/lib/logger'
 import Sentry from 'src/lib/sentry'
 import { getTorusPublicAddress } from 'src/lib/torus'
 
+export const safeFetchUserByUsername = async ({ username, providerType }) => {
+  try {
+    const user = await db.user.findUnique({
+      where: {
+        username_provider: {
+          username,
+          provider: providerType,
+        },
+      },
+    })
+    return {
+      id: user.id,
+      provider: user.provider,
+      username: user.username,
+      address: user.address,
+      imageSrc: user.imageSrc,
+    }
+  } catch (e) {
+    Sentry.captureException(e)
+    logger.error(e)
+    throw new Error('safeFetchUserByUsername()', e)
+  }
+}
+
+export const safeFetchUser = async (
+  idOrAddress,
+  creationData,
+  providerType
+) => {
+  try {
+    const user = await fetchUser(idOrAddress, creationData, providerType)
+    return {
+      id: user.id,
+      provider: user.provider,
+      username: user.username,
+      address: user.address,
+      imageSrc: user.imageSrc,
+    }
+  } catch (e) {
+    Sentry.captureException(e)
+    logger.error(e)
+    throw new Error('safeFetchUser()', e)
+  }
+}
+
 export const fetchUser = async (idOrAddress, creationData, providerType) => {
   try {
     let user
@@ -37,7 +82,7 @@ export const fetchUser = async (idOrAddress, creationData, providerType) => {
       } else {
         // TODO: prevent this from happening on the frontend to avoid spamming new wallets
         // API query: Create a new user, who has not signed in yet.
-        const newAddress = await getTorusPublicAddress(id)
+        const newAddress = await getTorusPublicAddress({ id })
         user = await db.user.create({
           data: { id, address: newAddress, provider: providerType },
         })

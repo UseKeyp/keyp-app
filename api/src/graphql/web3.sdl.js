@@ -30,6 +30,7 @@ export const schema = gql`
   }
 
   enum Network {
+    polygon
     gnosis
     matic
     mumbai
@@ -37,7 +38,6 @@ export const schema = gql`
     bsc
     "bsc-testnet"
     mainnet
-    polygon
     avalanche
     fuji
   }

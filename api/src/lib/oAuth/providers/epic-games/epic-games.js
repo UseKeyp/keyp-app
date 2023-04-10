@@ -1,7 +1,6 @@
 import fetch from 'cross-fetch'
 
 import { db } from 'src/lib/db'
-import { isDevelopment } from 'src/lib/helpers'
 import { APP_DOMAIN } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
 import { encodeBody, getExpiration } from 'src/lib/oAuth/helpers'
@@ -28,10 +27,9 @@ const params = {
   prompt: 'none',
 }
 
-export const getEpicGamesBasicAuth = () =>
-  Buffer.from(
-    EPIC_GAMES_CLIENT_ID + ':' + process.env.EPIC_GAMES_CLIENT_SECRET
-  ).toString('base64')
+const EPIC_GAMES_BASIC_AUTH = Buffer.from(
+  EPIC_GAMES_CLIENT_ID + ':' + process.env.EPIC_GAMES_CLIENT_SECRET
+).toString('base64')
 
 const onSubmitCode = async (code, { codeVerifier, memberId }) => {
   try {
@@ -49,10 +47,8 @@ const onSubmitCode = async (code, { codeVerifier, memberId }) => {
       body: encodedBody,
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
-        // Basic auth required for api.epicgames.dev development server
-        ...(isDevelopment && {
-          Authorization: `Basic ${getEpicGamesBasicAuth()}`,
-        }),
+        // Basic auth required for api.epicgames.dev
+        Authorization: `Basic ${EPIC_GAMES_BASIC_AUTH}`,
       },
     }).then((res) => {
       if (res.status == 401)
@@ -112,7 +108,7 @@ export const onConnected = async ({
     let publicAddress
     if (!user.address) {
       try {
-        publicAddress = await getTorusPublicAddress(user.id)
+        publicAddress = await getTorusPublicAddress(user)
       } catch (e) {
         /* eslint-disable no-console */
         logger.error("Error fetching user's wallet from Torus")

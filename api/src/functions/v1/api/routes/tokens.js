@@ -1,6 +1,6 @@
 import { logger } from 'src/lib/logger'
 import Sentry from 'src/lib/sentry'
-import { fetchUser } from 'src/lib/users'
+import { safeFetchUser, safeFetchUserByUsername } from 'src/lib/users'
 import { transferErc20 } from 'src/lib/web3/erc20'
 import { transferERC721 } from 'src/lib/web3/erc721'
 
@@ -13,26 +13,55 @@ var router = express.Router()
 //   if (req.user.address !== fromUserId)
 // }
 
+const validateToUser = ({
+  toAddress,
+  toUserId,
+  toUsername,
+  toUserProviderType,
+}) => {
+  if (toUserId) return
+  if (toAddress) return
+  if (toUsername && toUserProviderType) return
+  return 'Invalid recipient. You must provide either toUserId, toAddress, or toUsername and toUserProviderType'
+}
+
 router.post('/transfers', withUser, async (req, res) => {
   try {
-    const { toAddress, toUserId, amount, tokenAddress, tokenType, tokenId } =
-      req.body
-
+    const {
+      toAddress,
+      toUserId,
+      toUserUsername,
+      toUserProviderType,
+      amount,
+      tokenAddress,
+      tokenType,
+      tokenId,
+    } = req.body
     // TODO: validate transfer scope
-    if (!toAddress && !toUserId) throw 'Invalid recipient'
+
     if (!amount && tokenType === 'ERC20') throw 'Invalid amount'
     if (!tokenId && tokenType === 'ERC721') throw 'Invalid tokenId'
     if (!tokenAddress) throw 'Invalid token address'
     if (!tokenType) throw 'Invalid token type'
 
+    validateToUser({ toAddress, toUserId, toUserUsername, toUserProviderType })
+
     let recipient
     try {
-      recipient = await fetchUser(toUserId || toAddress)
+      if (toUserUsername) {
+        recipient = await safeFetchUserByUsername({
+          username: toUserUsername,
+          providerType: toUserProviderType,
+        })
+      } else {
+        recipient = await safeFetchUser(toUserId || toAddress)
+      }
     } catch (e) {
       logger.debug(e)
       throw 'Recipient not found'
     }
 
+    if (recipient.address === req.ctx.user.address) throw 'Cannot send to self'
     if (!['ERC20', 'ERC721'].includes(tokenType)) throw 'Invalid token type'
 
     let tx

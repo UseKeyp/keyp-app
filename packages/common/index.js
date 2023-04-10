@@ -5,6 +5,7 @@ const LOGIN_ENABLED_PROVIDERS = [
   'GOOGLE',
   'TWITTER',
   'TWITCH',
+  'EPIC_GAMES',
 ]
 const AVAILABLE_NETWORKS = [
   'mainnet',

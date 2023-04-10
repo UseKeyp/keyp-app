@@ -51,7 +51,7 @@ export const transferERC721 = async ({
       tokenId
     )
     const tx = await userSendTransaction({
-      userId: fromUser.id,
+      user: fromUser,
       unsignedTx,
       network,
     })

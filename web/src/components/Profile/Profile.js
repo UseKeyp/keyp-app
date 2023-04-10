@@ -1,10 +1,12 @@
+import {
+  AppHeader,
+  Icon,
+  ItemDescriptionCell,
+  getStyledUsernameFromCurrentUser,
+} from '@usekeyp/components-soft-ui'
+
 import { useAuth } from '@redwoodjs/auth'
 import { MetaTags } from '@redwoodjs/web'
-
-import AppHeader from 'src/components/AppHeader/AppHeader'
-import Icon from 'src/components/Icon/Icon'
-import { ItemDescriptionCell } from 'src/components/ItemDescriptionCell/ItemDescriptionCell'
-import { getStyledUsernameFromCurrentUser } from 'src/components/UserAccount/UserAccount'
 
 const Profile = () => {
   const { currentUser } = useAuth()
@@ -46,7 +48,7 @@ const Profile = () => {
       </div>
       <div className="flex bg-gray-100 p-4 w-full justify-center h-46 mb-12">
         <div className="flex flex-col sm:flex-row gap-x-12 gap-y-4 items-center justify-center h-full">
-          <div className="flex text-blue-1200 font-light text-xl sm:text-3xl break-words">
+          <div className="flex text-blue-1200 font-light text-xl sm:text-4xl break-words">
             Stay tuned for more exciting features
           </div>
           <Icon name="account_page_card" />

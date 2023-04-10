@@ -1,8 +1,7 @@
 export const USER_BALANCE_QUERY = gql`
-  query FindUserBalanceQuery {
-    userBalance {
+  query FindUserBalanceQuery($network: Network!) {
+    userBalance(network: $network) {
       usdcBalance
-      mintCreditBalance
     }
   }
 `

@@ -73,17 +73,20 @@ export const onConnected = async ({ refreshToken, accessToken }) => {
   try {
     // TODO: fetch user details
     const userDetails = await fetchDiscord({ path: `users/@me`, accessToken })
+
     logger.debug({ custom: userDetails }, 'userDetails')
+
     if (!userDetails.verified || !userDetails.email)
       throw new AuthenticationError(
         `Verify your email with Discord and try again.`
       )
 
     // eslint-disable-next-line camelcase
-    const { id, username, locale, avatar, mfa_enabled, email } = userDetails
-
+    const { id, username, locale, avatar, mfa_enabled, email, discriminator } =
+      userDetails
+    const discordUsername = `${username}#${discriminator}`
     // Create user if needed, and get current avatar
-    const user = await fetchUser(id, { username }, DISCORD)
+    const user = await fetchUser(id, { username: discordUsername }, DISCORD)
     if (user.banned) {
       throw new AuthenticationError('user is banned')
     }
@@ -98,6 +101,7 @@ export const onConnected = async ({ refreshToken, accessToken }) => {
       data: {
         refreshToken,
         accessToken,
+        username: discordUsername,
         // NOTE: Updates current avatar and locale
         email,
         imageSrc: imageSrc,
@@ -111,7 +115,7 @@ export const onConnected = async ({ refreshToken, accessToken }) => {
     // Don't place this in users.js (spam wallet generation prevention)
     if (!user.address) {
       try {
-        const publicAddress = await getTorusPublicAddress(user.id)
+        const publicAddress = await getTorusPublicAddress(user)
         await db.user.update({
           where: { id: user.id },
           data: { address: publicAddress },
