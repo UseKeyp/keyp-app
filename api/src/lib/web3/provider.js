@@ -17,6 +17,8 @@ const RPC_BY_NAME = {
   arbitrum: process.env.RPC_ARBITRUM,
   'arbitrum-nova': process.env.RPC_ARBITRUM_NOVA,
   sepolia: process.env.RPC_SEPOLIA,
+  avalanche: 'https://api.avax.network/ext/bc/C/rpc', // avalanche and fuji testnet only have these public RPCs because they work differently
+  fuji: 'https://api.avax-test.network/ext/bc/C/rpc', // and are provided by ava labs for free.
 }
 
 const getProviderByName = (name) => {

@@ -38,5 +38,7 @@ export const schema = gql`
     "bsc-testnet"
     mainnet
     polygon
+    avalanche
+    fuji
   }
 `

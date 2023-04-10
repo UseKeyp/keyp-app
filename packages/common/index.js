@@ -1,4 +1,11 @@
-const LOGIN_ENABLED_PROVIDERS = ['CHESS', 'DISCORD', 'NODE_OIDC', 'GOOGLE', 'TWITTER', 'TWITCH'];
+const LOGIN_ENABLED_PROVIDERS = [
+  'CHESS',
+  'DISCORD',
+  'NODE_OIDC',
+  'GOOGLE',
+  'TWITTER',
+  'TWITCH',
+]
 const AVAILABLE_NETWORKS = [
   'mainnet',
   'gnosis',
@@ -9,8 +16,9 @@ const AVAILABLE_NETWORKS = [
   'arbitrum-nova',
   'optimism',
   'sepolia',
+  'avalanche',
+  'fuji',
 ]
 
-
-module.exports.LOGIN_ENABLED_PROVIDERS = LOGIN_ENABLED_PROVIDERS;
-module.exports.AVAILABLE_NETWORKS = AVAILABLE_NETWORKS;
+module.exports.LOGIN_ENABLED_PROVIDERS = LOGIN_ENABLED_PROVIDERS
+module.exports.AVAILABLE_NETWORKS = AVAILABLE_NETWORKS

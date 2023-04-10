@@ -32,5 +32,9 @@ export const getExplorerBaseUrlFromName = (name) => {
     return `https://polygonscan.com/`
   } else if (name === 'mumbai') {
     return `https://mumbai.polygonscan.com/`
+  } else if (name == 'avalanche') {
+    return `https://snowtrace.io/`
+  } else if (name == 'fuji') {
+    return `https://testnet.snowtrace.io/`
   }
 }
