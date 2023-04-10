@@ -30,13 +30,17 @@ export const schema = gql`
   }
 
   enum Network {
-    polygon
-    gnosis
-    matic
-    mumbai
-    goerli
-    bsc
-    "bsc-testnet"
     mainnet
+    polygon
+    mumbai
+    gnosis
+    goerli
+    optimism
+    "optimism-goerli"
+    arbitrum
+    "arbitrum-nova"
+    sepolia
+    avalanche
+    "avalanche-fuji"
   }
 `
