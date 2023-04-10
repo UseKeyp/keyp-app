@@ -9,16 +9,17 @@ const LOGIN_ENABLED_PROVIDERS = [
 ]
 const AVAILABLE_NETWORKS = [
   'mainnet',
-  'gnosis',
   'polygon',
   'mumbai',
+  'gnosis',
   'goerli',
+  'optimism',
+  'optimism-goerli',
   'arbitrum',
   'arbitrum-nova',
-  'optimism',
   'sepolia',
   'avalanche',
-  'fuji',
+  'avalanche-fuji',
 ]
 
 module.exports.LOGIN_ENABLED_PROVIDERS = LOGIN_ENABLED_PROVIDERS
