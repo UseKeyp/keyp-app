@@ -1,5 +1,5 @@
 import { AVAILABLE_NETWORKS } from '@usekeyp/common'
-import { v4 as uuidv4 } from 'uuid'
+import scuid from 'scuid'
 
 import { db } from 'src/lib/db'
 import { logger } from 'src/lib/logger'
@@ -104,7 +104,8 @@ router.patch('/:clientId', async (req, res) => {
 // Create client
 router.post('/', async (req, res) => {
   try {
-    const id = uuidv4()
+    let id = scuid()
+    id = `keyp_app_${id}`
     const client = await db.oidc.create({
       data: {
         id,

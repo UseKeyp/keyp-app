@@ -36,11 +36,11 @@ export const schema = gql`
     gnosis
     goerli
     optimism
-    "optimism-goerli"
+    optimism_goerli
     arbitrum
-    "arbitrum-nova"
+    arbitrum_nova
     sepolia
     avalanche
-    "avalanche-fuji"
+    avalanche_fuji
   }
 `
