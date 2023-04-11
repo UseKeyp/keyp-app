@@ -8,24 +8,24 @@ export const DEFAULT_GAS_MAX_PRIORITY_FEE_PER_GAS = parseUnits('2', 'gwei')
 export const DEFAULT_GAS_MAX_FEE_PER_GAS = parseUnits('10', 'gwei')
 
 const RPC_BY_NAME = {
-  mainnet: process.env.RPC_MAINNET,
-  polygon: process.env.RPC_POLYGON,
-  mumbai: process.env.RPC_MUMBAI,
-  gnosis: process.env.RPC_GNOSIS,
-  goerli: process.env.RPC_GOERLI,
-  optimism: process.env.RPC_OPTIMISM,
-  'optimism-goerli': process.env.RPC_OPTIMISM_GOERLI,
-  arbitrum: process.env.RPC_ARBITRUM,
-  'arbitrum-nova': process.env.RPC_ARBITRUM_NOVA,
-  sepolia: process.env.RPC_SEPOLIA,
-  avalanche: process.env.RPC_AVALANCHE,
-  'avalanche-fuji': process.env.RPC_AVALANCHE_FUJI,
+  MAINNET: process.env.RPC_MAINNET,
+  POLYGON: process.env.RPC_POLYGON,
+  MUMBAI: process.env.RPC_MUMBAI,
+  GNOSIS: process.env.RPC_GNOSIS,
+  GOERLI: process.env.RPC_GOERLI,
+  OPTIMISM: process.env.RPC_OPTIMISM,
+  'OPTIMISM-GOERLI': process.env.RPC_OPTIMISM_GOERLI,
+  ARBITRUM: process.env.RPC_ARBITRUM,
+  'ARBITRUM-NOVA': process.env.RPC_ARBITRUM_NOVA,
+  SEPOLIA: process.env.RPC_SEPOLIA,
+  AVALANCHE: process.env.RPC_AVALANCHE,
+  'AVALANCHE-FUJI': process.env.RPC_AVALANCHE_FUJI,
 }
 
 const getProviderByName = (name) => {
   try {
     let provider
-    if (name == 'mainnet') {
+    if (name === 'mainnet') {
       provider = new InfuraProvider(name, process.env.INFURA_ID)
     } else {
       provider = new JsonRpcProvider(RPC_BY_NAME[name])
