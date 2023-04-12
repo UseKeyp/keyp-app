@@ -1,8 +1,8 @@
 const { PrismaClient } = require('@prisma/client')
-const db = new PrismaClient();
+const db = new PrismaClient()
 
 // Update network values in payload of Oidc model to uppercase
-(async () => {
+;(async () => {
   try {
     const oidcRecords = await db.oidc.findMany()
 
