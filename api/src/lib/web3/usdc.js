@@ -7,15 +7,15 @@ import { transferErc20 } from 'src/lib/web3/erc20'
 import { Web3Providers } from 'src/lib/web3/provider'
 
 export const USDC_DATA_BY_NETWORK = {
-  mumbai: {
+  MUMBAI: {
     address: '0xfe4F5145f6e09952a5ba9e956ED0C25e3Fa4c7F1',
     decimals: 18,
   },
-  mainnet: {
+  MAINNET: {
     address: '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48',
     decimals: 6,
   },
-  polygon: {
+  POLYGON: {
     address: '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174',
     decimals: 6,
   },

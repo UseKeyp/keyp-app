@@ -10,12 +10,12 @@ const CONTRACT_ADDRESS_GOERLI = '0x55d4dfb578daa4d60380995fff7a706471d7c719'
 const CONTRACT_ADDRESS_MAINNET = '0x594cb208b5bb48db1bcbc9354d1694998864ec63'
 
 export const CONTRACT_ADDRESS_BY_NETWORK = {
-  goerli: CONTRACT_ADDRESS_GOERLI,
-  mainnet: CONTRACT_ADDRESS_MAINNET,
+  GOERLI: CONTRACT_ADDRESS_GOERLI,
+  MAINNET: CONTRACT_ADDRESS_MAINNET,
 }
 
 const getJuiceBoxContract = ({ address, network }) => {
-  if (['goerli', 'mainnet'].indexOf(network) === -1)
+  if (['GOERLI', 'MAINNET'].indexOf(network) === -1)
     throw 'Invalid network. Only Goerli and Mainnet are supported'
   const jbContractAddress = CONTRACT_ADDRESS_BY_NETWORK[network]
   if (address.toLowerCase() !== jbContractAddress.toLowerCase())
@@ -68,6 +68,6 @@ const methods = {
 }
 
 export const METHODS_BY_NETWORK = {
-  goerli: { [CONTRACT_ADDRESS_GOERLI]: methods },
-  mainnet: { [CONTRACT_ADDRESS_MAINNET]: methods },
+  GOERLI: { [CONTRACT_ADDRESS_GOERLI]: methods },
+  MAINNET: { [CONTRACT_ADDRESS_MAINNET]: methods },
 }
