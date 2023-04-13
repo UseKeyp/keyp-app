@@ -46,9 +46,6 @@ jobs:
           node-version: 18.x
           registry-url: https://registry.npmjs.org/
 
-      - name: Install dependencies
-        run: yarn install --frozen-lockfile
-
       - name: Update version
         id: update_version
         env:
