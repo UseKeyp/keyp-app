@@ -4,8 +4,8 @@ import fetch from 'cross-fetch'
 import { logger } from 'src/lib/logger'
 
 const GAS_STATION_URLS = {
-  polygon: 'https://gasstation-mainnet.matic.network/v2',
-  mumbai: 'https://gasstation-mumbai.matic.today/v2',
+  POLYGON: 'https://gasstation-mainnet.matic.network/v2',
+  MUMBAI: 'https://gasstation-mumbai.matic.today/v2',
 }
 
 export const getGasSettings = async ({ network }) => {
@@ -17,7 +17,6 @@ export const getGasSettings = async ({ network }) => {
     })
     if (!res?.fast?.maxFee)
       return logger.error(`Can't get gas settings for ${network}`)
-    // logger.debug({ custom: res }, 'gasstation response')
     maxFeePerGas = parseUnits(Math.ceil(res.fast.maxFee) + '', 'gwei')
     maxPriorityFeePerGas = parseUnits(
       Math.ceil(res.fast.maxPriorityFee) + '',
