@@ -25,7 +25,7 @@ const RPC_BY_NAME = {
 const getProviderByName = (name) => {
   try {
     let provider
-    if (name === 'mainnet') {
+    if (name === 'MAINNET') {
       provider = new InfuraProvider(name, process.env.INFURA_ID)
     } else {
       provider = new JsonRpcProvider(RPC_BY_NAME[name])
