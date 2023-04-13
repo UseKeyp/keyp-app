@@ -4,6 +4,7 @@ import { routes, navigate } from '@redwoodjs/router'
 import { MetaTags } from '@redwoodjs/web'
 
 import LoadingScreen from 'src/components/LoadingCards/LoadingScreen'
+import DefaultLayout from 'src/layouts/DefaultLayout/DefaultLayout'
 import { useRedirection } from 'src/providers/redirection'
 
 const Redirect = () => {
@@ -107,28 +108,30 @@ const Redirect = () => {
   return (
     <>
       <MetaTags title="Redirect" description="Redirecting" />
-      <main className="flex justify-center">
-        <section className="flex items-center justify-center text-center">
-          <div className="flex flex-col items-center justify-center gap-y-4 text-center">
-            <h1 className="mt-8 flex text-[34px] font-light text-gray-1200 sm:mt-16 sm:mt-0">
-              {customErrorObject?.header}
-            </h1>
-            <p className="text-[16px] font-normal text-gray-1200">
-              {customErrorObject?.subheader}
-            </p>
-            <img
-              src={customErrorObject?.iconSrc}
-              height={customErrorObject?.iconHeight}
-              width={customErrorObject?.iconWidth}
-              className="flex"
-              alt="page not found"
-            />
-            <div className="mt-8 flex items-center text-[16px] font-normal text-gray-1200">
-              {customErrorObject?.description}
+      <DefaultLayout>
+        <main className="flex justify-center">
+          <section className="flex items-center justify-center text-center">
+            <div className="flex flex-col items-center justify-center gap-y-4 text-center">
+              <h1 className="mt-8 flex text-[34px] font-light text-gray-1200 sm:mt-16 sm:mt-0">
+                {customErrorObject?.header}
+              </h1>
+              <p className="text-[16px] font-normal text-gray-1200">
+                {customErrorObject?.subheader}
+              </p>
+              <img
+                src={customErrorObject?.iconSrc}
+                height={customErrorObject?.iconHeight}
+                width={customErrorObject?.iconWidth}
+                className="flex"
+                alt="page not found"
+              />
+              <div className="mt-8 flex items-center text-[16px] font-normal text-gray-1200">
+                {customErrorObject?.description}
+              </div>
             </div>
-          </div>
-        </section>
-      </main>
+          </section>
+        </main>
+      </DefaultLayout>
     </>
   )
 }
