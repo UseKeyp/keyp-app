@@ -32,7 +32,7 @@ jobs:
           path: '**/node_modules'
           key: node_modules_${{ hashFiles('**/yarn.lock') }}
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install
       - name: Lint
         run: yarn rw lint
         shell: bash
