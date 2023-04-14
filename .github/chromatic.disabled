@@ -19,7 +19,7 @@ jobs:
           key: node_modules_${{ hashFiles('**/yarn.lock') }}
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install
 
       - name: Build Storybook
         run: yarn build-storybook

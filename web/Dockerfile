@@ -34,7 +34,7 @@ COPY yarn.lock .
 COPY lerna.json .
 
 # Install dependencies
-RUN yarn install --frozen-lockfile
+RUN yarn install
 
 # Build packages
 RUN yarn build-packages
