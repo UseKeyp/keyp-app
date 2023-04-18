@@ -1,6 +1,6 @@
 {
   "name": "@treasure-chess/web3-helpers",
-  "version": "1.2.2-staging.6",
+  "version": "1.2.2-staging.7",
   "description": "",
   "main": "dist/index.js",
   "module": "src/index.js",
