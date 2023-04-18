@@ -9650,7 +9650,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@treasure-chess/web3-helpers@^1.2.2-staging.4, @treasure-chess/web3-helpers@workspace:packages/web3-helpers":
+"@treasure-chess/web3-helpers@^1.2.2-staging.6, @treasure-chess/web3-helpers@workspace:packages/web3-helpers":
   version: 0.0.0-use.local
   resolution: "@treasure-chess/web3-helpers@workspace:packages/web3-helpers"
   dependencies:
@@ -11053,22 +11053,22 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@usekeyp/common@^1.2.2-staging.4, @usekeyp/common@workspace:packages/common":
+"@usekeyp/common@^1.2.2-staging.2, @usekeyp/common@^1.2.2-staging.6, @usekeyp/common@workspace:packages/common":
   version: 0.0.0-use.local
   resolution: "@usekeyp/common@workspace:packages/common"
   languageName: unknown
   linkType: soft
 
-"@usekeyp/components-soft-ui@npm:^0.1.16":
-  version: 0.1.16
-  resolution: "@usekeyp/components-soft-ui@npm:0.1.16::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40usekeyp%2Fcomponents-soft-ui%2F0.1.16%2Fbb1ed14c6090f00facc4dd9529f9ea1332c7c16c"
+"@usekeyp/components-soft-ui@npm:^0.1.17":
+  version: 0.1.17
+  resolution: "@usekeyp/components-soft-ui@npm:0.1.17::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40usekeyp%2Fcomponents-soft-ui%2F0.1.17%2F6a553cdf070c58e0691c19ccffe649d45ab9e3fc"
   dependencies:
     "@redwoodjs/forms": ^4.3.1
     "@redwoodjs/router": ^3.3.0
     "@testing-library/jest-dom": ^5.16.5
     "@testing-library/react": ^13.4.0
     "@testing-library/user-event": ^13.5.0
-    "@usekeyp/tailwind-presets": ^0.1.16
+    "@usekeyp/tailwind-presets": ^0.1.17
     chart.js: ^4.0.1
     prop-types: ^15.8.1
     react: ^18.2.0
@@ -11080,14 +11080,14 @@ __metadata:
     surge: ^0.23.1
     uuid: ^9.0.0
     web-vitals: ^2.1.4
-  checksum: f38c63184f8c6e7866d6c838fdaa16daa9787f876f00be65a5b1c79f942d82bdd76e69c385ca6b81b4d8302487a2fe6d47922736bdad509cac42333c88586b94
+  checksum: 5a4f1bb5ac450bd82e3ab3a5cf0840bc974813e2b5bba260cea4c1e89de870dafe4a47ed5ca2c5571066d8592ad4a2e6e4ab8605f538f91e20f4b07664f3d1e0
   languageName: node
   linkType: hard
 
-"@usekeyp/tailwind-presets@npm:^0.1.16":
-  version: 0.1.16
-  resolution: "@usekeyp/tailwind-presets@npm:0.1.16::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40usekeyp%2Ftailwind-presets%2F0.1.16%2F1e4bbe9edd402bfb8ba6b615deca5c38e987345f"
-  checksum: af078ab80e53d14c787b5a08e9130603f1c770e197a2585f7dd9d0681696993b8fb4a385a12fe5e673b9c8cd2b9ec80ab4bf874aea8195e93c511dada5ab80be
+"@usekeyp/tailwind-presets@npm:^0.1.17":
+  version: 0.1.17
+  resolution: "@usekeyp/tailwind-presets@npm:0.1.17::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40usekeyp%2Ftailwind-presets%2F0.1.17%2F0cb68d8139643c366530d9271a31cd89fa1792d8"
+  checksum: e38d0635ba95feb3bed7c2f7f71368358fc039459087659b708916a5eef54a26a4e6de587301b0a7d75831d6cd9b251412ada628098857fc36987577b0a5ae48
   languageName: node
   linkType: hard
 
@@ -12196,8 +12196,8 @@ __metadata:
     "@toruslabs/fetch-node-details": ^8.1.0
     "@toruslabs/torus.js": ^6.3.2
     "@treasure-chess/treasure-contracts": ^0.1.0
-    "@treasure-chess/web3-helpers": ^1.2.2-staging.4
-    "@usekeyp/common": ^1.2.2-staging.4
+    "@treasure-chess/web3-helpers": ^1.2.2-staging.6
+    "@usekeyp/common": ^1.2.2-staging.6
     atob: ^2.1.2
     bad-words: ^3.0.4
     chess.js: ^0.12.1
@@ -37658,9 +37658,9 @@ __metadata:
     "@redwoodjs/web": ^3.8.0
     "@sentry/browser": ^6.17.3
     "@storybook/addon-essentials": ^6.5.15
-    "@usekeyp/common": ^1.2.2-staging.4
-    "@usekeyp/components-soft-ui": ^0.1.16
-    "@usekeyp/tailwind-presets": ^0.1.16
+    "@usekeyp/common": ^1.2.2-staging.2
+    "@usekeyp/components-soft-ui": ^0.1.17
+    "@usekeyp/tailwind-presets": ^0.1.17
     "@wert-io/module-react-component": ^0.2.0
     autoprefixer: ^10.4.13
     bad-words: ^3.0.4
