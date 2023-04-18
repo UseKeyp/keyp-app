@@ -19,7 +19,7 @@ const DefaultLayout = ({ children }) => {
                   App
                 </h1>
               </div>
-              <div className="flex justify-center px-24 sm:px-0">
+              <div className="flex justify-center px-8 sm:px-0">
                 {isAuthenticated && (
                   <UserAccount currentUser={currentUser} logOut={logOut} />
                 )}
