@@ -45,7 +45,7 @@ const WalletProvider = ({ children }) => {
     error: balanceError,
     loading: balanceLoading,
   } = useQuery(USER_BALANCE_QUERY, {
-    variables: { network: 'polygon' },
+    variables: { network: 'POLYGON' },
     pollInterval: 30000,
     skip: !isAuthenticated,
     fetchPolicy: 'network-only',

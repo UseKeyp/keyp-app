@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.2](https://github.com/UseKeyp/keyp-app/compare/v1.2.3...v1.2.2) (2023-04-18)
+
+**Note:** Version bump only for package @treasure-chess/web3-helpers
+
+
+
+
+
 ## [1.2.2](https://github.com/UseKeyp/keyp-app/compare/v1.2.2-staging.2...v1.2.2) (2023-04-05)
 
 **Note:** Version bump only for package @treasure-chess/web3-helpers

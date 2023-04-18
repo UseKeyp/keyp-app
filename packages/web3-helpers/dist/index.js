@@ -10,37 +10,43 @@ require("core-js/modules/es.object.to-string.js");
 require("core-js/modules/es.function.name.js");
 require("core-js/modules/es.array.includes.js");
 var EIP_155_NETWORK_SPEC = [{
-  name: 'mainnet',
+  name: 'MAINNET',
   chainId: 1
 }, {
-  name: 'ropsten',
-  chainId: 3
-}, {
-  name: 'rinkeby',
-  chainId: 4
-}, {
-  name: 'goerli',
+  name: 'GOERLI',
   chainId: 5
 }, {
-  name: 'kovan',
-  chainId: 42
+  name: 'SEPOLIA',
+  chainId: 11155111
+}, {
+  name: 'MATIC',
+  chainId: 137
+}, {
+  name: 'MUMBAI',
+  chainId: 80001
+}, {
+  name: 'AVALANCHE',
+  chainId: 43114
+}, {
+  name: 'AVALANCHE-FUJI',
+  chainId: 43113
+}, {
+  name: 'ARBITRUM',
+  chainId: 42161
 },
 // Not provided by Infura
 {
-  name: 'xdai',
+  name: 'GNOSIS',
   chainId: 100
 }, {
-  name: 'matic',
-  chainId: 137
+  name: 'OPTIMISM',
+  chainId: 10
 }, {
-  name: 'mumbai',
-  chainId: 80001
+  name: 'OPTIMISM-GOERLI',
+  chainId: 420
 }, {
-  name: 'bsc-mainnet',
-  chainId: 56
-}, {
-  name: 'bsc-testnet',
-  chainId: 97
+  name: 'ARBITRUM-NOVA',
+  chainId: 42170
 }];
 exports.EIP_155_NETWORK_SPEC = EIP_155_NETWORK_SPEC;
 var getNetworkNameFromId = function getNetworkNameFromId(chainId) {
@@ -61,15 +67,35 @@ var getIdFromNetworkName = function getIdFromNetworkName(name) {
 };
 exports.getIdFromNetworkName = getIdFromNetworkName;
 var getExplorerBaseUrlFromName = function getExplorerBaseUrlFromName(name) {
-  if (['ropsten', 'rinkeby', 'goerli', 'kovan', 'mainnet'].includes(name)) {
-    if (name === 'mainnet') return 'https://etherscan.io/';
+  if (['MAINNET', 'GOERLI', 'SEPOLIA', 'GNOSIS', 'MATIC', 'MUMBAI', 'AVALANCHE', 'AVALANCHE-FUJI', 'ARBITRUM', 'ARBITRUM-NOVA', 'OPTIMISM', 'OPTIMISM-GOERLI'].includes(name)) {
+    switch (name) {
+      case 'MAINNET':
+        return 'https://etherscan.io/';
+      case 'GOERLI':
+        return "https://goerli.etherscan.io/";
+      case 'SEPOLIA':
+        return "https://sepolia.etherscan.io/";
+      case 'GNOSIS':
+        return "https://blockscout.com/xdai/mainnet/";
+      case 'MATIC':
+        return "https://polygonscan.com/";
+      case 'MUMBAI':
+        return "https://mumbai.polygonscan.com/";
+      case 'AVALANCHE':
+        return "https://snowtrace.io/";
+      case 'AVALANCHE-FUJI':
+        return "https://testnet.snowtrace.io/";
+      case 'ARBITRUM':
+        return "https://arbiscan.io/";
+      case 'OPTIMISM':
+        return "https://optimistic.etherscan.io/";
+      case 'OPTIMISM-GOERLI':
+        return "https://goerli-optimism.etherscan.io/";
+      case 'ARBITRUM-NOVA':
+        return "https://explorer.arbitrum.io/";
+    }
+  } else {
     return "https://".concat(name, ".etherscan.io/");
-  } else if (name === 'xdai') {
-    return 'https://blockscout.com/xdai/mainnet/';
-  } else if (name === 'matic') {
-    return "https://polygonscan.com/";
-  } else if (name === 'mumbai') {
-    return "https://mumbai.polygonscan.com/";
   }
 };
 exports.getExplorerBaseUrlFromName = getExplorerBaseUrlFromName;

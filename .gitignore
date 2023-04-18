@@ -28,3 +28,5 @@ locales/
 build-storybook.log
 jwks.js
 jwks.*.js
+packages/*/dist/
+install-state.gz

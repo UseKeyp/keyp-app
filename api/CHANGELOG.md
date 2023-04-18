@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.2](https://github.com/UseKeyp/keyp-app/compare/v1.2.3...v1.2.2) (2023-04-18)
+
+**Note:** Version bump only for package api
+
+
+
+
+
 ## [1.2.3](https://github.com/UseKeyp/keyp-app/compare/v1.2.2-staging.3...v1.2.3) (2023-04-06)
 
 
