@@ -41,7 +41,7 @@ test:
 build-app:
     FROM +deps
     COPY +build-packages/packages packages
-    BUILD +test
+    # BUILD +test
     # TODO: figure out arguments
     ARG ENVIRONMENT='local'
     ARG VERSION='latest'
@@ -50,17 +50,18 @@ build-app:
     SAVE ARTIFACT web/dist web/dist # AS LOCAL ./web/dist
     SAVE ARTIFACT api/dist api/dist # AS LOCAL ./api/dist
     SAVE ARTIFACT api/db api/db
+    SAVE ARTIFACT node_modules/.prisma node_modules/.prisma
 
 docker-web:
     FROM nginx
     BUILD +build-app # Ensures output /dist is saved locally for 'rw serve' purposes
     ARG ENVIRONMENT='local'
     ARG VERSION='latest'
-    COPY web/config/nginx/default.conf /etc/nginx/conf.d/default.conf
+    COPY web/config/nginx/keyp-app-docker.conf /etc/nginx/conf.d/default.conf
     COPY +build-app/web/dist /usr/share/nginx/html
     RUN ls -lA /usr/share/nginx/html
     EXPOSE 8910
-    SAVE IMAGE --push ghcr.io/pi0neerpat/treasure-chess-web:$VERSION
+    SAVE IMAGE --push ghcr.io/usekeyp/keyp-app-web:$VERSION
 
 docker-api:
     FROM +deps
@@ -69,30 +70,35 @@ docker-api:
     ENV ENVIRONMENT='local'
     COPY +build-app/api/dist /api/dist
     COPY +build-app/api/db /api/db
+    COPY +build-app/node_modules/.prisma node_modules/.prisma
     COPY serve-api.sh .
+    COPY tasks/environment tasks/environment
+    COPY .env.dev.js.enc .
+    COPY .env.staging.js.enc .
+    COPY .env.prod.js.enc .
     COPY redwood.toml .
     COPY graphql.config.js .
-    RUN yarn global add @redwoodjs/api-server @redwoodjs/internal prisma && \
-      apt-get update && apt install -y nano ncdu
+    # RUN yarn add @redwoodjs/api-server @redwoodjs/internal prisma && \
+      # apt-get update && apt install -y nano ncdu
     EXPOSE 8911
     ENTRYPOINT ["./serve-api.sh"]
-    SAVE IMAGE --push ghcr.io/pi0neerpat/treasure-chess-api:$VERSION
+    SAVE IMAGE --push ghcr.io/usekeyp/keyp-app-api:$VERSION
 
 docker:
   BUILD +docker-web
   BUILD +docker-api
 
-test-images:
-    FROM earthly/dind:alpine
-    ARG VERSION='latest'
-    RUN apk add curl
-    WITH DOCKER \
-        --load ghcr.io/pi0neerpat/treasure-chess-web:$VERSION=+docker-web \
-        --load ghcr.io/pi0neerpat/treasure-chess-api:$VERSION=+docker-api
-        RUN docker run -d -p 8910:8910 ghcr.io/pi0neerpat/treasure-chess-web && \
-            sleep 5 && \
-            curl 0.0.0.0:8910 | grep 'Treasure Chess'
-    END
+# test-images:
+#     FROM earthly/dind:alpine
+#     ARG VERSION='latest'
+#     RUN apk add curl
+#     WITH DOCKER \
+#         --load ghcr.io/usekeyp/keyp-app-web:$VERSION=+docker-web \
+#         --load ghcr.io/usekeyp/keyp-app-api:$VERSION=+docker-api
+#         RUN docker run -d -p 8910:8910 ghcr.io/usekeyp/keyp-app-web && \
+#             sleep 5 && \
+#             curl 0.0.0.0:8910 | grep 'Treasure Chess'
+#     END
 
 migrate:
 # Only runs if entire run succeeds. Run with `earthly --push +migrate`

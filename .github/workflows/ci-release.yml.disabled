@@ -126,9 +126,11 @@ jobs:
             ## Added
             ## Fixes
             ## Breaking
-
-            `docker pull ghcr.io/usekeyp/keyp-app-api:${{ needs.update-version.outputs.VERSION }}`
-            `docker pull ghcr.io/usekeyp/keyp-app-web:${{ needs.update-version.outputs.VERSION }}`
+            ### Install with
+            ```bash
+            docker pull ghcr.io/usekeyp/keyp-app-api:${{ needs.update-version.outputs.VERSION }}
+            docker pull ghcr.io/usekeyp/keyp-app-web:${{ needs.update-version.outputs.VERSION }}
+            ```
       - name: Discord notify release draft
         env:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK_RELEASE }}

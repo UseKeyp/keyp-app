@@ -3,5 +3,5 @@
 # NOTE: Requires binaries. Install with:
 # yarn global add @redwoodjs/api-server @redwoodjs/internal prisma
 $(node tasks/environment/setupEnv)
-prisma migrate deploy --schema ./api/db/schema.prisma
-rw-server api
+npx prisma migrate deploy --schema ./api/db/schema.prisma
+npx rw-server api

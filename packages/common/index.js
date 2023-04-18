@@ -8,15 +8,18 @@ const LOGIN_ENABLED_PROVIDERS = [
   'EPIC_GAMES',
 ]
 const AVAILABLE_NETWORKS = [
-  'mainnet',
-  'gnosis',
-  'polygon',
-  'mumbai',
-  'goerli',
-  'arbitrum',
-  'arbitrum-nova',
-  'optimism',
-  'sepolia',
+  'MAINNET',
+  'POLYGON',
+  'MUMBAI',
+  'GNOSIS',
+  'GOERLI',
+  'OPTIMISM',
+  'OPTIMISM-GOERLI',
+  'ARBITRUM',
+  'ARBITRUM-NOVA',
+  'SEPOLIA',
+  'AVALANCHE',
+  'AVALANCHE-FUJI',
 ]
 
 module.exports.LOGIN_ENABLED_PROVIDERS = LOGIN_ENABLED_PROVIDERS

@@ -13,6 +13,7 @@ const Routes = () => {
         <AppUrlListener />
         <Set wrap={DefaultLayoutNoHeaderOrFooter}>
           <Route path="/login" page={LoginPage} name="login" />
+          <Route path="/redirect/{type}" page={RedirectPage} name="redirect" />
           <Private unauthenticated="login">
             <Route path="/authorize" page={AuthorizePage} name="authorize" />
           </Private>
@@ -23,7 +24,6 @@ const Routes = () => {
             <Route path="/profile" page={ProfilePage} name="profile" />
             <Route path="/" page={HomePage} name="home" />
           </Private>
-          <Route path="/redirect/{type}" page={RedirectPage} name="redirect" />
           <Route notfound page={NotFoundPage} />
         </Set>
       </AllContextProviders>
