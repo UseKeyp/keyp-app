@@ -37,7 +37,8 @@
     "react-dom": "^17.0.2",
     "scuid": "1.1.0",
     "serverless-http": "^3.1.1",
-    "stripe": "^9.6.0"
+    "stripe": "^9.6.0",
+    "unique-names-generator": "^4.7.1"
   },
   "optionalDependencies": {
     "discord.js": "^13.6.0"
