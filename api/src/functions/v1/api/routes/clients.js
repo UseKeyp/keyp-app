@@ -112,7 +112,7 @@ router.post('/', async (req, res) => {
         type: 7,
         payload: {
           client_id: id,
-          network: 'polygon',
+          network: 'POLYGON',
           redirect_uris: [],
           client_name: 'My App',
         },
