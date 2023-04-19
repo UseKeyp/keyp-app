@@ -260,6 +260,7 @@ enum ProviderType {
   NODE_OIDC // Test provider
   TWITCH
   EPIC_GAMES
+  REDDIT
 }
 
 enum OAuthConnectionType {
