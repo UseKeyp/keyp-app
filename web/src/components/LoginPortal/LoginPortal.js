@@ -282,6 +282,26 @@ const LoginPortal = () => {
                   />{' '}
                 </div>
               </Button>
+              <Button
+                onClick={() => onSubmitSignUp('REDDIT')}
+                disabled={loading === 'REDDIT'}
+                classNameVariant={`${
+                  loading === 'REDDIT'
+                    ? 'bg-[#E9EBED] border-[#E9EBED] justify-center'
+                    : 'hover:bg-[#E9EBED] hover:border-[#E9EBED] justify-center'
+                }`}
+                borderColor="border-[#E5E7EB]"
+                fluid={false}
+                size="square"
+                position="start"
+                alt="reddit"
+              >
+                <div className="group flex flex-row gap-x-4 hover:text-white">
+                  <div className="flex">
+                    <Icon height="24" width="24" name="reddit" />
+                  </div>
+                </div>
+              </Button>
             </div>
           </MoreAccordion>
           <div className="flex items-center text-[9px] text-gray-800 gap-x-1 mt-2">
