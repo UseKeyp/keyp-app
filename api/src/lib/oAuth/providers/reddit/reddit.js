@@ -21,21 +21,12 @@ const USER_AGENT_STRING = `web:${process.env.REDDIT_CLIENT_ID}:v0.1 (by /u/keype
 
 const responseType = 'code'
 
-const generateRandomString = (length = 32) => {
-  const charSet =
-    'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-  return Array.from({ length }, () =>
-    charSet.charAt(Math.floor(Math.random() * charSet.length))
-  ).join('')
-}
-
 const params = {
   client_id: process.env.REDDIT_CLIENT_ID,
   scope: REDDIT_SCOPE,
   redirect_uri: REDDIT_REDIRECT_URI,
   response_type: 'code',
   duration: 'permanent',
-  state: generateRandomString(),
 }
 
 export const onSubmitCode = async (code, { codeVerifier }) => {
