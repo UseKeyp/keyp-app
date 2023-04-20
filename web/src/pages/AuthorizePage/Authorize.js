@@ -48,7 +48,7 @@ function Authorize() {
 
     setClient({
       name: searchParams.get('clientName'),
-      logoUri: searchParams.get('clientLogoUri'),
+      logoUri: encodeURI(searchParams.get('clientLogoUri')),
       policyUri: searchParams.get('clientPolicyUri'),
       tosUri: searchParams.get('clientTosUri'),
       redirectUrl: url ? url : '',
