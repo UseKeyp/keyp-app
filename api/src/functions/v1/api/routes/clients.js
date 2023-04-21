@@ -1,6 +1,11 @@
 import { AVAILABLE_NETWORKS } from '@usekeyp/common'
 import scuid from 'scuid'
-import { animals, colors, uniqueNamesGenerator } from 'unique-names-generator'
+import {
+  adjectives,
+  animals,
+  colors,
+  uniqueNamesGenerator,
+} from 'unique-names-generator'
 
 import { db } from 'src/lib/db'
 import { logger } from 'src/lib/logger'
@@ -108,9 +113,9 @@ router.post('/', async (req, res) => {
     let id = scuid()
     id = `keyp_app_${id}`
     const randomName = uniqueNamesGenerator({
-      dictionaries: [colors, animals],
+      dictionaries: [adjectives, colors, animals],
       separator: '-',
-      length: 2,
+      length: 3,
     })
     const client = await db.oidc.create({
       data: {
@@ -120,7 +125,7 @@ router.post('/', async (req, res) => {
           client_id: id,
           network: 'POLYGON',
           redirect_uris: [],
-          client_name: `My-test-app-${randomName}`,
+          client_name: `My-test-${randomName}-app`,
         },
       },
     })
