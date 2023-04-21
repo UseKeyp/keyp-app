@@ -125,7 +125,7 @@ router.post('/', async (req, res) => {
           client_id: id,
           network: 'POLYGON',
           redirect_uris: [],
-          client_name: `My-test-${randomName}-app`,
+          client_name: `${randomName}-app`,
         },
       },
     })
