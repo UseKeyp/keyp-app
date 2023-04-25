@@ -6,6 +6,7 @@ import { db } from 'src/lib/db'
 import { APP_DOMAIN } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
 import Sentry from 'src/lib/sentry'
+import { getTorusPublicAddress } from 'src/lib/torus/torus'
 import { fetchUser } from 'src/lib/users'
 
 export const FACEBOOK = 'FACEBOOK'
@@ -81,8 +82,6 @@ export const onSubmitCode = async (code) => {
       { method: 'GET', headers: { 'Content-Type': 'application/json' } }
     ).then((res) => res.json())
 
-    logger.debug({ custom: response }, 'response')
-
     if (response.error) {
       throw `${response.error} - ${response.error_description}`
     }
@@ -113,18 +112,26 @@ export const onConnected = async ({ accessToken }) => {
       `https://graph.facebook.com/me?fields=id,name,email,picture&access_token=${accessToken}`
     ).then((res) => res.json())
 
-    logger.debug({ custom: userDetails }, 'userDetails')
-
     const { id, name, email, picture } = userDetails
 
-    logger.debug({ custom: { id, name, email, picture } }, 'userDetails')
-
     const user = await fetchUser(id, { username: name }, FACEBOOK)
-    logger.debug({ custom: user }, 'user')
+
+    let publicAddress
+    if (!user.address) {
+      try {
+        publicAddress = await getTorusPublicAddress(user)
+      } catch (e) {
+        /* eslint-disable no-console */
+        logger.error("Error fetching user's wallet from Torus")
+        logger.error(e)
+        /* eslint-enable no-console */
+      }
+    }
 
     await db.user.update({
       where: { id: user.id },
       data: {
+        ...(publicAddress && { address: publicAddress }),
         accessToken,
         username: name,
         imageSrc: picture?.data?.url,
