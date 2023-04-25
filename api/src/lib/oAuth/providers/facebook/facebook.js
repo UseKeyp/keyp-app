@@ -1,10 +1,9 @@
-import crypto from 'crypto'
-
 import fetch from 'cross-fetch'
 
 import { db } from 'src/lib/db'
 import { APP_DOMAIN } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
+import { getExpiration } from 'src/lib/oAuth/helpers'
 import Sentry from 'src/lib/sentry'
 import { getTorusPublicAddress } from 'src/lib/torus/torus'
 import { fetchUser } from 'src/lib/users'
@@ -21,31 +20,11 @@ const FACEBOOK_REDIRECT_URI = `${APP_DOMAIN}/redirect/facebook`
 
 const responseType = 'code'
 
-const generateCodeVerifier = () => {
-  return crypto.randomBytes(32).toString('hex')
-}
-
-const generateCodeChallenge = (codeVerifier) => {
-  const hash = crypto
-    .createHash('sha256')
-    .update(codeVerifier, 'ascii')
-    .digest('hex')
-  return Buffer.from(hash, 'hex')
-    .toString('base64')
-    .replace('+', '-')
-    .replace('/', '_')
-    .replace(/=+$/, '')
-}
-
-const codeVerifier = generateCodeVerifier()
-const codeChallenge = generateCodeChallenge(codeVerifier)
 export const params = {
   client_id: process.env.FACEBOOK_CLIENT_ID,
   scope: FACEBOOK_SCOPE,
   redirect_uri: FACEBOOK_REDIRECT_URI,
   response_type: responseType,
-  code_challenge: codeChallenge,
-  code_challenge_method: 'S256',
 }
 
 async function getLongLivedAccessToken(accessToken) {
@@ -57,8 +36,11 @@ async function getLongLivedAccessToken(accessToken) {
         headers: { 'Content-Type': 'application/json' },
       }
     ).then((res) => res.json())
-    if (response?.accessToken) {
-      return response.accessToken
+    if (response?.access_token) {
+      return {
+        access_token: response.access_token,
+        expires_in: response.expires_in,
+      }
     } else {
       logger.error('Failed to get long lived access token')
       return ''
@@ -69,7 +51,7 @@ async function getLongLivedAccessToken(accessToken) {
   }
 }
 
-export const onSubmitCode = async (code) => {
+export const onSubmitCode = async (code, { codeVerifier }) => {
   try {
     const response = await fetch(
       `${FACEBOOK_OAUTH_URL_TOKEN}?client_id=${
@@ -86,19 +68,21 @@ export const onSubmitCode = async (code) => {
       throw `${response.error} - ${response.error_description}`
     }
 
-    const { access_token: accessToken } = response
-
-    accessToken && logger.debug(`FACEBOOK_API_ACCESS_TOKEN ${accessToken}`)
+    const { access_token: accessToken, expires_in: expiration } = response
 
     const longLivedAccessToken = await getLongLivedAccessToken(accessToken)
 
     if (longLivedAccessToken) {
+      const { access_token: accessToken, expires_in: expiration } =
+        longLivedAccessToken
       return {
-        accessToken: longLivedAccessToken,
+        accessToken: accessToken,
+        accessTokenExpiration: getExpiration(expiration),
       }
     } else {
       return {
         accessToken,
+        accessTokenExpiration: getExpiration(expiration),
       }
     }
   } catch (e) {
@@ -106,7 +90,7 @@ export const onSubmitCode = async (code) => {
   }
 }
 
-export const onConnected = async ({ accessToken }) => {
+export const onConnected = async ({ accessTokenExpiration, accessToken }) => {
   try {
     const userDetails = await fetch(
       `https://graph.facebook.com/me?fields=id,name,email,picture&access_token=${accessToken}`
@@ -133,6 +117,7 @@ export const onConnected = async ({ accessToken }) => {
       data: {
         ...(publicAddress && { address: publicAddress }),
         accessToken,
+        accessTokenExpiration,
         username: name,
         imageSrc: picture?.data?.url,
         email,
