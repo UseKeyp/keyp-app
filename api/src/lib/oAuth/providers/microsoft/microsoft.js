@@ -55,32 +55,24 @@ export const onSubmitCode = async (code, { codeVerifier }) => {
       expires_in: expiration,
     } = response
 
-    logger.debug({ custom: response }, 'Microsoft submitCodeGrant')
-
     return {
       accessToken,
       refreshToken,
       accessTokenExpiration: getExpiration(expiration),
     }
   } catch (e) {
+    logger.error({ custom: e }, 'Microsoft submitCodeGrant')
     throw `onSubmitCode() ${e}`
   }
 }
 
 export const onConnected = async ({ refreshToken, accessToken }) => {
-  logger.debug(
-    { custom: { refreshToken, accessToken } },
-    'onConnected() refresh and access tokens'
-  )
-  logger.debug({ custom: { accessToken } }, 'onConnected() accessToken')
   try {
     const userDetails = await fetch('https://graph.microsoft.com/v1.0/me', {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
     }).then((res) => res.json())
-
-    logger.debug({ custom: userDetails }, 'onConnected() userDetails')
 
     const user = await fetchUser(
       userDetails.id,
@@ -110,6 +102,7 @@ export const onConnected = async ({ refreshToken, accessToken }) => {
 
     return user
   } catch (e) {
+    logger.error({ custom: e }, 'Microsoft onConnected')
     throw `onConnected() ${e}`
   }
 }
