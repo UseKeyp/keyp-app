@@ -302,6 +302,26 @@ const LoginPortal = () => {
                   </div>
                 </div>
               </Button>
+              <Button
+                onClick={() => onSubmitSignUp('MICROSOFT')}
+                disabled={loading === 'MICROSOFT'}
+                classNameVariant={`${
+                  loading === 'MICROSOFT'
+                    ? 'bg-[#3A3C41] border-[#3A3C41] justify-center'
+                    : 'hover:bg-[#3A3C41] hover:border-[#3A3C41] justify-center'
+                }`}
+                borderColor="border-[#E5E7EB]"
+                fluid={false}
+                size="square"
+                position="start"
+                alt="microsoft"
+              >
+                <div className="group flex flex-row gap-x-4 hover:text-white">
+                  <div className="flex">
+                    <Icon height="24" width="24" name="microsoft" />
+                  </div>
+                </div>
+              </Button>
             </div>
           </MoreAccordion>
           <div className="flex items-center text-[9px] text-gray-800 gap-x-1 mt-2">

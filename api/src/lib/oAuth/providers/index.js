@@ -8,6 +8,7 @@ import { COINBASE, provider as coinbaseProvider } from './coinbase'
 import { DISCORD, provider as discordProvider } from './discord'
 import { EPIC_GAMES, provider as epicGamesProvider } from './epic-games'
 import { GOOGLE, provider as googleProvider } from './google'
+import { MICROSOFT, provider as microsoftProvider } from './microsoft'
 import { NODE_OIDC, provider as nodeOIDCProvider } from './node-oidc/node-oidc'
 import { PLAID, provider as plaidProvider } from './plaid'
 import { REDDIT, provider as redditProvider } from './reddit'
@@ -24,6 +25,7 @@ const providers = {
   [GOOGLE]: googleProvider,
   [EPIC_GAMES]: epicGamesProvider,
   [REDDIT]: redditProvider,
+  [MICROSOFT]: microsoftProvider,
 }
 
 // Providers where creating a wallet is allowed
@@ -40,6 +42,7 @@ const types = [
   GOOGLE,
   EPIC_GAMES,
   REDDIT,
+  MICROSOFT,
 ]
 
 export { providers, types }
