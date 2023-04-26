@@ -1,3 +1,5 @@
+import { getNativeTokenAbbreviation } from '@usekeyp/common'
+
 import { logger } from 'src/lib/logger'
 import { safeFetchUser } from 'src/lib/users'
 import { getEtherBalance } from 'src/lib/web3/airdrop.js'
@@ -23,10 +25,13 @@ router.get('/:userId/balance', async (req, res) => {
   try {
     const { userId } = req.params
     const user = await safeFetchUser(userId)
-    const etherBalanceData = await getEtherBalance({
+    const nativeTokenBalanceData = await getEtherBalance({
       address: user.address,
       network: req.ctx.network,
     })
+
+    const nativeTokenAbbreviation = getNativeTokenAbbreviation(req.ctx.network)
+
     let usdcBalanceData
     try {
       const tokenAddress = USDC_DATA_BY_NETWORK[req.ctx.network]?.address
@@ -41,7 +46,7 @@ router.get('/:userId/balance', async (req, res) => {
       // Do nothing, just don't send USDC balance data
     }
     res.send({
-      ETH: etherBalanceData,
+      [nativeTokenAbbreviation]: nativeTokenBalanceData,
       ...(usdcBalanceData && { USDC: usdcBalanceData }),
     })
   } catch (e) {
