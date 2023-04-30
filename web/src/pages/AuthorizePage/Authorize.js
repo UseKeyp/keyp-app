@@ -42,8 +42,19 @@ function Authorize() {
       const tempUrl = url.href
       url = tempUrl.substring(0, tempUrl.indexOf(',')).replace(/[\[\]‘’']/g, '')
     } else {
-      // If all else fails then no url will be shown
-      url = ''
+      // If we still have no url, then we should check if our client is the Dev Portal
+      if (!url) {
+        if (searchParams.get('clientName') === 'Keyp Dev Portal') {
+          const envUrls = {
+            dev: '0.0.0.0:8910',
+            staging: 'dev.staging-env.usekeyp.com',
+            prod: 'dev.usekeyp.com',
+          }
+          url = envUrls[process.env.ENVIRONMENT] || ''
+        } else {
+          url = ''
+        }
+      }
     }
 
     setClient({
