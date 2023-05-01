@@ -18,7 +18,11 @@ router.get('/on/:rampType', withUser, async (req, res) => {
     res.send({ url })
   } catch (e) {
     logger.error(e)
-    res.status(500).send({ error: e })
+    return res.status(500).json({
+      statusCode: 500,
+      error: e,
+      message: 'Error fetching onramp',
+    })
   }
 })
 
@@ -33,7 +37,11 @@ router.get('/off/:rampType', withUser, async (req, res) => {
     res.send({ url })
   } catch (e) {
     logger.error(e)
-    res.status(500).send({ error: e })
+    return res.status(500).json({
+      statusCode: 500,
+      error: e,
+      message: 'Error fetching offramp',
+    })
   }
 })
 

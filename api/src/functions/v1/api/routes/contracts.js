@@ -19,7 +19,11 @@ router.post('/method', withUser, async (req, res) => {
     res.send(tx)
   } catch (e) {
     logger.error(e)
-    res.status(500).send({ error: e })
+    return res.status(500).json({
+      statusCode: 500,
+      error: e,
+      message: 'Error validating contract address',
+    })
   }
 })
 
@@ -30,7 +34,11 @@ router.get('/method', async (req, res) => {
     res.send(response)
   } catch (e) {
     logger.error(e)
-    res.status(500).send({ error: e })
+    return res.status(500).json({
+      statusCode: 500,
+      error: e,
+      message: 'Error reading contract',
+    })
   }
 })
 

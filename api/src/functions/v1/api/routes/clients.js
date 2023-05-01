@@ -56,7 +56,11 @@ router.get('/', async (req, res) => {
     )
   } catch (e) {
     logger.error(e)
-    res.status(500).send({ error: e })
+    return res.status(500).json({
+      statusCode: 500,
+      error: e,
+      message: 'Error fetching clients',
+    })
   }
 })
 
@@ -103,7 +107,11 @@ router.patch('/:clientId', async (req, res) => {
     res.send(client)
   } catch (e) {
     logger.error(e)
-    res.status(500).send({ error: e })
+    return res.status(500).json({
+      statusCode: 500,
+      error: e,
+      message: 'Error updating client',
+    })
   }
 })
 
@@ -142,7 +150,11 @@ router.post('/', async (req, res) => {
     res.send(client)
   } catch (e) {
     logger.error(e)
-    res.status(500).send({ error: e })
+    return res.status(500).json({
+      statusCode: 500,
+      error: e,
+      message: 'Error creating client',
+    })
   }
 })
 

@@ -6,7 +6,12 @@ export const withUser = async (req, res, next) => {
     req.ctx.user = user
     next()
   } catch (e) {
+    /* eslint-disable-next-line no-console */
     console.error(e)
-    res.status(500).send({ error: 'Error fetching user' })
+    return res.status(500).json({
+      statusCode: 500,
+      error: e,
+      message: 'Error fetching user',
+    })
   }
 }

@@ -15,7 +15,11 @@ router.get('/:userId', async (req, res) => {
     res.send(user)
   } catch (e) {
     logger.error(e)
-    res.status(500).send({ error: e })
+    return res.status(500).json({
+      statusCode: 500,
+      error: e,
+      message: 'Error fetching user by ID',
+    })
   }
 })
 
@@ -46,7 +50,11 @@ router.get('/:userId/balance', async (req, res) => {
     })
   } catch (e) {
     logger.error(e)
-    res.status(500).send({ error: e })
+    return res.status(500).json({
+      statusCode: 500,
+      error: e,
+      message: 'Error getting user balance by ID',
+    })
   }
 })
 
@@ -64,7 +72,11 @@ router.get('/:userId/balance/:tokenAddress', async (req, res) => {
     res.send({ [tokenAddress.toLowerCase()]: tokenBalanceData })
   } catch (e) {
     logger.error(e)
-    res.status(500).send({ error: e })
+    return res.status(500).json({
+      statusCode: 500,
+      error: e,
+      message: 'Error getting user token balance by user ID and token address',
+    })
   }
 })
 

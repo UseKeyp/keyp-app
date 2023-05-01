@@ -13,7 +13,11 @@ export const validateToken = (settings) => async (req, res, next) => {
   try {
     const token = req?.headers?.authorization?.split(' ')[1]
     if (!token)
-      return res.status(401).send('Unauthorized. No access token provided')
+      return res.status(401).json({
+        statusCode: 401,
+        error: 'Unauthorized',
+        message: 'No access token provided',
+      })
     const response = await fetch(
       settings.APP_DOMAIN + '/oauth/token/introspection',
       {
@@ -28,7 +32,12 @@ export const validateToken = (settings) => async (req, res, next) => {
         }),
       }
     ).then((res) => res.json())
-    if (!response.active) return res.status(401).send('Unauthorized')
+    if (!response.active)
+      return res.status(401).json({
+        statusCode: 401,
+        error: 'Unauthorized',
+        message: 'No access token provided',
+      })
     const { userId, userProvider } = getIdentifiersFromId(response.sub)
 
     let client
@@ -60,6 +69,10 @@ export const validateToken = (settings) => async (req, res, next) => {
     next()
   } catch (e) {
     logger.error(e)
-    res.status(500).send({ error: 'Something went wrong' })
+    res.status(500).json({
+      statusCode: 500,
+      error: 'Server Error',
+      message: 'Something went wrong',
+    })
   }
 }
