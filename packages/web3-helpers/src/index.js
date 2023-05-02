@@ -26,7 +26,7 @@ export const getIdFromNetworkName = (name) => {
 }
 
 export const getExplorerBaseUrlFromName = (name) => {
-  if (['MAINNET', 'GOERLI', 'SEPOLIA', 'GNOSIS', 'MATIC', 'MUMBAI', 'AVALANCHE', 'AVALANCHE-FUJI', 'ARBITRUM', 'ARBITRUM-NOVA', 'OPTIMISM', 'OPTIMISM-GOERLI', 'MANTLE-TESTNET'].includes(name)) {
+  if (['MAINNET', 'GOERLI', 'SEPOLIA', 'GNOSIS', 'MATIC', 'MUMBAI', 'AVALANCHE', 'AVALANCHE-FUJI', 'ARBITRUM', 'ARBITRUM-NOVA', 'OPTIMISM', 'OPTIMISM-GOERLI', 'MANTLE-WADSLEY'].includes(name)) {
    switch (name) {
       case 'MAINNET':
         return 'https://etherscan.io/'
