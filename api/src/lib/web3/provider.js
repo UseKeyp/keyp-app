@@ -20,7 +20,7 @@ const RPC_BY_NAME = {
   SEPOLIA: process.env.RPC_SEPOLIA,
   AVALANCHE: process.env.RPC_AVALANCHE,
   'AVALANCHE-FUJI': process.env.RPC_AVALANCHE_FUJI,
-  'MANTLE-WADSLEY': process.env.RPC_MANTLE_TESTNET,
+  'MANTLE-WADSLEY': process.env.RPC_MANTLE_WADSLEY,
 }
 
 const getProviderByName = (name) => {
