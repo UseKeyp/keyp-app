@@ -12,6 +12,7 @@ export const EIP_155_NETWORK_SPEC = [
   { name: 'OPTIMISM', chainId: 10 },
   { name: 'OPTIMISM-GOERLI', chainId: 420 },
   { name: 'ARBITRUM-NOVA', chainId: 42170 },
+  { name: 'MANTLE-TESTNET', chainId: 5001 },
 ]
 
 export const getNetworkNameFromId = (chainId) => {
@@ -25,7 +26,7 @@ export const getIdFromNetworkName = (name) => {
 }
 
 export const getExplorerBaseUrlFromName = (name) => {
-  if (['MAINNET', 'GOERLI', 'SEPOLIA', 'GNOSIS', 'MATIC', 'MUMBAI', 'AVALANCHE', 'AVALANCHE-FUJI', 'ARBITRUM', 'ARBITRUM-NOVA', 'OPTIMISM', 'OPTIMISM-GOERLI'].includes(name)) {
+  if (['MAINNET', 'GOERLI', 'SEPOLIA', 'GNOSIS', 'MATIC', 'MUMBAI', 'AVALANCHE', 'AVALANCHE-FUJI', 'ARBITRUM', 'ARBITRUM-NOVA', 'OPTIMISM', 'OPTIMISM-GOERLI', 'MANTLE-TESTNET'].includes(name)) {
    switch (name) {
       case 'MAINNET':
         return 'https://etherscan.io/'
@@ -51,6 +52,8 @@ export const getExplorerBaseUrlFromName = (name) => {
         return `https://goerli-optimism.etherscan.io/`
       case 'ARBITRUM-NOVA':
         return `https://explorer.arbitrum.io/`
+      case 'MANTLE-TESTNET':
+        return `https://explorer.testnet.mantle.xyz/`
    }
   } else {
     return `https://${name}.etherscan.io/`
