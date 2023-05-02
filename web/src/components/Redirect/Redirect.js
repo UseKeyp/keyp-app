@@ -26,7 +26,7 @@ const Redirect = () => {
         description: (
           <div className="flex flex-col items-center font-light md:flex-row">
             <div>Add redirect URLs in your</div>
-            <a href="https://dev.usekeyp.com" target="_blank" rel="noreferrer">
+            <a href="https://dev.usekeyp.com" rel="noreferrer">
               <Button
                 variant="transparent"
                 classNameVariant="m-2"
@@ -61,7 +61,7 @@ const Redirect = () => {
         description: (
           <div className="flex flex-col items-center md:flex-row">
             <div>Go back to the</div>
-            <a href="https://dev.usekeyp.com" target="_blank" rel="noreferrer">
+            <a href="https://dev.usekeyp.com" rel="noreferrer">
               <Button
                 variant="transparent"
                 classNameVariant="m-2"
