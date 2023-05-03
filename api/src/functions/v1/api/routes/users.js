@@ -7,23 +7,18 @@ import { USDC_DATA_BY_NETWORK } from 'src/lib/web3/usdc'
 var express = require('express')
 var router = express.Router()
 
-router.get('/:userId', async (req, res) => {
+router.get('/:userId', async (req, res, next) => {
   try {
     const { userId } = req.params
     const user = await safeFetchUser(userId)
 
     res.send(user)
   } catch (e) {
-    logger.error(e)
-    return res.status(500).json({
-      statusCode: 500,
-      error: e,
-      message: 'Error fetching user by ID',
-    })
+    next(e)
   }
 })
 
-router.get('/:userId/balance', async (req, res) => {
+router.get('/:userId/balance', async (req, res, next) => {
   try {
     const { userId } = req.params
     const user = await safeFetchUser(userId)
@@ -49,16 +44,11 @@ router.get('/:userId/balance', async (req, res) => {
       ...(usdcBalanceData && { USDC: usdcBalanceData }),
     })
   } catch (e) {
-    logger.error(e)
-    return res.status(500).json({
-      statusCode: 500,
-      error: e,
-      message: 'Error getting user balance by ID',
-    })
+    next(e)
   }
 })
 
-router.get('/:userId/balance/:tokenAddress', async (req, res) => {
+router.get('/:userId/balance/:tokenAddress', async (req, res, next) => {
   try {
     const { userId, tokenAddress } = req.params
     const user = await safeFetchUser(userId)
@@ -71,12 +61,7 @@ router.get('/:userId/balance/:tokenAddress', async (req, res) => {
 
     res.send({ [tokenAddress.toLowerCase()]: tokenBalanceData })
   } catch (e) {
-    logger.error(e)
-    return res.status(500).json({
-      statusCode: 500,
-      error: e,
-      message: 'Error getting user token balance by user ID and token address',
-    })
+    next(e)
   }
 })
 

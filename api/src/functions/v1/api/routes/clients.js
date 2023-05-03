@@ -8,7 +8,6 @@ import {
 } from 'unique-names-generator'
 
 import { db } from 'src/lib/db'
-import { logger } from 'src/lib/logger'
 
 var express = require('express')
 var router = express.Router()
@@ -39,7 +38,7 @@ const validateOwnerAccess = (developers, userId) => {
     throw new Error('Unauthorized')
 }
 
-router.get('/', async (req, res) => {
+router.get('/', async (req, res, next) => {
   try {
     const { userProvider, userId } = req.ctx
     const clients = await db.oidc.findMany({
@@ -55,16 +54,11 @@ router.get('/', async (req, res) => {
         }))
     )
   } catch (e) {
-    logger.error(e)
-    return res.status(500).json({
-      statusCode: 500,
-      error: e,
-      message: 'Error fetching clients',
-    })
+    next(e)
   }
 })
 
-router.patch('/:clientId', async (req, res) => {
+router.patch('/:clientId', async (req, res, next) => {
   try {
     const { clientId } = req.params
     const {
@@ -106,17 +100,12 @@ router.patch('/:clientId', async (req, res) => {
     })
     res.send(client)
   } catch (e) {
-    logger.error(e)
-    return res.status(500).json({
-      statusCode: 500,
-      error: e,
-      message: 'Error updating client',
-    })
+    next(e)
   }
 })
 
 // Create client
-router.post('/', async (req, res) => {
+router.post('/', async (req, res, next) => {
   try {
     let id = scuid()
     id = `keyp_app_${id}`
@@ -149,12 +138,7 @@ router.post('/', async (req, res) => {
     })
     res.send(client)
   } catch (e) {
-    logger.error(e)
-    return res.status(500).json({
-      statusCode: 500,
-      error: e,
-      message: 'Error creating client',
-    })
+    next(e)
   }
 })
 

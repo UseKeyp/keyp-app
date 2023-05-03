@@ -1,4 +1,3 @@
-import { logger } from 'src/lib/logger'
 import { getRampOnUrl, getRampOffUrl } from 'src/lib/ramps'
 
 import { withUser } from '../middleware/user'
@@ -6,7 +5,7 @@ import { withUser } from '../middleware/user'
 var express = require('express')
 var router = express.Router()
 
-router.get('/on/:rampType', withUser, async (req, res) => {
+router.get('/on/:rampType', withUser, async (req, res, next) => {
   try {
     const { rampType } = req.params
     const { url } = await getRampOnUrl({
@@ -17,16 +16,11 @@ router.get('/on/:rampType', withUser, async (req, res) => {
 
     res.send({ url })
   } catch (e) {
-    logger.error(e)
-    return res.status(500).json({
-      statusCode: 500,
-      error: e,
-      message: 'Error fetching onramp',
-    })
+    next(e)
   }
 })
 
-router.get('/off/:rampType', withUser, async (req, res) => {
+router.get('/off/:rampType', withUser, async (req, res, next) => {
   try {
     const { rampType } = req.params
     const { url } = await getRampOffUrl({
@@ -36,12 +30,7 @@ router.get('/off/:rampType', withUser, async (req, res) => {
 
     res.send({ url })
   } catch (e) {
-    logger.error(e)
-    return res.status(500).json({
-      statusCode: 500,
-      error: e,
-      message: 'Error fetching offramp',
-    })
+    next(e)
   }
 })
 

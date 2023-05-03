@@ -1,6 +1,8 @@
 import bodyParser from 'body-parser'
 import express from 'express'
 
+import { logger } from 'src/lib/logger'
+
 import { validateToken } from './middleware/validation'
 import clients from './routes/clients'
 import contracts from './routes/contracts'
@@ -41,6 +43,22 @@ const app = (db, settings) => {
   app.use(`/${settings.version}/ramps`, ramps)
 
   app.use(`/${settings.version}`, health) // sanity-check
+
+  //////////////////
+  // Custom Error Handler
+  app.use((err, req, res, next) => {
+    const statusCode = err.statusCode || 500
+    const errorName = err?.name || 'Server Error'
+    const message = err?.message || 'An unexpected error occurred'
+
+    logger.error(err)
+
+    res?.status(statusCode).send({
+      statusCode,
+      error: errorName,
+      message,
+    })
+  })
 
   //////////////////
   // Post-Middleware
