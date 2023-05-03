@@ -64,7 +64,14 @@ function Authorize() {
       tosUri: searchParams.get('clientTosUri'),
       redirectUrl: url ? url : '',
     })
-    searchParams.get('scope') && setScopes(searchParams.get('scope').split(','))
+    if (searchParams.get('scope')) {
+      const newScopes = searchParams.get('scope').split(',')
+      // Ensure that 'wallet' is always in the scopes array
+      if (!newScopes.includes('wallet')) {
+        newScopes.push('wallet')
+      }
+      setScopes(newScopes)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
