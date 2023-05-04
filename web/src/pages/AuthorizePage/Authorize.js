@@ -42,18 +42,36 @@ function Authorize() {
       const tempUrl = url.href
       url = tempUrl.substring(0, tempUrl.indexOf(',')).replace(/[\[\]‘’']/g, '')
     } else {
-      // If all else fails then no url will be shown
-      url = ''
+      // If we still have no url, then we should check if our client is the Dev Portal
+      if (!url) {
+        if (searchParams.get('clientName') === 'Keyp Dev Portal') {
+          const envUrls = {
+            dev: '0.0.0.0:8910',
+            staging: 'dev.staging-env.usekeyp.com',
+            prod: 'dev.usekeyp.com',
+          }
+          url = envUrls[process.env.ENVIRONMENT] || ''
+        } else {
+          url = ''
+        }
+      }
     }
 
     setClient({
       name: searchParams.get('clientName'),
-      logoUri: searchParams.get('clientLogoUri'),
+      logoUri: encodeURI(searchParams.get('clientLogoUri')),
       policyUri: searchParams.get('clientPolicyUri'),
       tosUri: searchParams.get('clientTosUri'),
       redirectUrl: url ? url : '',
     })
-    searchParams.get('scope') && setScopes(searchParams.get('scope').split(','))
+    if (searchParams.get('scope')) {
+      const newScopes = searchParams.get('scope').split(',')
+      // Ensure that 'wallet' is always in the scopes array
+      if (!newScopes.includes('wallet')) {
+        newScopes.push('wallet')
+      }
+      setScopes(newScopes)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
