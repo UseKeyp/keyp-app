@@ -1,3 +1,4 @@
+import { addErrorLocation } from 'src/lib/helpers'
 import { writeMethod, readMethod } from 'src/lib/web3/contracts'
 
 import { withUser } from '../middleware/user'
@@ -17,7 +18,7 @@ router.post('/method', withUser, async (req, res, next) => {
 
     res.send(tx)
   } catch (e) {
-    next(e)
+    next(addErrorLocation('/method', e))
   }
 })
 
@@ -27,7 +28,7 @@ router.get('/method', async (req, res, next) => {
 
     res.send(response)
   } catch (e) {
-    next(e)
+    next(addErrorLocation('/method', e))
   }
 })
 

@@ -8,6 +8,7 @@ import {
 } from 'unique-names-generator'
 
 import { db } from 'src/lib/db'
+import { addErrorLocation } from 'src/lib/helpers'
 
 var express = require('express')
 var router = express.Router()
@@ -54,7 +55,7 @@ router.get('/', async (req, res, next) => {
         }))
     )
   } catch (e) {
-    next(e)
+    next(addErrorLocation('fetchClients', e))
   }
 })
 
@@ -100,7 +101,7 @@ router.patch('/:clientId', async (req, res, next) => {
     })
     res.send(client)
   } catch (e) {
-    next(e)
+    next(addErrorLocation('/:clientId', e))
   }
 })
 
@@ -138,7 +139,7 @@ router.post('/', async (req, res, next) => {
     })
     res.send(client)
   } catch (e) {
-    next(e)
+    next(addErrorLocation('createClient', e))
   }
 })
 

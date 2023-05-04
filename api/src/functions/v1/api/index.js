@@ -50,13 +50,14 @@ const app = (db, settings) => {
     const statusCode = err.statusCode || 500
     const errorName = err?.name || 'Server Error'
     const message = err?.message || 'An unexpected error occurred'
+    const errorLocation = err?.errorLocation ? `${err.errorLocation} ` : ''
 
     logger.error(err)
 
     res?.status(statusCode).send({
       statusCode,
       error: errorName,
-      message,
+      message: errorLocation + message,
     })
   })
 

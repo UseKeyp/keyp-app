@@ -1,3 +1,4 @@
+import { addErrorLocation } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
 import { safeFetchUser } from 'src/lib/users'
 import { getEtherBalance } from 'src/lib/web3/airdrop.js'
@@ -14,7 +15,7 @@ router.get('/:userId', async (req, res, next) => {
 
     res.send(user)
   } catch (e) {
-    next(e)
+    next(addErrorLocation('/:userId', e))
   }
 })
 
@@ -44,7 +45,7 @@ router.get('/:userId/balance', async (req, res, next) => {
       ...(usdcBalanceData && { USDC: usdcBalanceData }),
     })
   } catch (e) {
-    next(e)
+    next(addErrorLocation('/:userId/balance', e))
   }
 })
 
@@ -61,7 +62,7 @@ router.get('/:userId/balance/:tokenAddress', async (req, res, next) => {
 
     res.send({ [tokenAddress.toLowerCase()]: tokenBalanceData })
   } catch (e) {
-    next(e)
+    next(addErrorLocation('/:userId/balance/:tokenAddress', e))
   }
 })
 

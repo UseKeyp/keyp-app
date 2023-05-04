@@ -1,3 +1,4 @@
+import { addErrorLocation } from 'src/lib/helpers'
 import { getRampOnUrl, getRampOffUrl } from 'src/lib/ramps'
 
 import { withUser } from '../middleware/user'
@@ -16,7 +17,7 @@ router.get('/on/:rampType', withUser, async (req, res, next) => {
 
     res.send({ url })
   } catch (e) {
-    next(e)
+    next(addErrorLocation('/on/:rampType', e))
   }
 })
 
@@ -30,7 +31,7 @@ router.get('/off/:rampType', withUser, async (req, res, next) => {
 
     res.send({ url })
   } catch (e) {
-    next(e)
+    next(addErrorLocation('/off/:rampType', e))
   }
 })
 
