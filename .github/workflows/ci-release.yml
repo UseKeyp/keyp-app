@@ -55,15 +55,21 @@ jobs:
           git config user.name "GITHUB-ACTION-CI-RELEASE"
           git config user.email "${{ github.actor }}@users.noreply.github.com"
           if [ ${{ github.ref_name }} == "main" ] ; then
-            npx lerna version --conventional-graduate --conventional-commits --yes || npx lerna version --conventional-commits --yes
+            npx lerna version --conventional-graduate --conventional-commits --no-push --yes || npx lerna version --conventional-commits --no-push --yes
             IS_PRERELEASE=false
           else
-            npx lerna version prerelease --yes --preid staging
+            npx lerna version prerelease --no-push --yes --preid staging
           fi
-          npx lerna version prerelease --yes --preid staging
+          npx lerna version prerelease --yes --no-push --preid staging
           VERSION=v$(jq -r .version lerna.json)
           echo "::set-output name=VERSION::$VERSION"
           echo "::set-output name=IS_PRERELEASE::$IS_PRERELEASE"
+      - name: Update yarn.lock for latest version
+        run: |
+          yarn
+          git add --a
+          git commit -m "${{ steps.update_version.outputs.VERSION }}"
+          git push
       - name: Update version Fallback
         # If no prerelease exists, then --conventional-graduate would fail
         if: ${{ format('{0} == "failure" && {1} == "main"', steps.update_version.outcome, github.ref_name) }}
