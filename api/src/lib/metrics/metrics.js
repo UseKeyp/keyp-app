@@ -1,220 +1,48 @@
+import { LOGIN_ENABLED_PROVIDERS } from '@usekeyp/common'
+
 import { db } from 'src/lib/db'
-import { logger } from 'src/lib/logger'
 
-// per active user (minted or used the marketplace)
-const getMintPurchaseData = async () => {
-  const total = await db.mintPurchase.count()
-  const MINTCREDIT = await db.mintPurchase.count({
-    where: { paymentType: 'MINTCREDIT' },
-  })
-  const PENDING = await db.mintPurchase.count({
-    where: { status: 'PENDING' },
-  })
-  const COMPLETE = await db.mintPurchase.count({
-    where: { status: 'COMPLETE' },
-  })
-  const FAILED = await db.mintPurchase.count({
-    where: { status: 'FAILED' },
-  })
-  const TX_SUBMITTED = await db.mintPurchase.count({
-    where: { transaction: { status: 'SUBMITTED' } },
-  })
-  const TX_COMPLETE = await db.mintPurchase.count({
-    where: { transaction: { status: 'COMPLETE' } },
-  })
-  const TX_FAILED = await db.mintPurchase.count({
-    where: { transaction: { status: 'FAILED' } },
-  })
-
-  return {
-    sales: {
-      total: total * 3,
-    },
-    count: {
-      total,
-      status: {
-        COMPLETE,
-        PENDING,
-        FAILED,
-      },
-      paymentType: {
-        MINTCREDIT,
-      },
-      txStatus: {
-        SUBMITTED: TX_SUBMITTED,
-        COMPLETE: TX_COMPLETE,
-        FAILED: TX_FAILED,
-      },
-    },
-  }
-}
-
-const getTreasureData = async () => {
-  const total = await db.treasure.count()
-  const Good = await db.treasure.count({ where: { rarity: 'Good' } })
-  const Great = await db.treasure.count({ where: { rarity: 'Great' } })
-  const Ultra = await db.treasure.count({ where: { rarity: 'Ultra' } })
-  const Mythic = await db.treasure.count({ where: { rarity: 'Mythic' } })
-
-  const achievements = {}
-
-  return {
-    count: {
-      total,
-      rarity: {
-        Good,
-        Great,
-        Ultra,
-        Mythic,
-      },
-      achievements,
-    },
-  }
-}
-
-const getMarketSaleData = async () => {
-  const totalSalesCount = await db.marketSale.count()
-  const isClosed = await db.marketSale.count({
-    where: {
-      isClosed: true,
-    },
-  })
-  const isOpen = totalSalesCount - isClosed
-  const PENDING_LISTED = await db.marketSale.count({
-    where: { status: 'PENDING_LISTED' },
-  })
-  const LISTED = await db.marketSale.count({
-    where: { status: 'LISTED' },
-  })
-  const PENDING_SOLD = await db.marketSale.count({
-    where: { status: 'PENDING_SOLD' },
-  })
-  const SOLD = await db.marketSale.count({
-    where: { status: 'SOLD' },
-  })
-  const PENDING_DELISTED = await db.marketSale.count({
-    where: { status: 'PENDING_DELISTED' },
-  })
-  const DELISTED = await db.marketSale.count({
-    where: { status: 'DELISTED' },
-  })
-  const achievementsCount = {}
-  const achievementsSales = {}
-
-  const rarities = ['Good', 'Great', 'Ultra', 'Mythic']
-  const raritySales = {}
-  const rarityCount = {}
-  let totalSales = 0
-  await Promise.all(
-    rarities.map(async (rarity) => {
-      const {
-        _sum: { amount: total },
-        _count: count,
-        _avg: { amount: average },
-      } = await db.marketSale.aggregate({
-        where: {
-          treasure: { rarity },
-          status: 'SOLD',
-        },
-        _avg: { amount: true },
-        _sum: { amount: true },
-        _count: true,
-      })
-      raritySales[rarity] = { total, average }
-      rarityCount[rarity] = count
-      totalSales += total
-    })
+const parseUsers = (users) => {
+  let providers = LOGIN_ENABLED_PROVIDERS.reduce(
+    (a, v) => ({ ...a, [v]: 0 }),
+    {}
   )
 
-  let minterEarningsFirstSale = 0
-  const treasures = await db.treasure.findMany({
-    include: { marketSales: { orderBy: { updatedAt: 'asc' } } },
-  })
-  treasures.map((treasure) => {
-    const index = treasure.marketSales.indexOf((sale) => sale.isClosed)
-    if (index) {
-      const increment = treasure.marketSales[index]?.amount * 0.95 || 0
-      minterEarningsFirstSale += increment
-    }
+  users.map((user) => {
+    if (LOGIN_ENABLED_PROVIDERS.includes(user.provider))
+      providers[user.provider] += 1
   })
 
-  const platformFees = totalSales * 0.05
-  // minterEarningsResidual are earned only after the first sale
-  const minterEarningsResidual = (totalSales - minterEarningsFirstSale) * 0.05
-  const minterEarnings = minterEarningsResidual + minterEarningsFirstSale
-
-  return {
-    sales: {
-      total: totalSales,
-      platformFees,
-      minterEarnings,
-      minterEarningsFirstSale,
-      minterEarningsResidual,
-      rarity: raritySales,
-      achievements: achievementsSales,
-    },
-    count: {
-      total: totalSalesCount,
-      isClosed: {
-        true: isClosed,
-        false: isOpen,
-      },
-      rarity: rarityCount,
-      status: {
-        PENDING_LISTED,
-        LISTED,
-        PENDING_SOLD,
-        SOLD,
-        PENDING_DELISTED,
-        DELISTED,
-      },
-      achievements: achievementsCount,
-    },
-  }
+  return { total: users.length, providers }
 }
 
-const getMemberData = async () => {
-  const total = await db.member.count({
-    // Only users who have logged in
-    where: { address: { startsWith: '0x' } },
-  })
-  const withoutAddress = await db.member.count({
-    where: { address: null },
-  })
-  // select: {
-  //   mintPurchases: { _count: true },
-  //   marketSalesSold: { _count: true },
-  //   marketSalesPurchased: { _count: true },
-  //   treasuresOwned: { _count: true },
-  //   treasuresMinted: { _count: true },
-  // },
-  const minted = {}
-  // const buckets = [1, 2, 5, 10, 20, 30, 40, 50, 75, 100, 150, 200, 250]
+export const getUserData = async () => {
+  const clients = await db.oidc.count({ where: { type: 7 } })
 
-  // // Active: minted, bought, sold, listed
-  // const activeMembers = members.map((user) => {
-  //   if (user.mint) return user
-  // })
-
-  return { count: { total, withoutAddress, minted } }
-}
-
-export const getBusinessMetrics = async () => {
-  try {
-    const mintPurchase = await getMintPurchaseData()
-    const treasure = await getTreasureData()
-    const member = await getMemberData()
-    const marketSale = await getMarketSaleData()
-
-    return {
-      member,
-      treasure,
-      marketSale,
-      mintPurchase,
-    }
-  } catch (e) {
-    /* eslint-disable-next-line no-console*/
-    logger.error(e)
-    throw `getBusinessMetrics() ${e}`
+  const select = {
+    id: true,
+    username: true,
+    email: true,
+    address: true,
+    provider: true,
+    locale: true,
+    createdAt: true,
+    imageSrc: true,
   }
+  const users = await db.user.findMany({ select })
+  const developers = await db.user.findMany({
+    where: {
+      address: { not: null },
+      clients: { some: { oidcType: 7 } },
+    },
+    select: {
+      ...select,
+      clients: { where: { oidcType: 7 } },
+    },
+  })
+
+  const developerData = parseUsers(developers)
+  const userData = parseUsers(users)
+
+  return { users: userData, developers: developerData, clients }
 }
