@@ -17,16 +17,6 @@ const middlewares = (oidc) => async (ctx, next) => {
       // console.log('Requested provider: ', loginProvider)
       // console.log('Signed in provider: ', session?.accountId?.split('-')[0])
       // console.log(session?.accountId)
-      // Destroy previous authorizationCode to fix the nasty bug
-      // await db.oidc.deleteMany({
-      //   where: {
-      //     type: 3,
-      //     payload: {
-      //       path: ['accountId'],
-      //       equals: session?.accountId,
-      //     },
-      //   },
-      // })
 
       // End the OAuth session
       await session.destroy()
