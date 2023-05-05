@@ -39,7 +39,7 @@ const middlewares = (oidc) => async (ctx, next) => {
       // End the Redwood session
       ctx.res.clearCookie('session', cookieSettings)
       // Start over with same url
-      return ctx.res.redirect(`/oauth/${ctx.request.url}`)
+      // return ctx.res.redirect(`/oauth/${ctx.request.url}`)
     }
   }
 
