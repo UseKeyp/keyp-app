@@ -1,6 +1,6 @@
 {
   "name": "@usekeyp/common",
-  "version": "1.2.4",
+  "version": "1.2.5-staging.1",
   "private": true,
   "description": "Common utility functions and constants used across web and api packages",
   "main": "index.js",
