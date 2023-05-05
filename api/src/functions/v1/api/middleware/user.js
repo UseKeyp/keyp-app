@@ -1,3 +1,4 @@
+import { addErrorLocation } from 'src/lib/helpers'
 import { fetchUser } from 'src/lib/users'
 
 export const withUser = async (req, res, next) => {
@@ -6,7 +7,6 @@ export const withUser = async (req, res, next) => {
     req.ctx.user = user
     next()
   } catch (e) {
-    console.error(e)
-    res.status(500).send({ error: 'Error fetching user' })
+    next(addErrorLocation('withUser', e))
   }
 }

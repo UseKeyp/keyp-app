@@ -4,7 +4,7 @@ const configureFastify = async (fastify, options) => {
 
     await fastify.register(import('@fastify/rate-limit'), {
       max: 100,
-      timeWindow: '1 minutes',
+      timeWindow: '1 minute',
     })
   }
 
