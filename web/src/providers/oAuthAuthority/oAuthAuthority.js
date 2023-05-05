@@ -38,6 +38,7 @@ const OAuthAuthorityProvider = ({ children }) => {
       })
       window.location.replace(response.redirectTo)
     } catch (error) {
+      /* eslint-disable-next-line no-console */
       console.log(error)
       toast.error(error?.message)
       return { error: error.message }
