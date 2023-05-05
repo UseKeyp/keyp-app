@@ -1,4 +1,4 @@
-import { LOGIN_ENABLED_PROVIDERS } from '@usekeyp/common'
+import { LOGIN_ENABLED_PROVIDERS, AVAILABLE_NETWORKS } from '@usekeyp/common'
 
 import { db } from 'src/lib/db'
 
@@ -16,8 +16,18 @@ const parseUsers = (users) => {
   return { total: users.length, providers }
 }
 
+const getClientData = async () => {
+  const clients = await db.oidc.findMany({ where: { type: 7 } })
+  let networks = AVAILABLE_NETWORKS.reduce((a, v) => ({ ...a, [v]: 0 }), {})
+  clients.map((client) => {
+    const network = client.payload.network
+    if (AVAILABLE_NETWORKS.includes(network)) networks[network] += 1
+  })
+  return { total: clients.length, networks }
+}
+
 export const getUserData = async () => {
-  const clients = await db.oidc.count({ where: { type: 7 } })
+  const clients = await getClientData()
 
   const select = {
     id: true,

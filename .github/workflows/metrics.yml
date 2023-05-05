@@ -34,4 +34,6 @@ jobs:
             ${{ steps.get_metrics.outputs.DEVELOPERS }}
             ```
             **CLIENTS**
+            ```json
             ${{ steps.get_metrics.outputs.CLIENTS }}
+            ```
