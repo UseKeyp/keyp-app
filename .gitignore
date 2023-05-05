@@ -30,3 +30,4 @@ jwks.js
 jwks.*.js
 packages/*/dist/
 install-state.gz
+.~lock.*
