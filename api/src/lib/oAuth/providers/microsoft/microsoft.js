@@ -49,6 +49,8 @@ export const onSubmitCode = async (code, { codeVerifier }) => {
       },
     }).then((res) => res.json())
 
+    logger.debug({ custom: response }, 'onSubmitCode response from Microsoft')
+
     const {
       refresh_token: refreshToken,
       access_token: accessToken,
