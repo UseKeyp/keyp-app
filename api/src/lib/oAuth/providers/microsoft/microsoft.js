@@ -66,7 +66,11 @@ export const onSubmitCode = async (code, { codeVerifier }) => {
   }
 }
 
-export const onConnected = async ({ refreshToken, accessToken }) => {
+export const onConnected = async ({
+  refreshToken,
+  accessToken,
+  accessTokenExpiration,
+}) => {
   try {
     const userDetails = await fetch('https://graph.microsoft.com/v1.0/me', {
       headers: {
@@ -74,9 +78,24 @@ export const onConnected = async ({ refreshToken, accessToken }) => {
       },
     }).then((res) => res.json())
 
+    const profilePicture = await fetch(
+      'https://graph.microsoft.com/v1.0/me/photos/48x48/$value',
+      {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/octect-stream',
+        },
+      }
+    ).then((res) => {
+      if (res.ok) {
+        return res.arrayBuffer()
+      }
+      return null
+    })
+
     const user = await fetchUser(
       userDetails.id,
-      { username: userDetails.displayName },
+      { username: userDetails?.userPrincipalName },
       MICROSOFT
     )
 
@@ -94,9 +113,15 @@ export const onConnected = async ({ refreshToken, accessToken }) => {
       data: {
         ...(publicAddress && { address: publicAddress }),
         accessToken,
+        accessTokenExpiration,
         refreshToken,
         email: email,
-        username: userDetails?.displayName,
+        username: userDetails?.userPrincipalName,
+        ...(profilePicture && {
+          imageSrc: `data:image/jpeg;base64,${Buffer.from(
+            profilePicture
+          ).toString('base64')}`,
+        }),
       },
     })
 
