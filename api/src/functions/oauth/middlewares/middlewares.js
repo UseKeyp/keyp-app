@@ -9,29 +9,24 @@ const middlewares = (oidc) => async (ctx, next) => {
     const session = await oidc.Session.get(ctx)
     const params = new URLSearchParams(ctx.request.url)
     const loginProvider = params.get('login_provider')
-    const authorizationCodes = await db.oidc.findMany({
-      where: { type: 3 },
-      select: { payload: true },
-    })
-    console.log(authorizationCodes)
     if (
       loginProvider &&
       session?.accountId &&
       !session?.accountId?.startsWith(loginProvider)
     ) {
-      console.log('Requested provider: ', loginProvider)
-      console.log('Signed in provider: ', session?.accountId?.split('-')[0])
-      console.log(session?.accountId)
+      // console.log('Requested provider: ', loginProvider)
+      // console.log('Signed in provider: ', session?.accountId?.split('-')[0])
+      // console.log(session?.accountId)
       // Destroy previous authorizationCode to fix the nasty bug
-      await db.oidc.deleteMany({
-        where: {
-          type: 3,
-          payload: {
-            path: ['accountId'],
-            equals: session?.accountId,
-          },
-        },
-      })
+      // await db.oidc.deleteMany({
+      //   where: {
+      //     type: 3,
+      //     payload: {
+      //       path: ['accountId'],
+      //       equals: session?.accountId,
+      //     },
+      //   },
+      // })
 
       // End the OAuth session
       await session.destroy()
