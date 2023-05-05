@@ -10,9 +10,9 @@ jobs:
       - name: Get metrics data
         id: get_metrics
         run: |
-          USERS=$(curl -s http://localhost:4001/metrics | jq -r .users)
-          DEVELOPERS=$(curl -s http://localhost:4001/metrics | jq -r .developers)
-          CLIENTS=$(curl -s http://localhost:4001/metrics | jq -r .clients)
+          USERS=$(curl -s https://api.usekeyp.com/metrics | jq -r .users)
+          DEVELOPERS=$(curl -s https://api.usekeyp.com/metrics | jq -r .developers)
+          CLIENTS=$(curl -s https://api.usekeyp.com/metrics | jq -r .clients)
           echo USERS: $USERS
           echo DEVELOPERS: $DEVELOPERS
           echo CLIENTS: $CLIENTS
