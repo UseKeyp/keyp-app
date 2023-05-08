@@ -23,8 +23,32 @@ module.exports = (config, { mode }) => {
 
   config.module.rules[0].oneOf[scssRuleIndex] = customScssRule
 
-  config.devtool = false
-  if (mode === 'development') config.devtool = 'cheap-module-source-map'
+  // eslint-disable-next-line no-unused-expressions
+  config.module.rules.push({
+    test: /\.m?js/,
+    resolve: {
+      fullySpecified: false,
+    },
+  })
+
+  // NOTE: Is this needed?
+  // config.module.rules.push({
+  //   test: /\.(js|jsx)$/,
+  //   loader: 'babel-loader',
+  //   options: {
+  //     presets: [
+  //       '@babel/preset-env',
+  //       ['@babel/preset-react', { runtime: 'automatic' }],
+  //     ],
+  //   },
+  //   resolve: {
+  //     fullySpecified: false,
+  //   },
+  // })
+
+  // NOTE: Is this needed?
+  // config.devtool = false
+  // if (mode === 'development') config.devtool = 'cheap-module-source-map'
 
   // Webpack V5 missing polyfills
   config.resolve.fallback = {
@@ -38,45 +62,12 @@ module.exports = (config, { mode }) => {
     crypto: require.resolve(`crypto-browserify`),
     path: require.resolve('path-browserify'),
   }
-  // eslint-disable-next-line no-unused-expressions
-  config.module.rules.push({
-    test: /\.m?js/,
-    resolve: {
-      fullySpecified: false,
-    },
-  }),
-    config.module.rules.push({
-      test: /\.(js|jsx)$/,
-      loader: 'babel-loader',
-      options: {
-        presets: [
-          '@babel/preset-env',
-          ['@babel/preset-react', { runtime: 'automatic' }],
-        ],
-      },
-      resolve: {
-        fullySpecified: false,
-      },
-    })
   config.plugins.push(
     new webpack.ProvidePlugin({
       process: 'process/browser',
       Buffer: ['buffer', 'Buffer'],
     })
   )
-  config.module.rules.push({
-    test: /\.(js|jsx)$/,
-    loader: 'babel-loader',
-    options: {
-      presets: [
-        '@babel/preset-env',
-        ['@babel/preset-react', { runtime: 'automatic' }],
-      ],
-    },
-    resolve: {
-      fullySpecified: false,
-    },
-  })
 
   return config
 }
