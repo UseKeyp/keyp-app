@@ -7,6 +7,7 @@ const LOGIN_ENABLED_PROVIDERS = [
   'TWITCH',
   // 'EPIC_GAMES',
   'REDDIT',
+  'SPOTIFY',
 ]
 const AVAILABLE_NETWORKS = [
   'MAINNET',

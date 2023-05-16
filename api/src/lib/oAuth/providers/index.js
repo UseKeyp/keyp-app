@@ -11,6 +11,7 @@ import { GOOGLE, provider as googleProvider } from './google'
 import { NODE_OIDC, provider as nodeOIDCProvider } from './node-oidc/node-oidc'
 import { PLAID, provider as plaidProvider } from './plaid'
 import { REDDIT, provider as redditProvider } from './reddit'
+import { SPOTIFY, provider as spotifyProvider } from './spotify'
 import { TWITCH, provider as twitchProvider } from './twitch'
 import { TWITTER, provider as twitterProvider } from './twitter'
 const providers = {
@@ -24,6 +25,7 @@ const providers = {
   [GOOGLE]: googleProvider,
   [EPIC_GAMES]: epicGamesProvider,
   [REDDIT]: redditProvider,
+  [SPOTIFY]: spotifyProvider,
 }
 
 // Providers where creating a wallet is allowed
@@ -40,6 +42,7 @@ const types = [
   GOOGLE,
   EPIC_GAMES,
   REDDIT,
+  SPOTIFY,
 ]
 
 export { providers, types }
