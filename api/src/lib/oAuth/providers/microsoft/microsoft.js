@@ -79,11 +79,11 @@ export const onConnected = async ({
     }).then((res) => res.json())
 
     const profilePicture = await fetch(
-      'https://graph.microsoft.com/v1.0/me/photos/48x48/$value',
+      'https://graph.microsoft.com/v1.0/me/photo/$value',
       {
         headers: {
           Authorization: `Bearer ${accessToken}`,
-          'Content-Type': 'application/octect-stream',
+          'Content-Type': 'application/octet-stream',
         },
       }
     ).then((res) => {
