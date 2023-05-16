@@ -49,8 +49,6 @@ export const onSubmitCode = async (code, { codeVerifier }) => {
       },
     }).then((res) => res.json())
 
-    logger.debug({ custom: response }, 'onSubmitCode response from Microsoft')
-
     const {
       refresh_token: refreshToken,
       access_token: accessToken,
@@ -119,11 +117,9 @@ export const onConnected = async ({
         refreshToken,
         email: email,
         username: userDetails?.userPrincipalName,
-        ...(profilePicture && {
-          imageSrc: `data:image/jpeg;base64,${Buffer.from(
-            profilePicture
-          ).toString('base64')}`,
-        }),
+        imageSrc: `data:image/jpeg;base64,${Buffer.from(
+          profilePicture
+        ).toString('base64')}`,
       },
     })
 
