@@ -103,7 +103,7 @@ export const refreshTokens = async (refreshToken) => {
     } = response
     if (!newAccessToken || !newRefreshToken)
       throw 'Failed to refresh tokens from Spotify'
-    await db.oAuthConnections.update({
+    await db.user.update({
       where: { refreshToken },
       data: {
         accessToken: newAccessToken,
