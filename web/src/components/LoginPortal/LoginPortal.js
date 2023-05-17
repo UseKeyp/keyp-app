@@ -302,7 +302,7 @@ const LoginPortal = () => {
                   </div>
                 </div>
               </Button>
-              <Button
+              {/* <Button
                 onClick={() => onSubmitSignUp('SPOTIFY')}
                 disabled={loading === 'SPOTIFY'}
                 classNameVariant={`${
@@ -321,7 +321,7 @@ const LoginPortal = () => {
                     <Icon height="24" width="24" name="spotify" />
                   </div>
                 </div>
-              </Button>
+              </Button> */}
             </div>
           </MoreAccordion>
           <div className="flex items-center text-[9px] text-gray-800 gap-x-1 mt-2">
