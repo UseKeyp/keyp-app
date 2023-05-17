@@ -14,7 +14,7 @@ export const SPOTIFY_OAUTH_URL_AUTHORIZE =
 
 const SPOTIFY_OAUTH_URL_TOKEN = 'https://accounts.spotify.com/api/token'
 const SPOTIFY_REDIRECT_URI = APP_DOMAIN + '/redirect/spotify'
-const SPOTIFY_SCOPES = 'user-read-email user-read-private'
+const SPOTIFY_SCOPES = 'user-read-email'
 
 const responseType = 'code'
 const params = {
@@ -122,8 +122,8 @@ async function getProfile(accessToken) {
       Authorization: 'Bearer ' + accessToken,
     },
   })
-
   const data = await response.json()
+  console.log(data)
   return data
 }
 
