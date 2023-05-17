@@ -1,4 +1,4 @@
-import { getNativeTokenAbbreviation } from '@usekeyp/common'
+import { getNativeCoinInfo } from '@usekeyp/common'
 
 import { logger } from 'src/lib/logger'
 import { safeFetchUser } from 'src/lib/users'
@@ -30,7 +30,7 @@ router.get('/:userId/balance', async (req, res) => {
       network: req.ctx.network,
     })
 
-    const nativeTokenAbbreviation = getNativeTokenAbbreviation(req.ctx.network)
+    const nativeCoinInfo = getNativeCoinInfo(req.ctx.network)
 
     let usdcBalanceData
     try {
@@ -46,7 +46,7 @@ router.get('/:userId/balance', async (req, res) => {
       // Do nothing, just don't send USDC balance data
     }
     res.send({
-      [nativeTokenAbbreviation]: nativeTokenBalanceData,
+      [nativeCoinInfo.symbol]: nativeTokenBalanceData,
       ...(usdcBalanceData && { USDC: usdcBalanceData }),
     })
   } catch (e) {
