@@ -258,7 +258,7 @@ const LoginPortal = () => {
                   </div>
                 </div>
               </Button>
-              <Button
+              {/* <Button
                 onClick={() => onSubmitSignUp('EPIC_GAMES')}
                 disabled={loading === 'EPIC_GAMES'}
                 classNameVariant={`${
@@ -281,7 +281,7 @@ const LoginPortal = () => {
                     name="epic_games"
                   />{' '}
                 </div>
-              </Button>
+              </Button> */}
               <Button
                 onClick={() => onSubmitSignUp('REDDIT')}
                 disabled={loading === 'REDDIT'}

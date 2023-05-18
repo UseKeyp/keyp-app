@@ -8,7 +8,7 @@ import {
 } from 'unique-names-generator'
 
 import { db } from 'src/lib/db'
-import { logger } from 'src/lib/logger'
+import { addErrorLocation } from 'src/lib/helpers'
 
 var express = require('express')
 var router = express.Router()
@@ -39,7 +39,7 @@ const validateOwnerAccess = (developers, userId) => {
     throw new Error('Unauthorized')
 }
 
-router.get('/', async (req, res) => {
+router.get('/', async (req, res, next) => {
   try {
     const { userProvider, userId } = req.ctx
     const clients = await db.oidc.findMany({
@@ -55,12 +55,11 @@ router.get('/', async (req, res) => {
         }))
     )
   } catch (e) {
-    logger.error(e)
-    res.status(500).send({ error: e })
+    next(addErrorLocation('fetchClients', e))
   }
 })
 
-router.patch('/:clientId', async (req, res) => {
+router.patch('/:clientId', async (req, res, next) => {
   try {
     const { clientId } = req.params
     const {
@@ -102,13 +101,12 @@ router.patch('/:clientId', async (req, res) => {
     })
     res.send(client)
   } catch (e) {
-    logger.error(e)
-    res.status(500).send({ error: e })
+    next(addErrorLocation('/:clientId', e))
   }
 })
 
 // Create client
-router.post('/', async (req, res) => {
+router.post('/', async (req, res, next) => {
   try {
     let id = scuid()
     id = `keyp_app_${id}`
@@ -141,8 +139,7 @@ router.post('/', async (req, res) => {
     })
     res.send(client)
   } catch (e) {
-    logger.error(e)
-    res.status(500).send({ error: e })
+    next(addErrorLocation('createClient', e))
   }
 })
 

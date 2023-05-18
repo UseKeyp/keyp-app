@@ -44,7 +44,7 @@ export const db = prisma.$extends({
         if (operation === 'create') {
           const user = await query(args)
           return user ? { ...user, id: `${user.provider}-${user.id}` } : null
-        }
+        } else if (operation === 'findMany') return query(args)
 
         if (!args.where)
           throw new Error('User id and provider must be provided')

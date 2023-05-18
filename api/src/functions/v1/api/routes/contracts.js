@@ -1,4 +1,4 @@
-import { logger } from 'src/lib/logger'
+import { addErrorLocation } from 'src/lib/helpers'
 import { writeMethod, readMethod } from 'src/lib/web3/contracts'
 
 import { withUser } from '../middleware/user'
@@ -6,7 +6,7 @@ import { withUser } from '../middleware/user'
 var express = require('express')
 var router = express.Router()
 
-router.post('/method', withUser, async (req, res) => {
+router.post('/method', withUser, async (req, res, next) => {
   try {
     // Validate juicebox contract address
 
@@ -18,19 +18,17 @@ router.post('/method', withUser, async (req, res) => {
 
     res.send(tx)
   } catch (e) {
-    logger.error(e)
-    res.status(500).send({ error: e })
+    next(addErrorLocation('/method', e))
   }
 })
 
-router.get('/method', async (req, res) => {
+router.get('/method', async (req, res, next) => {
   try {
     const response = await readMethod(req.body)
 
     res.send(response)
   } catch (e) {
-    logger.error(e)
-    res.status(500).send({ error: e })
+    next(addErrorLocation('/method', e))
   }
 })
 
