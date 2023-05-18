@@ -1,5 +1,6 @@
 import { parseEther, formatEther } from '@ethersproject/units'
 import { getExplorerBaseUrlFromName } from '@treasure-chess/web3-helpers'
+import { getNativeCoinInfo } from '@usekeyp/common'
 
 import { sendDiscordAdminAlert } from 'src/lib/discord/admin'
 import { logger } from 'src/lib/logger'
@@ -25,15 +26,16 @@ const airdropGasTransaction = async ({ address, amount, network }) => {
   }
 }
 
-const getEtherBalance = async ({ address, network }) => {
+const getNativeCoinBalance = async ({ address, network }) => {
   const balanceBn = await Web3Providers[network].getBalance(address)
+  const nativeCoinInfo = getNativeCoinInfo(network)
   return {
     balance: balanceBn.toString(),
     balanceBn: balanceBn,
     formatted: formatEther(balanceBn),
     decimals: 18,
-    symbol: 'ETH',
-    name: 'Ethereum',
+    symbol: nativeCoinInfo.symbol,
+    name: nativeCoinInfo.name,
     tokenAddress: null,
     network,
     chainId: Web3Providers[network]._network.chainId,
@@ -46,12 +48,12 @@ const checkGasAndAirdrop = async ({
   network,
 }) => {
   try {
-    if (user.country === 'ETHER') return false // Don't airdrop to Extrernal wallets
-    const { balanceBn: balance } = await getEtherBalance({
+    if (user.country === 'ETHER') return false // Don't airdrop to External wallets
+    const { balanceBn: balance } = await getNativeCoinBalance({
       address: user.address,
       network,
     })
-    const { balanceBn: payerBalance } = await getEtherBalance({
+    const { balanceBn: payerBalance } = await getNativeCoinBalance({
       address: payerAddress,
       network,
     })
@@ -105,4 +107,4 @@ Payer balance: **${payerBalance}**`,
   }
 }
 
-module.exports = { checkGasAndAirdrop, getEtherBalance }
+module.exports = { checkGasAndAirdrop, getEtherBalance: getNativeCoinBalance }

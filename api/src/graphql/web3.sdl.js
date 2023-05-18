@@ -42,5 +42,6 @@ export const schema = gql`
     SEPOLIA
     AVALANCHE
     AVALANCHE_FUJI
+    MANTLE_WADSLEY
   }
 `

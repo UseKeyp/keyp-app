@@ -5,6 +5,13 @@ const profanityFilter = new ProfanityFilter()
 
 profanityFilter.removeWords('Pawn', 'pawn')
 
+//////////////////
+// Utility Function for Error Handler
+export function addErrorLocation(errorLocation, error) {
+  error.errorLocation = errorLocation
+  return error
+}
+
 export const isHexAddress = (address) => {
   return /^0x[0-9a-fA-F]{40}$/i.test(address)
 }

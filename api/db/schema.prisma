@@ -261,6 +261,8 @@ enum ProviderType {
   TWITCH
   EPIC_GAMES
   REDDIT
+  FACEBOOK
+  SPOTIFY
   MICROSOFT
 }
 

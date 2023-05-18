@@ -1,3 +1,7 @@
+
+import { getNativeCoinInfo } from '@usekeyp/common'
+
+import { addErrorLocation } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
 import { safeFetchUser } from 'src/lib/users'
 import { getEtherBalance } from 'src/lib/web3/airdrop.js'
@@ -7,26 +11,28 @@ import { USDC_DATA_BY_NETWORK } from 'src/lib/web3/usdc'
 var express = require('express')
 var router = express.Router()
 
-router.get('/:userId', async (req, res) => {
+router.get('/:userId', async (req, res, next) => {
   try {
     const { userId } = req.params
     const user = await safeFetchUser(userId)
 
     res.send(user)
   } catch (e) {
-    logger.error(e)
-    res.status(500).send({ error: e })
+    next(addErrorLocation('/:userId', e))
   }
 })
 
-router.get('/:userId/balance', async (req, res) => {
+router.get('/:userId/balance', async (req, res, next) => {
   try {
     const { userId } = req.params
     const user = await safeFetchUser(userId)
-    const etherBalanceData = await getEtherBalance({
+    const nativeTokenBalanceData = await getEtherBalance({
       address: user.address,
       network: req.ctx.network,
     })
+
+    const nativeCoinInfo = getNativeCoinInfo(req.ctx.network)
+
     let usdcBalanceData
     try {
       const tokenAddress = USDC_DATA_BY_NETWORK[req.ctx.network]?.address
@@ -41,16 +47,15 @@ router.get('/:userId/balance', async (req, res) => {
       // Do nothing, just don't send USDC balance data
     }
     res.send({
-      ETH: etherBalanceData,
+      [nativeCoinInfo.symbol]: nativeTokenBalanceData,
       ...(usdcBalanceData && { USDC: usdcBalanceData }),
     })
   } catch (e) {
-    logger.error(e)
-    res.status(500).send({ error: e })
+    next(addErrorLocation('/:userId/balance', e))
   }
 })
 
-router.get('/:userId/balance/:tokenAddress', async (req, res) => {
+router.get('/:userId/balance/:tokenAddress', async (req, res, next) => {
   try {
     const { userId, tokenAddress } = req.params
     const user = await safeFetchUser(userId)
@@ -63,8 +68,7 @@ router.get('/:userId/balance/:tokenAddress', async (req, res) => {
 
     res.send({ [tokenAddress.toLowerCase()]: tokenBalanceData })
   } catch (e) {
-    logger.error(e)
-    res.status(500).send({ error: e })
+    next(addErrorLocation('/:userId/balance/:tokenAddress', e))
   }
 })
 

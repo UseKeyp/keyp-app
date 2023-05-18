@@ -47,6 +47,9 @@ var EIP_155_NETWORK_SPEC = [{
 }, {
   name: 'ARBITRUM-NOVA',
   chainId: 42170
+}, {
+  name: 'MANTLE-WADSLEY',
+  chainId: 5001
 }];
 exports.EIP_155_NETWORK_SPEC = EIP_155_NETWORK_SPEC;
 var getNetworkNameFromId = function getNetworkNameFromId(chainId) {
@@ -67,7 +70,7 @@ var getIdFromNetworkName = function getIdFromNetworkName(name) {
 };
 exports.getIdFromNetworkName = getIdFromNetworkName;
 var getExplorerBaseUrlFromName = function getExplorerBaseUrlFromName(name) {
-  if (['MAINNET', 'GOERLI', 'SEPOLIA', 'GNOSIS', 'MATIC', 'MUMBAI', 'AVALANCHE', 'AVALANCHE-FUJI', 'ARBITRUM', 'ARBITRUM-NOVA', 'OPTIMISM', 'OPTIMISM-GOERLI'].includes(name)) {
+  if (['MAINNET', 'GOERLI', 'SEPOLIA', 'GNOSIS', 'MATIC', 'MUMBAI', 'AVALANCHE', 'AVALANCHE-FUJI', 'ARBITRUM', 'ARBITRUM-NOVA', 'OPTIMISM', 'OPTIMISM-GOERLI', 'MANTLE-WADSLEY'].includes(name)) {
     switch (name) {
       case 'MAINNET':
         return 'https://etherscan.io/';
@@ -93,6 +96,8 @@ var getExplorerBaseUrlFromName = function getExplorerBaseUrlFromName(name) {
         return "https://goerli-optimism.etherscan.io/";
       case 'ARBITRUM-NOVA':
         return "https://explorer.arbitrum.io/";
+      case 'MANTLE-WADSLEY':
+        return "https://explorer.testnet.mantle.xyz/";
     }
   } else {
     return "https://".concat(name, ".etherscan.io/");

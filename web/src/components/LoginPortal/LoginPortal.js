@@ -258,7 +258,7 @@ const LoginPortal = () => {
                   </div>
                 </div>
               </Button>
-              <Button
+              {/* <Button
                 onClick={() => onSubmitSignUp('EPIC_GAMES')}
                 disabled={loading === 'EPIC_GAMES'}
                 classNameVariant={`${
@@ -281,7 +281,7 @@ const LoginPortal = () => {
                     name="epic_games"
                   />{' '}
                 </div>
-              </Button>
+              </Button> */}
               <Button
                 onClick={() => onSubmitSignUp('REDDIT')}
                 disabled={loading === 'REDDIT'}
@@ -299,6 +299,26 @@ const LoginPortal = () => {
                 <div className="group flex flex-row gap-x-4 hover:text-white">
                   <div className="flex">
                     <Icon height="24" width="24" name="reddit" />
+                  </div>
+                </div>
+              </Button>
+              <Button
+                onClick={() => onSubmitSignUp('FACEBOOK')}
+                disabled={loading === 'FACEBOOK'}
+                classNameVariant={`${
+                  loading === 'FACEBOOK'
+                    ? 'bg-[#E9EBED] border-[#E9EBED] justify-center'
+                    : 'hover:bg-[#E9EBED] hover:border-[#E9EBED] justify-center'
+                }`}
+                borderColor="border-[#E5E7EB]"
+                fluid={false}
+                size="square"
+                position="start"
+                alt="facebook"
+              >
+                <div className="group flex flex-row gap-x-4 hover:text-white">
+                  <div className="flex">
+                    <Icon height="24" width="24" name="facebook" />
                   </div>
                 </div>
               </Button>
@@ -322,6 +342,26 @@ const LoginPortal = () => {
                   </div>
                 </div>
               </Button>
+              {/* <Button
+                onClick={() => onSubmitSignUp('SPOTIFY')}
+                disabled={loading === 'SPOTIFY'}
+                classNameVariant={`${
+                  loading === 'SPOTIFY'
+                    ? 'bg-[#E9EBED] border-[#E9EBED] justify-center'
+                    : 'hover:bg-[#E9EBED] hover:border-[#E9EBED] justify-center'
+                }`}
+                borderColor="border-[#E5E7EB]"
+                fluid={false}
+                size="square"
+                position="start"
+                alt="spotify"
+              >
+                <div className="group flex flex-row gap-x-4 hover:text-white">
+                  <div className="flex">
+                    <Icon height="24" width="24" name="spotify" />
+                  </div>
+                </div>
+              </Button> */}
             </div>
           </MoreAccordion>
           <div className="flex items-center text-[9px] text-gray-800 gap-x-1 mt-2">

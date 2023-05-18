@@ -17,7 +17,7 @@ const REDDIT_SCOPE = 'identity'
 const REDDIT_REDIRECT_URI = APP_DOMAIN + '/redirect/reddit'
 
 // User agent should be in the format <platform>:<app ID>:<version string> (by /u/<reddit username>)
-const USER_AGENT_STRING = `web:${process.env.REDDIT_CLIENT_ID}:v0.1 (by /u/keyperjacob)`
+const USER_AGENT_STRING = `web:${process.env.REDDIT_CLIENT_ID}:v0.1 (by /u/kepler-bot)`
 
 const responseType = 'code'
 
@@ -25,7 +25,7 @@ const params = {
   client_id: process.env.REDDIT_CLIENT_ID,
   scope: REDDIT_SCOPE,
   redirect_uri: REDDIT_REDIRECT_URI,
-  response_type: 'code',
+  response_type: responseType,
   duration: 'permanent',
 }
 
@@ -57,6 +57,8 @@ export const onSubmitCode = async (code, { codeVerifier }) => {
         throw `REDDIT API failed for /token. Returned ${res.status} - ${res.statusText}`
       return res.json()
     })
+
+    logger.debug({ custom: response }, 'onSubmitToken response from Reddit')
 
     if (response.error)
       throw `${response.error} - ${response.hint}. ${response.message}`
@@ -90,6 +92,14 @@ export const onConnected = async ({ refreshToken, accessToken }) => {
       throw new AuthenticationError(
         `Verify your email with Reddit and try again.`
       )
+
+    logger.debug({ custom: userDetails }, 'userDetails from Reddit')
+    logger.debug(
+      { custom: userDetails.has_verified_email },
+      'has_verified_email'
+    )
+
+    if (!userDetails.has_verified_email) throw 'Email must be verified'
 
     const user = await fetchUser(
       userDetails.id,
