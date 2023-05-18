@@ -11084,16 +11084,16 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@usekeyp/components-soft-ui@npm:^0.1.20":
-  version: 0.1.20
-  resolution: "@usekeyp/components-soft-ui@npm:0.1.20::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40usekeyp%2Fcomponents-soft-ui%2F0.1.20%2Fb168bdf97a49a557d7311dcc576836f47fb52bc8"
+"@usekeyp/components-soft-ui@npm:^0.1.21":
+  version: 0.1.21
+  resolution: "@usekeyp/components-soft-ui@npm:0.1.21::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40usekeyp%2Fcomponents-soft-ui%2F0.1.21%2F5b44d49961324a993efdbf759a79f887cbac56f3"
   dependencies:
     "@redwoodjs/forms": ^4.3.1
     "@redwoodjs/router": ^3.3.0
     "@testing-library/jest-dom": ^5.16.5
     "@testing-library/react": ^13.4.0
     "@testing-library/user-event": ^13.5.0
-    "@usekeyp/tailwind-presets": ^0.1.20
+    "@usekeyp/tailwind-presets": ^0.1.21
     chart.js: ^4.0.1
     prop-types: ^15.8.1
     react: ^18.2.0
@@ -11105,14 +11105,14 @@ __metadata:
     surge: ^0.23.1
     uuid: ^9.0.0
     web-vitals: ^2.1.4
-  checksum: a3924220cd7eaa7aaf00b7889314a2922f7bb05c794d96e867a2c67ae0005b72fd3bcd6e845c15ecaed3aa23eee7ebd3ce1f064138504767a0593f40fe534558
+  checksum: 26606b91f278138166a1ebfdb7e0fe15632dccb8eb8d333f081f439c3b54053bccf51726907b682c1dd6e5eff789cb482e3eee0c197fc1af362af925ce97d2ff
   languageName: node
   linkType: hard
 
-"@usekeyp/tailwind-presets@npm:^0.1.20":
-  version: 0.1.20
-  resolution: "@usekeyp/tailwind-presets@npm:0.1.20::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40usekeyp%2Ftailwind-presets%2F0.1.20%2F02f8415adbf0f93b81741b0f8528ebbfe06e928d"
-  checksum: 0c815edf69670de76f2991d7bbbfb8ca96d6447dce13be4341af082f98d646ce956bd39416e345de9a83008377735152d62b14ad71588d2ab6b277c42455d78c
+"@usekeyp/tailwind-presets@npm:^0.1.21":
+  version: 0.1.21
+  resolution: "@usekeyp/tailwind-presets@npm:0.1.21::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40usekeyp%2Ftailwind-presets%2F0.1.21%2Ff3c8f215d0f3b6bfc7eedf8ec5cdea45c2f5458f"
+  checksum: 4b1dd29cdb2b05a20ee8b6b510dcdf32ba06ef9185715c97281d009e1be56e93707aaecfd6dc2062a95145efb1829ea42fcb40bdab45efd2e9fd1ca6ed282309
   languageName: node
   linkType: hard
 
@@ -37693,8 +37693,8 @@ __metadata:
     "@sentry/browser": ^6.17.3
     "@storybook/addon-essentials": ^6.5.15
     "@usekeyp/common": ^1.2.5-staging.2
-    "@usekeyp/components-soft-ui": ^0.1.20
-    "@usekeyp/tailwind-presets": ^0.1.20
+    "@usekeyp/components-soft-ui": ^0.1.21
+    "@usekeyp/tailwind-presets": ^0.1.21
     "@wert-io/module-react-component": ^0.2.0
     autoprefixer: ^10.4.13
     bad-words: ^3.0.4

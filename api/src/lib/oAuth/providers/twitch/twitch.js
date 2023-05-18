@@ -13,7 +13,6 @@ export const TWITCH_OAUTH_URL_AUTHORIZE =
   'https://id.twitch.tv/oauth2/authorize'
 
 const TWITCH_OAUTH_URL_TOKEN = 'https://id.twitch.tv/oauth2/token'
-const TWITCH_OAUTH_URL_REVOKE = 'https://id.twitch.tv/oauth2/revoke'
 const TWITCH_SCOPE = 'user:read:email'
 const TWITCH_REDIRECT_URI = APP_DOMAIN + '/redirect/twitch'
 
@@ -154,7 +153,7 @@ export const refreshTokens = async (refreshToken) => {
     } = response
     if (!newAccessToken || !newRefreshToken)
       throw 'Failed to refresh tokens from Twitch'
-    await db.oAuthConnections.update({
+    await db.user.update({
       where: { refreshToken },
       data: {
         accessToken: newAccessToken,
@@ -167,57 +166,11 @@ export const refreshTokens = async (refreshToken) => {
   }
 }
 
-const onRevoke = async () => {
-  try {
-    const member = await db.member.findUnique({
-      where: { id: context.currentUser.id },
-      include: { oAuthConnections: { where: { revoked: false } } },
-    })
-    const twitchOAuthConnection = member.oAuthConnections.find(
-      (connection) => connection.type === 'TWITCH'
-    )
-    if (!twitchOAuthConnection) throw 'No OAuth connection found'
-    const body = {
-      client_id: process.env.TWITCH_CLIENT_ID,
-      token: twitchOAuthConnection.accessToken,
-    }
-    const encodedBody = encodeBody(body)
-    logger.debug({ custom: encodedBody }, 'encodedBody')
-    logger.debug({ custom: body }, 'body')
-    logger.debug({ custom: twitchOAuthConnection }, 'twitchOAuthConnection')
-    await fetch(TWITCH_OAUTH_URL_REVOKE, {
-      method: 'post',
-      body: encodedBody,
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    }).then(async (res) => {
-      if (res.status != 200) {
-        if (res.status === 401) {
-          await refreshTokens(twitchOAuthConnection.refreshToken)
-          return onRevoke()
-        }
-        throw `Twitch API failed. ${res.status} - ${res.statusText}`
-      }
-    })
-    await db.member.update({
-      where: { id: context.currentUser.id },
-      data: { twitchUsername: '' },
-    })
-    await db.oAuthConnection.update({
-      where: { id: twitchOAuthConnection.id },
-      data: { revoked: true, accessToken: '', refreshToken: '' },
-    })
-    return { status: 'SUCCESS' }
-  } catch (e) {
-    Sentry.captureException(e)
-    throw `onRevoke() ${e}`
-  }
-}
-
 export const provider = {
   urlAuthorize: TWITCH_OAUTH_URL_AUTHORIZE,
   params,
   onSubmitCode,
   onConnected,
-  onRevoke,
+  refreshTokens,
   responseType,
 }

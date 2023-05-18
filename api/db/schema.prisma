@@ -262,6 +262,7 @@ enum ProviderType {
   EPIC_GAMES
   REDDIT
   FACEBOOK
+  SPOTIFY
 }
 
 enum OAuthConnectionType {
