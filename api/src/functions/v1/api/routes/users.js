@@ -1,3 +1,6 @@
+
+import { getNativeCoinInfo } from '@usekeyp/common'
+
 import { addErrorLocation } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
 import { safeFetchUser } from 'src/lib/users'
@@ -23,10 +26,13 @@ router.get('/:userId/balance', async (req, res, next) => {
   try {
     const { userId } = req.params
     const user = await safeFetchUser(userId)
-    const etherBalanceData = await getEtherBalance({
+    const nativeTokenBalanceData = await getEtherBalance({
       address: user.address,
       network: req.ctx.network,
     })
+
+    const nativeCoinInfo = getNativeCoinInfo(req.ctx.network)
+
     let usdcBalanceData
     try {
       const tokenAddress = USDC_DATA_BY_NETWORK[req.ctx.network]?.address
@@ -41,7 +47,7 @@ router.get('/:userId/balance', async (req, res, next) => {
       // Do nothing, just don't send USDC balance data
     }
     res.send({
-      ETH: etherBalanceData,
+      [nativeCoinInfo.symbol]: nativeTokenBalanceData,
       ...(usdcBalanceData && { USDC: usdcBalanceData }),
     })
   } catch (e) {
