@@ -47,6 +47,7 @@ const LOGIN_ENABLED_PROVIDERS = [
   'TWITCH',
   // 'EPIC_GAMES',
   'REDDIT',
+  'MICROSOFT',
   'FACEBOOK',
   'SPOTIFY',
 ]

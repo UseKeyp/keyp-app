@@ -9,6 +9,7 @@ import { DISCORD, provider as discordProvider } from './discord'
 import { EPIC_GAMES, provider as epicGamesProvider } from './epic-games'
 import { FACEBOOK, provider as facebookProvider } from './facebook'
 import { GOOGLE, provider as googleProvider } from './google'
+import { MICROSOFT, provider as microsoftProvider } from './microsoft'
 import { NODE_OIDC, provider as nodeOIDCProvider } from './node-oidc/node-oidc'
 import { PLAID, provider as plaidProvider } from './plaid'
 import { REDDIT, provider as redditProvider } from './reddit'
@@ -28,6 +29,7 @@ const providers = {
   [REDDIT]: redditProvider,
   [FACEBOOK]: facebookProvider,
   [SPOTIFY]: spotifyProvider,
+  [MICROSOFT]: microsoftProvider,
 }
 
 // Providers where creating a wallet is allowed
@@ -44,6 +46,7 @@ const types = [
   GOOGLE,
   EPIC_GAMES,
   REDDIT,
+  MICROSOFT,
   FACEBOOK,
   SPOTIFY,
 ]

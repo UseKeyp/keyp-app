@@ -263,6 +263,7 @@ enum ProviderType {
   REDDIT
   FACEBOOK
   SPOTIFY
+  MICROSOFT
 }
 
 enum OAuthConnectionType {
