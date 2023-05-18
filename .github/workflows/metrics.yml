@@ -26,14 +26,14 @@ jobs:
         with:
           args: |
             **USERS**
-            ```json
             ${{ steps.get_metrics.outputs.USERS }}
-            ```
+
             **DEVELOPERS**
-            ```json
+            ```
             ${{ steps.get_metrics.outputs.DEVELOPERS }}
             ```
+            
             **CLIENTS**
             ```json
-            ${{ steps.get_metrics.outputs.CLIENTS }}
+                 ${{ steps.get_metrics.outputs.CLIENTS }}
             ```
