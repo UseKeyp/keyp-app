@@ -11084,7 +11084,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@usekeyp/components-soft-ui@npm:^0.1.18":
+"@usekeyp/components-soft-ui@npm:^0.1.20":
   version: 0.1.20
   resolution: "@usekeyp/components-soft-ui@npm:0.1.20::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40usekeyp%2Fcomponents-soft-ui%2F0.1.20%2Fb168bdf97a49a557d7311dcc576836f47fb52bc8"
   dependencies:
@@ -11109,7 +11109,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@usekeyp/tailwind-presets@npm:^0.1.18, @usekeyp/tailwind-presets@npm:^0.1.20":
+"@usekeyp/tailwind-presets@npm:^0.1.20":
   version: 0.1.20
   resolution: "@usekeyp/tailwind-presets@npm:0.1.20::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40usekeyp%2Ftailwind-presets%2F0.1.20%2F02f8415adbf0f93b81741b0f8528ebbfe06e928d"
   checksum: 0c815edf69670de76f2991d7bbbfb8ca96d6447dce13be4341af082f98d646ce956bd39416e345de9a83008377735152d62b14ad71588d2ab6b277c42455d78c
@@ -37693,8 +37693,8 @@ __metadata:
     "@sentry/browser": ^6.17.3
     "@storybook/addon-essentials": ^6.5.15
     "@usekeyp/common": ^1.2.5-staging.2
-    "@usekeyp/components-soft-ui": ^0.1.18
-    "@usekeyp/tailwind-presets": ^0.1.18
+    "@usekeyp/components-soft-ui": ^0.1.20
+    "@usekeyp/tailwind-presets": ^0.1.20
     "@wert-io/module-react-component": ^0.2.0
     autoprefixer: ^10.4.13
     bad-words: ^3.0.4

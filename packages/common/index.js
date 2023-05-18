@@ -45,8 +45,9 @@ const LOGIN_ENABLED_PROVIDERS = [
   'GOOGLE',
   'TWITTER',
   'TWITCH',
-  // 'EPIC_GAMES',
   'REDDIT',
+  'FACEBOOK',
+  // 'EPIC_GAMES',
 ]
 const AVAILABLE_NETWORKS = [
   'MAINNET',
