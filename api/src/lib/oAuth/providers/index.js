@@ -7,6 +7,7 @@ import { onConnected as onConnectedChess } from './chess/login'
 import { COINBASE, provider as coinbaseProvider } from './coinbase'
 import { DISCORD, provider as discordProvider } from './discord'
 import { EPIC_GAMES, provider as epicGamesProvider } from './epic-games'
+import { FACEBOOK, provider as facebookProvider } from './facebook'
 import { GOOGLE, provider as googleProvider } from './google'
 import { NODE_OIDC, provider as nodeOIDCProvider } from './node-oidc/node-oidc'
 import { PLAID, provider as plaidProvider } from './plaid'
@@ -25,6 +26,7 @@ const providers = {
   [GOOGLE]: googleProvider,
   [EPIC_GAMES]: epicGamesProvider,
   [REDDIT]: redditProvider,
+  [FACEBOOK]: facebookProvider,
   [SPOTIFY]: spotifyProvider,
 }
 
@@ -42,6 +44,7 @@ const types = [
   GOOGLE,
   EPIC_GAMES,
   REDDIT,
+  FACEBOOK,
   SPOTIFY,
 ]
 

@@ -1,4 +1,4 @@
-name: fetch-metrics
+name: Metrics
 on:
   schedule:
     - cron: '0 14 * * *'
@@ -10,9 +10,9 @@ jobs:
       - name: Get metrics data
         id: get_metrics
         run: |
-          USERS=$(curl -s https://api.usekeyp.com/metrics | jq -r .users)
-          DEVELOPERS=$(curl -s https://api.usekeyp.com/metrics | jq -r .developers)
-          CLIENTS=$(curl -s https://api.usekeyp.com/metrics | jq -r .clients)
+          USERS=$(curl -s https://api.usekeyp.com/metrics | jq -r .users | jq 'tostring')
+          DEVELOPERS=$(curl -s https://api.usekeyp.com/metrics | jq -r .developers | jq 'tostring')
+          CLIENTS=$(curl -s https://api.usekeyp.com/metrics | jq -r .clients | jq 'tostring')
           echo USERS: $USERS
           echo DEVELOPERS: $DEVELOPERS
           echo CLIENTS: $CLIENTS
@@ -26,14 +26,14 @@ jobs:
         with:
           args: |
             **USERS**
-            ```json
+            ```js
             ${{ steps.get_metrics.outputs.USERS }}
             ```
             **DEVELOPERS**
-            ```json
+            ```js
             ${{ steps.get_metrics.outputs.DEVELOPERS }}
             ```
             **CLIENTS**
-            ```json
+            ```js
             ${{ steps.get_metrics.outputs.CLIENTS }}
             ```
