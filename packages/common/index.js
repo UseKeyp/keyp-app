@@ -64,6 +64,50 @@ const AVAILABLE_NETWORKS = [
   'MANTLE-WADSLEY',
 ]
 
+function getExplorerBaseUrlFromName(name) {
+  if (
+    AVAILABLE_NETWORKS.includes(name)
+  ) {
+    switch (name) {
+      case 'MAINNET':
+        return 'https://etherscan.io/'
+      case 'GOERLI':
+        return `https://goerli.etherscan.io/`
+      case 'SEPOLIA':
+        return `https://sepolia.etherscan.io/`
+      case 'GNOSIS':
+        return `https://blockscout.com/xdai/mainnet/`
+      case 'MATIC':
+        return `https://polygonscan.com/`
+      case 'MUMBAI':
+        return `https://mumbai.polygonscan.com/`
+      case 'AVALANCHE':
+        return `https://snowtrace.io/`
+      case 'AVALANCHE-FUJI':
+        return `https://testnet.snowtrace.io/`
+      case 'ARBITRUM':
+        return `https://arbiscan.io/`
+      case 'OPTIMISM':
+        return `https://optimistic.etherscan.io/`
+      case 'OPTIMISM-GOERLI':
+        return `https://goerli-optimism.etherscan.io/`
+      case 'ARBITRUM-NOVA':
+        return `https://explorer.arbitrum.io/`
+      case 'MANTLE-WADSLEY':
+        return `https://explorer.testnet.mantle.xyz/`
+    }
+  } else {
+    return `https://${name}.etherscan.io/`
+  }
+}
+
+function getBlockExplorerUrl(name, hash) {
+  const link = getExplorerBaseUrlFromName(name)
+  return `${link}/tx/${hash}`
+}
+
 module.exports.LOGIN_ENABLED_PROVIDERS = LOGIN_ENABLED_PROVIDERS
 module.exports.AVAILABLE_NETWORKS = AVAILABLE_NETWORKS
 module.exports.getNativeCoinInfo = getNativeCoinInfo
+module.exports.getExplorerBaseUrlFromName = getExplorerBaseUrlFromName
+module.exports.getBlockExplorerUrl = getBlockExplorerUrl
