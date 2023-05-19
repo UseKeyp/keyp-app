@@ -102,8 +102,10 @@ function getExplorerBaseUrlFromName(name) {
 }
 
 function getBlockExplorerUrl(name, hash) {
-  const link = getExplorerBaseUrlFromName(name)
-  return `${link}/tx/${hash}`
+  const baseUrl = getExplorerBaseUrlFromName(name)
+  const url = new URL(baseUrl)
+  url.pathname = `tx/${hash}`
+  return url.toString()
 }
 
 module.exports.LOGIN_ENABLED_PROVIDERS = LOGIN_ENABLED_PROVIDERS
