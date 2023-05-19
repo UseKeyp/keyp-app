@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.2.5](https://github.com/pi0neerpat/dappy-monorepo/compare/v1.2.5-staging.2...v1.2.5) (2023-05-05)
+
+**Note:** Version bump only for package @treasure-chess/localization
+
+
+
+
+
 ## [1.2.3](https://github.com/pi0neerpat/dappy-monorepo/compare/v1.2.2-staging.7...v1.2.3) (2023-04-18)
 
 
