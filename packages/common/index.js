@@ -71,6 +71,8 @@ function getExplorerBaseUrlFromName(name) {
     switch (name) {
       case 'MAINNET':
         return 'https://etherscan.io/'
+      case 'POLYGON':
+        return 'https://polygonscan.com/'
       case 'GOERLI':
         return `https://goerli.etherscan.io/`
       case 'SEPOLIA':
@@ -82,7 +84,7 @@ function getExplorerBaseUrlFromName(name) {
       case 'MUMBAI':
         return `https://mumbai.polygonscan.com/`
       case 'AVALANCHE':
-        return `https://snowtrace.io/`
+        return `https://avascan.info/` // not working but on https://avascan.info/blockchain/dfk/
       case 'AVALANCHE-FUJI':
         return `https://testnet.snowtrace.io/`
       case 'ARBITRUM':
@@ -92,7 +94,7 @@ function getExplorerBaseUrlFromName(name) {
       case 'OPTIMISM-GOERLI':
         return `https://goerli-optimism.etherscan.io/`
       case 'ARBITRUM-NOVA':
-        return `https://explorer.arbitrum.io/`
+        return `https://testnet.arbiscan.io/`
       case 'MANTLE-WADSLEY':
         return `https://explorer.testnet.mantle.xyz/`
     }
@@ -103,8 +105,7 @@ function getExplorerBaseUrlFromName(name) {
 
 function getBlockExplorerUrl(name, hash) {
   const baseUrl = getExplorerBaseUrlFromName(name)
-  const url = new URL(baseUrl)
-  url.pathname = `tx/${hash}`
+  const url = new URL('tx/' + hash, baseUrl)
   return url.toString()
 }
 
