@@ -1,5 +1,3 @@
-import { useSentry } from '@envelop/sentry'
-
 import { createGraphQLHandler } from '@redwoodjs/graphql-server'
 
 /* eslint-disable-next-line no-unused-vars */
@@ -11,7 +9,6 @@ import { db } from 'src/lib/db'
 import { isProdOrStaging } from 'src/lib/helpers'
 import { cors } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
-import Sentry from 'src/lib/sentry'
 import services from 'src/services/**/*.{js,ts}'
 
 // const _identifyFn = async (context) => context.request.ip
