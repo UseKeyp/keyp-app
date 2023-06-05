@@ -85,8 +85,8 @@ export const getContractFriendlyArguments = (argumentList, abi, argOffset) => {
   const [methodName, argTypes] = methodId.split('-')
   const typesList = argTypes ? argTypes.split(',') : []
   // Pick out the relevant function fragment
-  const abiFragment = [getFragmentFromMethodId(abi, methodId)]
-  let args = [address, JSON.stringify(abiFragment), methodName]
+  // const abiFragment = [getFragmentFromMethodId(abi, methodId)]
+  let args = [address, methodName]
   if (argTypes) args.push(...formatContractArgs(methodSpecificArgs, typesList))
   return traceArgs.concat(args) // add back trace arguments
 }
@@ -122,11 +122,5 @@ export const getFormInputsFromMethod = (
   formInputs,
   argOffset
 ) => {
-  const newFormInputs = getArgumentsFromMethodId(abi, methodId)
-  if (newFormInputs)
-    return [
-      ...formInputs.slice(0, 3 + argOffset), // Discard existing method-specific inputs
-      ...newFormInputs,
-    ]
-  else return [...formInputs.slice(0, 3 + argOffset)]
+  return [...formInputs.slice(0, 3 + argOffset)]
 }
