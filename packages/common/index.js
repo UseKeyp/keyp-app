@@ -1,4 +1,6 @@
-function getNativeCoinInfo(network) {
+/* global URL */
+
+export function getNativeCoinInfo(network) {
   const NATIVE_COIN_ABBREVIATIONS = {
     MAINNET: 'ETH',
     POLYGON: 'MATIC',
@@ -29,16 +31,16 @@ function getNativeCoinInfo(network) {
     'AVALANCHE-FUJI': 'Fuji AVAX',
   }
 
-  const abbreviation = NATIVE_COIN_ABBREVIATIONS[network] || 'UNKNOWN';
-  const name = NATIVE_COIN_NAMES[network] || 'Unknown Network';
+  const abbreviation = NATIVE_COIN_ABBREVIATIONS[network] || 'UNKNOWN'
+  const name = NATIVE_COIN_NAMES[network] || 'Unknown Network'
 
   return {
     symbol: abbreviation,
-    name
-  };
+    name,
+  }
 }
 
-const LOGIN_ENABLED_PROVIDERS = [
+export const LOGIN_ENABLED_PROVIDERS = [
   'CHESS',
   'DISCORD',
   'NODE_OIDC',
@@ -51,7 +53,7 @@ const LOGIN_ENABLED_PROVIDERS = [
   'FACEBOOK',
   'SPOTIFY',
 ]
-const AVAILABLE_NETWORKS = [
+export const AVAILABLE_NETWORKS = [
   'MAINNET',
   'POLYGON',
   'MUMBAI',
@@ -67,10 +69,8 @@ const AVAILABLE_NETWORKS = [
   'MANTLE-WADSLEY',
 ]
 
-function getExplorerBaseUrlFromName(name) {
-  if (
-    AVAILABLE_NETWORKS.includes(name)
-  ) {
+export function getExplorerBaseUrlFromName(name) {
+  if (AVAILABLE_NETWORKS.includes(name)) {
     switch (name) {
       case 'MAINNET':
         return 'https://etherscan.io/'
@@ -106,14 +106,8 @@ function getExplorerBaseUrlFromName(name) {
   }
 }
 
-function getBlockExplorerUrl(name, hash) {
+export function getBlockExplorerUrl(name, hash) {
   const baseUrl = getExplorerBaseUrlFromName(name)
   const url = new URL('tx/' + hash, baseUrl)
   return url.toString()
 }
-
-module.exports.LOGIN_ENABLED_PROVIDERS = LOGIN_ENABLED_PROVIDERS
-module.exports.AVAILABLE_NETWORKS = AVAILABLE_NETWORKS
-module.exports.getNativeCoinInfo = getNativeCoinInfo
-module.exports.getExplorerBaseUrlFromName = getExplorerBaseUrlFromName
-module.exports.getBlockExplorerUrl = getBlockExplorerUrl
