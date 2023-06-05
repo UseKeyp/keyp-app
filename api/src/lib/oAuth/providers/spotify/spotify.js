@@ -123,7 +123,6 @@ async function getProfile(accessToken) {
     },
   })
   const data = await response.json()
-  console.log(data)
   return data
 }
 

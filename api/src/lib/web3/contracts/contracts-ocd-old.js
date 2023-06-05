@@ -1,14 +1,6 @@
-const ERROR_MESSAGE_NO_ABI = 'No ABI provided'
-const ERROR_MESSAGE_PARSE_ABI =
-  'Error parsing ABI. Please ensure valid JSON format. Example: [{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"}]'
-const ERROR_MESSAGE_ABI_TOO_LONG = 'Please only pass one function object.'
-const ERROR_MESSAGE_ABI_NO_READ_FUNCTIONS =
-  'The ABI does not contain any READ functions.'
-const ERROR_MESSAGE_FETCH = 'Error fetching ABI. CORS header may not be set.'
-
 export const getMethodDisplayName = ({ name, inputs }) => {
   // Convert a function entity to a human-friendly string
-  const inputTypesText = inputs.map((input, index) => input.type)
+  const inputTypesText = inputs.map((input) => input.type)
   return `${name}${inputs.length > 0 ? ` (${inputTypesText})` : ''}`
 }
 
@@ -22,7 +14,6 @@ export const filterEvents = (abi) => {
   try {
     return abi.filter((method) => method.type === 'function')
   } catch (e) {
-    console.log(e)
     return []
   }
 }
@@ -33,7 +24,6 @@ export const getViewMethods = (abi) => {
       .filter((method) => method.stateMutability === 'view')
       .sort(sortNested)
   } catch (e) {
-    console.log(e)
     return []
   }
 }
@@ -44,7 +34,6 @@ export const getWriteMethods = (abi) => {
       .filter((method) => method.stateMutability !== 'view')
       .sort(sortNested)
   } catch (e) {
-    console.log(e)
     return []
   }
 }
@@ -58,7 +47,7 @@ const PLACEHOLDER_BASE_TYPE = {
 }
 
 export const getArgumentsFromMethod = (method) => {
-  const args = method.inputs.map((input, index) => input.type)
+  const args = method.inputs.map((input) => input.type)
   return args.map((arg, index) => {
     const baseType = arg
       .replace(/(uint|int)[0-9]*/, 'int')

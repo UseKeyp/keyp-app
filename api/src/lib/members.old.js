@@ -308,8 +308,8 @@ export const getMemberRawData = async (username) => {
   let usdcBalance
   let etherBalance
   try {
-    usdcBalance = await getUsdcBalance({ address: member.address, network })
-    etherBalance = await Web3Providers[network].getBalance(member.address)
+    usdcBalance = await getUsdcBalance({ address: member.address })
+    etherBalance = await Web3Providers.getBalance(member.address)
     etherBalance = formatEther(etherBalance)
   } catch {
     // Do nothing

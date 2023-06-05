@@ -10,8 +10,8 @@ export const processOrder = async ({ body, stripeSignature }) => {
       await processStripeWebhook({ body, stripeSignature })
     } else {
       logger.debug({ custom: body })
-      const { order } = body
-      if (order) return processWertWebhook({ body })
+      // const { order } = body
+      // if (order) return processWertWebhook({ body })
     }
   } catch (e) {
     await sendDiscordAdminAlert({
