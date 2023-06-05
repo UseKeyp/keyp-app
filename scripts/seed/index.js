@@ -5,14 +5,12 @@ const { PrismaClient } = require('@prisma/client')
 const dotenv = require('dotenv')
 
 const { generateRandomMembers } = require('./helpers')
-const exampleMembers = require('./member')
 
 dotenv.config()
 const db = new PrismaClient()
 
 async function main() {
   // NOTE: change these as desired
-  const newTreasuresToCreate = 100
   // const newMembersToCreate = Math.floor(newTreasuresToCreate / 3)
   const newMembersToCreate = 3
 
@@ -43,8 +41,6 @@ async function main() {
     )
     console.log('')
   }
-
-  const members = await db.user.findMany()
 }
 
 const seed = async () => {

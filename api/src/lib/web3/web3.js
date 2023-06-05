@@ -1,4 +1,4 @@
-import { formatUnits, formatEther } from '@ethersproject/units'
+import { formatUnits } from '@ethersproject/units'
 import { getExplorerBaseUrlFromName } from '@treasure-chess/web3-helpers'
 import { AVAILABLE_NETWORKS } from '@usekeyp/common'
 
@@ -16,8 +16,6 @@ import { fetchUser } from 'src/lib/users'
 import { Web3Providers } from 'src/lib/web3/provider'
 import { mint } from 'src/lib/web3/treasure'
 
-import { getAdminBalance } from './wallets/admin'
-
 const EXPLORER_BASE_URL = getExplorerBaseUrlFromName(
   process.env.ETHEREUM_NETWORK_NAME
 )
@@ -29,7 +27,7 @@ const FAILED = 'FAILED'
 const MINIMUM_CONFIRMATIONS = isProdOrStaging ? 15 : 1
 const MAX_RESUBMIT_ATTEMPTS = 0
 
-const alertDiscord = async ({ treasure, network }) => {
+const alertDiscord = async ({ treasure }) => {
   try {
     let balanceObjects = []
     // TODO add back when admin wallet is back

@@ -13,7 +13,6 @@ const rl = readline.createInterface({
 })
 
 rl.on('close', function () {
-  console.log('\nExiting!')
   process.exit(0)
 })
 
@@ -35,7 +34,6 @@ async function main() {
         )
         rl.close()
       } else {
-        console.log('No changes made.')
         rl.close()
       }
     }

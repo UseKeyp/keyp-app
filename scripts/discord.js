@@ -32,7 +32,6 @@ let commands = adminCommands
 if (BOT === 'PUBLIC') {
   botName = `treasure-chess ${process.env.ENVIRONMENT}`
   botToken = publicBotToken
-  let clientId = publicClientId
   commands = publicCommands
 }
 
@@ -40,11 +39,6 @@ const delay = (ms) => new Promise((res) => setTimeout(res, ms))
 
 const registerCommands = async () => {
   try {
-    console.log(
-      `Registering commands for bot "${botName}" ${clientId}- ${commands.map(
-        (cmd) => cmd.data.name
-      )}`
-    )
     const rest = new REST({ version: '9' }).setToken(botToken)
     let path = Routes.applicationCommands(clientId)
     if (TYPE === 'GUILD')
@@ -53,7 +47,7 @@ const registerCommands = async () => {
       body: commands.map((cmd) => cmd.data),
     })
   } catch (e) {
-    console.error(e)
+    // console.error(e)
   }
 }
 

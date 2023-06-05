@@ -1,14 +1,7 @@
-const { id: sha3 } = require('@ethersproject/hash')
 const { Wallet: EthersWallet } = require('@ethersproject/wallet')
 const rug = require('random-username-generator')
 
-const {
-  parseGameFromChessDotCom,
-} = require('../../api/src/lib/chessCom/gameParsing')
-const { getGifUrl } = require('../../api/src/lib/chessCom/gifGetter')
-
 const countries = require('./data/countries')
-const deltaRating = require('./data/deltaData.json')
 const randomAvatarsBase64 = require('./data/randomAvatarsBase64.js')
 const PROVIDERS = [
   'CHESS',
@@ -30,7 +23,6 @@ const generateRandomMembers = (count, highestMemberId) => {
     .map((_, index) => {
       const randomUsername = rug.generate()
       const randomAddress = EthersWallet.createRandom().address
-      const rand = Math.random()
       return {
         id: (highestMemberId + index).toString(),
         provider: PROVIDERS[Math.floor(Math.random() * PROVIDERS.length)],

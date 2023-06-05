@@ -7,8 +7,7 @@ const directoryPath = path.join(__dirname, './placeImagesHere')
 
 const resize = async () => {
   fs.readdir(directoryPath, async (err, files) => {
-    if (err) return console.log(err)
-    console.log('Converting...')
+    if (err) return
     if (!files) throw 'No files found'
     await Promise.all(
       files.map(async (fileName) => {

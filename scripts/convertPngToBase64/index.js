@@ -6,10 +6,8 @@ const directoryPath = path.join(__dirname, './placeImagesHere')
 
 const convert = async () => {
   fs.readdir(directoryPath, async (err, files) => {
-    if (err) return console.log(err)
-    console.log('Generating base64...')
+    if (err) return
     if (!files) throw 'No files found'
-    console.log(files)
     let images = []
     await Promise.all(
       files.map(async (fileName, index) => {
