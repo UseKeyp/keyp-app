@@ -34,11 +34,6 @@ const validateEditAccess = (developers, userId) => {
   if (!getAccessLevel(developers, userId)) throw new Error('Unauthorized')
 }
 
-const validateOwnerAccess = (developers, userId) => {
-  if (!getAccessLevel(developers, userId) !== 'OWNER')
-    throw new Error('Unauthorized')
-}
-
 router.get('/', async (req, res, next) => {
   try {
     const { userProvider, userId } = req.ctx
@@ -63,6 +58,7 @@ router.patch('/:clientId', async (req, res, next) => {
   try {
     const { clientId } = req.params
     const {
+      /* eslint-disable camelcase */
       redirect_uris,
       clientURI,
       clientName,

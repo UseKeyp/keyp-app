@@ -1,5 +1,4 @@
 import { cookieSettings } from 'src/functions/auth'
-import { db } from 'src/lib/db'
 import { APP_DOMAIN } from 'src/lib/helpers'
 
 const middlewares = (oidc) => async (ctx, next) => {

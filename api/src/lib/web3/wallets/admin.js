@@ -1,5 +1,3 @@
-import { Wallet } from '@ethersproject/wallet'
-
 import { logger } from 'src/lib/logger'
 import { getGasSettings } from 'src/lib/web3/gas'
 import { Web3Providers } from 'src/lib/web3/provider'

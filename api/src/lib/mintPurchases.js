@@ -18,7 +18,7 @@ export const PENDING = 'PENDING'
 
 const AVAILABLE_CHECKOUT_PAYMENT_TYPES = ['STRIPE']
 
-export const processMintPurchaseOrder = async ({ mintPurchase, orderId }) => {
+export const processMintPurchaseOrder = async ({ mintPurchase, _orderId }) => {
   await db.mintPurchase.update({
     where: { id: mintPurchase.id },
   })
@@ -179,7 +179,7 @@ export const processPendingPurchases = async () => {
       if (![COMPLETE, FAILED].includes(mintPurchase.status)) {
         // Treasure not successfully minted. Proceed to mint!
         logger.debug(`Pending Purchase: #${mintPurchase.id}`)
-        return mintTreasureAndUpdatePurchase({ mintPurchase, network })
+        return mintTreasureAndUpdatePurchase({ mintPurchase })
       }
       return mintPurchase
     })
