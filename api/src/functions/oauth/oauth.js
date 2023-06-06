@@ -10,6 +10,7 @@ let devPortalRedirectUris = [
   'http://0.0.0.0:8910/redirect/keyp',
   'https://dev.staging-env.usekeyp.com/redirect/keyp',
   'http://localhost:4000/api/auth/callback/keyp',
+  'http://localhost:3000/api/auth/callback/keyp',
   'https://oauth.pstmn.io/v1/callback',
 ]
 if (process.env.ENVIRONMENT === 'staging')
