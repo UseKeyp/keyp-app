@@ -110,6 +110,10 @@ const onSubmitCode = async ({ code, accountId }) => {
 
 const onConnected = async ({ accessToken, accountId }) => {
   try {
+    // const request = {
+    //   access_token: accessToken,
+    //   account_id: accountId,
+    // }
     const { data: identityResponse } = await client.identityGet({
       access_token: accessToken,
     })

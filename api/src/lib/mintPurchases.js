@@ -18,7 +18,7 @@ export const PENDING = 'PENDING'
 
 const AVAILABLE_CHECKOUT_PAYMENT_TYPES = ['STRIPE']
 
-export const processMintPurchaseOrder = async ({ mintPurchase }) => {
+export const processMintPurchaseOrder = async ({ mintPurchase, _orderId }) => {
   await db.mintPurchase.update({
     where: { id: mintPurchase.id },
   })

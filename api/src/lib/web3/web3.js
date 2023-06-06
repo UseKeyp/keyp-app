@@ -27,7 +27,7 @@ const FAILED = 'FAILED'
 const MINIMUM_CONFIRMATIONS = isProdOrStaging ? 15 : 1
 const MAX_RESUBMIT_ATTEMPTS = 0
 
-const alertDiscord = async ({ treasure }) => {
+const alertDiscord = async ({ treasure, _network }) => {
   try {
     let balanceObjects = []
     // TODO add back when admin wallet is back
