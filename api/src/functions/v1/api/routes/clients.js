@@ -58,6 +58,7 @@ router.patch('/:clientId', async (req, res, next) => {
   try {
     const { clientId } = req.params
     const {
+      /* eslint-disable camelcase */
       redirect_uris,
       clientURI,
       clientName,
