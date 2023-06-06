@@ -25,8 +25,9 @@ const db = new PrismaClient()
     })
 
     await Promise.all(updatedRecords)
+    console.log('Updated network values in Oidc model')
   } catch (error) {
-    // console.error('Error updating Oidc records:', error)
+    console.error('Error updating Oidc records:', error)
   } finally {
     await db.$disconnect()
   }

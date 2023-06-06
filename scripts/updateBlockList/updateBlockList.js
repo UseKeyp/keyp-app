@@ -39,6 +39,7 @@ const check = async () => {
 
 const update = async () => {
   var startTime = performance.now()
+  console.log('Loading list...')
   const fileData = fs.readFileSync(path.join(__dirname, FILENAME))
   if (!fileData) throw 'No list found'
 
@@ -47,6 +48,10 @@ const update = async () => {
 
     // Break into chunks
     const chunks = chunk(list, CHUNK_SIZE)
+    console.log(`Total items: ${list.length}`)
+    console.log(`Total chunks: ${chunks.length}`)
+    console.log(`Chunk size: ${chunks.length}`)
+
     for (let i = 0; i < chunks.length; ++i) {
       // Create all members in the db
       await Promise.all(
@@ -54,6 +59,7 @@ const update = async () => {
           await fetchMemberAndBlock(row[0], FORCE_BLOCK)
         })
       )
+      console.log(`Finished chunk #${i}`)
     }
     await check()
     var endTime = performance.now()
