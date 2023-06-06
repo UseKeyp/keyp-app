@@ -11081,6 +11081,12 @@ __metadata:
 "@usekeyp/common@^1.2.5-staging.2, @usekeyp/common@workspace:packages/common":
   version: 0.0.0-use.local
   resolution: "@usekeyp/common@workspace:packages/common"
+  dependencies:
+    "@babel/cli": ^7.20.7
+    "@babel/core": ^7.20.12
+    "@babel/node": ^7.20.7
+    "@babel/preset-env": ^7.20.2
+    nodemon: ^2.0.20
   languageName: unknown
   linkType: soft
 
