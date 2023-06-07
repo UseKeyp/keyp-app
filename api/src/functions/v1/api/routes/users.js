@@ -1,4 +1,3 @@
-
 import { getNativeCoinInfo } from '@usekeyp/common'
 
 import { addErrorLocation } from 'src/lib/helpers'

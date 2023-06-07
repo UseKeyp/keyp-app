@@ -302,7 +302,7 @@ const LoginPortal = () => {
                   </div>
                 </div>
               </Button>
-              <Button
+              {/* <Button
                 onClick={() => onSubmitSignUp('FACEBOOK')}
                 disabled={loading === 'FACEBOOK'}
                 classNameVariant={`${
@@ -341,7 +341,7 @@ const LoginPortal = () => {
                     <Icon height="24" width="24" name="microsoft" />
                   </div>
                 </div>
-              </Button>
+              </Button> */}
               {/* <Button
                 onClick={() => onSubmitSignUp('SPOTIFY')}
                 disabled={loading === 'SPOTIFY'}

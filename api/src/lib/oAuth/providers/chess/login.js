@@ -1,10 +1,7 @@
-import { EnvelopError } from '@envelop/core'
-
 import { AuthenticationError } from '@redwoodjs/graphql-server'
 
 import { db } from 'src/lib/db'
 import { logger } from 'src/lib/logger'
-import { createMauticContact } from 'src/lib/mautic'
 import Sentry from 'src/lib/sentry'
 import { getTorusPublicAddress } from 'src/lib/torus/torus'
 import { fetchUser } from 'src/lib/users'

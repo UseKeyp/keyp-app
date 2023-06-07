@@ -1,50 +1,13 @@
 /** @returns {import('webpack').Configuration} Webpack Configuration */
-const globImporter = require('node-sass-glob-importer')
-const webpack = require('webpack')
-
-module.exports = (config, { mode }) => {
-  const rules = config.module.rules[0].oneOf
-
-  const scssRuleIndex = rules.findIndex(
-    (rule) => rule.test.toString() === /\.scss$/.toString()
-  )
-  // Override exising scss rule
-  const scssRule = rules[scssRuleIndex]
-  const customScssRule = {
-    ...scssRule,
-    use: [
-      ...scssRule.use.filter((item) => item !== 'sass-loader'), //remove 'sass-loader'
-      {
-        loader: 'sass-loader',
-        options: { sassOptions: { importer: globImporter() } },
-      },
-    ],
+module.exports = (config) => {
+  // Webpack should support both production and development modes
+  const configureProductionOrDevelopment = () => {
+    const isProduction = ['prod', 'staging'].includes(process.env.ENVIRONMENT)
+    config.mode = isProduction ? 'production' : 'development'
   }
 
-  config.module.rules[0].oneOf[scssRuleIndex] = customScssRule
-
-  config.devtool = false
-  if (mode === 'development') config.devtool = 'cheap-module-source-map'
-
-  // Webpack V5 missing polyfills
-  config.resolve.fallback = {
-    os: require.resolve(`os-browserify/browser`),
-    https: require.resolve(`https-browserify`),
-    http: require.resolve(`stream-http`),
-    stream: require.resolve(`stream-browserify`),
-    util: require.resolve(`util/`),
-    url: require.resolve(`url/`),
-    assert: require.resolve(`assert/`),
-    crypto: require.resolve(`crypto-browserify`),
-    path: require.resolve('path-browserify'),
-  }
-  // eslint-disable-next-line no-unused-expressions
-  config.module.rules.push({
-    test: /\.m?js/,
-    resolve: {
-      fullySpecified: false,
-    },
-  }),
+  // babel-loader is needed to load the ES6 + CommonJS components-soft-ui component library
+  const configureModuleRules = () => {
     config.module.rules.push({
       test: /\.(js|jsx)$/,
       loader: 'babel-loader',
@@ -58,25 +21,10 @@ module.exports = (config, { mode }) => {
         fullySpecified: false,
       },
     })
-  config.plugins.push(
-    new webpack.ProvidePlugin({
-      process: 'process/browser',
-      Buffer: ['buffer', 'Buffer'],
-    })
-  )
-  config.module.rules.push({
-    test: /\.(js|jsx)$/,
-    loader: 'babel-loader',
-    options: {
-      presets: [
-        '@babel/preset-env',
-        ['@babel/preset-react', { runtime: 'automatic' }],
-      ],
-    },
-    resolve: {
-      fullySpecified: false,
-    },
-  })
+  }
+
+  configureProductionOrDevelopment()
+  configureModuleRules()
 
   return config
 }

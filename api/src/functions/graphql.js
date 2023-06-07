@@ -1,9 +1,9 @@
+/* eslint-disable-next-line no-unused-vars */
 import { useSentry } from '@envelop/sentry'
 
 import { createGraphQLHandler } from '@redwoodjs/graphql-server'
 
 /* eslint-disable-next-line no-unused-vars */
-
 import directives from 'src/directives/**/*.{js,ts}'
 import sdls from 'src/graphql/**/*.sdl.{js,ts}'
 import { getCurrentUser } from 'src/lib/auth'
@@ -11,6 +11,7 @@ import { db } from 'src/lib/db'
 import { isProdOrStaging } from 'src/lib/helpers'
 import { cors } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
+/* eslint-disable-next-line no-unused-vars */
 import Sentry from 'src/lib/sentry'
 import services from 'src/services/**/*.{js,ts}'
 

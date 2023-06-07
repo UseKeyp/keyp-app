@@ -4,7 +4,7 @@ var express = require('express')
 var router = express.Router()
 
 router.get('/', withUser, async (req, res) => {
-  const { user, userProvider, userId } = req.ctx
+  // const { user, userProvider, userId } = req.ctx
 
   res.send()
 })

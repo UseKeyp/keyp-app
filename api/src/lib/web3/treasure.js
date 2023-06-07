@@ -2,7 +2,6 @@ import { Contract } from '@ethersproject/contracts'
 
 import { logger } from 'src/lib/logger'
 import { Web3Providers } from 'src/lib/web3/provider'
-import { adminSendTransaction } from 'src/lib/web3/wallets'
 
 const treasureArtifact = require('@treasure-chess/treasure-contracts/artifacts/contracts/Treasure.sol/Treasure.json')
 
