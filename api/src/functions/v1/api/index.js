@@ -46,7 +46,7 @@ const app = (db, settings) => {
 
   //////////////////
   // Custom Error Handler
-  app.use((err, req, res, next) => {
+  app.use((err, req, res) => {
     const statusCode = err.statusCode || 500
     const errorName = err?.name || 'Server Error'
     const message = err?.message || 'An unexpected error occurred'
