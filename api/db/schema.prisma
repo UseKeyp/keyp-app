@@ -1,3 +1,8 @@
+generator erd {
+  provider = "prisma-erd-generator"
+  erdDebug = true
+}
+
 datasource db {
   provider          = "postgresql"
   url               = env("DATABASE_URL")

@@ -1,0 +1,287 @@
+erDiagram
+
+        ClientAccessLevel {
+            OWNER OWNER
+EDITOR EDITOR
+        }
+    
+
+
+        RampType {
+            COINBASE COINBASE
+        }
+    
+
+
+        ProviderType {
+            CHESS CHESS
+GOOGLE GOOGLE
+DISCORD DISCORD
+TWITTER TWITTER
+APPLE APPLE
+NATIVE NATIVE
+ETHEREUM ETHEREUM
+NODE_OIDC NODE_OIDC
+TWITCH TWITCH
+EPIC_GAMES EPIC_GAMES
+REDDIT REDDIT
+FACEBOOK FACEBOOK
+SPOTIFY SPOTIFY
+MICROSOFT MICROSOFT
+        }
+    
+
+
+        OAuthConnectionType {
+            TWITCH TWITCH
+COINBASE COINBASE
+DISCORD DISCORD
+        }
+    
+
+
+        RampStatus {
+            PENDING PENDING
+COMPLETE COMPLETE
+FAILED FAILED
+        }
+    
+
+
+        TxStatus {
+            UNSUBMITTED UNSUBMITTED
+SUBMITTED SUBMITTED
+COMPLETE COMPLETE
+FAILED FAILED
+        }
+    
+
+
+        MintPurchaseOrderStatus {
+            RESERVATION RESERVATION
+COMPLETE COMPLETE
+        }
+    
+
+
+        PromotionRewardType {
+            MINT_CREDIT MINT_CREDIT
+        }
+    
+
+
+        PromotionType {
+            TWITCH_CONNECTION TWITCH_CONNECTION
+        }
+    
+  "User" {
+    String id "🗝️"
+    ProviderType provider "🗝️"
+    String username "❓"
+    String address "❓"
+    String locale "❓"
+    String email "❓"
+    DateTime createdAt 
+    DateTime updatedAt 
+    Boolean mfa_enabled "❓"
+    Json providerMetadata "❓"
+    Int followerCount "❓"
+    String imageSrc "❓"
+    String country "❓"
+    Int mintCredits 
+    Boolean banned 
+    Boolean blocked "❓"
+    String refreshToken "❓"
+    String accessToken "❓"
+    DateTime accessTokenExpiration "❓"
+    Boolean betaAccess 
+    }
+  
+
+  "Ramp" {
+    String id "🗝️"
+    DateTime createdAt 
+    DateTime updatedAt 
+    RampType type 
+    String email "❓"
+    String address "❓"
+    String accountId "❓"
+    String accountNickname "❓"
+    String mask "❓"
+    String isoCurrencyCode "❓"
+    String itemId "❓"
+    String verificationStatus "❓"
+    String accessToken "❓"
+    String refreshToken "❓"
+    }
+  
+
+  "DepositOrder" {
+    Int id "🗝️"
+    DateTime createdAt 
+    DateTime updatedAt 
+    Float amount "❓"
+    RampType paymentType 
+    TxStatus status 
+    }
+  
+
+  "MintPurchase" {
+    Int id "🗝️"
+    DateTime createdAt 
+    DateTime updatedAt 
+    String gameId 
+    String gameEndTime 
+    String title 
+    String paymentType 
+    RampStatus status 
+    MintPurchaseOrderStatus orderStatus "❓"
+    }
+  
+
+  "OAuth" {
+    String state "🗝️"
+    String codeChallenge 
+    String codeVerifier 
+    DateTime createdAt 
+    }
+  
+
+  "ClientsOnDevelopers" {
+    DateTime createdAt 
+    DateTime updatedAt 
+    ClientAccessLevel accessLevel 
+    }
+  
+
+  "Oidc" {
+    String id "🗝️"
+    Int type "🗝️"
+    String grantId "❓"
+    String userCode "❓"
+    String uid "❓"
+    DateTime expiresAt "❓"
+    Json payload 
+    Boolean disabled "❓"
+    DateTime consumedAt "❓"
+    DateTime createdAt 
+    DateTime updatedAt 
+    }
+  
+
+  "OAuthConnection" {
+    String id "🗝️"
+    DateTime createdAt 
+    DateTime updatedAt 
+    OAuthConnectionType type 
+    Boolean revoked 
+    String refreshToken "❓"
+    String accessToken 
+    DateTime expiration "❓"
+    }
+  
+
+  "RampWithdraw" {
+    String id "🗝️"
+    DateTime createdAt 
+    DateTime updatedAt 
+    RampStatus status 
+    String toAddress 
+    Int amount 
+    }
+  
+
+  "Transaction" {
+    String id "🗝️"
+    DateTime createdAt 
+    DateTime updatedAt 
+    TxStatus status 
+    Int gasLimit 
+    Int maxPriorityFeePerGas 
+    Int maxFeePerGas 
+    }
+  
+
+  "Transfer" {
+    String id "🗝️"
+    DateTime createdAt 
+    DateTime updatedAt 
+    Boolean externalTransfer 
+    String collectionId 
+    }
+  
+
+  "Promotion" {
+    Int id "🗝️"
+    DateTime createdAt 
+    DateTime updatedAt 
+    PromotionRewardType rewardType 
+    PromotionType type 
+    Int mintCredits "❓"
+    Boolean enabled 
+    }
+  
+
+  "PromotionsOnUsers" {
+    DateTime createdAt 
+    DateTime updatedAt 
+    }
+  
+    "User" o|--|| "ProviderType" : "enum:provider"
+    "User" o{--}o "MintPurchase" : "mintPurchases"
+    "User" o{--}o "RampWithdraw" : "rampWithdraws"
+    "User" o{--}o "DepositOrder" : "depositOrders"
+    "User" o{--}o "OAuthConnection" : "oAuthConnections"
+    "User" o{--}o "Ramp" : "ramps"
+    "User" o{--}o "OAuth" : "oAuth"
+    "User" o{--}o "ClientsOnDevelopers" : "clients"
+    "User" o{--}o "PromotionsOnUsers" : "promotions"
+    "User" o{--}o "Transfer" : "TransferFrom"
+    "User" o{--}o "Transfer" : "TransferReceived"
+    "Ramp" o|--|o "User" : "user"
+    "Ramp" o|--|| "ProviderType" : "enum:userProvider"
+    "Ramp" o|--|| "RampType" : "enum:type"
+    "Ramp" o{--}o "RampWithdraw" : "RampWithdraw"
+    "DepositOrder" o|--|| "User" : "user"
+    "DepositOrder" o|--|| "ProviderType" : "enum:userProvider"
+    "DepositOrder" o|--|| "RampType" : "enum:paymentType"
+    "DepositOrder" o|--|| "TxStatus" : "enum:status"
+    "MintPurchase" o|--|| "User" : "user"
+    "MintPurchase" o|--|| "ProviderType" : "enum:userProvider"
+    "MintPurchase" o|--|| "RampStatus" : "enum:status"
+    "MintPurchase" o|--|o "MintPurchaseOrderStatus" : "enum:orderStatus"
+    "MintPurchase" o{--}o "Transaction" : "staleTransactions"
+    "MintPurchase" o|--|o "Transaction" : "transaction"
+    "OAuth" o|--|o "User" : "user"
+    "OAuth" o|--|o "ProviderType" : "enum:userProvider"
+    "ClientsOnDevelopers" o|--|| "User" : "user"
+    "ClientsOnDevelopers" o|--|| "ProviderType" : "enum:userProvider"
+    "ClientsOnDevelopers" o|--|| "Oidc" : "oidc"
+    "ClientsOnDevelopers" o|--|| "ClientAccessLevel" : "enum:accessLevel"
+    "Oidc" o{--}o "ClientsOnDevelopers" : "developers"
+    "Oidc" o{--}o "Transfer" : "Transfer"
+    "OAuthConnection" o|--|| "User" : "user"
+    "OAuthConnection" o|--|| "ProviderType" : "enum:userProvider"
+    "OAuthConnection" o|--|| "OAuthConnectionType" : "enum:type"
+    "RampWithdraw" o|--|| "RampStatus" : "enum:status"
+    "RampWithdraw" o|--|| "Transaction" : "transaction"
+    "RampWithdraw" o|--|o "User" : "user"
+    "RampWithdraw" o|--|| "ProviderType" : "enum:userProvider"
+    "RampWithdraw" o|--|| "Ramp" : "ramp"
+    "Transaction" o|--|| "TxStatus" : "enum:status"
+    "Transaction" o{--}o "RampWithdraw" : "rampWithdraw"
+    "Transaction" o|--|o "MintPurchase" : "mintPurchase"
+    "Transaction" o{--}o "Transfer" : "Transfer"
+    "Transaction" o{--}o "MintPurchase" : "MintPurchase"
+    "Transfer" o|--|| "Transaction" : "transaction"
+    "Transfer" o|--|| "Oidc" : "facilitator"
+    "Transfer" o|--|| "User" : "from"
+    "Transfer" o|--|| "ProviderType" : "enum:fromUserProvider"
+    "Transfer" o|--|| "User" : "to"
+    "Transfer" o|--|| "ProviderType" : "enum:toUserProvider"
+    "Promotion" o|--|| "PromotionRewardType" : "enum:rewardType"
+    "Promotion" o|--|| "PromotionType" : "enum:type"
+    "Promotion" o{--}o "PromotionsOnUsers" : "users"
+    "PromotionsOnUsers" o|--|| "User" : "user"
+    "PromotionsOnUsers" o|--|| "ProviderType" : "enum:userProvider"
+    "PromotionsOnUsers" o|--|| "Promotion" : "promotion"
