@@ -155,6 +155,7 @@ const data = {
   address: '0x55d4dfb578daa4d60380995fff7a706471d7c719',
   args: ['1', '10000000', '0x9ca6a77c8b38159fd2da9bd25bc3e259c33f5e39'],
   abi: 'pay(uint256,uint256,address) public returns (bool success)',
+  // value: '1',
 }
 
 const options = {
