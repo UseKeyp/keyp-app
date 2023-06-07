@@ -33,7 +33,7 @@ export const readMethod = async (input) => {
 
     const explorerUrl = `${getExplorerBaseUrlFromName(
       network
-    )}contract/${address}`
+    )}address/${address}`
 
     return {
       status: 'SUCCESS',
