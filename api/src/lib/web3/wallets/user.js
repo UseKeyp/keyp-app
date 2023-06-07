@@ -19,7 +19,12 @@ export const userSignMesage = async ({ user, message, network }) => {
   return signature
 }
 
-export const userSendTransaction = async ({ user, unsignedTx, network }) => {
+export const userSendTransaction = async ({
+  user,
+  unsignedTx,
+  network,
+  value,
+}) => {
   try {
     if (process.env.IMPERSONATE_USERNAME)
       return logger.warn(
@@ -34,6 +39,7 @@ export const userSendTransaction = async ({ user, unsignedTx, network }) => {
     const gasSettings = await getGasSettings({ network })
     return userWalletWithProvider.sendTransaction({
       ...unsignedTx,
+      value,
       ...gasSettings,
     })
   } catch (e) {
