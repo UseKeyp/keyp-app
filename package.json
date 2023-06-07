@@ -14,7 +14,8 @@
     "rw-test-e2e": "npx playwright test e2e",
     "rw-test-e2e:debug": "DEBUG=pw:webserver npx playwright test e2e --debug",
     "build-packages": "lerna exec --no-private -- yarn build",
-    "vercel-build": "yum install libuuid-devel libmount-devel zlib && cp /lib64/{libuuid,libmount,libblkid,libz}.so.1 node_modules/canvas/build/Release/ && rm -rf api/src/functions/screenshot && yarn build-packages && yarn rw deploy vercel"
+    "vercel-build": "yum install libuuid-devel libmount-devel zlib && cp /lib64/{libuuid,libmount,libblkid,libz}.so.1 node_modules/canvas/build/Release/ && rm -rf api/src/functions/screenshot && yarn build-packages && yarn rw deploy vercel",
+    "test": "nodemon exec -- node test-api.js"
   },
   "prisma": {
     "seed": "yarn rw exec seed"

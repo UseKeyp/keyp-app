@@ -1,18 +1,36 @@
+import { Contract } from '@ethersproject/contracts'
+
 import { logger } from 'src/lib/logger'
-import { getMethod } from 'src/lib/web3/contracts/apps'
+import { Web3Providers } from 'src/lib/web3/provider'
+import { userSendTransaction } from 'src/lib/web3/wallets'
 
 export const writeMethod = async (input) => {
-  const { user, network, method, args, address } = input
+  const { user, network, abi, args, address } = input
 
   if (!user) throw 'No user provided'
-  if (!method) throw 'No method provided'
   if (!args) throw 'No arguments provided'
+  if (!abi) throw 'No abi provided'
   if (!address) throw 'No address provided'
   if (!network) throw 'No network provided'
+
+  const method = abi.split('(')[0]
   logger.debug(
-    `writeMethod() address: ${address}, network: ${network}, method: ${method}, args: ${args}`
+    `writeMethod() address: ${address}, network: ${network}, method: ${method}, args: ${JSON.stringify(
+      args
+    )}`
   )
-  const meth = getMethod({ network, method, address })
-  if (!meth) throw 'Method not yet supported'
-  return meth(input)
+
+  const contract = new Contract(
+    address,
+    [`function ${abi}`],
+    Web3Providers[network]
+  )
+
+  const unsignedTx = await contract.populateTransaction[method](...args)
+  const tx = await userSendTransaction({
+    user: user,
+    unsignedTx,
+    network,
+  })
+  return tx
 }
