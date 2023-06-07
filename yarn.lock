@@ -6412,6 +6412,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@prisma/engines@npm:4.15.0":
+  version: 4.15.0
+  resolution: "@prisma/engines@npm:4.15.0"
+  checksum: c57c37f13c77b68e2dc8015c8fbf797b628516ee4db18d9eeffa8a5da3e40403d4d31956569680cb548e7ececcc0f039a31eec65ccf6267173c11f3d14284d5f
+  languageName: node
+  linkType: hard
+
 "@prisma/engines@npm:4.7.1":
   version: 4.7.1
   resolution: "@prisma/engines@npm:4.7.1"
@@ -9675,7 +9682,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@treasure-chess/web3-helpers@^1.2.6-staging.0, @treasure-chess/web3-helpers@workspace:packages/web3-helpers":
+"@treasure-chess/web3-helpers@^1.2.6-staging.1, @treasure-chess/web3-helpers@workspace:packages/web3-helpers":
   version: 0.0.0-use.local
   resolution: "@treasure-chess/web3-helpers@workspace:packages/web3-helpers"
   dependencies:
@@ -11078,7 +11085,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@usekeyp/common@^1.2.6-staging.0, @usekeyp/common@workspace:packages/common":
+"@usekeyp/common@^1.2.6-staging.1, @usekeyp/common@workspace:packages/common":
   version: 0.0.0-use.local
   resolution: "@usekeyp/common@workspace:packages/common"
   dependencies:
@@ -12227,8 +12234,8 @@ __metadata:
     "@toruslabs/fetch-node-details": ^8.1.0
     "@toruslabs/torus.js": ^6.3.2
     "@treasure-chess/treasure-contracts": ^0.1.0
-    "@treasure-chess/web3-helpers": ^1.2.6-staging.0
-    "@usekeyp/common": ^1.2.6-staging.0
+    "@treasure-chess/web3-helpers": ^1.2.6-staging.1
+    "@usekeyp/common": ^1.2.6-staging.1
     atob: ^2.1.2
     bad-words: ^3.0.4
     chess.js: ^0.12.1
@@ -30902,6 +30909,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"prisma@npm:^4.15.0":
+  version: 4.15.0
+  resolution: "prisma@npm:4.15.0"
+  dependencies:
+    "@prisma/engines": 4.15.0
+  bin:
+    prisma: build/index.js
+    prisma2: build/index.js
+  checksum: 6bba5cd733e9d6f9adcae7f0a7cda481c8ec558d1f02b4fc9d69549e93150f2dc8ded41afa73dea0c2f0c3ddf663dd981800f17ee7b7668d25b9d3a8b0e01a56
+  languageName: node
+  linkType: hard
+
 "proc-log@npm:^2.0.0, proc-log@npm:^2.0.1":
   version: 2.0.1
   resolution: "proc-log@npm:2.0.1"
@@ -33034,6 +33053,7 @@ __metadata:
     eslint-plugin-jest-dom: ^4.0.3
     eslint-plugin-prettier: ^4.0.0
     lerna: ^6.6.0
+    prisma: ^4.15.0
     random-username-generator: ^1.0.4
     sharp: ^0.29.3
   dependenciesMeta:
@@ -37698,7 +37718,7 @@ __metadata:
     "@redwoodjs/web": ^3.8.0
     "@sentry/browser": ^6.17.3
     "@storybook/addon-essentials": ^6.5.15
-    "@usekeyp/common": ^1.2.6-staging.0
+    "@usekeyp/common": ^1.2.6-staging.1
     "@usekeyp/components-soft-ui": ^0.1.18
     "@usekeyp/tailwind-presets": ^0.1.18
     "@wert-io/module-react-component": ^0.2.0

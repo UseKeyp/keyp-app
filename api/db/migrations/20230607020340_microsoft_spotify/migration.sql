@@ -6,7 +6,8 @@
 -- the enum.
 
 
-ALTER TYPE "ProviderType" ADD VALUE 'REDDIT';
+ALTER TYPE "ProviderType" ADD VALUE 'FACEBOOK';
+ALTER TYPE "ProviderType" ADD VALUE 'SPOTIFY';
 ALTER TYPE "ProviderType" ADD VALUE 'MICROSOFT';
 
 -- DropForeignKey
