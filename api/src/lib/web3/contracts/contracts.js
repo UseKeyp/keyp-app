@@ -7,6 +7,7 @@ import {
 import { logger } from 'src/lib/logger'
 import { Web3Providers } from 'src/lib/web3/provider'
 import { userSendTransaction } from 'src/lib/web3/wallets'
+import { checkGasAndAirdrop } from 'src/lib/web3/airdrop'
 
 export const readMethod = async (input) => {
   try {
@@ -60,6 +61,10 @@ export const writeMethod = async (input) => {
         args
       )}`
     )
+
+    const gettingGas = await checkGasAndAirdrop({ user, network })
+    if (gettingGas)
+      throw "Try again in a few minutes, we're sending some gas to your wallet."
 
     const contract = new Contract(
       address,
