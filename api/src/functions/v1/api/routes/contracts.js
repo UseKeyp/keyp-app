@@ -30,7 +30,6 @@ router.post('/method/read', withUser, async (req, res, next) => {
 
     res.send(response)
   } catch (e) {
-    console.log(e)
     next(addErrorLocation('/method/read', e))
   }
 })
