@@ -43,10 +43,9 @@ export const validateToken = (settings) => async (req, res, next) => {
     }
 
     const { userId, userProvider } = getIdentifiersFromId(response.sub)
-
     let client
     // Inject client details
-    client = clients.find((c) => c.id === response.clientId)
+    client = clients.find((c) => c.client_id === response.client_id)
     if (!client) {
       try {
         client = await db.oidc.findUnique({
