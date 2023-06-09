@@ -28,7 +28,7 @@
     "deepmerge": "^4.3.0",
     "email-templates": "^9.0.0",
     "form-data": "^4.0.0",
-    "jose": "^4.13.1",
+    "jose": "^2.0.6",
     "jwks-rsa": "^2.0.4",
     "oauth2-server-redwood": "0.3.13",
     "pkce-challenge": "^3.0.0",
