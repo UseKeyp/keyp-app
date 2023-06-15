@@ -1,24 +1,27 @@
 import { parseUnits } from '@ethersproject/units'
 import { AVAILABLE_NETWORKS } from '@usekeyp/common'
 
+// NOTE: Gas settings for transactions "maxFeePerGas" and "maxPriorityFeePerGas" will be used in this order:
+// 1. API call to explorer / gas station
+// 2. Values listed in this file
+// 3. Values returned by ethers.js (eg. for polygon the ethers call fails, hence why we must specify values)
+
 const GAS_SETTINGS_BY_NETWORK = {
   // MAINNET:{},
   POLYGON: {
     INITIAL_DROP_AMOUNT: '0.04',
     DEFAULT_DROP_AMOUNT: '0.025',
     MINIMUM_GAS_DROP_THRESHOLD: '0.019',
-    maxFeePerGas: parseUnits('40', 'gwei'),
+    maxFeePerGas: parseUnits('190', 'gwei'),
     maxPriorityFeePerGas: parseUnits('40', 'gwei'),
   },
-  // MUMBAI:{},
+  // MUMBAI:{GAS_TRACKER_URL:""},
   // GNOSIS:{},
   // GOERLI:{},
   OPTIMISM: {
     INITIAL_DROP_AMOUNT: '0.00025',
     DEFAULT_DROP_AMOUNT: '0.00015',
     MINIMUM_GAS_DROP_THRESHOLD: '0.00005',
-    maxFeePerGas: parseUnits('0.005', 'gwei'),
-    maxPriorityFeePerGas: parseUnits('0.0001', 'gwei'),
   },
   // OPTIMISM-GOERLI:{},
   // ARBITRUM:{},
