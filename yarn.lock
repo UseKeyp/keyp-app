@@ -12238,6 +12238,7 @@ __metadata:
     "@usekeyp/common": ^1.2.9-staging.0
     atob: ^2.1.2
     bad-words: ^3.0.4
+    cheerio: ^1.0.0-rc.12
     chess.js: ^0.12.1
     cors: ^2.8.5
     deepmerge: ^4.3.0
@@ -14648,7 +14649,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cheerio@npm:1.0.0-rc.12":
+"cheerio@npm:1.0.0-rc.12, cheerio@npm:^1.0.0-rc.12":
   version: 1.0.0-rc.12
   resolution: "cheerio@npm:1.0.0-rc.12"
   dependencies:
