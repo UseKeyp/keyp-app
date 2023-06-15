@@ -50,6 +50,7 @@ jobs:
         id: update_version
         env:
           GH_TOKEN: ${{ secrets.PAT_GITHUB }}
+          YARN_ENABLE_IMMUTABLE_INSTALLS: false
         run: |
           IS_PRERELEASE=true
           git config user.name "GITHUB-ACTION-CI-RELEASE"
