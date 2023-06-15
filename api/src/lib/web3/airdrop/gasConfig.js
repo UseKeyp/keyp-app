@@ -1,7 +1,7 @@
 import { parseUnits } from '@ethersproject/units'
 import { AVAILABLE_NETWORKS } from '@usekeyp/common'
 
-export const GAS_SETTINGS_BY_NETWORK = {
+const GAS_SETTINGS_BY_NETWORK = {
   // MAINNET:{},
   POLYGON: {
     INITIAL_DROP_AMOUNT: '0.04',
@@ -15,9 +15,9 @@ export const GAS_SETTINGS_BY_NETWORK = {
   // GOERLI:{},
   OPTIMISM: {
     INITIAL_DROP_AMOUNT: '0.00025',
-    DEFAULT_DROP_AMOUNT: '0.0015',
+    DEFAULT_DROP_AMOUNT: '0.00015',
     MINIMUM_GAS_DROP_THRESHOLD: '0.00005',
-    maxFeePerGas: parseUnits('0.0001', 'gwei'),
+    maxFeePerGas: parseUnits('0.005', 'gwei'),
     maxPriorityFeePerGas: parseUnits('0.0001', 'gwei'),
   },
   // OPTIMISM-GOERLI:{},
@@ -29,11 +29,18 @@ export const GAS_SETTINGS_BY_NETWORK = {
   // MANTLE-WADSLEY:{},
 }
 
+export const gasConfigByNetwork = ({ network }) => {
+  let config = GAS_SETTINGS_BY_NETWORK[network]
+  if (!config) config = GAS_SETTINGS_BY_NETWORK.POLYGON
+  return config
+}
+
 const showMissingGasConfigWarning = () => {
   AVAILABLE_NETWORKS.map((networkName) => {
     if (!Object.keys(GAS_SETTINGS_BY_NETWORK).includes(networkName))
+      /* eslint-disable-next-line no-console */
       console.log(
-        `WARNING: Gas is not configured for ${networkName}. Using default settings from Polygon.`
+        `WARNING: Gas not configured for ${networkName}. Using default config for POLYGON.`
       )
   })
 }
