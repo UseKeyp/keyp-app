@@ -60,7 +60,6 @@ jobs:
           else
             npx lerna version prerelease --no-push --yes --preid staging
           fi
-          npx lerna version prerelease --yes --no-push --preid staging
           yarn
           git add --a
           git commit -m "${{ steps.update_version.outputs.VERSION }}"
