@@ -63,9 +63,9 @@ jobs:
           fi
           yarn
           git add --a
-          git commit -m "${{ steps.update_version.outputs.VERSION }}"
-          git push
           VERSION=v$(jq -r .version lerna.json)
+          git commit -m "$VERSION"
+          git push
           echo "::set-output name=VERSION::$VERSION"
           echo "::set-output name=IS_PRERELEASE::$IS_PRERELEASE"
       - name: Update version Fallback
