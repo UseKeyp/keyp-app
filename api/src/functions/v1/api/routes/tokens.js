@@ -1,3 +1,4 @@
+import { addErrorLocation } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
 import Sentry from 'src/lib/sentry'
 import { safeFetchUser, safeFetchUserByUsername } from 'src/lib/users'
@@ -25,7 +26,7 @@ const validateToUser = ({
   return 'Invalid recipient. You must provide either toUserId, toAddress, or toUsername and toUserProviderType'
 }
 
-router.post('/transfers', withUser, async (req, res) => {
+router.post('/transfers', withUser, async (req, res, next) => {
   try {
     const {
       toAddress,
@@ -66,35 +67,23 @@ router.post('/transfers', withUser, async (req, res) => {
 
     let tx
     if (tokenType === 'ERC20') {
-      try {
-        tx = await transferErc20({
-          fromUser: req.ctx.user,
-          toUser: recipient,
-          amount,
-          tokenAddress,
-          tokenType,
-          network: req.ctx.network,
-        })
-      } catch (e) {
-        logger.error({ custom: e }, 'Error in transferErc20')
-        Sentry.captureException(e)
-        throw e
-      }
+      tx = await transferErc20({
+        fromUser: req.ctx.user,
+        toUser: recipient,
+        amount,
+        tokenAddress,
+        tokenType,
+        network: req.ctx.network,
+      })
     } else if (tokenType === 'ERC721') {
-      try {
-        tx = await transferERC721({
-          fromUser: req.ctx.user,
-          toUser: recipient,
-          tokenId,
-          tokenAddress,
-          tokenType,
-          network: req.ctx.network,
-        })
-      } catch (e) {
-        logger.error({ custom: e }, 'Error in transferErc721')
-        Sentry.captureException(e)
-        throw e
-      }
+      tx = await transferERC721({
+        fromUser: req.ctx.user,
+        toUser: recipient,
+        tokenId,
+        tokenAddress,
+        tokenType,
+        network: req.ctx.network,
+      })
     }
     res.send({ status: 'SUCCESS', hash: tx.hash })
   } catch (e) {
@@ -102,6 +91,7 @@ router.post('/transfers', withUser, async (req, res) => {
     logger.error({ custom: e }, 'Error in POST /transfers')
     const errorAsString = e.toString()
     res.send({ status: 'FAILED', hash: '', error: e?.message || errorAsString })
+    next(addErrorLocation('/transfers', e))
   }
 })
 
