@@ -5,12 +5,10 @@ import { getNativeCoinInfo } from '@usekeyp/common'
 import { sendDiscordAdminAlert } from 'src/lib/discord/admin'
 import { logger } from 'src/lib/logger'
 import Sentry from 'src/lib/sentry'
+import { gasConfigByNetwork } from 'src/lib/web3/airdrop/gasConfig'
 import { Web3Providers } from 'src/lib/web3/provider'
 import { payerSendTransaction } from 'src/lib/web3/wallets'
 import { payerAddress } from 'src/lib/web3/wallets/payer'
-
-const MINIMUM_GAS_THRESHOLD = '0.019' // Units of Ether
-const DEFAULT_DROP_AMOUNT = '0.025' // Units of Ether
 
 const airdropGasTransaction = async ({ address, amount, network }) => {
   try {
@@ -42,11 +40,7 @@ const getNativeCoinBalance = async ({ address, network }) => {
   }
 }
 
-const checkGasAndAirdrop = async ({
-  user,
-  amount = DEFAULT_DROP_AMOUNT,
-  network,
-}) => {
+const checkGasAndAirdrop = async ({ user, amount, network }) => {
   try {
     if (user.country === 'ETHER') return false // Don't airdrop to External wallets
     const { balanceBn: balance } = await getNativeCoinBalance({
@@ -57,10 +51,15 @@ const checkGasAndAirdrop = async ({
       address: payerAddress,
       network,
     })
-    if (balance.lte(parseEther(MINIMUM_GAS_THRESHOLD))) {
+    const GAS_CONFIG = gasConfigByNetwork({ network })
+    let dropAmount = GAS_CONFIG.DEFAULT_DROP_AMOUNT
+    if (balance.isZero()) dropAmount = GAS_CONFIG.INITIAL_DROP_AMOUNT
+    if (amount) dropAmount = amount
+
+    if (balance.lte(parseEther(GAS_CONFIG.MINIMUM_GAS_DROP_THRESHOLD))) {
       const tx = await airdropGasTransaction({
         address: user.address,
-        amount,
+        amount: dropAmount,
         network,
       })
       await notifyDiscord({
