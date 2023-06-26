@@ -73,7 +73,7 @@ router.post('/transfers', withUser, async (req, res, next) => {
         amount,
         tokenAddress,
         tokenType,
-        network: 'MUMBAI',
+        network: req.ctx.network,
       })
     } else if (tokenType === 'ERC721') {
       tx = await transferERC721({
