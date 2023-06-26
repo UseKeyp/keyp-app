@@ -5,9 +5,9 @@ import {
 } from '@usekeyp/common'
 
 import { logger } from 'src/lib/logger'
+import { checkGasAndAirdrop } from 'src/lib/web3/airdrop'
 import { Web3Providers } from 'src/lib/web3/provider'
 import { userSendTransaction } from 'src/lib/web3/wallets'
-import { checkGasAndAirdrop } from 'src/lib/web3/airdrop'
 
 export const readMethod = async (input) => {
   try {
