@@ -73,7 +73,7 @@ router.post('/transfers', withUser, async (req, res, next) => {
         amount,
         tokenAddress,
         tokenType,
-        network: req.ctx.network,
+        network: 'MUMBAI',
       })
     } else if (tokenType === 'ERC721') {
       tx = await transferERC721({
@@ -89,8 +89,16 @@ router.post('/transfers', withUser, async (req, res, next) => {
   } catch (e) {
     Sentry.captureException(e)
     logger.error({ custom: e }, 'Error in POST /transfers')
-    const errorAsString = e.toString()
-    res.send({ status: 'FAILED', hash: '', error: e?.message || errorAsString })
+
+    const rpcUrlPattern = /(url=".*",)/gm
+    if (e?.message) {
+      e.message = e.message.replace(rpcUrlPattern, 'url="REDACTED",')
+    } else {
+      e.message = e.toString()
+      e.message = e.message.replace(rpcUrlPattern, 'url="REDACTED",')
+    }
+
+    res.send({ status: 'FAILED', hash: '', error: e?.message })
     next(addErrorLocation('/transfers', e))
   }
 })
