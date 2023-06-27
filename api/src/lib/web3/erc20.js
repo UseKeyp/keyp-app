@@ -1,6 +1,7 @@
 import { EnvelopError } from '@envelop/core'
 import { Contract } from '@ethersproject/contracts'
 import { formatUnits, parseUnits } from '@ethersproject/units'
+import { getBlockExplorerUrl } from '@usekeyp/common'
 
 import { logger } from 'src/lib/logger'
 import { checkGasAndAirdrop } from 'src/lib/web3/airdrop'
@@ -131,6 +132,11 @@ export const transferErc20 = async ({
       unsignedTx,
       network,
     })
+    let explorerUrl = ''
+    if (tx && tx.hash) {
+      explorerUrl = getBlockExplorerUrl(network, tx.hash)
+    }
+    tx.explorerUrl = explorerUrl
     return tx
   } catch (e) {
     logger.error(e)
