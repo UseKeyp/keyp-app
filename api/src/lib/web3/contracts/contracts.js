@@ -10,82 +10,72 @@ import { Web3Providers } from 'src/lib/web3/provider'
 import { userSendTransaction } from 'src/lib/web3/wallets'
 
 export const readMethod = async (input) => {
-  try {
-    const { user, network, abi, args = [], address } = input
-    if (!user) throw 'No user provided'
-    if (!abi) throw 'No abi provided'
-    if (!address) throw 'No address provided'
-    if (!network) throw 'No network provided'
+  const { user, network, abi, args = [], address } = input
+  if (!user) throw 'No user provided'
+  if (!abi) throw 'No abi provided'
+  if (!address) throw 'No address provided'
+  if (!network) throw 'No network provided'
 
-    const method = abi.split('(')[0]
-    logger.debug(
-      `readMethod() address: ${address}, network: ${network}, method: ${method}, args: ${JSON.stringify(
-        args
-      )}`
-    )
+  const method = abi.split('(')[0]
+  logger.debug(
+    `readMethod() address: ${address}, network: ${network}, method: ${method}, args: ${JSON.stringify(
+      args
+    )}`
+  )
 
-    const contract = new Contract(
-      address,
-      [`function ${abi}`],
-      Web3Providers[network]
-    )
+  const contract = new Contract(
+    address,
+    [`function ${abi}`],
+    Web3Providers[network]
+  )
 
-    const response = await contract[method](...args)
+  const response = await contract[method](...args)
 
-    const explorerUrl = `${getExplorerBaseUrlFromName(
-      network
-    )}address/${address}`
+  const explorerUrl = `${getExplorerBaseUrlFromName(network)}address/${address}`
 
-    return {
-      status: 'SUCCESS',
-      response,
-      explorerUrl,
-    }
-  } catch (e) {
-    throw new Error(e)
+  return {
+    status: 'SUCCESS',
+    response,
+    explorerUrl,
   }
 }
 
 export const writeMethod = async (input) => {
-  try {
-    const { user, network, abi, args = [], address, value = 0 } = input
+  const { user, network, abi, args = [], address, value = 0 } = input
 
-    if (!user) throw 'No user provided'
-    if (!abi) throw 'No abi provided'
-    if (!address) throw 'No address provided'
-    if (!network) throw 'No network provided'
+  if (!user) throw 'No user provided'
+  if (!abi) throw 'No abi provided'
+  if (!address) throw 'No address provided'
+  if (!network) throw 'No network provided'
 
-    const method = abi.split('(')[0]
-    logger.debug(
-      `writeMethod() address: ${address}, network: ${network}, method: ${method}, args: ${JSON.stringify(
-        args
-      )}`
-    )
+  const method = abi.split('(')[0]
+  logger.debug(
+    `writeMethod() address: ${address}, network: ${network}, method: ${method}, args: ${JSON.stringify(
+      args
+    )}`
+  )
 
-    const gettingGas = await checkGasAndAirdrop({ user, network })
-    if (gettingGas)
-      throw "Try again in a few minutes, we're sending some gas to your wallet."
+  const gettingGas = await checkGasAndAirdrop({ user, network })
+  if (gettingGas)
+    throw "Try again in a few minutes, we're sending some gas to your wallet."
 
-    const contract = new Contract(
-      address,
-      [`function ${abi}`],
-      Web3Providers[network]
-    )
+  const contract = new Contract(
+    address,
+    [`function ${abi}`],
+    Web3Providers[network]
+  )
 
-    const unsignedTx = await contract.populateTransaction[method](...args)
-    const tx = await userSendTransaction({
-      user: user,
-      unsignedTx,
-      network,
-      value,
-    })
-    return {
-      tx,
-      status: 'SUCCESS',
-      hash: tx.hash,
-      explorerUrl: getBlockExplorerUrl(network, tx.hash),
-    }
-  } catch (e) {
-    throw new Error(e)
+  const unsignedTx = await contract.populateTransaction[method](...args)
+  const tx = await userSendTransaction({
+    user: user,
+    unsignedTx,
+    network,
+    value,
+  })
+  return {
+    tx,
+    status: 'SUCCESS',
+    hash: tx.hash,
+    explorerUrl: getBlockExplorerUrl(network, tx.hash),
   }
 }

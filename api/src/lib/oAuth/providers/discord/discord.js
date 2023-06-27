@@ -84,7 +84,10 @@ export const onConnected = async ({ refreshToken, accessToken }) => {
     // eslint-disable-next-line camelcase
     const { id, username, locale, avatar, mfa_enabled, email, discriminator } =
       userDetails
-    const discordUsername = `${username}#${discriminator}`
+    let discordUsername = `${username}#${discriminator}`
+    if (discriminator === '0' || !discriminator) {
+      discordUsername = username
+    }
     // Create user if needed, and get current avatar
     const user = await fetchUser(id, { username: discordUsername }, DISCORD)
     if (user.banned) {
