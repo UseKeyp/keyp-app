@@ -90,13 +90,16 @@ router.post('/transfers', withUser, async (req, res, next) => {
   } catch (e) {
     Sentry.captureException(e)
     logger.error({ custom: e }, 'Error in POST /transfers')
-    const errorAsString = e.toString()
-    res.send({
-      status: 'FAILED',
-      hash: '',
-      explorerUrl: '',
-      error: e?.message || errorAsString,
-    })
+
+    const rpcUrlPattern = /(url=".*",)/gm
+    if (e?.message) {
+      e.message = e.message.replace(rpcUrlPattern, 'url="REDACTED",')
+    } else {
+      e.message = e.toString()
+      e.message = e.message.replace(rpcUrlPattern, 'url="REDACTED",')
+    }
+
+    res.send({ status: 'FAILED', hash: '', explorerUrl: '', error: e?.message })
     next(addErrorLocation('/transfers', e))
   }
 })
