@@ -1,5 +1,6 @@
 import { EnvelopError } from '@envelop/core'
 import { Contract } from '@ethersproject/contracts'
+import { getBlockExplorerUrl } from '@usekeyp/common'
 
 import { logger } from 'src/lib/logger'
 import { Web3Providers } from 'src/lib/web3/provider'
@@ -55,6 +56,11 @@ export const transferERC721 = async ({
       unsignedTx,
       network,
     })
+    let explorerUrl = ''
+    if (tx && tx.hash) {
+      explorerUrl = getBlockExplorerUrl(network, tx.hash)
+    }
+    tx.explorerUrl = explorerUrl
     return tx
   } catch (e) {
     logger.error(e)

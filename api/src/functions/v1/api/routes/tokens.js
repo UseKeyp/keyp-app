@@ -40,7 +40,8 @@ router.post('/transfers', withUser, async (req, res, next) => {
     } = req.body
     // TODO: validate transfer scope
 
-    if (!amount && tokenType === 'ERC20') throw 'Invalid amount'
+    if ((amount <= 0 || !amount) && tokenType === 'ERC20')
+      throw 'Invalid amount'
     if (!tokenId && tokenType === 'ERC721') throw 'Invalid tokenId'
     if (!tokenAddress) throw 'Invalid token address'
     if (!tokenType) throw 'Invalid token type'
@@ -85,7 +86,7 @@ router.post('/transfers', withUser, async (req, res, next) => {
         network: req.ctx.network,
       })
     }
-    res.send({ status: 'SUCCESS', hash: tx.hash })
+    res.send({ status: 'SUCCESS', hash: tx.hash, explorerUrl: tx.explorerUrl })
   } catch (e) {
     Sentry.captureException(e)
     logger.error({ custom: e }, 'Error in POST /transfers')
@@ -98,7 +99,7 @@ router.post('/transfers', withUser, async (req, res, next) => {
       e.message = e.message.replace(rpcUrlPattern, 'url="REDACTED",')
     }
 
-    res.send({ status: 'FAILED', hash: '', error: e?.message })
+    res.send({ status: 'FAILED', hash: '', explorerUrl: '', error: e?.message })
     next(addErrorLocation('/transfers', e))
   }
 })
