@@ -8,6 +8,7 @@ import clients from './routes/clients'
 import contracts from './routes/contracts'
 import health from './routes/health'
 import ramps from './routes/ramps'
+import sign from './routes/sign'
 import tokens from './routes/tokens'
 import users from './routes/users'
 
@@ -41,6 +42,7 @@ const app = (db, settings) => {
   app.use(`/${settings.version}/users`, users)
   app.use(`/${settings.version}/contracts`, contracts)
   app.use(`/${settings.version}/ramps`, ramps)
+  app.use(`/${settings.version}/sign`, sign)
 
   app.use(`/${settings.version}`, health) // sanity-check
 

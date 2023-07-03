@@ -15,8 +15,7 @@ export const userSignMesage = async ({ user, message, network }) => {
     user,
     network,
   })
-  const signature = await userWalletWithProvider.signMessage(message)
-  return signature
+  return await userWalletWithProvider.signMessage(message)
 }
 
 export const userSendTransaction = async ({
