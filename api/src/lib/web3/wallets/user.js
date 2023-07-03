@@ -5,7 +5,7 @@ import { getTorusWallet } from 'src/lib/torus'
 import { getGasSettings } from 'src/lib/web3/gas'
 import { Web3Providers } from 'src/lib/web3/provider'
 
-const getUserWalletWithProvider = async ({ user, network }) => {
+export const getUserWalletWithProvider = async ({ user, network }) => {
   const { privateKey } = await getTorusWallet(user)
   return new Wallet(privateKey, Web3Providers[network])
 }
