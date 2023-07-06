@@ -17,15 +17,15 @@ router.post('/', withUser, async (req, res, next) => {
       throw 'Invalid request. Missing user, message, or network'
     }
 
-    let signedMessage
+    let signature
     try {
-      signedMessage = await userSignMessage({ user, message, network })
+      signature = await userSignMessage({ user, message, network })
     } catch (e) {
       logger.error(e, 'Error when signing the message')
       throw e
     }
 
-    res.send({ status: 'SUCCESS', signedMessage })
+    res.send({ status: 'SUCCESS', signature })
   } catch (e) {
     Sentry.captureException(e)
     logger.error({ custom: e }, 'Error in POST /sign')
