@@ -5,18 +5,17 @@ import { getTorusWallet } from 'src/lib/torus'
 import { getGasSettings } from 'src/lib/web3/gas'
 import { Web3Providers } from 'src/lib/web3/provider'
 
-const getUserWalletWithProvider = async ({ user, network }) => {
+export const getUserWalletWithProvider = async ({ user, network }) => {
   const { privateKey } = await getTorusWallet(user)
   return new Wallet(privateKey, Web3Providers[network])
 }
 
-export const userSignMesage = async ({ user, message, network }) => {
+export const userSignMessage = async ({ user, message, network }) => {
   const userWalletWithProvider = await getUserWalletWithProvider({
     user,
     network,
   })
-  const signature = await userWalletWithProvider.signMessage(message)
-  return signature
+  return await userWalletWithProvider.signMessage(message)
 }
 
 export const userSendTransaction = async ({
