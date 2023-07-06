@@ -1,5 +1,32 @@
 /* global URL */
 
+import { Network } from "alchemy-sdk";
+
+export function getAlchemyNetworkEnum(network) {
+  switch (network) {
+    case 'MAINNET':
+      return Network.ETH_MAINNET
+    case 'GOERLI':
+      return Network.ETH_GOERLI
+    case 'SEPOLIA':
+      return Network.ETH_SEPOLIA
+    case 'OPTIMISM':
+      return Network.OPT_MAINNET
+    case 'OPTIMISM-GOERLI':
+      return Network.OPT_GOERLI
+    case 'ARBITRUM':
+      return Network.ARB_MAINNET
+    case 'ARBITRUM-NOVA':
+      return Network.ARB_GOERLI
+    case 'POLYGON':
+      return Network.MATIC_MAINNET
+    case 'MUMBAI':
+      return Network.MATIC_MUMBAI
+    default:
+      throw new Error(`Unsupported network: ${network}`);
+  }
+}
+
 export function getNativeCoinInfo(network) {
   const NATIVE_COIN_ABBREVIATIONS = {
     MAINNET: 'ETH',

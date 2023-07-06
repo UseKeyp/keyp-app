@@ -7,6 +7,7 @@ import { validateToken } from './middleware/validation'
 import clients from './routes/clients'
 import contracts from './routes/contracts'
 import health from './routes/health'
+import nfts from './routes/nfts'
 import ramps from './routes/ramps'
 import sign from './routes/sign'
 import tokens from './routes/tokens'
@@ -43,12 +44,13 @@ const app = (db, settings) => {
   app.use(`/${settings.version}/contracts`, contracts)
   app.use(`/${settings.version}/ramps`, ramps)
   app.use(`/${settings.version}/sign`, sign)
-
+  app.use(`/${settings.version}/nfts`, nfts)
   app.use(`/${settings.version}`, health) // sanity-check
 
   //////////////////
   // Custom Error Handler
-  app.use((err, req, res) => {
+  // eslint-disable-next-line no-unused-vars
+  app.use((err, req, res, next) => {
     const statusCode = err.statusCode || 500
     const errorName = err?.name || 'Server Error'
     const message = err?.message || 'An unexpected error occurred'

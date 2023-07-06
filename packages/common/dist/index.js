@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.LOGIN_ENABLED_PROVIDERS = exports.AVAILABLE_NETWORKS = void 0;
+exports.getAlchemyNetworkEnum = getAlchemyNetworkEnum;
 exports.getBlockExplorerUrl = getBlockExplorerUrl;
 exports.getExplorerBaseUrlFromName = getExplorerBaseUrlFromName;
 exports.getNativeCoinInfo = getNativeCoinInfo;
@@ -17,8 +18,33 @@ require("core-js/modules/web.url.js");
 require("core-js/modules/web.url-search-params.js");
 require("core-js/modules/es.date.to-string.js");
 require("core-js/modules/es.regexp.to-string.js");
+var _alchemySdk = require("alchemy-sdk");
 /* global URL */
 
+function getAlchemyNetworkEnum(network) {
+  switch (network) {
+    case 'MAINNET':
+      return _alchemySdk.Network.ETH_MAINNET;
+    case 'GOERLI':
+      return _alchemySdk.Network.ETH_GOERLI;
+    case 'SEPOLIA':
+      return _alchemySdk.Network.ETH_SEPOLIA;
+    case 'OPTIMISM':
+      return _alchemySdk.Network.OPT_MAINNET;
+    case 'OPTIMISM-GOERLI':
+      return _alchemySdk.Network.OPT_GOERLI;
+    case 'ARBITRUM':
+      return _alchemySdk.Network.ARB_MAINNET;
+    case 'ARBITRUM-NOVA':
+      return _alchemySdk.Network.ARB_GOERLI;
+    case 'POLYGON':
+      return _alchemySdk.Network.MATIC_MAINNET;
+    case 'MUMBAI':
+      return _alchemySdk.Network.MATIC_MUMBAI;
+    default:
+      throw new Error("Unsupported network: ".concat(network));
+  }
+}
 function getNativeCoinInfo(network) {
   var NATIVE_COIN_ABBREVIATIONS = {
     MAINNET: 'ETH',
