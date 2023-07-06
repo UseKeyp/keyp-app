@@ -10,7 +10,7 @@ export const getUserWalletWithProvider = async ({ user, network }) => {
   return new Wallet(privateKey, Web3Providers[network])
 }
 
-export const userSignMesage = async ({ user, message, network }) => {
+export const userSignMessage = async ({ user, message, network }) => {
   const userWalletWithProvider = await getUserWalletWithProvider({
     user,
     network,

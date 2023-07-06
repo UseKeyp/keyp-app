@@ -2,7 +2,7 @@ import { withUser } from 'src/functions/v1/api/middleware/user'
 import { addErrorLocation } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
 import Sentry from 'src/lib/sentry'
-import { getUserWalletWithProvider } from 'src/lib/web3/wallets/user'
+import { userSignMessage } from 'src/lib/web3/wallets/user'
 
 var express = require('express')
 var router = express.Router()
@@ -11,28 +11,21 @@ router.post('/', withUser, async (req, res, next) => {
   try {
     const { network } = req.ctx
     const user = req.ctx.user
-    const { unsignedTx } = req.body
+    const { message } = req.body
 
-    if (!user || !unsignedTx || !network) {
-      throw 'Invalid request. Missing user, unsignedTx, or network'
+    if (!user || !message || !network) {
+      throw 'Invalid request. Missing user, message, or network'
     }
 
-    let signedTx
+    let signedMessage
     try {
-      const userWalletWithProvider = await getUserWalletWithProvider({
-        user,
-        network,
-      })
-      const populatedTx = await userWalletWithProvider.populateTransaction(
-        unsignedTx
-      )
-      signedTx = await userWalletWithProvider.signTransaction(populatedTx)
+      signedMessage = await userSignMessage({ user, message, network })
     } catch (e) {
-      logger.error(e, 'Error when signing the transaction')
+      logger.error(e, 'Error when signing the message')
       throw e
     }
 
-    res.send({ status: 'SUCCESS', signedTx })
+    res.send({ status: 'SUCCESS', signedMessage })
   } catch (e) {
     Sentry.captureException(e)
     logger.error({ custom: e }, 'Error in POST /sign')

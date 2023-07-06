@@ -5,7 +5,7 @@ import { logger } from 'src/lib/logger'
 import { oAuthUrl } from 'src/lib/oAuth'
 import { encodeBody } from 'src/lib/oAuth/helpers'
 import { COINBASE } from 'src/lib/oAuth/providers/coinbase'
-import { userSignMesage } from 'src/lib/web3/wallets'
+import { userSignMessage } from 'src/lib/web3/wallets'
 
 const MT_PELERIN = 'MT_PELERIN'
 const RAMP_NETWORK = 'RAMP_NETWORK'
@@ -34,7 +34,7 @@ export const getRampOnUrl = async ({ type, user, network }) => {
     if (type === MT_PELERIN) {
       const code = Math.floor(Math.random() * 9999)
       const message = `MtPelerin-${code}`
-      const signature = await userSignMesage({
+      const signature = await userSignMessage({
         user,
         message,
         network,
