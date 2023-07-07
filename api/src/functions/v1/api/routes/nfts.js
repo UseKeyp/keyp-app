@@ -1,10 +1,10 @@
+import { getAlchemyNetworkEnum } from '@usekeyp/common'
 import { Alchemy } from 'alchemy-sdk'
 
 import { addErrorLocation } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
 import Sentry from 'src/lib/sentry'
 import { safeFetchUser } from 'src/lib/users'
-import { getAlchemyNetworkEnum } from "@usekeyp/common";
 
 var express = require('express')
 var router = express.Router()
