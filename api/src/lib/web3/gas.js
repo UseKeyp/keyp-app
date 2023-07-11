@@ -28,9 +28,12 @@ export const getGasSettings = async ({ network }) => {
       maxFeePerGas = gasPrice
       maxPriorityFeePerGas = gasPrice
     } catch (e) {
-      maxFeePerGas = DEFAULT_GAS_MAX_PRIORITY_FEE_PER_GAS
-      maxPriorityFeePerGas = DEFAULT_GAS_MAX_PRIORITY_FEE_PER_GAS
-      logger.error(`Falling back to default gas settings for ${network}`)
+      if (network === 'POLYGON') {
+        maxFeePerGas = DEFAULT_GAS_MAX_PRIORITY_FEE_PER_GAS
+        maxPriorityFeePerGas = DEFAULT_GAS_MAX_PRIORITY_FEE_PER_GAS
+        logger.error(`Falling back to default gas settings for Polygon`)
+      }
+      logger.error(`Can't get gas settings from Alchemy for ${network}`)
       logger.error(e)
     }
   }
