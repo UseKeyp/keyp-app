@@ -28,7 +28,9 @@ export const getGasSettings = async ({ network }) => {
       maxFeePerGas = gasPrice
       maxPriorityFeePerGas = gasPrice
     } catch (e) {
-      logger.error(`Can't get gas settings from Alchemy for ${network}`)
+      maxFeePerGas = DEFAULT_GAS_MAX_PRIORITY_FEE_PER_GAS
+      maxPriorityFeePerGas = DEFAULT_GAS_MAX_PRIORITY_FEE_PER_GAS
+      logger.error(`Falling back to default gas settings for ${network}`)
       logger.error(e)
     }
   }
@@ -39,7 +41,7 @@ export const getGasSettings = async ({ network }) => {
       if (network === 'AVALANCHE') {
         axios
           .post(
-            `https://avalanche-mainnet.infura.io/v3/${process.env.INFURA_API_KEY}`,
+            `https://avalanche-mainnet.infura.io/v3/${process.env.INFURA_ID}`,
             {
               jsonrpc: '2.0',
               id: 1,
@@ -63,7 +65,7 @@ export const getGasSettings = async ({ network }) => {
       } else {
         axios
           .post(
-            `https://avalanche-fuji.infura.io/v3/${process.env.INFURA_API_KEY}`,
+            `https://avalanche-fuji.infura.io/v3/${process.env.INFURA_ID}`,
             {
               jsonrpc: '2.0',
               id: 1,
@@ -107,8 +109,8 @@ export const getGasSettings = async ({ network }) => {
   }
 
   if (!maxFeePerGas || !maxPriorityFeePerGas) {
-    maxFeePerGas = DEFAULT_GAS_MAX_PRIORITY_FEE_PER_GAS
-    maxPriorityFeePerGas = DEFAULT_GAS_MAX_PRIORITY_FEE_PER_GAS
+    maxFeePerGas = undefined
+    maxPriorityFeePerGas = undefined
   }
 
   return { maxFeePerGas, maxPriorityFeePerGas }
