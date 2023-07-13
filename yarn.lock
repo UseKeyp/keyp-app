@@ -12096,6 +12096,7 @@ __metadata:
     "@treasure-chess/treasure-contracts": ^0.1.0
     "@treasure-chess/web3-helpers": ^1.2.9
     "@usekeyp/common": ^1.2.9
+    alchemy-sdk: ^2.9.1
     atob: ^2.1.2
     bad-words: ^3.0.4
     cheerio: ^1.0.0-rc.12
