@@ -68,7 +68,6 @@ router.get('/:userId/history', async (req, res, next) => {
       })
     )
 
-    // console.log(data.transfers)
     res.send(parsedTransfers)
   } catch (e) {
     next(addErrorLocation('/:userId', e))
