@@ -5,6 +5,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.LOGIN_ENABLED_PROVIDERS = exports.AVAILABLE_NETWORKS = void 0;
+exports.getAlchemyApiKey = getAlchemyApiKey;
 exports.getAlchemyNetworkEnum = getAlchemyNetworkEnum;
 exports.getBlockExplorerUrl = getBlockExplorerUrl;
 exports.getExplorerBaseUrlFromName = getExplorerBaseUrlFromName;
@@ -21,6 +22,28 @@ require("core-js/modules/es.regexp.to-string.js");
 var _alchemySdk = require("alchemy-sdk");
 /* global URL */
 
+function getAlchemyApiKey(network) {
+  switch (network) {
+    case 'MAINNET':
+      return 'KR8BI-RsEwbcBdUB316_gSBfPpuoT2Hd';
+    case 'GOERLI':
+      return 'FMY9aah4T71_0hkokeDVvojsSfWmfNFN';
+    case 'SEPOLIA':
+      return 'rpf9LC8Wxb6Ectl1QLdEH0q3_Etk-LfB';
+    case 'OPTIMISM':
+      return 'k0FLpfopdra9P_NPL3RzIGPCcSNhFv94';
+    case 'OPTIMISM-GOERLI':
+      return 'Y5qkpgDrHHIbgDFkpFHa0fhE2KT5vcvL';
+    case 'ARBITRUM':
+      return 'igTAP7BSlZkRZmuRknBp8d-Gi7PvFAEw';
+    case 'POLYGON':
+      return 'fyPrFn7ANSvPqCDEfCeVgys0sCS1YB8E';
+    case 'MUMBAI':
+      return 'Q0xBisBKR-94kP-PmJaIfaCPQKsK6k2d';
+    default:
+      throw new Error("Unsupported network: ".concat(network));
+  }
+}
 function getAlchemyNetworkEnum(network) {
   switch (network) {
     case 'MAINNET':
