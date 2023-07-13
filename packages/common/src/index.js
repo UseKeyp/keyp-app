@@ -1,6 +1,29 @@
 /* global URL */
 
-import { Network } from "alchemy-sdk";
+import { Network } from 'alchemy-sdk'
+
+export function getAlchemyApiKey(network) {
+  switch (network) {
+    case 'MAINNET':
+      return 'KR8BI-RsEwbcBdUB316_gSBfPpuoT2Hd'
+    case 'GOERLI':
+      return 'FMY9aah4T71_0hkokeDVvojsSfWmfNFN'
+    case 'SEPOLIA':
+      return 'rpf9LC8Wxb6Ectl1QLdEH0q3_Etk-LfB'
+    case 'OPTIMISM':
+      return 'k0FLpfopdra9P_NPL3RzIGPCcSNhFv94'
+    case 'OPTIMISM-GOERLI':
+      return 'Y5qkpgDrHHIbgDFkpFHa0fhE2KT5vcvL'
+    case 'ARBITRUM':
+      return 'igTAP7BSlZkRZmuRknBp8d-Gi7PvFAEw'
+    case 'POLYGON':
+      return 'fyPrFn7ANSvPqCDEfCeVgys0sCS1YB8E'
+    case 'MUMBAI':
+      return 'Q0xBisBKR-94kP-PmJaIfaCPQKsK6k2d'
+    default:
+      throw new Error(`Unsupported network: ${network}`)
+  }
+}
 
 export function getAlchemyNetworkEnum(network) {
   switch (network) {
@@ -23,7 +46,7 @@ export function getAlchemyNetworkEnum(network) {
     case 'MUMBAI':
       return Network.MATIC_MUMBAI
     default:
-      throw new Error(`Unsupported network: ${network}`);
+      throw new Error(`Unsupported network: ${network}`)
   }
 }
 
