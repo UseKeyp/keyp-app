@@ -38,8 +38,7 @@ router.get('/:userId/history', async (req, res, next) => {
 
     const parsedTransfers = await Promise.all(
       data.transfers.map(async (transfer) => {
-        const toUser = await safeFetchUser(transfer.to.address)
-        console.log(toUser)
+        const toUser = await safeFetchUser(transfer.to)
 
         return {
           type: 'TRANSFER', // only transfers for now
@@ -49,8 +48,7 @@ router.get('/:userId/history', async (req, res, next) => {
             address: toUser.address,
           },
           amount: {
-            type: 'POLYGON_MATIC',
-            value: '25000000000000000',
+            // type: 'POLYGON_MATIC', //  TODO: add type lookup
             valueBn: {
               type: 'BigNumber',
               hex: transfer.rawContract?.value,
@@ -63,14 +61,14 @@ router.get('/:userId/history', async (req, res, next) => {
             network,
             chainId: Web3Providers[network]._network.chainId,
           },
-          // timestamp,
+          timestamp: transfer.metadata?.blockTimestamp,
           hash: transfer.hash,
           explorerUrl: getBlockExplorerUrl(network, transfer.hash),
         }
       })
     )
 
-    console.log(data.transfers)
+    // console.log(data.transfers)
     res.send(parsedTransfers)
   } catch (e) {
     next(addErrorLocation('/:userId', e))
