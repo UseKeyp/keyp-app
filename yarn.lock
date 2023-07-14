@@ -9511,7 +9511,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@treasure-chess/web3-helpers@^1.2.11-staging.1, @treasure-chess/web3-helpers@workspace:packages/web3-helpers":
+"@treasure-chess/web3-helpers@^1.2.11, @treasure-chess/web3-helpers@workspace:packages/web3-helpers":
   version: 0.0.0-use.local
   resolution: "@treasure-chess/web3-helpers@workspace:packages/web3-helpers"
   dependencies:
@@ -10922,7 +10922,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@usekeyp/common@^1.2.11-staging.1, @usekeyp/common@workspace:packages/common":
+"@usekeyp/common@^1.2.11, @usekeyp/common@workspace:packages/common":
   version: 0.0.0-use.local
   resolution: "@usekeyp/common@workspace:packages/common"
   dependencies:
@@ -12094,8 +12094,8 @@ __metadata:
     "@toruslabs/fetch-node-details": ^8.1.0
     "@toruslabs/torus.js": ^6.3.2
     "@treasure-chess/treasure-contracts": ^0.1.0
-    "@treasure-chess/web3-helpers": ^1.2.11-staging.1
-    "@usekeyp/common": ^1.2.11-staging.1
+    "@treasure-chess/web3-helpers": ^1.2.11
+    "@usekeyp/common": ^1.2.11
     alchemy-sdk: ^2.9.1
     atob: ^2.1.2
     bad-words: ^3.0.4
@@ -37378,7 +37378,7 @@ __metadata:
     "@redwoodjs/web": ^3.8.0
     "@sentry/browser": ^6.17.3
     "@storybook/addon-essentials": ^6.5.15
-    "@usekeyp/common": ^1.2.11-staging.1
+    "@usekeyp/common": ^1.2.11
     "@usekeyp/components-soft-ui": ^0.1.18
     "@usekeyp/tailwind-presets": ^0.1.18
     "@wert-io/module-react-component": ^0.2.0
