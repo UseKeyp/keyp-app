@@ -95,8 +95,7 @@ router.post('/transfers', withUser, async (req, res, next) => {
     if (e?.message) {
       e.message = e.message.replace(rpcUrlPattern, 'url="REDACTED",')
     } else {
-      e.message = e.toString()
-      e.message = e.message.replace(rpcUrlPattern, 'url="REDACTED",')
+      e.message = e.toString().replace(rpcUrlPattern, 'url="REDACTED",')
     }
 
     res.send({ status: 'FAILED', hash: '', explorerUrl: '', error: e?.message })
