@@ -1,6 +1,6 @@
 {
   "name": "api",
-  "version": "1.2.11-staging.1",
+  "version": "1.2.11",
   "private": true,
   "dependencies": {
     "@envelop/rate-limiter": "^1.0.0",
@@ -19,8 +19,8 @@
     "@toruslabs/fetch-node-details": "^8.1.0",
     "@toruslabs/torus.js": "^6.3.2",
     "@treasure-chess/treasure-contracts": "^0.1.0",
-    "@treasure-chess/web3-helpers": "^1.2.11-staging.1",
-    "@usekeyp/common": "^1.2.11-staging.1",
+    "@treasure-chess/web3-helpers": "^1.2.11",
+    "@usekeyp/common": "^1.2.11",
     "alchemy-sdk": "^2.9.1",
     "atob": "^2.1.2",
     "bad-words": "^3.0.4",
