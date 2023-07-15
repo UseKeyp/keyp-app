@@ -1,19 +1,35 @@
+import { v4 as uuidv4 } from 'uuid'
+
 import { db } from 'src/lib/db'
 import { isHexAddress } from 'src/lib/helpers'
 import { logger } from 'src/lib/logger'
+import { GOOGLE } from 'src/lib/oAuth/providers/google'
 import Sentry from 'src/lib/sentry'
 import { getTorusPublicAddress } from 'src/lib/torus'
 
 export const safeFetchUserByUsername = async ({ username, providerType }) => {
   try {
-    const user = await db.user.findUnique({
+    let user = await db.user.findUnique({
       where: {
         username_provider: {
-          username,
+          username: username.toLowerCase(),
           provider: providerType,
         },
       },
     })
+    if (!user && username.match(/^\S+@\S+\.\S+$/)) {
+      // Allow fetching wallet address for GMAIL users who haven not signed up yet
+      user = await fetchUser(
+        `TEMPORARY_${uuidv4()}`,
+        { email: username.toLowerCase(), username: username.toLowerCase() },
+        GOOGLE
+      )
+      const newAddress = await getTorusPublicAddress(user)
+      user = await db.user.update({
+        where: { id: user.id },
+        data: { address: newAddress },
+      })
+    }
     return {
       id: user.id,
       provider: user.provider,
@@ -49,6 +65,7 @@ export const safeFetchUser = async (
   }
 }
 
+// Creates a new user if none exists
 export const fetchUser = async (idOrAddress, creationData, providerType) => {
   try {
     let user

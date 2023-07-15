@@ -44,6 +44,7 @@ if (process.env.ENVIRONMENT === 'dev') {
     client_uri: 'http://0.0.0.0:8910',
     policy_uri: 'http://0.0.0.0:8910/policy',
     client_name: 'Test Client',
+    payload: { network: 'POLYGON' },
   })
 }
 

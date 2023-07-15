@@ -9,9 +9,9 @@ import { AVAILABLE_NETWORKS } from '@usekeyp/common'
 const GAS_SETTINGS_BY_NETWORK = {
   // MAINNET:{},
   POLYGON: {
-    INITIAL_DROP_AMOUNT: '0.6',
-    DEFAULT_DROP_AMOUNT: '0.3',
-    MINIMUM_GAS_DROP_THRESHOLD: '0.1',
+    INITIAL_DROP_AMOUNT: '0.8',
+    DEFAULT_DROP_AMOUNT: '0.8',
+    MINIMUM_GAS_DROP_THRESHOLD: '0.3',
     maxFeePerGas: parseUnits('190', 'gwei'),
     maxPriorityFeePerGas: parseUnits('40', 'gwei'),
   },
