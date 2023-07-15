@@ -89,11 +89,27 @@ export const onConnected = async ({ refreshToken, accessToken, decoded }) => {
         `Verify your email with Google and try again.`
       )
 
-    const user = await fetchUser(
-      decoded.sub,
-      { email: decoded.email, accessToken },
-      GOOGLE
-    )
+    // Check first if user was created with TEMPORARY ID
+    let user = await db.user.findUnique({
+      where: {
+        username_provider: {
+          username: decoded.email,
+          provider: GOOGLE,
+        },
+      },
+    })
+    if (user && user.id.includes('TEMPORARY'))
+      await db.user.update({
+        where: { id: user.id },
+        data: { id: decoded.sub },
+      })
+
+    if (!user)
+      user = await fetchUser(
+        decoded.sub,
+        { email: decoded.email, accessToken },
+        GOOGLE
+      )
 
     let publicAddress
     if (!user.address) {
