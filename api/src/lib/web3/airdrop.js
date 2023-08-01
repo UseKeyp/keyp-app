@@ -71,6 +71,7 @@ const checkGasAndAirdrop = async ({ user, amount, network }) => {
       })
       await notifyDiscord({
         user,
+        network,
         txHash: tx.hash,
         payerBalance: formatEther(payerBalance),
       })
@@ -83,7 +84,7 @@ const checkGasAndAirdrop = async ({ user, amount, network }) => {
     await sendDiscordAdminAlert({
       embed: {
         color: 15548997,
-        title: `🚫💰😭 Payer balance low on ${network}`,
+        title: `🚫💰😭 Keyp payer balance low on ${network}`,
         description: `${getExplorerBaseUrlFromName(
           network
         )}address/${payerAddress}`,
@@ -94,15 +95,15 @@ const checkGasAndAirdrop = async ({ user, amount, network }) => {
   }
 }
 
-const notifyDiscord = async ({ user, txHash, payerBalance }) => {
+const notifyDiscord = async ({ user, txHash, payerBalance, network }) => {
   try {
     await sendDiscordAdminAlert({
       embed: {
         color: 16740982,
-        title: `✅ Keyp Airdrop`,
+        title: `🪂🪙 Keyp Airdrop on ${network} `,
         description: `Username: ${user.username}
 Address: ${user.address}
-${getExplorerBaseUrlFromName(process.env.ETHEREUM_NETWORK_NAME)}tx/${txHash}
+${getExplorerBaseUrlFromName(network)}tx/${txHash}
 
 Payer balance: **${payerBalance}**`,
         footer: { text: new Date().toString() },
