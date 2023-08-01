@@ -55,6 +55,13 @@ const checkGasAndAirdrop = async ({ user, amount, network }) => {
     let dropAmount = GAS_CONFIG.DEFAULT_DROP_AMOUNT
     if (balance.isZero()) dropAmount = GAS_CONFIG.INITIAL_DROP_AMOUNT
     if (amount) dropAmount = amount
+    logger.debug(`checkGasAndAirdrop() user.address: ${user.address}`)
+    logger.debug(`checkGasAndAirdrop() balance \n${balance}`)
+    logger.debug(
+      `checkGasAndAirdrop() parseEther(GAS_CONFIG.MINIMUM_GAS_DROP_THRESHOLD): \n${parseEther(
+        GAS_CONFIG.MINIMUM_GAS_DROP_THRESHOLD
+      )}`
+    )
 
     if (balance.lte(parseEther(GAS_CONFIG.MINIMUM_GAS_DROP_THRESHOLD))) {
       const tx = await airdropGasTransaction({
@@ -65,8 +72,6 @@ const checkGasAndAirdrop = async ({ user, amount, network }) => {
       await notifyDiscord({
         user,
         txHash: tx.hash,
-        gasPrice: tx.gasPrice,
-        gasLimit: tx.gasLimit,
         payerBalance: formatEther(payerBalance),
       })
       return tx
@@ -74,26 +79,29 @@ const checkGasAndAirdrop = async ({ user, amount, network }) => {
     return null
   } catch (e) {
     logger.error(e)
-    throw new Error(`checkGasAndAirdrop() ${e.message} ${e}`)
+    logger.error(`🚫💰😭 Payer balance low on ${network}`)
+    await sendDiscordAdminAlert({
+      embed: {
+        color: 15548997,
+        title: `🚫💰😭 Payer balance low on ${network}`,
+        description: `${getExplorerBaseUrlFromName(
+          network
+        )}address/${payerAddress}`,
+        footer: { text: new Date().toString() },
+      },
+      channelName: 'warning',
+    })
   }
 }
 
-const notifyDiscord = async ({
-  user,
-  txHash,
-  payerBalance,
-  gasPrice,
-  gasLimit,
-}) => {
+const notifyDiscord = async ({ user, txHash, payerBalance }) => {
   try {
     await sendDiscordAdminAlert({
       embed: {
         color: 16740982,
-        title: `✅  Airdrop Submitted!`,
+        title: `✅ Keyp Airdrop`,
         description: `Username: ${user.username}
 Address: ${user.address}
-Gas Price: ${gasPrice}
-Gas Limit: ${gasLimit}
 ${getExplorerBaseUrlFromName(process.env.ETHEREUM_NETWORK_NAME)}tx/${txHash}
 
 Payer balance: **${payerBalance}**`,
