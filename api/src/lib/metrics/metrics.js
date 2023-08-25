@@ -51,8 +51,24 @@ export const getUserData = async () => {
     },
   })
 
+  // await saveUserData(users)
   const developerData = parseUsers(developers)
   const userData = parseUsers(users)
 
   return { users: userData, developers: developerData, clients }
+}
+
+const saveUserData = async (data) => {
+  const fs = require('fs')
+
+  fs.writeFile('userData.json', JSON.stringify(data), function (err) {
+    if (err) return console.log(err)
+    console.log('userData.json saved!')
+  })
+  const emails = data.map((user) => user.email).filter((email) => email)
+  console.log(emails.length())
+  fs.writeFile('userEmails.json', JSON.stringify(emails), function (err) {
+    if (err) return console.log(err)
+    console.log('userEmails.json saved!')
+  })
 }

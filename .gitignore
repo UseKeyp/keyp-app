@@ -32,3 +32,5 @@ packages/*/dist/
 install-state.gz
 .~lock.*
 metrics/**/*
+userEmails.json
+userData.json
